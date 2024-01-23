@@ -1,1 +1,14 @@
 // app global css in SCSS form
+@font-face {
+    font-family: 'iosevka';
+    src: url(fonts/iosevka/Iosevka-Regular.ttc)
+}
+
+@font-face {
+    font-family: 'iosevka-light';
+    src: url(fonts/iosevka/Iosevka-Light.ttc)
+}
+
+.main-layout {
+    font-family: 'iosevka';
+}

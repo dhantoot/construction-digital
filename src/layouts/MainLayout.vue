@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lHh lpR fFf">
+  <q-layout view="lHh lpR fFf" style="font-family: iosevka-light;">
 
     <q-header elevated class="bg-primary text-white" height-hint="98">
       <q-toolbar class="bg-negative text-white">
@@ -162,7 +162,7 @@
         inline-label
         class="shadow-2 text-weight-light q-mb-lg"
       >
-        <q-tab name="mails" label="Projects" class="text-weight-light text-negative" @click='$router.push({ path: `/projects` })'/>
+        <q-tab name="mails" label="Projects" class="text-weight-light text-negative" @click='$router.push({ path: `/projectList` })'/>
         <q-tab name="alarms" label="Dashboard" class="text-weight-light text-negative" @click='$router.push({ path: `/dashboard` })'/>
         <q-tab name="movies" label="Planning" class="text-weight-light text-negative" @click='$router.push({ path: `/projectplan` })'/>
       </q-tabs>
@@ -181,6 +181,7 @@ export default {
 
     return {
       leftDrawerOpen,
+      link: ref(''),
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
       },
