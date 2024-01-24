@@ -1,37 +1,4 @@
 <template>
-  <!-- <q-card class="my-card q-ma-sm">
-    <q-card-section horizontal>
-      <q-card-section class="col-4 flex flex-center">
-        <q-img class="rounded-borders" src="https://cdn.quasar.dev/img/parallax2.jpg" />
-      </q-card-section>
-      <q-card-section class="q-pt-xs">
-        <div class="text-overline">Tuscania Residence</div>
-        <div class="text-caption">Title</div>
-      </q-card-section>
-    </q-card-section>
-  </q-card>
-  <q-card class="my-card q-ma-sm">
-    <q-card-section horizontal>
-      <q-card-section class="col-4 flex flex-center">
-        <q-img class="rounded-borders" src="https://cdn.quasar.dev/img/parallax2.jpg" />
-      </q-card-section>
-      <q-card-section class="q-pt-xs">
-        <div class="text-overline">Sta Barbara Residence</div>
-        <div class="text-caption">Title</div>
-      </q-card-section>
-    </q-card-section>
-  </q-card>
-  <q-card class="my-card q-ma-sm">
-    <q-card-section horizontal>
-      <q-card-section class="col-4 flex flex-center">
-        <q-img class="rounded-borders" src="https://cdn.quasar.dev/img/parallax2.jpg" />
-      </q-card-section>
-      <q-card-section class="q-pt-xs">
-        <div class="text-overline">CocaCola Residence</div>
-        <div class="text-caption">Title</div>
-      </q-card-section>
-    </q-card-section>
-  </q-card> -->
   <q-card class="my-card q-ma-sm">
     <q-list bordered>
       <q-item clickable v-ripple @click='$router.push({ path: `/projectdetail` })'>
@@ -122,5 +89,76 @@
         </q-item-section>
       </q-item>
     </q-list>
+    <!-- <q-skeleton square /> -->
+    <q-inner-loading :showing="visible" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em" />
   </q-card>
 </template>
+<script>
+import { ref } from 'vue'
+
+export default {
+  title: 'ProjectList',
+  setup () {
+    const visible = ref(false)
+
+    return {
+      visible,
+      initFunction () {
+        // access setup variables here w/o using 'this'
+        console.log('initFunction called', visible.value)
+      }
+    }
+  },
+  props: {
+    title: String,
+    likes: Number
+  },
+  computed: {
+    test: function () {
+      return "I'm computed hook"
+    }
+  },
+  beforeCreate () {
+    console.log('beforeCreate')
+  },
+  created () {
+    console.log('created')
+  },
+  beforeMount () {
+    console.log('beforeMount')
+  },
+  mounted () {
+    console.log('mounted', this.$options)
+    this.showTextLoading()
+  },
+  beforeUpdate () {
+    console.log('beforeUpdate')
+  },
+  updated () {
+    console.log('updated')
+  },
+  beforeUnmount () {
+    console.log('beforeUnmount')
+  },
+  unmounted () {
+    console.log('unmounted')
+  },
+  watch: {
+    visible (newVal, oldVal) {
+      if (newVal === true) {
+        console.log(`visible is updated from ${oldVal} to ${newVal}`)
+      }
+    }
+  },
+  methods: {
+    showTextLoading () {
+      const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
+      console.log('loaded in ', ms, ' ms')
+      this.visible = true
+      setTimeout(() => {
+        this.visible = false
+      }, ms)
+    }
+  }
+}
+</script>
