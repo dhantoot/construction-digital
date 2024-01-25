@@ -1,12 +1,12 @@
 <template>
   <q-card class="my-card q-ma-sm">
     <q-list bordered>
-      <q-item clickable v-ripple @click='$router.push({ path: `/projectdetail` })'>
+      <q-item clickable v-ripple @click='$router.push({ path: `/projectdetails` })'>
         <q-item-section thumbnail>
           <img class="q-ml-sm" src="https://cdn.quasar.dev/img/mountains.jpg">
         </q-item-section>
         <q-item-section>
-          <q-item-label class="text-bold">Single line item</q-item-label>
+          <q-item-label class="text-bold">Start Residence</q-item-label>
           <q-item-label caption lines="2">Secondary line text. Lorem ipsum dolor sit amet, consectetur adipiscit
             elit.</q-item-label>
         </q-item-section>
@@ -105,7 +105,7 @@ export default {
       visible,
       initFunction () {
         // access setup variables here w/o using 'this'
-        console.log('initFunction called', visible.value)
+        console.log('initFunction called->', visible.value)
       }
     }
   },

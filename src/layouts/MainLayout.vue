@@ -9,7 +9,7 @@
         <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
       </q-avatar> -->
 
-      <q-toolbar-title class="text-center">My Projects</q-toolbar-title>
+      <q-toolbar-title class="text-center">Hofstee Inc</q-toolbar-title>
       <!-- <q-space/> -->
       <q-btn flat round dense icon="whatshot" />
     </q-toolbar>
@@ -157,14 +157,14 @@
     <q-page-container>
       <q-tabs
         v-model="tab"
-        dense
         no-caps
         inline-label
-        class="shadow-2 text-weight-light q-mb-lg"
+        class="shadow-2 q-mb-lg"
+        indicator-color="negative"
       >
-        <q-tab name="mails" label="Projects" class="text-weight-light text-negative" @click='$router.push({ path: `/projectList` })'/>
-        <q-tab name="alarms" label="Dashboard" class="text-weight-light text-negative" @click='$router.push({ path: `/dashboard` })'/>
-        <q-tab name="movies" label="Planning" class="text-weight-light text-negative" @click='$router.push({ path: `/projectplan` })'/>
+        <q-tab name="mails" label="Projects" class="text-dark" @click='$router.push({ path: `/projectList` })'/>
+        <q-tab name="alarms" label="Dashboard" class="text-dark" @click='$router.push({ path: `/dashboard` })'/>
+        <q-tab name="movies" label="Planning" class="text-dark" @click='$router.push({ path: `/projectplan` })'/>
       </q-tabs>
 
       <router-view />
