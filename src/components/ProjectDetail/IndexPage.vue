@@ -9,7 +9,7 @@
       indicator-color="negative"
       dense
     >
-      <q-tab @click='$router.push({ path: `/projectdetails/todo` })' alert="" name="todo" icon="las la-check-square" label="Todo" class="q-pt-sm">
+      <q-tab @click='$router.push({ path: `/todo` })' alert="" name="todo" icon="las la-check-square" label="Todo" class="q-pt-sm">
         <q-badge color="red" floating>7</q-badge>
       </q-tab>
 
@@ -19,7 +19,7 @@
         <q-badge color="red" floating>2</q-badge>
       </q-tab>
 
-      <q-tab @click='$router.push({ path: `/plans` })' name="Plan" icon="las la-calendar-alt" label="Plan" class="q-pt-sm">
+      <q-tab @click='$router.push({ path: `/planning` })' name="Plan" icon="las la-calendar-alt" label="Planning" class="q-pt-sm">
       </q-tab>
 
       <q-tab @click='$router.push({ path: `/more` })' name="more" icon="las la-ellipsis-h" label="More" class="q-pt-sm"/>

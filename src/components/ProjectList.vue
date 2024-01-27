@@ -1,7 +1,7 @@
 <template>
   <q-card class="my-card q-ma-sm">
     <q-list bordered>
-      <q-item clickable v-ripple @click='$router.push({ path: `/projectdetails` })'>
+      <q-item clickable v-ripple @click='$router.push({ path: `/detail` })'>
         <q-item-section thumbnail>
           <img class="q-ml-sm" src="https://cdn.quasar.dev/img/mountains.jpg">
         </q-item-section>
@@ -19,7 +19,7 @@
 
       <q-separator spaced inset />
 
-      <q-item clickable v-ripple>
+      <q-item clickable v-ripple @click='$router.push({ path: `/detail` })'>
         <q-item-section thumbnail>
           <img class="q-ml-sm" src="https://cdn.quasar.dev/img/mountains.jpg">
         </q-item-section>
@@ -37,7 +37,7 @@
 
       <q-separator spaced inset />
 
-      <q-item clickable v-ripple>
+      <q-item clickable v-ripple @click='$router.push({ path: `/detail` })'>
         <q-item-section thumbnail>
           <img class="q-ml-sm" src="https://cdn.quasar.dev/img/mountains.jpg">
         </q-item-section>
@@ -55,7 +55,7 @@
 
       <q-separator spaced inset />
 
-      <q-item clickable v-ripple>
+      <q-item clickable v-ripple @click='$router.push({ path: `/detail` })'>
         <q-item-section thumbnail>
           <img class="q-ml-sm" src="https://cdn.quasar.dev/img/mountains.jpg">
         </q-item-section>
@@ -73,7 +73,7 @@
 
       <q-separator spaced inset />
 
-      <q-item clickable v-ripple>
+      <q-item clickable v-ripple @click='$router.push({ path: `/detail` })'>
         <q-item-section thumbnail>
           <img class="q-ml-sm" src="https://cdn.quasar.dev/img/mountains.jpg">
         </q-item-section>
@@ -118,17 +118,20 @@ export default {
       return "I'm computed hook"
     }
   },
+  serverPrefetch () {
+    console.log('serverPrefetch')
+  },
   beforeCreate () {
-    console.log('beforeCreate')
+    console.log('beforeCreate..', this.$options)
   },
   created () {
-    console.log('created')
+    console.log('created..')
   },
   beforeMount () {
-    console.log('beforeMount')
+    console.log('beforeMount..')
   },
   mounted () {
-    console.log('mounted', this.$options)
+    console.log('mounted..', this.$options)
     this.showTextLoading()
   },
   beforeUpdate () {
@@ -142,6 +145,21 @@ export default {
   },
   unmounted () {
     console.log('unmounted')
+  },
+  errorCaptured () {
+    console.log('errorCaptured')
+  },
+  renderTracked () {
+    console.log('renderTracked')
+  },
+  renderTriggered () {
+    console.log('renderTriggered')
+  },
+  activated () {
+    console.log('activates')
+  },
+  deactivated () {
+    console.log('deactivated')
   },
   watch: {
     visible (newVal, oldVal) {

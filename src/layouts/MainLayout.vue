@@ -162,9 +162,9 @@
         class="shadow-2 q-mb-lg"
         indicator-color="negative"
       >
-        <q-tab name="mails" label="Projects" class="text-dark" @click='$router.push({ path: `/projectList` })'/>
+        <q-tab name="mails" label="Projects" class="text-dark" @click='$router.push({ path: `/projects` })'/>
         <q-tab name="alarms" label="Dashboard" class="text-dark" @click='$router.push({ path: `/dashboard` })'/>
-        <q-tab name="movies" label="Planning" class="text-dark" @click='$router.push({ path: `/projectplan` })'/>
+        <q-tab name="movies" label="Planning" class="text-dark" @click='$router.push({ path: `/plans` })'/>
       </q-tabs>
 
       <router-view />

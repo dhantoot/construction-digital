@@ -2,34 +2,47 @@ const routes = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
-    redirect: 'projectList',
+    redirect: 'projects',
     children: [
-      { path: 'projectList', component: () => import('components/ProjectList.vue') },
-      { path: 'dashboard', component: () => import('components/DashBoard.vue') },
-      { path: 'projectplan', component: () => import('components/ProjectPlan.vue') },
       {
-        path: 'projectdetails',
+        path: '/projects',
+        component: () => import('components/ProjectList.vue')
+      },
+      {
+        path: '/dashboard',
+        component: () => import('components/DashBoard.vue')
+      },
+      {
+        path: '/plans',
+        component: () => import('components/ProjectPlan.vue')
+      },
+      {
+        path: '/detail',
         component: () => import('components/ProjectDetail/IndexPage.vue'),
-        redirect: 'todo',
+        // redirect: 'todo',
         children: [
           {
-            path: 'projectdetails/todo',
+            path: '',
+            component: () => import('components/ProjectDetail/ProjectDetailDefault.vue')
+          },
+          {
+            path: '/todo',
             component: () => import('components/ProjectDetail/ProjectTodo.vue')
           },
           {
-            path: 'files',
+            path: '/files',
             component: () => import('components/ProjectDetail/ProjectFiles.vue')
           },
           {
-            path: 'chat',
+            path: '/chat',
             component: () => import('components/ProjectDetail/ProjectChat.vue')
           },
           {
-            path: 'plans',
+            path: '/planning',
             component: () => import('components/ProjectDetail/ProjectPlan.vue')
           },
           {
-            path: 'more',
+            path: '/more',
             component: () => import('components/ProjectDetail/ProjectMore.vue')
           }
         ]
