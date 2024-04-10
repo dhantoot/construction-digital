@@ -1,13 +1,17 @@
 <template>
-    <q-card class="my-card q-ma-sm">
-        <q-card-section horizontal>
-          <q-card-section class="q-pt-xs">
-            <div class="text-overline">TODO</div>
-            <div class="text-caption">In Progress</div>
-          </q-card-section>
-        </q-card-section>
-      <q-inner-loading :showing="visible"/>
-      </q-card>
+  <div class="q-ma-none scroll" style="height: 66vh">
+  <div>
+    <q-date
+      v-model="date"
+      :events="events"
+      :event-color="(date) => date[9] % 2 === 0 ? 'teal' : 'orange'"
+      class="full-width no-border-radius"
+    />
+  </div>
+  <q-page-sticky position="bottom-right" :offset="[18, 18]">
+     <q-btn dense fab icon="las la-calendar-plus" color="grey-1" class="text-green"/>
+   </q-page-sticky>
+</div>
 </template>
 <script>
 import { ref } from 'vue'
@@ -16,12 +20,26 @@ export default {
   title: 'ProjectPlan',
   setup () {
     const visible = ref(false)
+    const question = ref('')
 
     return {
       visible,
+      question,
       initFunction () {
         // access setup variables here w/o using 'this'
         console.log('initFunction called', visible.value)
+      },
+      date: ref('2019/02/01'),
+      events: ['2019/02/01', '2019/02/05', '2019/02/06', '2019/02/09', '2019/02/23'],
+      eventsFn (date) {
+        if (date === '2019/02/01' ||
+          date === '2019/02/05' ||
+          date === '2019/02/06' ||
+          date === '2019/02/09' ||
+          date === '2019/02/23') {
+          return true
+        }
+        return false
       }
     }
   },

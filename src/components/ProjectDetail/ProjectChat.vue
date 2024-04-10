@@ -1,14 +1,105 @@
 <template>
-    <q-card class="my-card q-ma-sm">
-        <q-card-section horizontal>
-            <q-card-section class="q-pt-xs">
-                <div class="text-overline">Chat</div>
-                <div class="text-caption">In Progress</div>
-            </q-card-section>
-        </q-card-section>
-        <!-- <q-skeleton square /> -->
-        <q-inner-loading :showing="visible" />
-    </q-card>
+    <q-input standout="bg-grey-1 text-dark" v-model="text" :dense="dense" class="q-ma-xs">
+        <template v-slot:append>
+          <q-avatar>
+            <q-icon name="las la-search"/>
+          </q-avatar>
+        </template>
+      </q-input>
+      <div class="q-pa-xs row justify-center">
+        <div class="scroll" style="width: 100%; max-width: 400px; height:73.4vh">
+          <q-chat-message
+            name="me"
+            avatar="https://cdn.quasar.dev/img/avatar3.jpg"
+            :text="['hey, how are you?']"
+            stamp="7 minutes ago"
+            sent
+            bg-color="amber-7"
+          />
+          <q-chat-message
+            name="Jane"
+            avatar="https://cdn.quasar.dev/img/avatar5.jpg"
+            :text="[
+              'doing fine, how r you?',
+              'I just feel like typing a really, really, REALLY long message to annoy you...'
+            ]"
+            size="6"
+            stamp="4 minutes ago"
+            text-color="white"
+            bg-color="primary"
+          />
+          <q-chat-message
+            name="Jane"
+            avatar="https://cdn.quasar.dev/img/avatar5.jpg"
+            :text="['Did it work?']"
+            stamp="1 minutes ago"
+            size="8"
+            text-color="white"
+            bg-color="primary"
+          />
+          <q-chat-message
+            name="me"
+            avatar="https://cdn.quasar.dev/img/avatar3.jpg"
+            :text="['Yes it worked']"
+            stamp="7 minutes ago"
+            sent
+            bg-color="amber-7"
+          />
+          <q-chat-message
+            name="me"
+            avatar="https://cdn.quasar.dev/img/avatar3.jpg"
+            :text="['By the way thank you very much', 'I missed you']"
+            stamp="7 minutes ago"
+            sent
+            bg-color="amber-7"
+          />
+          <q-chat-message
+            name="me"
+            avatar="https://cdn.quasar.dev/img/avatar3.jpg"
+            :text="['hey, how are you?']"
+            stamp="7 minutes ago"
+            sent
+            bg-color="amber-7"
+          />
+          <q-chat-message
+            name="Jane"
+            avatar="https://cdn.quasar.dev/img/avatar5.jpg"
+            :text="[
+              'doing fine, how r you?',
+              'I just feel like typing a really, really, REALLY long message to annoy you...'
+            ]"
+            size="6"
+            stamp="4 minutes ago"
+            text-color="white"
+            bg-color="primary"
+          />
+          <q-chat-message
+            name="Jane"
+            avatar="https://cdn.quasar.dev/img/avatar5.jpg"
+            :text="['Did it work?']"
+            stamp="1 minutes ago"
+            size="8"
+            text-color="white"
+            bg-color="primary"
+          />
+          <q-chat-message
+            name="me"
+            avatar="https://cdn.quasar.dev/img/avatar3.jpg"
+            :text="['Yes it worked']"
+            stamp="7 minutes ago"
+            sent
+            bg-color="amber-7"
+          />
+          <q-chat-message
+            name="me"
+            avatar="https://cdn.quasar.dev/img/avatar3.jpg"
+            :text="['By the way thank you very much', 'I missed you']"
+            stamp="7 minutes ago"
+            sent
+            bg-color="amber-7"
+          />
+        </div>
+      </div>
 </template>
 <script>
 
@@ -29,7 +120,10 @@ export default {
       initFunction () {
         // access setup variables here w/o using 'this'
         console.log('initFunction called', visible.value)
-      }
+      },
+      text: ref(''),
+      ph: ref(''),
+      dense: ref(true)
     }
   },
   props: {

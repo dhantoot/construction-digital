@@ -159,7 +159,7 @@
         v-model="tab"
         no-caps
         inline-label
-        class="shadow-2 q-mb-lg"
+        class="shadow-2 q-mb-none"
         indicator-color="negative"
       >
         <q-tab name="mails" label="Projects" class="text-dark" @click='$router.push({ path: `/projects` })'/>

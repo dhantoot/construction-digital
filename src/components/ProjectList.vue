@@ -1,97 +1,37 @@
 <template>
-  <q-card class="my-card q-ma-sm">
-    <q-list bordered>
-      <q-item clickable v-ripple @click='$router.push({ path: `/detail` })'>
-        <q-item-section thumbnail>
-          <img class="q-ml-sm" src="https://cdn.quasar.dev/img/mountains.jpg">
-        </q-item-section>
-        <q-item-section>
-          <q-item-label class="text-bold">Start Residence</q-item-label>
-          <q-item-label caption lines="2">Secondary line text. Lorem ipsum dolor sit amet, consectetur adipiscit
-            elit.</q-item-label>
-        </q-item-section>
+  <q-input standout="bg-grey-11 text-black" v-model="text" :dense="dense" class="q-ma-xs q-mt-sm" clearable>
+        <template v-slot:append>
+          <q-avatar>
+            <q-icon name="las la-search"/>
+          </q-avatar>
+        </template>
+      </q-input>
+  <!-- <q-card class="my-card q-ma-sm"> -->
+    <q-list bordered separator class="scroll" style="height: 83vh">
+        <q-item clickable v-ripple @click='$router.push({ path: `/detail` })' v-for="item in arr" :key="item">
+          <q-item-section thumbnail>
+          <img class="q-ml-sm rounded-borders" :src="`${url}${item}`">
+          </q-item-section>
 
-        <q-item-section side top>
-          <q-item-label caption>5 min ago</q-item-label>
-          <q-icon name="star" color="yellow" />
-        </q-item-section>
-      </q-item>
+          <q-item-section>
+            <q-item-label class="text-bold">{{ names[item.toString().split('.')[1].slice(-2)] }} Residence</q-item-label>
+            <q-item-label caption lines="2">Secondary line text. Lorem ipsum dolor sit amet, consectetur adipiscit
+              elit.</q-item-label>
+          </q-item-section>
 
-      <q-separator spaced inset />
+          <q-item-section side top>
+            <q-item-label caption>5 min ago</q-item-label>
+            <q-icon name="star" color="yellow" />
+          </q-item-section>
 
-      <q-item clickable v-ripple @click='$router.push({ path: `/detail` })'>
-        <q-item-section thumbnail>
-          <img class="q-ml-sm" src="https://cdn.quasar.dev/img/mountains.jpg">
-        </q-item-section>
-        <q-item-section>
-          <q-item-label class="text-bold">SMDC Light Residence</q-item-label>
-          <q-item-label caption lines="2">Secondary line text. Lorem ipsum dolor sit amet, consectetur adipiscit
-            elit.</q-item-label>
-        </q-item-section>
-
-        <q-item-section side top>
-          <q-item-label caption>5 min ago</q-item-label>
-          <q-icon name="star" color="yellow" />
-        </q-item-section>
-      </q-item>
-
-      <q-separator spaced inset />
-
-      <q-item clickable v-ripple @click='$router.push({ path: `/detail` })'>
-        <q-item-section thumbnail>
-          <img class="q-ml-sm" src="https://cdn.quasar.dev/img/mountains.jpg">
-        </q-item-section>
-        <q-item-section>
-          <q-item-label class="text-bold">Grand Hayatt</q-item-label>
-          <q-item-label caption lines="2">Secondary line text. Lorem ipsum dolor sit amet, consectetur adipiscit
-            elit.</q-item-label>
-        </q-item-section>
-
-        <q-item-section side top>
-          <q-item-label caption>5 min ago</q-item-label>
-          <q-icon name="star" color="yellow" />
-        </q-item-section>
-      </q-item>
-
-      <q-separator spaced inset />
-
-      <q-item clickable v-ripple @click='$router.push({ path: `/detail` })'>
-        <q-item-section thumbnail>
-          <img class="q-ml-sm" src="https://cdn.quasar.dev/img/mountains.jpg">
-        </q-item-section>
-        <q-item-section>
-          <q-item-label class="text-bold">Uptown Tower</q-item-label>
-          <q-item-label caption lines="2">Secondary line text. Lorem ipsum dolor sit amet, consectetur adipiscit
-            elit.</q-item-label>
-        </q-item-section>
-
-        <q-item-section side top>
-          <q-item-label caption>5 min ago</q-item-label>
-          <q-icon name="star" color="yellow" />
-        </q-item-section>
-      </q-item>
-
-      <q-separator spaced inset />
-
-      <q-item clickable v-ripple @click='$router.push({ path: `/detail` })'>
-        <q-item-section thumbnail>
-          <img class="q-ml-sm" src="https://cdn.quasar.dev/img/mountains.jpg">
-        </q-item-section>
-        <q-item-section>
-          <q-item-label class="text-bold">Sunshine</q-item-label>
-          <q-item-label caption lines="2">Secondary line text. Lorem ipsum dolor sit amet, consectetur adipiscit
-            elit.</q-item-label>
-        </q-item-section>
-
-        <q-item-section side top>
-          <q-item-label caption>5 min ago</q-item-label>
-          <q-icon name="star" color="yellow" />
-        </q-item-section>
-      </q-item>
+        </q-item>
     </q-list>
     <!-- <q-skeleton square /> -->
     <q-inner-loading :showing="visible" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em" />
-  </q-card>
+    <q-page-sticky position="bottom-right" :offset="[18, 18]">
+       <q-btn fab icon="add" color="grey-1" class="text-green"/>
+    </q-page-sticky>
+  <!-- </q-card> -->
 </template>
 <script>
 import { ref } from 'vue'
@@ -100,13 +40,113 @@ export default {
   title: 'ProjectList',
   setup () {
     const visible = ref(false)
+    const url = ref('https://picsum.photos/500/300')
+    const arr = ref([])
+    const names = ref([
+      'Abigail',
+      'Alexandra',
+      'Alison',
+      'Amanda',
+      'Amelia',
+      'Amy',
+      'Andrea',
+      'Angela',
+      'Anna',
+      'Anne',
+      'Audrey',
+      'Ava',
+      'Bella',
+      'Bernadette',
+      'Carol',
+      'Caroline',
+      'Carolyn',
+      'Chloe',
+      'Claire',
+      'Deirdre',
+      'Diana',
+      'Diane',
+      'Donna',
+      'Dorothy',
+      'Elizabeth',
+      'Ella',
+      'Emily',
+      'Emma',
+      'Faith',
+      'Felicity',
+      'Fiona',
+      'Gabrielle',
+      'Grace',
+      'Hannah',
+      'Heather',
+      'Irene',
+      'Jan',
+      'Jane',
+      'Jasmine',
+      'Jenni',
+      'Lillian',
+      'Lily',
+      'Lisa',
+      'Madeleine',
+      'Maria',
+      'Mary',
+      'Megan',
+      'Melanie',
+      'Michelle',
+      'Molly',
+      'Natalie',
+      'Nicola',
+      'Olivia',
+      'Penelope',
+      'Pippa',
+      'Rachel',
+      'Rebecca',
+      'Rose',
+      'Ruth',
+      'Sally',
+      'Samantha',
+      'Sarah',
+      'Sonia',
+      'Sophie',
+      'Stephanie',
+      'Sue',
+      'Theresa',
+      'Tracey',
+      'Una',
+      'Vanessa',
+      'Victoria',
+      'Virginia',
+      'Wanda',
+      'Wendy',
+      'Yvonne',
+      'Zoefer',
+      'Jessica',
+      'Joan',
+      'Joanne',
+      'Julia',
+      'Karen',
+      'Katherine',
+      'Kimberly',
+      'Kylie',
+      'Lauren',
+      'Leah'
+    ])
 
     return {
       visible,
       initFunction () {
         // access setup variables here w/o using 'this'
         console.log('initFunction called->', visible.value)
-      }
+        url.value = 'https://picsum.photos/500/300?t='
+        for (let i = 0; i < 50; i++) {
+          arr.value.push(Math.random())
+        }
+      },
+      text: ref(''),
+      ph: ref(''),
+      dense: ref(true),
+      url,
+      arr,
+      names
     }
   },
   props: {
@@ -133,6 +173,7 @@ export default {
   mounted () {
     console.log('mounted..', this.$options)
     this.showTextLoading()
+    this.initFunction()
   },
   beforeUpdate () {
     console.log('beforeUpdate')

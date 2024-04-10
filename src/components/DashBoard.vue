@@ -1,5 +1,5 @@
 <template>
-  <q-card class="my-card q-ma-sm">
+  <q-card class="my-card q-mt-sm q-ml-xs q-mr-xs">
     <q-card-actions>
       <label class="text-bold">Submitted Expenses</label>
       <q-space />
@@ -74,7 +74,7 @@
     <q-inner-loading :showing="visible"/>
   </q-card>
 
-  <q-card class="my-card q-ma-sm">
+  <q-card class="my-card q-mt-sm q-ml-xs q-mr-xs">
     <q-card-actions>
       <label class="text-bold">Open Agreements</label>
       <q-space />

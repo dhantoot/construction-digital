@@ -3,7 +3,7 @@
   <q-footer bordered class="bg-grey-3 text-primary">
     <q-tabs
       v-model="tab"
-      class="bg-white text-dark shadow-2"
+      class="bg-white text-dark shadow-2 q-pb-md"
       no-caps
       switch-indicator
       indicator-color="negative"

@@ -1,14 +1,31 @@
 <template>
-    <q-card class="my-card q-ma-sm">
-        <q-card-section horizontal>
-            <q-card-section class="q-pt-xs">
-                <div class="text-overline">Files</div>
-                <div class="text-caption">In Progress</div>
-            </q-card-section>
-        </q-card-section>
-        <!-- <q-skeleton square /> -->
-        <q-inner-loading :showing="visible" />
-    </q-card>
+     <q-input standout="bg-grey-1 text-dark" v-model="text" :dense="dense" class="q-ma-xs">
+        <template v-slot:append>
+          <q-avatar>
+            <q-icon name="las la-search"/>
+          </q-avatar>
+        </template>
+      </q-input>
+      <div class="scroll" style="height:75.5vh">
+        <div class="q-gutter-sm row justify-evenly">
+          <q-img
+            v-for="item in arr"
+            :key="item"
+            :src="`${url}${item}`"
+            spinner-color="white"
+            style="height: 100px; max-width: 111px"
+            img-class="my-custom-image"
+            class="rounded-borders q-mb-xs"
+          >
+            <div class="absolute-bottom text-caption text-center">
+              Caption
+            </div>
+          </q-img>
+        </div>
+        <q-page-sticky position="bottom-right" :offset="[18, 18]">
+          <q-btn dense fab icon="las la-paperclip" color="grey-1" class="text-green"/>
+        </q-page-sticky>
+      </div>
 </template>
 <script>
 
@@ -22,14 +39,25 @@ export default {
   setup () {
     const visible = ref(false)
     const question = ref('')
+    const url = ref('https://picsum.photos/500/300')
+    const arr = ref([])
 
     return {
       visible,
       question,
+      url,
+      arr,
       initFunction () {
         // access setup variables here w/o using 'this'
         console.log('initFunction called', visible.value)
-      }
+        url.value = 'https://picsum.photos/500/300?t='
+        for (let i = 0; i < 100; i++) {
+          arr.value.push(Math.random())
+        }
+      },
+      text: ref(''),
+      ph: ref(''),
+      dense: ref(true)
     }
   },
   props: {
@@ -53,6 +81,7 @@ export default {
   mounted () {
     console.log('mounted', this.$options)
     this.showTextLoading()
+    this.initFunction()
   },
   beforeUpdate () {
     console.log('beforeUpdate')
