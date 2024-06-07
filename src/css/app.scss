@@ -9,6 +9,15 @@
     src: url(fonts/iosevka/Iosevka-Light.ttc)
 }
 
+// @font-face {
+//     font-family: 'MingLiU-ExtB';
+//     src: url(fonts/iosevka/Iosevka-Light.ttc)
+// }
+
 .main-layout {
+    font-family: 'iosevka';
+}
+
+body {
     font-family: 'iosevka';
 }

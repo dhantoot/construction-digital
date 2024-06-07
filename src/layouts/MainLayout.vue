@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lHh lpR fFf" style="font-family: iosevka-light;">
+  <q-layout view="lHh lpR fFf" style="font-family: Iosevka-Light;">
 
     <q-header elevated class="bg-primary text-white" height-hint="98">
       <q-toolbar class="bg-negative text-white">
@@ -156,6 +156,7 @@
 
     <q-page-container>
       <q-tabs
+        v-if="headerState"
         v-model="tab"
         no-caps
         inline-label
@@ -167,7 +168,7 @@
         <q-tab name="movies" label="Planning" class="text-dark" @click='$router.push({ path: `/plans` })'/>
       </q-tabs>
 
-      <router-view />
+      <router-view @show-header="showHeader"/>
     </q-page-container>
 
   </q-layout>
@@ -180,13 +181,23 @@ export default {
     const leftDrawerOpen = ref(false)
 
     return {
+      headerState: ref(true),
       leftDrawerOpen,
       link: ref(''),
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
       },
       tab: ref('mails'),
-      lorem: 'Lorem ipsum do'
+      lorem: 'Lorem ipsum dolor'
+    }
+  },
+  mounted () {
+    console.log('MainLayout monunter')
+  },
+  methods: {
+    showHeader (arg) {
+      console.log('--receiving emits from login page', arg)
+      this.headerState = arg
     }
   }
 }

@@ -44,8 +44,36 @@ const routes = [
           {
             path: '/more',
             component: () => import('components/ProjectDetail/ProjectMore.vue')
+          },
+          {
+            path: '/agreement',
+            component: () => import('components/ProjectDetail/ProjectAgreement.vue')
+          },
+          {
+            path: '/createtodo',
+            component: () => import('components/ProjectDetail/ProjectCreateTodo.vue')
           }
         ]
+      },
+      {
+        path: '/new-project',
+        component: () => import('components/NewProject.vue')
+      },
+      {
+        path: '/new-member',
+        component: () => import('components/AddMember.vue')
+      },
+      {
+        path: '/send-invite',
+        component: () => import('components/SendInvite.vue')
+      },
+      {
+        path: '/login-register',
+        component: () => import('components/loginRegister.vue')
+      },
+      {
+        path: '/login',
+        component: () => import('src/components/userLogin.vue')
       }
     ]
   },

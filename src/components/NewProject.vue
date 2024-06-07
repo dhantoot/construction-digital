@@ -1,11 +1,38 @@
 <template>
-    <q-card class="my-card q-ma-sm">
-      <!-- <q-skeleton square /> -->
-      <q-inner-loading :showing="visible"/>
-    </q-card>
-  </template>
+    <div class="q-ma-xs q-gutter-xs bg-grey-2">
+        <q-select
+        filled
+        v-model="model"
+        use-input
+        input-debounce="0"
+        label="Location"
+        :options="options"
+        @filter="filterFn"
+      >
+        <template v-slot:no-option>
+          <q-item>
+            <q-item-section class="text-grey">
+              No results
+            </q-item-section>
+          </q-item>
+        </template>
+      </q-select>
+      <q-input filled v-model="text" label="Name" class="bg-grey-2"/>
+      <q-input
+      v-model="desc"
+      filled
+      label="Description"
+      autogrow
+      class="bg-grey-2"
+    />
+    <q-btn size="lg" style="background: goldenrod; color: white" label="Start Project" class="fixed-bottom q-mb-lg q-ml-xs q-mr-xs"/>
+  </div>
+</template>
 <script>
 import { ref } from 'vue'
+const stringOptions = [
+  'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
+]
 
 // Don't forget to specify which animations
 // you are using in quasar.config file > animations.
@@ -13,12 +40,31 @@ import { ref } from 'vue'
 export default {
   title: 'ProjectList',
   setup () {
+    const options = ref(stringOptions)
     const visible = ref(false)
-    const question = ref('')
 
     return {
+      model: ref(null),
+      text: ref(null),
+      desc: ref(null),
+      options,
+      filterFn (val, update) {
+        if (val === '') {
+          update(() => {
+            options.value = stringOptions
+
+            // here you have access to "ref" which
+            // is the Vue reference of the QSelect
+          })
+          return
+        }
+
+        update(() => {
+          const needle = val.toLowerCase()
+          options.value = stringOptions.filter(v => v.toLowerCase().indexOf(needle) > -1)
+        })
+      },
       visible,
-      question,
       initFunction () {
         // access setup variables here w/o using 'this'
         console.log('initFunction called', visible.value)

@@ -1,11 +1,17 @@
 <template>
-    <q-card class="my-card q-ma-sm">
-      <!-- <q-skeleton square /> -->
-      <q-inner-loading :showing="visible"/>
-    </q-card>
-  </template>
+    <div class="q-ma-xs q-gutter-xs bg-grey-2 q-mt-xl">
+      <q-icon name="las la-envelope" size="xl" class="full-width"></q-icon>
+      <p>Send your invitation to user dhan with the role
+Employee via email of with a link</p>
+      <q-input filled v-model="email" label="Email" class="bg-grey-2"/>
+      <q-btn size="lg" style="background: goldenrod; color: white" label="Send E-mail" class="fixed-bottom q-mb-lg q-ml-xs q-mr-xs"/>
+  </div>
+</template>
 <script>
 import { ref } from 'vue'
+const stringOptions = [
+  'Employee', 'Contractor', 'Admin', 'Client', 'Builders'
+]
 
 // Don't forget to specify which animations
 // you are using in quasar.config file > animations.
@@ -13,12 +19,33 @@ import { ref } from 'vue'
 export default {
   title: 'ProjectList',
   setup () {
+    const options = ref(stringOptions)
     const visible = ref(false)
-    const question = ref('')
 
     return {
+      model: ref(null),
+      fname: ref(null),
+      lname: ref(null),
+      text: ref(null),
+      desc: ref(null),
+      options,
+      filterFn (val, update) {
+        if (val === '') {
+          update(() => {
+            options.value = stringOptions
+
+            // here you have access to "ref" which
+            // is the Vue reference of the QSelect
+          })
+          return
+        }
+
+        update(() => {
+          const needle = val.toLowerCase()
+          options.value = stringOptions.filter(v => v.toLowerCase().indexOf(needle) > -1)
+        })
+      },
       visible,
-      question,
       initFunction () {
         // access setup variables here w/o using 'this'
         console.log('initFunction called', visible.value)

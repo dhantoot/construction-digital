@@ -107,7 +107,7 @@
       </q-item>
     </q-list>
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
-       <q-btn dense fab icon="las la-notes-medical" color="grey-1" class="text-green"/>
+       <q-btn @click="this.$router.push({path: '/createtodo'})" dense fab icon="las la-notes-medical" color="grey-1" class="text-green"/>
     </q-page-sticky>
 </template>
 
