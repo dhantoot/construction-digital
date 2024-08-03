@@ -1,8 +1,9 @@
 <template>
     <div class="q-ma-xs q-gutter-xs bg-grey-2">
-        <q-input filled v-model="fname" label="First Name" class="bg-grey-2"/>
-        <q-input filled v-model="lname" label="Last Name" class="bg-grey-2"/>
+        <q-input dense filled v-model="fname" label="First Name" class="bg-grey-2"/>
+        <q-input dense filled v-model="lname" label="Last Name" class="bg-grey-2"/>
         <q-select
+        dense
         filled
         v-model="model"
         use-input
@@ -19,9 +20,10 @@
           </q-item>
         </template>
       </q-select>
-      <q-input filled v-model="text" label="Name" class="bg-grey-2"/>
+      <q-input dense filled v-model="text" label="Name" class="bg-grey-2"/>
       <q-input
       v-model="desc"
+      dense
       filled
       label="Description"
       autogrow
@@ -96,6 +98,11 @@ export default {
   mounted () {
     console.log('mounted', this.$options)
     this.showTextLoading()
+    this.$emit('showHeader', false, [{
+      label: 'Back',
+      icon: 'las la-chevron-left',
+      route: '/detail'
+    }])
   },
   beforeUpdate () {
     console.log('beforeUpdate')

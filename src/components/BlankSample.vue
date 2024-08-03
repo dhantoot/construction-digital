@@ -45,7 +45,7 @@ export default {
   },
   mounted () {
     console.log('mounted', this.$options)
-    this.$emit('showHeader', true)
+    this.$emit('showHeader', true, [])
     this.showTextLoading()
   },
   beforeUpdate () {

@@ -33,6 +33,9 @@ export default {
     return {
       tab: ref('mails')
     }
+  },
+  mounted () {
+    this.$emit('showHeader', true)
   }
 }
 </script>

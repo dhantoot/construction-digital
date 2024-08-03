@@ -30,7 +30,9 @@ module.exports = configure(function (/* ctx */) {
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
     boot: [
       'i18n',
-      'axios'
+      'axios',
+      'firebase',
+      'utils'
     ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
@@ -110,11 +112,23 @@ module.exports = configure(function (/* ctx */) {
       // (like functional components as one of the examples),
       // you can manually specify Quasar components/directives to be available everywhere:
       //
-      // components: [],
+      components: [
+        'QSpinner',
+        'QSpinnerHourglass',
+        'QScrollArea',
+        'QSpinnerPie'
+      ],
       // directives: [],
 
       // Quasar plugins
-      plugins: []
+      plugins: [
+        'Notify',
+        'LocalStorage',
+        'SessionStorage',
+        'Dialog',
+        'QTable',
+        'Loading'
+      ]
     },
 
     // animations: 'all', // --- includes all animations

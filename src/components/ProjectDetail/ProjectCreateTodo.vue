@@ -1,10 +1,11 @@
 <template>
+  <div>
     <q-list bordered padding class="scroll" style="height:74.7vh">
       <q-item clickable="false">
         <q-item-section>
           <q-item-label>Title</q-item-label>
           <q-item-label caption>
-            <q-input dark dense standout bg-color="grey-4" v-model="todoTitle" class="q-ma-xs">
+            <q-input dense outlined  v-model="todoTitle" class="q-ma-xs">
             </q-input>
           </q-item-label>
         </q-item-section>
@@ -14,7 +15,7 @@
         <q-item-section>
           <q-item-label>Description</q-item-label>
           <q-item-label caption>
-            <q-input dark dense standout bg-color="grey-4" text-color="black" v-model="text" />
+            <q-input dense outlined v-model="text" />
           </q-item-label>
         </q-item-section>
       </q-item>
@@ -56,11 +57,13 @@
       <q-item tag="label">
 
         <q-item-section>
-          <q-btn color="primary" label="Create Todo" class="text-capitalize full-width q-mb-md"/>
+          <q-btn size="lg" color="primary" label="Create Todo" class="text-capitalize full-width q-mb-md"/>
         </q-item-section>
 
       </q-item>
     </q-list>
+    <q-inner-loading :showing="visible" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em" />
+  </div>
 </template>
 <script>
 

@@ -11,6 +11,7 @@
   <q-page-sticky position="bottom-right" :offset="[18, 18]">
      <q-btn dense fab icon="las la-calendar-plus" color="grey-1" class="text-green"/>
    </q-page-sticky>
+   <q-inner-loading :showing="visible" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em" />
 </div>
 </template>
 <script>
@@ -63,7 +64,7 @@ export default {
   },
   mounted () {
     console.log('mounted', this.$options)
-    this.$emit('showHeader', true)
+    this.$emit('showHeader', true, [])
     this.showTextLoading()
   },
   beforeUpdate () {

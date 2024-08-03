@@ -1,5 +1,5 @@
 <template>
-  <q-input standout="bg-grey-11 text-black" v-model="text" :dense="dense" class="q-ma-xs q-mt-sm" clearable>
+  <q-input standout text-color="black" v-model="text" :dense="dense" class="q-ma-xs q-mt-sm text-black" clearable>
         <template v-slot:append>
           <q-avatar>
             <q-icon name="las la-search"/>
@@ -29,7 +29,7 @@
     <!-- <q-skeleton square /> -->
     <q-inner-loading :showing="visible" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em" />
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
-       <q-btn fab icon="add" color="grey-1" class="text-green"/>
+       <q-btn fab icon="add" color="grey-1" class="text-green" @click="this.$router.push({path: '/new-project'})"/>
     </q-page-sticky>
   <!-- </q-card> -->
 </template>
@@ -172,7 +172,7 @@ export default {
   },
   mounted () {
     console.log('mounted..', this.$options)
-    this.$emit('showHeader', true)
+    this.$emit('showHeader', true, [])
     this.showTextLoading()
     this.initFunction()
   },

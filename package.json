@@ -9,16 +9,21 @@
     "lint": "eslint --ext .js,.vue ./",
     "test": "echo \"No test specified\" && exit 0",
     "dev": "quasar dev",
+    "dev:mobile": "cd src-cordova && cordova run android",
     "build": "quasar build",
     "build:pwa": "quasar build -m pwa",
-    "build:apk": "quasar build -m cordova -T android",
     "remove:cordova": "quasar mode remove cordova",
     "add:cordova": "quasar mode add cordova",
-    "add:platform": "cordova platform add android"
+    "add:platform": "cd src-cordova && cordova platform add android",
+    "apk:build": "quasar build -m android -- -- --packageType=apk",
+    "apk:zipalign": "zipalign -v 4 ./src-cordova/platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk Hofstee.apk",
+    "apk:sign": "apksigner sign --ks my-release-key.keystore --ks-key-alias hofstee_app Hofstee.apk",
+    "pkg:all": "npm run apk:build && npm run apk:zipalign && npm run apk:sign"
   },
   "dependencies": {
     "@quasar/extras": "^1.16.4",
     "axios": "^1.2.1",
+    "firebase": "^10.12.2",
     "pinia": "^2.0.11",
     "quasar": "^2.6.0",
     "vue": "^3.0.0",

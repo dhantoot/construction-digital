@@ -75,10 +75,11 @@
                 />
             </template>
           </q-input>
-        <q-btn @click="reset" label="Clear" type="reset" color="secondary" flat class="q-ml-sm text-capitalize pull-right text-weight-light" style="float:right"/>
+        <q-btn @click="reset" label="Clear" type="reset" color="secondary" flat class="q-pl-none q-ml-sm text-capitalize pull-right text-weight-light" style="float:left"/>
+        <q-btn @click="$router.push('/login')" label="Back to Login" color="primary" flat class="q-pr-none text-capitalize pull-right text-weight-light" style="float:right"/>
       </div>
       <div class="col-2 q-pa-xl">
-        <q-btn color="primary" label="Register" class="text-capitalize full-width q-mb-md"/>
+        <q-btn size="lg" color="primary" label="Register" class="text-capitalize full-width q-mb-md"/>
       </div>
     </div>
   </div>
@@ -166,7 +167,7 @@ export default {
     console.log('mounted', this.$options)
     this.showTextLoading()
     console.log('emitting true to main layout..')
-    this.$emit('showHeader', false)
+    this.$emit('showHeader', false, [])
   },
   beforeUpdate () {
     console.log('beforeUpdate')
@@ -184,7 +185,7 @@ export default {
     visible (newVal, oldVal) {
       if (newVal === true) {
         console.log(`visible is updated from ${oldVal} to ${newVal}`)
-        this.$emit('showHeader', false)
+        this.$emit('showHeader', false, [])
         console.log('Emit should be done!')
       }
     }

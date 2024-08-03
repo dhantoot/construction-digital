@@ -290,9 +290,10 @@
         <!-- </q-scroll-area> -->
         </q-list>
         <q-page-sticky position="bottom-right" :offset="[18, 18]">
-            <q-btn dense fab icon="las la-user-plus" color="grey-1" class="text-green"/>
+            <q-btn dense fab icon="las la-user-plus" color="grey-1" class="text-green" @click="this.$router.push({path: '/new-member'})"/>
             </q-page-sticky>
       </q-card-section>
+      <q-inner-loading :showing="visible" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em" />
     </q-card>
   </template>
 <script>

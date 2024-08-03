@@ -1,8 +1,8 @@
 <template>
-  <q-layout view="lHh lpR fFf" style="font-family: Iosevka-Light;">
+  <q-layout view="lHh lpR fFf">
 
     <q-header elevated class="bg-primary text-white" height-hint="98">
-      <q-toolbar class="bg-negative text-white">
+      <q-toolbar class="bg-negative text-white q-pt-xl">
       <q-btn @click="leftDrawerOpen = !leftDrawerOpen" flat round dense icon="menu" class="q-mr-sm" />
       <!-- <q-space/> -->
       <!-- <q-avatar>
@@ -21,7 +21,7 @@
       </q-tabs> -->
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" side="left" overlay behavior="mobile">
+    <q-drawer v-model="leftDrawerOpen" side="left" overlay behavior="mobile" class="q-mt-xl q-pt-lg">
       <q-list bordered separator padding class="text-dark text-caption">
       <q-item
         clickable
@@ -142,7 +142,7 @@
         clickable
         v-ripple
         :active="link === 'signout'"
-        @click="link = 'signout'"
+        @click="signOut"
         active-class="my-menu-link"
       >
         <q-item-section avatar>
@@ -167,6 +167,15 @@
         <q-tab name="alarms" label="Dashboard" class="text-dark" @click='$router.push({ path: `/dashboard` })'/>
         <q-tab name="movies" label="Planning" class="text-dark" @click='$router.push({ path: `/plans` })'/>
       </q-tabs>
+      <q-breadcrumbs v-if="!headerState" class="q-pa-sm">
+        <q-breadcrumbs-el
+          v-for="{label, icon, route} of breadcrumbs"
+          :label="label"
+          :key="label"
+          :icon="icon"
+          :to="route"
+          class="clickable q-mt-sm"/>
+      </q-breadcrumbs>
 
       <router-view @show-header="showHeader"/>
     </q-page-container>
@@ -179,9 +188,19 @@ import { ref } from 'vue'
 export default {
   setup () {
     const leftDrawerOpen = ref(false)
+    const deviceIsReady = ref(false)
+    document.addEventListener('deviceready', () => {
+      deviceIsReady.value = true
+      // eslint-disable-next-line no-undef
+      StatusBar.overlaysWebView(false)
+      // eslint-disable-next-line no-undef
+      StatusBar.backgroundColorByHexString('#C10015')
+    }, false)
 
     return {
+      deviceIsReady,
       headerState: ref(true),
+      breadcrumbs: [],
       leftDrawerOpen,
       link: ref(''),
       toggleLeftDrawer () {
@@ -195,9 +214,14 @@ export default {
     console.log('MainLayout monunter')
   },
   methods: {
-    showHeader (arg) {
+    showHeader (arg, breadcrumbs) {
       console.log('--receiving emits from login page', arg)
       this.headerState = arg
+      this.breadcrumbs = breadcrumbs
+    },
+    signOut () {
+      this.link = 'signout'
+      this.$router.push('/login')
     }
   }
 }

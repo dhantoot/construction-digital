@@ -1,5 +1,5 @@
 <template>
-    <q-input standout="bg-grey-1 text-dark" v-model="text" :dense="dense" class="q-ma-xs">
+    <q-input standout v-model="text" :dense="dense" class="q-ma-xs">
         <template v-slot:append>
           <q-avatar>
             <q-icon name="las la-search"/>
@@ -106,6 +106,7 @@
         </q-item-section>
       </q-item>
     </q-list>
+    <q-inner-loading :showing="visible" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em" />
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
        <q-btn @click="this.$router.push({path: '/createtodo'})" dense fab icon="las la-notes-medical" color="grey-1" class="text-green"/>
     </q-page-sticky>
