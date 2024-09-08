@@ -1,11 +1,12 @@
 <template>
     <div class="q-ma-none scroll" style="height: 66vh">
-    <div>
+    <div class="q-pa-xs">
       <q-date
         v-model="date"
         :events="events"
         :event-color="(date) => date[9] % 2 === 0 ? 'teal' : 'orange'"
         class="full-width no-border-radius"
+        :flat="true"
       />
     </div>
     <q-inner-loading :showing="visible" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em" />

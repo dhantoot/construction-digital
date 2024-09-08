@@ -167,15 +167,15 @@
         <q-tab name="alarms" label="Dashboard" class="text-dark" @click='$router.push({ path: `/dashboard` })'/>
         <q-tab name="movies" label="Planning" class="text-dark" @click='$router.push({ path: `/plans` })'/>
       </q-tabs>
-      <q-breadcrumbs v-if="!headerState" class="q-pa-sm">
-        <q-breadcrumbs-el
-          v-for="{label, icon, route} of breadcrumbs"
-          :label="label"
-          :key="label"
-          :icon="icon"
-          :to="route"
-          class="clickable q-mt-sm"/>
-      </q-breadcrumbs>
+<!--      <q-breadcrumbs v-if="!headerState" class="q-pa-sm">-->
+<!--        <q-breadcrumbs-el-->
+<!--          v-for="{label, icon, route} of breadcrumbs"-->
+<!--          :label="label"-->
+<!--          :key="label"-->
+<!--          :icon="icon"-->
+<!--          :to="route"-->
+<!--          class="clickable q-mt-sm q-btn"/>-->
+<!--      </q-breadcrumbs>-->
 
       <router-view @show-header="showHeader"/>
     </q-page-container>
@@ -189,13 +189,13 @@ export default {
   setup () {
     const leftDrawerOpen = ref(false)
     const deviceIsReady = ref(false)
-    document.addEventListener('deviceready', () => {
-      deviceIsReady.value = true
-      // eslint-disable-next-line no-undef
-      StatusBar.overlaysWebView(false)
-      // eslint-disable-next-line no-undef
-      StatusBar.backgroundColorByHexString('#C10015')
-    }, false)
+    // document.addEventListener('deviceready', () => {
+    //   deviceIsReady.value = true
+    //   // eslint-disable-next-line no-undef
+    //   StatusBar.overlaysWebView(false)
+    //   // eslint-disable-next-line no-undef
+    //   StatusBar.backgroundColorByHexString('#C10015')
+    // }, false)
 
     return {
       deviceIsReady,

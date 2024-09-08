@@ -6,8 +6,8 @@
           </q-avatar>
         </template>
       </q-input>
-      <div class="q-pa-xs row justify-center">
-        <div class="scroll" style="width: 100%; max-width: 400px; height:73.4vh">
+      <div class="q-pt-xs q-pl-sm q-pr-xs justify-center">
+        <div class="scroll" style="height:73.4vh">
           <q-chat-message
             name="me"
             avatar="https://cdn.quasar.dev/img/avatar3.jpg"
