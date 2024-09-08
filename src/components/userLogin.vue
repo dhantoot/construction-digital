@@ -105,9 +105,9 @@ export default {
     const question = ref('')
     const username = ref(null)
     const usernameRef = ref(null)
-    const email = ref(null)
+    const email = ref('dt@yopmail.com')
     const emailRef = ref(null)
-    const password = ref(null)
+    const password = ref('12345678')
     const passwordRef = ref(null)
 
     return {
