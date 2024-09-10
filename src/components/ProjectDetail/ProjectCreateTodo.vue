@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-list bordered padding class="scroll" style="height:74.7vh">
-      <q-item clickable="false">
+      <q-item :clickable="false">
         <q-item-section>
           <q-item-label>Title</q-item-label>
           <q-item-label caption>
@@ -11,11 +11,11 @@
         </q-item-section>
       </q-item>
 
-      <q-item clickable="false">
+      <q-item :clickable="false">
         <q-item-section>
           <q-item-label>Description</q-item-label>
           <q-item-label caption>
-            <q-input dense outlined v-model="text" />
+            <q-input dense outlined v-model="todoDesc" />
           </q-item-label>
         </q-item-section>
       </q-item>
@@ -57,7 +57,7 @@
       <q-item tag="label">
 
         <q-item-section>
-          <q-btn size="lg" color="primary" label="Create Todo" class="text-capitalize full-width q-mb-md"/>
+          <q-btn @click="saveTodo" size="lg" color="primary" label="Create Todo" class="text-capitalize full-width q-mb-md"/>
         </q-item-section>
 
       </q-item>
@@ -68,6 +68,7 @@
 <script>
 
 import { ref } from 'vue'
+import { uid } from 'quasar'
 
 // Don't forget to specify which animations
 // you are using in quasar.config file > animations.
@@ -151,6 +152,36 @@ export default {
       setTimeout(() => {
         this.visible = false
       }, ms)
+    },
+    saveTodo () {
+      const generatedUid = uid()
+      const payload = {
+        todoTitle: this.todoTitle,
+        todoDesc: this.todoDesc
+      }
+      const updates = {}
+
+      // data will be save to `projects` table
+      // slash at the end is very important (..projects/1/)
+      updates[`todo/${generatedUid}/`] = payload
+
+      this.$fbupdate(this.$fbref(this.$fbdb), updates)
+        .then(() => {
+          this.$q.notify({
+            icon: 'check_circle',
+            color: 'positive',
+            message: 'Sucessfully Created',
+            position: 'top-right'
+          })
+        }).catch((error) => {
+          console.log({ error })
+          this.$q.notify({
+            icon: 'exclamation-circle',
+            color: 'negative',
+            message: 'Error found',
+            position: 'top-right'
+          })
+        })
     }
   }
 }
