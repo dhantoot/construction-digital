@@ -1,5 +1,24 @@
 <template>
     <div class="q-pa-sm q-gutter-md bg-grey-2">
+      <div class="q-pa-md bg-none">
+        <div class="row">
+          <div class="col">
+            <q-breadcrumbs v-if="true">
+              <q-breadcrumbs-el
+                  v-for="{label, icon, route} of breadcrumbs"
+                  :label="label"
+                  :key="label"
+                  :icon="icon"
+                  :to="route"
+                  class="clickable"/>
+            </q-breadcrumbs>
+          </div>
+          <div class="col text-center text-weight-bold">
+            Add Project
+          </div>
+          <div class="col"></div>
+        </div>
+      </div>
       <q-select
         filled
         v-model="model"
@@ -38,15 +57,15 @@
         <q-tab class="text-cyan text-capitalize" name="capture" icon="las la-camera" label="Capture" />
       </q-tabs>
       <div class="col-24" v-if="(tab==='upload')">
-        <q-file color="teal" filled v-model="file" label="Choose File" multiple accept=".jpg, image/*">
+        <q-file class="shadow-2" label-color="orange" filled v-model="file" label="Choose File" multiple accept=".jpg, image/*">
           <template v-slot:prepend>
-            <q-icon name="cloud_upload" />
+            <q-icon name="cloud_upload" color="orange"/>
           </template>
         </q-file>
       </div>
 
       <div class="col-24" v-if="(tab==='capture')">
-        <q-btn size="lg" class="text-capitalize col-12" icon="las la-camera" color="secondary" label="Open camera" @click="captureImage" :disable="!deviceIsReady"/>
+        <q-btn size="lg" class="text-capitalize col-12 full-width" icon="las la-camera" text-color="cyan" color="grey-4" label="Open camera" @click="captureImage" :disable="!deviceIsReady"/>
       </div>
 
     <!-- <q-list bordered separator>
@@ -75,9 +94,23 @@
       <div class="caption" v-show="!btnToggle">imageSrc: {{ imageSrc }} </div>
       <div class="caption" v-show="!btnToggle">data: {{ data }} </div>
      </div>
-     <div class="col-12">
-      <q-btn :disabled="!file" size="lg" style="background: goldenrod; color: white" label="saveLocally2" class="q-mb-lg q-ml-xs q-mr-xs" @click="startProject2"/>
-      <q-btn :disabled="!file" size="lg" style="background: goldenrod; color: white" label="saveLocally" class="q-mb-lg q-ml-xs q-mr-xs" @click="startProject"/>
+     <div class="row">
+       <div class="col q-mr-xs">
+         <q-btn
+             class="full-width q-tab--no-caps"
+             :disabled="!file"
+             size="lg"
+             label="FileSystem 1"
+             @click="startProject2"/>
+       </div>
+       <div class="col q-ml-xs">
+         <q-btn
+             class="full-width q-tab--no-caps"
+             :disabled="!file"
+             size="lg"
+             label="FileSystem 2"
+             @click="startProject"/>
+       </div>
      </div>
   </div>
 </template>
@@ -106,13 +139,13 @@ export default {
     const camData = ref(null)
     const desc = ref('')
     const generatedUid = uid()
-    document.addEventListener('deviceready', () => {
-      deviceIsReady.value = true
-      // eslint-disable-next-line no-undef
-      StatusBar.overlaysWebView(false)
-      // eslint-disable-next-line no-undef
-      StatusBar.backgroundColorByHexString('#C10015')
-    }, false)
+    // document.addEventListener('deviceready', () => {
+    //   deviceIsReady.value = true
+    //   // eslint-disable-next-line no-undef
+    //   StatusBar.overlaysWebView(false)
+    //   // eslint-disable-next-line no-undef
+    //   StatusBar.backgroundColorByHexString('#C10015')
+    // }, false)
 
     function captureImage () {
       navigator.camera.getPicture(
@@ -225,6 +258,11 @@ export default {
     }
 
     return {
+      breadcrumbs: ref([{
+        label: 'Back',
+        icon: 'las la-chevron-left',
+        route: '/projects'
+      }]),
       saveLocally,
       saveLocally2,
       tab: ref('upload'),
