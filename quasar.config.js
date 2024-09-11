@@ -119,7 +119,8 @@ module.exports = configure(function (/* ctx */) {
         'QSpinner',
         'QSpinnerHourglass',
         'QScrollArea',
-        'QSpinnerPie'
+        'QSpinnerPie',
+        'QSpinnerBars',
       ],
       // directives: [],
 
