@@ -57,7 +57,20 @@
       <q-item tag="label">
 
         <q-item-section>
-          <q-btn @click="saveTodo" size="lg" color="primary" label="Create Todo" class="text-capitalize full-width q-mb-md"/>
+          <q-btn
+            @click="saveTodo"
+            size="lg"
+            color="primary"
+            label="Create Todo"
+            class="text-capitalize full-width q-mb-md"
+            :loading="loadingSubmit"
+            :disable="!todoTitle || !todoDesc"
+          >
+            <template v-slot:loading>
+              <q-spinner-bars class="on-left" />
+              Saving...
+            </template>
+          </q-btn>
         </q-item-section>
 
       </q-item>
@@ -78,8 +91,10 @@ export default {
   setup () {
     const visible = ref(false)
     const question = ref('')
+    const loadingSubmit = ref(false)
 
     return {
+      loadingSubmit,
       visible,
       question,
       initFunction () {
@@ -154,12 +169,18 @@ export default {
       }, ms)
     },
     saveTodo () {
+      this.loadingSubmit = true
       const generatedUid = uid()
       const payload = {
         todoTitle: this.todoTitle,
         todoDesc: this.todoDesc
       }
       const updates = {}
+      console.log({
+        generatedUid,
+        payload,
+        updates
+      })
 
       // data will be save to `projects` table
       // slash at the end is very important (..projects/1/)
@@ -167,6 +188,7 @@ export default {
 
       this.$fbupdate(this.$fbref(this.$fbdb), updates)
         .then(() => {
+          this.loadingSubmit = false
           this.$q.notify({
             icon: 'check_circle',
             color: 'positive',
@@ -175,6 +197,7 @@ export default {
           })
         }).catch((error) => {
           console.log({ error })
+          this.loadingSubmit = false
           this.$q.notify({
             icon: 'exclamation-circle',
             color: 'negative',
