@@ -1,36 +1,50 @@
 <template>
-  <q-input standout text-color="black" v-model="text" :dense="dense" class="q-ma-xs q-mt-sm text-black" clearable>
-        <template v-slot:append>
-          <q-avatar>
-            <q-icon name="las la-search"/>
-          </q-avatar>
-        </template>
-      </q-input>
+  <div class="flex justify-between q-pa-xs bg-white">
+    <q-btn flat icon="las la-arrow-left" class="text-black q-ma-xs"/>
+    <q-input
+      dark
+      standout="bg-standoutBackground"
+      input-class="text-right text-black"
+      v-model="text"
+      :dense="dense"
+      :class="{
+        'q-ma-xs': true
+      }"
+      :style="{
+        width: '75%'
+      }"
+    >
+      <template v-slot:append>
+        <q-icon v-if="text === ''" name="las la-search" class="text-black"/>
+        <q-icon v-else name="clear" class="cursor-pointer text-black" @click="text = ''" />
+      </template>
+    </q-input>
+  </div>
   <!-- <q-card class="my-card q-ma-sm"> -->
-    <q-list bordered separator class="scroll" style="height: 83vh">
-        <q-item clickable v-ripple @click='$router.push({ path: `/detail` })' v-for="item in arr" :key="item">
-          <q-item-section thumbnail>
-          <img class="q-ml-sm rounded-borders" :src="`${url}${item}`">
-          </q-item-section>
+  <q-list bordered separator class="scroll" style="height: 83vh">
+    <q-item clickable v-ripple @click='$router.push({ path: `/detail` })' v-for="item in arr" :key="item">
+      <q-item-section thumbnail>
+        <img class="q-ml-sm rounded-borders" :src="`${url}${item}`">
+      </q-item-section>
 
-          <q-item-section>
-            <q-item-label class="text-bold">{{ names[item.toString().split('.')[1].slice(-2)] }} Residence</q-item-label>
-            <q-item-label caption lines="2">Secondary line text. Lorem ipsum dolor sit amet, consectetur adipiscit
-              elit.</q-item-label>
-          </q-item-section>
+      <q-item-section>
+        <q-item-label class="text-bold">{{ names[item.toString().split('.')[1].slice(-2)] }} Residence</q-item-label>
+        <q-item-label caption lines="2">Secondary line text. Lorem ipsum dolor sit amet, consectetur adipiscit
+          elit.</q-item-label>
+      </q-item-section>
 
-          <q-item-section side top>
-            <q-item-label caption>5 min ago</q-item-label>
-            <q-icon name="star" color="yellow" />
-          </q-item-section>
+      <q-item-section side top>
+        <q-item-label caption>5 min ago</q-item-label>
+        <q-icon name="star" color="yellow" />
+      </q-item-section>
 
-        </q-item>
-    </q-list>
-    <!-- <q-skeleton square /> -->
-    <q-inner-loading :showing="visible" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em" />
-    <q-page-sticky position="bottom-right" :offset="[18, 18]">
-       <q-btn fab icon="add" color="grey-1" class="text-green" @click="this.$router.push({path: '/new-project'})"/>
-    </q-page-sticky>
+    </q-item>
+  </q-list>
+  <!-- <q-skeleton square /> -->
+  <q-inner-loading :showing="visible" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em" />
+  <q-page-sticky position="bottom-right" :offset="[18, 18]">
+    <q-btn fab icon="add" color="grey-1" class="text-green" @click="this.$router.push({ path: '/new-project' })" />
+  </q-page-sticky>
   <!-- </q-card> -->
 </template>
 <script>

@@ -1,11 +1,25 @@
 <template>
-    <q-input standout v-model="text" :dense="dense" class="q-ma-xs">
-        <template v-slot:append>
-          <q-avatar>
-            <q-icon name="las la-search"/>
-          </q-avatar>
-        </template>
-      </q-input>
+    <div class="flex justify-between q-pa-xs bg-white">
+    <q-btn flat icon="las la-arrow-left" class="text-black q-ma-xs"/>
+    <q-input
+      dark
+      standout="bg-standoutBackground"
+      input-class="text-right text-black"
+      v-model="text"
+      :dense="dense"
+      :class="{
+        'q-ma-xs': true
+      }"
+      :style="{
+        width: '75%'
+      }"
+    >
+      <template v-slot:append>
+        <q-icon v-if="text === ''" name="las la-search" class="text-black"/>
+        <q-icon v-else name="clear" class="cursor-pointer text-black" @click="text = ''" />
+      </template>
+    </q-input>
+  </div>
     <q-list bordered padding class="scroll" style="height:66vh">
       <q-item-label header>Todo</q-item-label>
 
