@@ -22,15 +22,15 @@
   </div>
     <q-list padding class="scroll" style="height:66vh">
       <q-item-label header>Todo</q-item-label>
-      <div class="q-pa-sm q-gutter-xs" v-if="loadingtodoList">
+      <div class="q-pa-lg q-gutter-sm" v-if="loadingtodoList">
         <q-skeleton type="rect" :style="{
-          height: '50px'
+          height: '35px'
         }"/>
         <q-skeleton type="rect" :style="{
-          height: '50px'
+          height: '35px'
         }"/>
         <q-skeleton type="rect" :style="{
-          height: '50px'
+          height: '35px'
         }"/>
       </div>
       <q-item tag="label" v-ripple v-for="item in todoList" :key="item">
@@ -49,6 +49,18 @@
       <q-separator spaced />
       <q-item-label header>Done</q-item-label>
 
+      <div class="q-pa-lg q-gutter-sm" v-if="loadingtodoList">
+        <q-skeleton type="rect" :style="{
+          height: '35px'
+        }"/>
+        <q-skeleton type="rect" :style="{
+          height: '35px'
+        }"/>
+        <q-skeleton type="rect" :style="{
+          height: '35px'
+        }"/>
+      </div>
+
       <q-item tag="label" v-ripple v-for="item of completedTodos" :key="item">
         <q-item-section>
           <q-item-label>{{ item.todoTitle }}</q-item-label>
@@ -58,12 +70,38 @@
         </q-item-section>
 
         <q-item-section side >
-          <q-toggle color="blue" v-model="item.isCompleted" val="battery" label="revert"/>
+          <q-toggle color="blue" v-model="item.isArchived" :val="item.isArchived" label="Archive"/>
         </q-item-section>
       </q-item>
 
+      <q-separator spaced />
+
+      <q-item-section>
+        <q-btn
+          @click="confirm"
+          size="lg"
+          color="tertiary"
+          label="Save changes"
+          class="text-capitalize q-ma-md "
+          :loading="loadingSubmit"
+        >
+          <template v-slot:loading>
+            <q-spinner-bars class="on-left" />
+            Saving...
+          </template>
+        </q-btn>
+      </q-item-section>
+
     </q-list>
-    <q-inner-loading :showing="loadingtodoList" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em" />
+    <q-inner-loading
+      :showing="loadingtodoList"
+      label="Please wait..."
+      label-class="text-teal"
+      label-style="font-size: 1.1em"
+    ><q-spinner-bars :style="{
+      'font-size': '40px'
+    }" color="primary"/>
+    </q-inner-loading>
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
        <q-btn @click="this.$router.push({path: '/createtodo'})" dense fab icon="las la-notes-medical" color="grey-1" class="text-green"/>
     </q-page-sticky>
@@ -109,7 +147,8 @@ export default {
       todoList: ref([]),
       selectedMember: ref([]),
       completedTodos: ref([]),
-      loadingtodoList
+      loadingtodoList,
+      loadingSubmit: ref(false)
     }
   },
   props: {
@@ -176,6 +215,7 @@ export default {
         this.todoList = data_
         console.log('this.todoList', this.todoList)
         this.selectedMember = this.todoList.filter(e => e.isCompleted).map(x => x.id)
+        this.getCompletedTodos()
         this.loadingtodoList = false
       })
     },
@@ -188,6 +228,67 @@ export default {
       const completed = this.todoList.filter(e => val.includes(e.id))
       this.completedTodos = completed
       console.log('->', this.completedTodos)
+    },
+    getCompletedTodos () {
+      const completed = this.todoList.filter(e => e.isCompleted === true)
+      this.completedTodos = completed
+    },
+    updateTodo () {
+      this.loadingSubmit = true
+      console.log('updating todo', this.todoList)
+      console.log('this.completedTodos', this.completedTodos)
+      const mapIds = this.completedTodos.map(m => m.id)
+      const updates = {}
+
+      this.todoList.forEach(element => {
+        if (mapIds.includes(element.id)) {
+          element.isCompleted = true
+          updates[`todo/${element.id}/isCompleted/`] = true
+        } else {
+          element.isCompleted = false
+          updates[`todo/${element.id}/isCompleted/`] = false
+        }
+      })
+      console.log('updated todoList', this.todoList)
+
+      // slash at the end is very important (../avatar/)
+      // updates[`todo/${this.uid}/avatar/`] = 'url-of-avatar.png'
+
+      // this.$fbupdate(this.$fbref(this.$fbdb), updates)
+      //   .then(() => {
+      //     this.loadingSubmit = false
+      //     this.$q.notify({
+      //       icon: 'check_circle',
+      //       color: 'positive',
+      //       message: 'Sucessfully Updated',
+      //       position: 'top-right'
+      //     })
+      //   }).catch((error) => {
+      //     console.log({ error })
+      //     this.loadingSubmit = false
+      //     this.$q.notify({
+      //       icon: 'exclamation-circle',
+      //       color: 'negative',
+      //       message: 'Error found',
+      //       position: 'top-right'
+      //     })
+      //   })
+    },
+    async confirm () {
+      this.$q.dialog({
+        dark: false,
+        title: 'Confirm',
+        message: 'Save changes ?',
+        cancel: true,
+        persistent: true
+      }).onOk(() => {
+        // this.addDeceasedPersonnel()
+        this.updateTodo()
+      }).onCancel(() => {
+        console.log('>>>> Cancel')
+      }).onDismiss(() => {
+        console.log('I am triggered on both OK and Cancel')
+      })
     }
   }
 }

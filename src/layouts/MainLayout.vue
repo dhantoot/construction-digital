@@ -1,8 +1,8 @@
 <template>
   <q-layout view="lHh lpR fFf">
 
-    <q-header elevated class="bg-primary text-white" height-hint="98">
-      <q-toolbar class="bg-negative text-white q-pt-xl">
+    <q-header elevated class="bg-tertiary text-white" height-hint="98">
+      <q-toolbar class="bg-tertiary text-white q-pt-xl">
       <q-btn @click="leftDrawerOpen = !leftDrawerOpen" flat round dense icon="menu" class="q-mr-sm" />
       <!-- <q-space/> -->
       <!-- <q-avatar>
