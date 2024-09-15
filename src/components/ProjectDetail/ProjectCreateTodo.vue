@@ -31,8 +31,17 @@
           <q-item-label>Assign Members</q-item-label>
         </q-item-section>
 
-        <q-item-section side>
-          <q-icon name="las la-arrow-right" />
+            <q-item tag="label" v-ripple class="q-pl-none" v-for="member in memberList" :key="member">
+              <q-item-section avatar>
+                <q-checkbox v-model="selectedMember" :val="member.id" color="teal" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>{{ member.label }}</q-item-label>
+                <q-item-label caption>{{ member.role }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+          <q-inner-loading :showing="visible" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em" />
         </q-item-section>
       </q-item>
 
@@ -44,18 +53,20 @@
         </q-item-section>
 
         <q-item-section>
-          <q-item-label>Add File</q-item-label>
-        </q-item-section>
-
-        <q-item-section side>
-          <q-icon name="las la-arrow-right" />
+          <q-uploader
+            :factory="factoryFn"
+            :uploadProgressLabel="uploadProgressLabel"
+            label="Upload Files"
+            multiple="false"
+            accept=".jpg, image/*"
+            class="full-width"
+          />
         </q-item-section>
       </q-item>
 
       <q-separator spaced />
 
-      <q-item tag="label">
-
+      <q-item tag="action">
         <q-item-section>
           <q-btn
             @click="saveTodo"
@@ -75,7 +86,7 @@
 
       </q-item>
     </q-list>
-    <q-inner-loading :showing="visible" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em" />
+    <!-- <q-inner-loading :showing="visible" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em" /> -->
   </div>
 </template>
 <script>
@@ -92,9 +103,11 @@ export default {
     const visible = ref(false)
     const question = ref('')
     const loadingSubmit = ref(false)
+    const loadingtodoList = ref(false)
 
     return {
       loadingSubmit,
+      loadingtodoList,
       visible,
       question,
       initFunction () {
@@ -173,7 +186,12 @@ export default {
       const generatedUid = uid()
       const payload = {
         todoTitle: this.todoTitle,
-        todoDesc: this.todoDesc
+        todoDesc: this.todoDesc,
+        members: this.selectedMember,
+        files: this.todoFiles || [],
+        isArchived: false,
+        isCompleted: false,
+        id: generatedUid
       }
       const updates = {}
       console.log({
