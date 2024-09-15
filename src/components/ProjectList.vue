@@ -13,10 +13,11 @@
       :style="{
         width: '75%'
       }"
+      bordered: false
     >
       <template v-slot:append>
-        <q-icon v-if="text === ''" name="las la-search" class="text-black"/>
-        <q-icon v-else name="clear" class="cursor-pointer text-black" @click="text = ''" />
+        <q-icon v-if="text === ''" name="las la-search" class="text-tertiary"/>
+        <q-icon v-else name="clear" class="cursor-pointer text-tertiary" @click="text = ''" />
       </template>
     </q-input>
   </div>

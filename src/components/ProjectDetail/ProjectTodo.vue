@@ -20,70 +20,28 @@
       </template>
     </q-input>
   </div>
-    <q-list bordered padding class="scroll" style="height:66vh">
+    <q-list padding class="scroll" style="height:66vh">
       <q-item-label header>Todo</q-item-label>
-
-      <q-item tag="label" v-ripple>
+      <div class="q-pa-sm q-gutter-xs" v-if="loadingtodoList">
+        <q-skeleton type="rect" :style="{
+          height: '50px'
+        }"/>
+        <q-skeleton type="rect" :style="{
+          height: '50px'
+        }"/>
+        <q-skeleton type="rect" :style="{
+          height: '50px'
+        }"/>
+      </div>
+      <q-item tag="label" v-ripple v-for="item in todoList" :key="item">
         <q-item-section side top>
-          <q-checkbox v-model="check1" />
+          <q-checkbox v-model="selectedMember" :val="item.id" color="teal" @update:model-value="changeSelected"/>
         </q-item-section>
 
         <q-item-section>
-          <q-item-label>Buy Extra Screws</q-item-label>
+          <q-item-label>{{ item.todoTitle }}</q-item-label>
           <q-item-label caption>
-            Notify me about updates to apps or games that I downloaded
-          </q-item-label>
-        </q-item-section>
-      </q-item>
-
-      <q-item tag="label" v-ripple>
-        <q-item-section side top>
-          <q-checkbox v-model="check2" />
-        </q-item-section>
-
-        <q-item-section>
-          <q-item-label>Untitled</q-item-label>
-          <q-item-label caption>
-            Auto-update apps at anytime. Data charges may apply
-          </q-item-label>
-        </q-item-section>
-      </q-item>
-
-      <q-item tag="label" v-ripple>
-        <q-item-section side top>
-          <q-checkbox v-model="check3" />
-        </q-item-section>
-
-        <q-item-section>
-          <q-item-label>Create Group</q-item-label>
-          <q-item-label caption>
-            Notify me about updates to apps or games that I downloaded
-          </q-item-label>
-        </q-item-section>
-      </q-item>
-
-      <q-item tag="label" v-ripple>
-        <q-item-section side top>
-          <q-checkbox v-model="check4" />
-        </q-item-section>
-
-        <q-item-section>
-          <q-item-label>Assign Task</q-item-label>
-          <q-item-label caption>
-            Notify me about updates to apps or games that I downloaded
-          </q-item-label>
-        </q-item-section>
-      </q-item>
-
-      <q-item tag="label" v-ripple>
-        <q-item-section side top>
-          <q-checkbox v-model="check5" />
-        </q-item-section>
-
-        <q-item-section>
-          <q-item-label>Auto-add widgets</q-item-label>
-          <q-item-label caption>
-            Automatically add home screen widgets
+            {{ item.todoDesc }}
           </q-item-label>
         </q-item-section>
       </q-item>
@@ -91,36 +49,21 @@
       <q-separator spaced />
       <q-item-label header>Done</q-item-label>
 
-      <q-item tag="label" v-ripple>
+      <q-item tag="label" v-ripple v-for="item of completedTodos" :key="item">
         <q-item-section>
-          <q-item-label>Design Layout</q-item-label>
+          <q-item-label>{{ item.todoTitle }}</q-item-label>
+          <q-item-label caption>
+            {{ item.todoDesc }}
+          </q-item-label>
         </q-item-section>
+
         <q-item-section side >
-          <q-toggle color="blue" v-model="notif1" val="battery" />
+          <q-toggle color="blue" v-model="item.isCompleted" val="battery" label="revert"/>
         </q-item-section>
       </q-item>
 
-      <q-item tag="label" v-ripple>
-        <q-item-section>
-          <q-item-label>Tools Needed</q-item-label>
-          <q-item-label caption>Allow notification</q-item-label>
-        </q-item-section>
-        <q-item-section side top>
-          <q-toggle color="green" v-model="notif2" val="friend" />
-        </q-item-section>
-      </q-item>
-
-      <q-item tag="label" v-ripple>
-        <q-item-section>
-          <q-item-label>Proposed Budget</q-item-label>
-          <q-item-label caption>Allow notification when uploading images</q-item-label>
-        </q-item-section>
-        <q-item-section side top>
-          <q-toggle color="red" v-model="notif3" val="picture" />
-        </q-item-section>
-      </q-item>
     </q-list>
-    <q-inner-loading :showing="visible" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em" />
+    <q-inner-loading :showing="loadingtodoList" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em" />
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
        <q-btn @click="this.$router.push({path: '/createtodo'})" dense fab icon="las la-notes-medical" color="grey-1" class="text-green"/>
     </q-page-sticky>
@@ -137,6 +80,7 @@ export default {
   setup () {
     const visible = ref(false)
     const question = ref('')
+    const loadingtodoList = ref(false)
 
     return {
       visible,
@@ -161,7 +105,11 @@ export default {
       mic: ref(8),
       text: ref(''),
       ph: ref(''),
-      dense: ref(true)
+      dense: ref(true),
+      todoList: ref([]),
+      selectedMember: ref([]),
+      completedTodos: ref([]),
+      loadingtodoList
     }
   },
   props: {
@@ -185,6 +133,7 @@ export default {
   mounted () {
     console.log('mounted', this.$options)
     this.showTextLoading()
+    this.getTodoList()
   },
   beforeUpdate () {
     console.log('beforeUpdate')
@@ -213,6 +162,32 @@ export default {
       setTimeout(() => {
         this.visible = false
       }, ms)
+    },
+    async getTodoList () {
+      this.loadingtodoList = true
+      const todo = this.$fbref(this.$fbdb, 'todo')
+      this.$fbonValue(todo, (snapshot) => {
+        const data = snapshot.val()
+        if (this.$isFalsyString(data)) {
+          this.todoList = []
+          return -1
+        }
+        const data_ = Object.values(data)
+        this.todoList = data_
+        console.log('this.todoList', this.todoList)
+        this.selectedMember = this.todoList.filter(e => e.isCompleted).map(x => x.id)
+        this.loadingtodoList = false
+      })
+    },
+    async changeSelected (val) {
+      console.log(val)
+      if (val.length < 1) {
+        this.completedTodos = []
+        return -1
+      }
+      const completed = this.todoList.filter(e => val.includes(e.id))
+      this.completedTodos = completed
+      console.log('->', this.completedTodos)
     }
   }
 }
