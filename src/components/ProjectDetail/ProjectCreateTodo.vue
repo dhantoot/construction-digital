@@ -41,6 +41,7 @@
               </q-item-section>
             </q-item>
           </q-list>
+          <q-inner-loading :showing="visible" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em" />
         </q-item-section>
       </q-item>
 
@@ -49,7 +50,6 @@
       <q-item tag="fileUpload">
 
         <q-item-section>
-          <!-- <q-item-label>Add File</q-item-label> -->
           <q-uploader
             :factory="factoryFn"
             :uploadProgressLabel="uploadProgressLabel"
@@ -64,7 +64,6 @@
       <q-separator spaced />
 
       <q-item tag="action">
-
         <q-item-section>
           <q-btn
             @click="saveTodo"
@@ -84,7 +83,7 @@
 
       </q-item>
     </q-list>
-    <q-inner-loading :showing="visible" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em" />
+    <!-- <q-inner-loading :showing="visible" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em" /> -->
   </div>
 </template>
 <script>
@@ -101,9 +100,11 @@ export default {
     const visible = ref(false)
     const question = ref('')
     const loadingSubmit = ref(false)
+    const loadingtodoList = ref(false)
 
     return {
       loadingSubmit,
+      loadingtodoList,
       visible,
       question,
       initFunction () {
@@ -204,7 +205,10 @@ export default {
         todoTitle: this.todoTitle,
         todoDesc: this.todoDesc,
         members: this.selectedMember,
-        files: this.todoFiles
+        files: this.todoFiles || [],
+        isArchived: false,
+        isCompleted: false,
+        id: generatedUid
       }
       const updates = {}
       console.log({
