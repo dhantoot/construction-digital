@@ -1,7 +1,7 @@
 <template>
   <div>
-    <q-list bordered padding class="scroll" style="height:74.7vh">
-      <q-item :clickable="false">
+    <q-list padding class="scroll" style="height:74.7vh">
+      <q-item tag="todoTitle" :clickable="false">
         <q-item-section>
           <q-item-label>Title</q-item-label>
           <q-item-label caption>
@@ -10,8 +10,7 @@
           </q-item-label>
         </q-item-section>
       </q-item>
-
-      <q-item :clickable="false">
+      <q-item tag="todoDesc" :clickable="false">
         <q-item-section>
           <q-item-label>Description</q-item-label>
           <q-item-label caption>
@@ -22,14 +21,15 @@
 
       <q-separator spaced />
 
-      <q-item tag="label" v-ripple>
-        <q-item-section avatar>
-          <q-avatar color="grey-5" text-color="white" icon="las la-user" />
-        </q-item-section>
-
+      <q-item tag="memberList">
         <q-item-section>
           <q-item-label>Assign Members</q-item-label>
-        </q-item-section>
+          <q-list class="q-pl-none">
+            <!--
+              Rendering a <label> tag (notice tag="label")
+              so QCheckboxes will respond to clicks on QItems to
+              change Toggle state.
+            -->
 
             <q-item tag="label" v-ripple class="q-pl-none" v-for="member in memberList" :key="member">
               <q-item-section avatar>
@@ -47,10 +47,7 @@
 
       <q-separator spaced />
 
-      <q-item tag="label" v-ripple>
-        <q-item-section avatar>
-          <q-avatar color="grey-5" text-color="white" icon="las la-file-upload" />
-        </q-item-section>
+      <q-item tag="fileUpload">
 
         <q-item-section>
           <q-uploader
@@ -71,7 +68,7 @@
           <q-btn
             @click="saveTodo"
             size="lg"
-            color="primary"
+            color="tertiary"
             label="Create Todo"
             class="text-capitalize full-width q-mb-md"
             :loading="loadingSubmit"
@@ -128,7 +125,27 @@ export default {
       todoTitle: ref(''),
       todoDesc: ref(''),
       ph: ref(''),
-      dense: ref(true)
+      dense: ref(true),
+      selectedMember: ref([1, 3]),
+      memberList: ref([
+        {
+          id: 1,
+          label: 'Dhanixblue',
+          role: 'Foreman'
+        },
+        {
+          id: 2,
+          label: 'Clint XD',
+          role: 'Architecht'
+        },
+        {
+          id: 3,
+          label: 'Vcuii XD',
+          role: 'Engineer'
+        }
+      ]),
+      uploadProgressLabel: ref(''),
+      todoFiles: ref([])
     }
   },
   props: {
@@ -223,6 +240,57 @@ export default {
             position: 'top-right'
           })
         })
+    },
+    factoryFn (files) {
+      console.log({ files })
+      const metadata = {
+        contentType: files[0].type
+      }
+      const storageRef = this.$fbstorageref(this.$fbstorage, `files/todo/${files[0].name.split('.')[0]}.${files[0].name.split('.')[1]}`)
+      const uploadTask = this.$uploadbytesresumable(storageRef, files[0], metadata)
+      uploadTask.on('state_changed',
+        (snapshot) => {
+          // Observe state change events such as progress, pause, and resume
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          this.uploadProgressLabel = Number(progress, 2).toFixed(2) + '%'
+          console.log('Upload is ' + this.uploadProgressLabel)
+          // this.uploadProgress = progress
+
+          files[0].__progressLabel = this.uploadProgressLabel
+          // console.log('files[0].__progressLabel -> ', files[0].__progressLabel)
+          // console.log('this.uploadProgressLabel -> ', this.uploadProgressLabel)
+          switch (snapshot.state) {
+            case 'paused':
+              console.log('Upload is paused')
+              break
+            case 'running':
+              console.log('Upload is running')
+              break
+          }
+        },
+        (error) => {
+          // Handle unsuccessful uploads
+          console.log({ error })
+          this.$q.notify({
+            icon: 'warning',
+            color: 'warning',
+            message: 'Error Uploading file, see logs',
+            position: 'top-right'
+          })
+        },
+        () => {
+          // Handle successful uploads on complete
+          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+          this.$getdownloadurl(uploadTask.snapshot.ref).then((downloadURL) => {
+            console.log('File available at', downloadURL)
+            this.todoFiles.push(downloadURL)
+            // this.avatar = `${files[0].name.split('.')[0]}.${files[0].name.split('.')[1]}`
+            // console.log('this.avatar', this.avatar)
+            // this.updateAvatar()
+          })
+        }
+      )
     }
   }
 }
