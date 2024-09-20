@@ -1,6 +1,6 @@
 <template>
   <q-card class="my-card q-mt-sm q-ml-xs q-mr-xs">
-    <q-card-actions>
+    <q-card-actions class="bg-primary text-accent">
       <label class="text-bold">Submitted Expenses</label>
       <q-space />
       <q-btn color="grey" round flat dense :icon="subExp ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
@@ -75,7 +75,7 @@
   </q-card>
 
   <q-card class="my-card q-mt-sm q-ml-xs q-mr-xs">
-    <q-card-actions>
+    <q-card-actions class="bg-primary text-accent">
       <label class="text-bold">Open Agreements</label>
       <q-space />
       <q-btn color="grey" round flat dense :icon="openAgreement ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"

@@ -1,28 +1,16 @@
 <template>
-  <q-layout view="lHh lpR fFf">
+  <q-layout view="lHh lpR fFf" class="bg-accent">
 
-    <q-header elevated class="bg-tertiary text-white" height-hint="98">
-      <q-toolbar class="bg-tertiary text-white q-pt-xl">
-      <q-btn @click="leftDrawerOpen = !leftDrawerOpen" flat round dense icon="menu" class="q-mr-sm" />
-      <!-- <q-space/> -->
-      <!-- <q-avatar>
-        <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
-      </q-avatar> -->
-
-      <q-toolbar-title class="text-center">Hofstee Inc</q-toolbar-title>
-      <!-- <q-space/> -->
-      <q-btn flat round dense icon="whatshot" />
-    </q-toolbar>
-
-      <!-- <q-tabs align="left">
-        <q-route-tab to="/page1" label="Page One" />
-        <q-route-tab to="/page2" label="Page Two" />
-        <q-route-tab to="/page3" label="Page Three" />
-      </q-tabs> -->
+    <q-header elevated class="text-accent" height-hint="98">
+      <q-toolbar class="bg-primary text-warning q-pt-xl">
+        <q-btn @click="leftDrawerOpen = !leftDrawerOpen" flat round dense icon="menu" class="q-mr-sm" />
+        <q-toolbar-title class="text-center">Hofstee Inc</q-toolbar-title>
+        <q-btn flat round dense icon="whatshot" />
+      </q-toolbar>
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen" side="left" overlay behavior="mobile" class="q-mt-xl q-pt-lg">
-      <q-list bordered separator padding class="text-dark text-caption">
+      <q-list bordered separator padding class="text-secondary text-caption">
       <q-item
         clickable
         v-ripple
@@ -160,23 +148,13 @@
         v-model="tab"
         no-caps
         inline-label
-        class="shadow-2 q-mb-none"
+        class="shadow-2 q-mb-none bg-accent"
         indicator-color="negative"
       >
-        <q-tab name="mails" label="Projects" class="text-dark" @click='$router.push({ path: `/projects` })'/>
-        <q-tab name="alarms" label="Dashboard" class="text-dark" @click='$router.push({ path: `/dashboard` })'/>
-        <q-tab name="movies" label="Planning" class="text-dark" @click='$router.push({ path: `/plans` })'/>
+        <q-tab name="mails" label="Projects" class="text-primary" @click='$router.push({ path: `/projects` })'/>
+        <q-tab name="alarms" label="Dashboard" class="text-primary" @click='$router.push({ path: `/dashboard` })'/>
+        <q-tab name="movies" label="Planning" class="text-primary" @click='$router.push({ path: `/plans` })'/>
       </q-tabs>
-<!--      <q-breadcrumbs v-if="!headerState" class="q-pa-sm">-->
-<!--        <q-breadcrumbs-el-->
-<!--          v-for="{label, icon, route} of breadcrumbs"-->
-<!--          :label="label"-->
-<!--          :key="label"-->
-<!--          :icon="icon"-->
-<!--          :to="route"-->
-<!--          class="clickable q-mt-sm q-btn"/>-->
-<!--      </q-breadcrumbs>-->
-
       <router-view @show-header="showHeader"/>
     </q-page-container>
 

@@ -1,110 +1,93 @@
 <template>
-    <div class="flex justify-between q-pa-xs bg-white">
-    <q-btn flat icon="las la-arrow-left" class="text-black q-ma-xs"/>
-    <q-input
-      dark
-      standout="bg-standoutBackground"
-      input-class="text-right text-black"
-      v-model="text"
-      :dense="dense"
-      :class="{
-        'q-ma-xs': true
-      }"
-      :style="{
+  <div class="flex justify-between q-pa-xs bg-accent">
+    <q-btn @click="this.$router.push('/detail')" flat icon="las la-arrow-left" class="text-primary q-ma-xs" />
+    <q-input dark standout="bg-white" input-class="text-right text-black" v-model="text" :dense="dense" :class="{
+      'q-ma-xs': true
+    }" :style="{
         width: '75%'
-      }"
-    >
+      }">
       <template v-slot:append>
-        <q-icon v-if="text === ''" name="las la-search" class="text-black"/>
+        <q-icon v-if="text === ''" name="las la-search" class="text-black" />
         <q-icon v-else name="clear" class="cursor-pointer text-black" @click="text = ''" />
       </template>
     </q-input>
   </div>
-    <q-list padding class="scroll" style="height:66vh">
-      <q-item-label header>Todo</q-item-label>
-      <div class="q-pa-lg q-gutter-sm" v-if="loadingtodoList">
-        <q-skeleton type="rect" :style="{
-          height: '35px'
-        }"/>
-        <q-skeleton type="rect" :style="{
-          height: '35px'
-        }"/>
-        <q-skeleton type="rect" :style="{
-          height: '35px'
-        }"/>
-      </div>
-      <q-item tag="label" v-ripple v-for="item in todoList" :key="item">
-        <q-item-section side top>
-          <q-checkbox v-model="selectedMember" :val="item.id" color="teal" @update:model-value="changeSelected"/>
-        </q-item-section>
-
-        <q-item-section>
-          <q-item-label>{{ item.todoTitle }}</q-item-label>
-          <q-item-label caption>
-            {{ item.todoDesc }}
-          </q-item-label>
-        </q-item-section>
-      </q-item>
-
-      <q-separator spaced />
-      <q-item-label header>Done</q-item-label>
-
-      <div class="q-pa-lg q-gutter-sm" v-if="loadingtodoList">
-        <q-skeleton type="rect" :style="{
-          height: '35px'
-        }"/>
-        <q-skeleton type="rect" :style="{
-          height: '35px'
-        }"/>
-        <q-skeleton type="rect" :style="{
-          height: '35px'
-        }"/>
-      </div>
-
-      <q-item tag="label" v-ripple v-for="item of completedTodos" :key="item">
-        <q-item-section>
-          <q-item-label>{{ item.todoTitle }}</q-item-label>
-          <q-item-label caption>
-            {{ item.todoDesc }}
-          </q-item-label>
-        </q-item-section>
-
-        <q-item-section side >
-          <q-toggle color="blue" v-model="item.isArchived" :val="item.isArchived" label="Archive"/>
-        </q-item-section>
-      </q-item>
-
-      <q-separator spaced />
-
-      <q-item-section>
-        <q-btn
-          @click="confirm"
-          size="lg"
-          color="tertiary"
-          label="Save changes"
-          class="text-capitalize q-ma-md "
-          :loading="loadingSubmit"
-        >
-          <template v-slot:loading>
-            <q-spinner-bars class="on-left" />
-            Saving...
-          </template>
-        </q-btn>
+  <q-list padding class="scroll" style="height:66vh">
+    <q-item-label header>Todo</q-item-label>
+    <div class="q-pa-lg q-gutter-sm" v-if="loadingtodoList">
+      <q-skeleton type="rect" :style="{
+        height: '35px'
+      }" />
+      <q-skeleton type="rect" :style="{
+        height: '35px'
+      }" />
+      <q-skeleton type="rect" :style="{
+        height: '35px'
+      }" />
+    </div>
+    <q-item tag="label" v-ripple v-for="item in todoList" :key="item">
+      <q-item-section side top>
+        <q-checkbox v-model="selectedMember" :val="item.id" color="teal" @update:model-value="changeSelected" />
       </q-item-section>
 
-    </q-list>
-    <q-inner-loading
-      :showing="loadingtodoList"
-      label="Please wait..."
-      label-class="text-teal"
-      label-style="font-size: 1.1em"
-    ><q-spinner-bars :style="{
+      <q-item-section>
+        <q-item-label>{{ item.todoTitle }}</q-item-label>
+        <q-item-label caption>
+          {{ item.todoDesc }}
+        </q-item-label>
+      </q-item-section>
+    </q-item>
+
+    <q-separator spaced />
+    <q-item-label header>Done</q-item-label>
+
+    <div class="q-pa-lg q-gutter-sm" v-if="loadingtodoList">
+      <q-skeleton type="rect" :style="{
+        height: '35px'
+      }" />
+      <q-skeleton type="rect" :style="{
+        height: '35px'
+      }" />
+      <q-skeleton type="rect" :style="{
+        height: '35px'
+      }" />
+    </div>
+
+    <q-item tag="label" v-ripple v-for="item of completedTodos" :key="item">
+      <q-item-section>
+        <q-item-label>{{ item.todoTitle }}</q-item-label>
+        <q-item-label caption>
+          {{ item.todoDesc }}
+        </q-item-label>
+      </q-item-section>
+
+      <q-item-section side>
+        <q-toggle color="blue" v-model="item.isArchived" :val="item.isArchived" label="Archive" />
+      </q-item-section>
+    </q-item>
+
+    <q-separator spaced />
+
+    <q-item-section>
+      <q-btn @click="confirm" size="lg" color="primary" text-color="warning" label="Save changes"
+        class="text-capitalize q-ma-md" :loading="loadingSubmit">
+        <template v-slot:loading>
+          <q-spinner-bars class="on-left" />
+          Saving...
+        </template>
+      </q-btn>
+    </q-item-section>
+
+  </q-list>
+  <q-inner-loading :showing="loadingtodoList" label="Please wait..." label-class="text-teal"
+    label-style="font-size: 1.1em"><q-spinner-bars :style="{
       'font-size': '40px'
-    }" color="primary"/>
-    </q-inner-loading>
-    <q-page-sticky position="bottom-right" :offset="[18, 18]">
-       <q-btn @click="this.$router.push({path: '/createtodo'})" dense fab icon="las la-notes-medical" color="grey-1" class="text-green"/>
-    </q-page-sticky>
+    }" color="primary" />
+  </q-inner-loading>
+  <q-page-sticky position="bottom-right" :offset="[18, 18]">
+    <q-btn @click="this.$router.push({ path: '/createtodo' })" dense fab icon="las la-notes-medical" color="grey-1"
+      class="text-green" />
+  </q-page-sticky>
 </template>
 
 <script>
