@@ -32,7 +32,8 @@ module.exports = configure(function (/* ctx */) {
       'i18n',
       'axios',
       'firebase',
-      'utils'
+      'utils',
+      'brand-colors'
     ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css

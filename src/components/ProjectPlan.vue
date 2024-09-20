@@ -6,6 +6,7 @@
       :events="events"
       :event-color="(date) => date[9] % 2 === 0 ? 'teal' : 'orange'"
       class="full-width no-border-radius"
+      text-color="text-primary"
       flat
     />
   </div>

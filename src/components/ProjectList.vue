@@ -1,10 +1,10 @@
 <template>
-  <div class="flex justify-between q-pa-xs bg-white">
-    <q-btn flat icon="las la-arrow-left" class="text-black q-ma-xs"/>
+  <div v-if="false" class="flex justify-between q-pa-xs bg-primary">
+    <q-btn flat icon="las la-arrow-left" class="text-warning q-ma-xs"/>
     <q-input
       dark
-      standout="bg-standoutBackground"
-      input-class="text-right text-black"
+      standout="bg-white"
+      input-class="text-right text-primary"
       v-model="text"
       :dense="dense"
       :class="{
@@ -16,13 +16,15 @@
       bordered: false
     >
       <template v-slot:append>
-        <q-icon v-if="text === ''" name="las la-search" class="text-tertiary"/>
-        <q-icon v-else name="clear" class="cursor-pointer text-tertiary" @click="text = ''" />
+        <q-icon v-if="text === ''" name="las la-search" :class="{
+          'text-warning': text === ''
+        }"/>
+        <q-icon v-else name="clear" class="cursor-pointer text-primary" @click="text = ''" />
       </template>
     </q-input>
   </div>
   <!-- <q-card class="my-card q-ma-sm"> -->
-  <q-list bordered separator class="scroll" style="height: 83vh">
+  <q-list bordered separator class="scroll bg-accent" style="height: 83vh">
     <q-item clickable v-ripple @click='$router.push({ path: `/detail` })' v-for="item in arr" :key="item">
       <q-item-section thumbnail>
         <img class="q-ml-sm rounded-borders" :src="`${url}${item}`">
