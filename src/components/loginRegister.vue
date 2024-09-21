@@ -1,9 +1,9 @@
 <template>
-  <div style="height:67.4vh">
+  <div style="height: 67.4vh">
     <div class="col text-center justify-center">
-      <q-inner-loading :showing="visible"/>
+      <q-inner-loading :showing="visible" />
       <div class="col-4 q-mt-lg q-mb-md">
-        <img src="~assets/user.png" width="200px" class="q-pa-xs">
+        <img src="~assets/user.png" width="200px" class="q-pa-xs" />
         <p class="text-h2 q-mb-xl">Register</p>
       </div>
       <div class="col-2 q-mt-md q-mb-sm">
@@ -12,8 +12,20 @@
       <div class="col-6">
         <p class="q-mt-xs">Choose a role to register</p>
         <div class="q-gutter-sm">
-          <q-radio v-model="role" checked-icon="task_alt" unchecked-icon="panorama_fish_eye" val="contructor" label="Constructor" />
-          <q-radio v-model="role" checked-icon="task_alt" unchecked-icon="panorama_fish_eye" val="home owner" label="Home Owner" />
+          <q-radio
+            v-model="role"
+            checked-icon="task_alt"
+            unchecked-icon="panorama_fish_eye"
+            val="contructor"
+            label="Constructor"
+          />
+          <q-radio
+            v-model="role"
+            checked-icon="task_alt"
+            unchecked-icon="panorama_fish_eye"
+            val="home owner"
+            label="Home Owner"
+          />
         </div>
       </div>
       <div class="col-2 q-pa-xl">
@@ -26,11 +38,12 @@
           v-model="regemail"
           label="Email"
           lazy-rules
-          :rules="regemailRules">
-            <template v-slot:prepend>
-              <q-icon name="email"/>
-            </template>
-          </q-input>
+          :rules="regemailRules"
+        >
+          <template v-slot:prepend>
+            <q-icon name="email" />
+          </template>
+        </q-input>
         <q-input
           :autocomplete="false"
           :type="isPwd1 ? 'password' : 'text'"
@@ -41,17 +54,17 @@
           label="Password"
           lazy-rules
           :rules="regpasswordRules"
-           >
-             <template v-slot:prepend>
-               <q-icon name="lock"/>
-               </template>
-               <template v-slot:append>
-                 <q-icon
-                   :name="isPwd1 ? 'visibility_off' : 'visibility'"
-                   class="cursor-pointer"
-                   @click="isPwd1 = !isPwd1"
-                 />
-             </template>
+        >
+          <template v-slot:prepend>
+            <q-icon name="lock" />
+          </template>
+          <template v-slot:append>
+            <q-icon
+              :name="isPwd1 ? 'visibility_off' : 'visibility'"
+              class="cursor-pointer"
+              @click="isPwd1 = !isPwd1"
+            />
+          </template>
         </q-input>
         <q-input
           autocomplete="off"
@@ -63,23 +76,44 @@
           label="Confirm Password"
           lazy-rules
           :rules="regverifiedpassRules"
-          v-on:keyup.enter="login">
-            <template v-slot:prepend>
-              <q-icon name="lock"/>
-              </template>
-              <template v-slot:append>
-                <q-icon
-                  :name="isPwd2 ? 'visibility_off' : 'visibility'"
-                  class="cursor-pointer"
-                  @click="isPwd2 = !isPwd2"
-                />
-            </template>
-          </q-input>
-        <q-btn @click="reset" label="Clear" type="reset" color="secondary" flat class="q-pl-none q-ml-sm text-capitalize pull-right text-weight-light" style="float:left"/>
-        <q-btn @click="$router.push('/login')" label="Back to Login" color="primary" flat class="q-pr-none text-capitalize pull-right text-weight-light" style="float:right"/>
+          v-on:keyup.enter="login"
+        >
+          <template v-slot:prepend>
+            <q-icon name="lock" />
+          </template>
+          <template v-slot:append>
+            <q-icon
+              :name="isPwd2 ? 'visibility_off' : 'visibility'"
+              class="cursor-pointer"
+              @click="isPwd2 = !isPwd2"
+            />
+          </template>
+        </q-input>
+        <q-btn
+          @click="reset"
+          label="Clear"
+          type="reset"
+          color="secondary"
+          flat
+          class="q-pl-none q-ml-sm text-capitalize pull-right text-weight-light"
+          style="float: left"
+        />
+        <q-btn
+          @click="$router.push('/login')"
+          label="Back to Login"
+          color="primary"
+          flat
+          class="q-pr-none text-capitalize pull-right text-weight-light"
+          style="float: right"
+        />
       </div>
       <div class="col-2 q-pa-xl">
-        <q-btn size="lg" color="primary" label="Register" class="text-capitalize full-width q-mb-md"/>
+        <q-btn
+          size="lg"
+          color="primary"
+          label="Register"
+          class="text-capitalize full-width q-mb-md"
+        />
       </div>
     </div>
   </div>
@@ -113,29 +147,37 @@ export default {
       regemail,
       regemailRef,
       regemailRules: [
-        val => (val && val.length > 0) || 'Please type your email'
+        (val) => (val && val.length > 0) || 'Please type your email'
       ],
       regemailRefRules: [
-        val => (val !== null && val !== '') || 'Please input username'
+        (val) => (val !== null && val !== '') || 'Please input username'
       ],
       passwordRules: [
-        val => (val !== null && val !== '') || 'Please input password'
+        (val) => (val !== null && val !== '') || 'Please input password'
       ],
       regpassword,
       regpasswordRef,
       regpasswordRules: [
-        val => (val && val.length > 0) || 'Please type your password',
-        val => (/^(?=.*[a-z])/.test(val)) || 'Password should have atleast a lowercase',
-        val => (/^(?=.*[A-Z])/.test(val)) || 'Password should have atleast an uppercase',
-        val => (/^(?=.*[0-9])/.test(val)) || 'Password should have atleast a number',
-        val => (/^(?=.*[!@#$%^&*])/.test(val)) || 'Password should have atleast a special character',
-        val => (/^(?=.{6,})/.test(val)) || 'Password should have atleast 6 characters'
+        (val) => (val && val.length > 0) || 'Please type your password',
+        (val) =>
+          /^(?=.*[a-z])/.test(val) ||
+          'Password should have atleast a lowercase',
+        (val) =>
+          /^(?=.*[A-Z])/.test(val) ||
+          'Password should have atleast an uppercase',
+        (val) =>
+          /^(?=.*[0-9])/.test(val) || 'Password should have atleast a number',
+        (val) =>
+          /^(?=.*[!@#$%^&*])/.test(val) ||
+          'Password should have atleast a special character',
+        (val) =>
+          /^(?=.{6,})/.test(val) || 'Password should have atleast 6 characters'
       ],
       regverifiedpass,
       regverifiedpassRef,
       regverifiedpassRules: [
-        val => (val && val.length > 0) || 'Please type your verified pass',
-        val => (val === regpassword.value) || 'Password not match'
+        (val) => (val && val.length > 0) || 'Please type your verified pass',
+        (val) => val === regpassword.value || 'Password not match'
       ],
       isPwd1: ref(true),
       isPwd2: ref(true),

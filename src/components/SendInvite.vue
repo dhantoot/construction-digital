@@ -1,17 +1,22 @@
 <template>
-    <div class="q-ma-xs q-gutter-xs bg-grey-2 q-mt-xl">
-      <q-icon name="las la-envelope" size="xl" class="full-width"></q-icon>
-      <p>Send your invitation to user dhan with the role
-Employee via email of with a link</p>
-      <q-input filled v-model="email" label="Email" class="bg-grey-2"/>
-      <q-btn size="lg" style="background: goldenrod; color: white" label="Send E-mail" class="fixed-bottom q-mb-lg q-ml-xs q-mr-xs"/>
+  <div class="q-ma-xs q-gutter-xs bg-grey-2 q-mt-xl">
+    <q-icon name="las la-envelope" size="xl" class="full-width"></q-icon>
+    <p>
+      Send your invitation to user dhan with the role Employee via email of with
+      a link
+    </p>
+    <q-input filled v-model="email" label="Email" class="bg-grey-2" />
+    <q-btn
+      size="lg"
+      style="background: goldenrod; color: white"
+      label="Send E-mail"
+      class="fixed-bottom q-mb-lg q-ml-xs q-mr-xs"
+    />
   </div>
 </template>
 <script>
 import { ref } from 'vue'
-const stringOptions = [
-  'Employee', 'Contractor', 'Admin', 'Client', 'Builders'
-]
+const stringOptions = ['Employee', 'Contractor', 'Admin', 'Client', 'Builders']
 
 // Don't forget to specify which animations
 // you are using in quasar.config file > animations.
@@ -42,7 +47,9 @@ export default {
 
         update(() => {
           const needle = val.toLowerCase()
-          options.value = stringOptions.filter(v => v.toLowerCase().indexOf(needle) > -1)
+          options.value = stringOptions.filter(
+            (v) => v.toLowerCase().indexOf(needle) > -1
+          )
         })
       },
       visible,

@@ -1,27 +1,31 @@
 <template>
-    <div class="q-ma-xs q-gutter-xs bg-grey-2">
-        <q-input dense filled v-model="fname" label="First Name" class="bg-grey-2"/>
-        <q-input dense filled v-model="lname" label="Last Name" class="bg-grey-2"/>
-        <q-select
-        dense
-        filled
-        v-model="model"
-        use-input
-        input-debounce="0"
-        label="Role"
-        :options="options"
-        @filter="filterFn"
-      >
-        <template v-slot:no-option>
-          <q-item>
-            <q-item-section class="text-grey">
-              No results
-            </q-item-section>
-          </q-item>
-        </template>
-      </q-select>
-      <q-input dense filled v-model="text" label="Name" class="bg-grey-2"/>
-      <q-input
+  <div class="q-ma-xs q-gutter-xs bg-grey-2">
+    <q-input
+      dense
+      filled
+      v-model="fname"
+      label="First Name"
+      class="bg-grey-2"
+    />
+    <q-input dense filled v-model="lname" label="Last Name" class="bg-grey-2" />
+    <q-select
+      dense
+      filled
+      v-model="model"
+      use-input
+      input-debounce="0"
+      label="Role"
+      :options="options"
+      @filter="filterFn"
+    >
+      <template v-slot:no-option>
+        <q-item>
+          <q-item-section class="text-grey"> No results </q-item-section>
+        </q-item>
+      </template>
+    </q-select>
+    <q-input dense filled v-model="text" label="Name" class="bg-grey-2" />
+    <q-input
       v-model="desc"
       dense
       filled
@@ -29,14 +33,17 @@
       autogrow
       class="bg-grey-2"
     />
-    <q-btn size="lg" style="background: goldenrod; color: white" label="Add Project Member" class="fixed-bottom q-mb-lg q-ml-xs q-mr-xs"/>
+    <q-btn
+      size="lg"
+      style="background: goldenrod; color: white"
+      label="Add Project Member"
+      class="fixed-bottom q-mb-lg q-ml-xs q-mr-xs"
+    />
   </div>
 </template>
 <script>
 import { ref } from 'vue'
-const stringOptions = [
-  'Employee', 'Contractor', 'Admin', 'Client', 'Builders'
-]
+const stringOptions = ['Employee', 'Contractor', 'Admin', 'Client', 'Builders']
 
 // Don't forget to specify which animations
 // you are using in quasar.config file > animations.
@@ -67,7 +74,9 @@ export default {
 
         update(() => {
           const needle = val.toLowerCase()
-          options.value = stringOptions.filter(v => v.toLowerCase().indexOf(needle) > -1)
+          options.value = stringOptions.filter(
+            (v) => v.toLowerCase().indexOf(needle) > -1
+          )
         })
       },
       visible,
@@ -98,11 +107,13 @@ export default {
   mounted () {
     console.log('mounted', this.$options)
     this.showTextLoading()
-    this.$emit('showHeader', false, [{
-      label: 'Back',
-      icon: 'las la-chevron-left',
-      route: '/detail'
-    }])
+    this.$emit('showHeader', false, [
+      {
+        label: 'Back',
+        icon: 'las la-chevron-left',
+        route: '/detail'
+      }
+    ])
   },
   beforeUpdate () {
     console.log('beforeUpdate')

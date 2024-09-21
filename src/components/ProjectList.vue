@@ -24,21 +24,21 @@
     </q-input>
   </div>
   <!-- <q-card class="my-card q-ma-sm"> -->
-  <q-list bordered separator class="scroll bg-accent" style="height: 83vh">
+  <q-list bordered separator class="scroll bg-accent" style="height: 100vh">
     <q-item clickable v-ripple @click='$router.push({ path: `/detail` })' v-for="item in arr" :key="item">
       <q-item-section thumbnail>
         <img class="q-ml-sm rounded-borders" :src="`${url}${item}`">
       </q-item-section>
 
       <q-item-section>
-        <q-item-label class="text-bold">{{ names[item.toString().split('.')[1].slice(-2)] }} Residence</q-item-label>
-        <q-item-label caption lines="2">Secondary line text. Lorem ipsum dolor sit amet, consectetur adipiscit
+        <q-item-label class="text-bold text-primary">{{ names[item.toString().split('.')[1].slice(-2)] }} Residence</q-item-label>
+        <q-item-label caption lines="2" class="text-secondary">Secondary line text. Lorem ipsum dolor sit amet, consectetur adipiscit
           elit.</q-item-label>
       </q-item-section>
 
       <q-item-section side top>
-        <q-item-label caption>5 min ago</q-item-label>
-        <q-icon name="star" color="yellow" />
+        <q-item-label caption class="text-info">5 min ago</q-item-label>
+        <q-icon name="star" color="negative" />
       </q-item-section>
 
     </q-item>
