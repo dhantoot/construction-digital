@@ -1,9 +1,9 @@
 <template>
-    <q-card class="my-card q-ma-sm">
-      <!-- <q-skeleton square /> -->
-      <q-inner-loading :showing="visible"/>
-    </q-card>
-  </template>
+  <q-card class="my-card q-ma-sm">
+    <!-- <q-skeleton square /> -->
+    <q-inner-loading :showing="visible" />
+  </q-card>
+</template>
 <script>
 import { ref } from 'vue'
 

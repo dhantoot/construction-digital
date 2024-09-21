@@ -4,19 +4,37 @@ import { initializeApp } from 'firebase/app'
 // import { getAnalytics } from 'firebase/analytics'
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
-import { getDatabase, ref as fireRef, get, set, push, onValue, update, serverTimestamp } from 'firebase/database'
-import { getStorage, ref as _ref, uploadBytes, uploadBytesResumable, getDownloadURL, uploadString, listAll } from 'firebase/storage'
+import {
+  getDatabase,
+  ref as fireRef,
+  get,
+  set,
+  push,
+  onValue,
+  update,
+  serverTimestamp
+} from 'firebase/database'
+import {
+  getStorage,
+  ref as _ref,
+  uploadBytes,
+  uploadBytesResumable,
+  getDownloadURL,
+  uploadString,
+  listAll
+} from 'firebase/storage'
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth'
 // createUserWithEmailAndPassword
 
 // "async" is optional;
 // more info on params: https://v2.quasar.dev/quasar-cli/boot-files
-export default boot(async ({ app }/* { app, router, ... } */) => {
+export default boot(async ({ app } /* { app, router, ... } */) => {
   // something to do
   const firebaseConfig = {
     apiKey: 'AIzaSyBXkBtP1S7AYU4fd7sFV0hcy-LDmrghkcU',
     authDomain: 'hofstee-app.firebaseapp.com',
-    databaseURL: 'https://hofstee-app-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL:
+      'https://hofstee-app-default-rtdb.asia-southeast1.firebasedatabase.app',
     projectId: 'hofstee-app',
     storageBucket: 'hofstee-app.appspot.com',
     messagingSenderId: '478665878321',
@@ -29,7 +47,7 @@ export default boot(async ({ app }/* { app, router, ... } */) => {
 
   firebaseApp.getCurrentUser = () => {
     return new Promise((resolve, reject) => {
-      const unsubscribe = firebaseApp.auth().onAuthStateChanged(user => {
+      const unsubscribe = firebaseApp.auth().onAuthStateChanged((user) => {
         unsubscribe()
         resolve(user)
       }, reject)
@@ -62,7 +80,7 @@ export default boot(async ({ app }/* { app, router, ... } */) => {
   app.config.globalProperties.$fbsendPasswordResetEmail = sendPasswordResetEmail
   app.config.globalProperties.$serverTimestamp = serverTimestamp()
   app.config.globalProperties.$getFilePath = (filename) => {
-    const starsRef = _ref(storage, filename)// files/1x1_me.jpeg
+    const starsRef = _ref(storage, filename) // files/1x1_me.jpeg
     return getDownloadURL(starsRef)
       .then((url) => {
         return url

@@ -23,7 +23,8 @@ const routes = [
         children: [
           {
             path: '',
-            component: () => import('components/ProjectDetail/ProjectDetailDefault.vue')
+            component: () =>
+              import('components/ProjectDetail/ProjectDetailDefault.vue')
           },
           {
             path: '/todo',
@@ -47,11 +48,13 @@ const routes = [
           },
           {
             path: '/agreement',
-            component: () => import('components/ProjectDetail/ProjectAgreement.vue')
+            component: () =>
+              import('components/ProjectDetail/ProjectAgreement.vue')
           },
           {
             path: '/createtodo',
-            component: () => import('components/ProjectDetail/ProjectCreateTodo.vue')
+            component: () =>
+              import('components/ProjectDetail/ProjectCreateTodo.vue')
           }
         ]
       },

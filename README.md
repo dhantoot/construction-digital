@@ -86,3 +86,6 @@ icongenie generate -m cordova -i src/assets/icon-foreground.png [-b src/assets/i
 
 plugin add
 >cd src-cordova && cordova plugin add cordova-plugin-battery-status
+
+## ESLINT RULES 
+> https://eslint.org/docs/latest/rules/space-after-function-name#rule-details

@@ -11,10 +11,20 @@
     <div class="col-6 q-mt-lg">
       <p class="q-mt-xl">Choose a role to login</p>
       <div class="q-gutter-sm">
-        <q-radio v-model="role" checked-icon="task_alt" unchecked-icon="panorama_fish_eye" val="contructor"
-          label="Constructor" />
-        <q-radio v-model="role" checked-icon="task_alt" unchecked-icon="panorama_fish_eye" val="home owner"
-          label="Home Owner" />
+        <q-radio
+          v-model="role"
+          checked-icon="task_alt"
+          unchecked-icon="panorama_fish_eye"
+          val="contructor"
+          label="Constructor"
+        />
+        <q-radio
+          v-model="role"
+          checked-icon="task_alt"
+          unchecked-icon="panorama_fish_eye"
+          val="home owner"
+          label="Home Owner"
+        />
       </div>
     </div>
     <div class="col-2 q-mt-sm q-pa-xl">
@@ -32,29 +42,71 @@
               <q-icon name="perm_identity"/>
             </template>
 </q-input> -->
-      <q-input outline dense clearable ref="emailRef" v-model="email" label="Email" lazy-rules :rules="emailRules"
-        v-on:keyup.enter="login">
+      <q-input
+        outline
+        dense
+        clearable
+        ref="emailRef"
+        v-model="email"
+        label="Email"
+        lazy-rules
+        :rules="emailRules"
+        v-on:keyup.enter="login"
+      >
         <template v-slot:prepend>
           <q-icon name="perm_identity" />
         </template>
       </q-input>
-      <q-input :type="isPwd ? 'password' : 'text'" dense ref="passwordRef" outline v-model="password" label="Password"
-        lazy-rules :rules="passwordRules" v-on:keyup.enter="login">
+      <q-input
+        :type="isPwd ? 'password' : 'text'"
+        dense
+        ref="passwordRef"
+        outline
+        v-model="password"
+        label="Password"
+        lazy-rules
+        :rules="passwordRules"
+        v-on:keyup.enter="login"
+      >
         <template v-slot:prepend>
           <q-icon name="lock" />
         </template>
         <template v-slot:append>
-          <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="isPwd = !isPwd" />
+          <q-icon
+            :name="isPwd ? 'visibility_off' : 'visibility'"
+            class="cursor-pointer"
+            @click="isPwd = !isPwd"
+          />
         </template>
       </q-input>
-      <q-btn @click="reset" label="Clear" type="reset" color="secondary" flat
-        class="q-pl-none q-ml-sm text-capitalize pull-right text-weight-light" style="float:left" />
-      <q-btn @click="register" label="Register" color="primary" flat
-        class="q-pr-none text-capitalize pull-right text-weight-light" style="float:right" />
+      <q-btn
+        @click="reset"
+        label="Clear"
+        type="reset"
+        color="secondary"
+        flat
+        class="q-pl-none q-ml-sm text-capitalize pull-right text-weight-light"
+        style="float: left"
+      />
+      <q-btn
+        @click="register"
+        label="Register"
+        color="primary"
+        flat
+        class="q-pr-none text-capitalize pull-right text-weight-light"
+        style="float: right"
+      />
     </div>
     <div class="col-2 q-mt-xs q-pa-xl">
-      <q-btn :disabled="$isFalsyString(email) || $isFalsyString(password)" :loading="loading" size="lg" color="primary"
-        label="Login" class="text-capitalize full-width q-mb-md" @click="login">
+      <q-btn
+        :disabled="$isFalsyString(email) || $isFalsyString(password)"
+        :loading="loading"
+        size="lg"
+        color="primary"
+        label="Login"
+        class="text-capitalize full-width q-mb-md"
+        @click="login"
+      >
         <template v-slot:loading>
           <q-spinner-facebook class="on-center" />
         </template>
@@ -65,7 +117,10 @@
 <script>
 import { ref } from 'vue'
 import { LocalStorage, SessionStorage } from 'quasar'
-import { getAuth, /* createUserWithEmailAndPassword, */ signInWithEmailAndPassword } from 'firebase/auth'
+import {
+  getAuth,
+  /* createUserWithEmailAndPassword, */ signInWithEmailAndPassword
+} from 'firebase/auth'
 const auth = getAuth()
 
 // Don't forget to specify which animations
@@ -93,17 +148,17 @@ export default {
       username,
       usernameRef,
       usernameRules: [
-        val => (val !== null && val !== '') || 'Please input username'
+        (val) => (val !== null && val !== '') || 'Please input username'
       ],
       email,
       emailRef,
       emailRules: [
-        val => (val && val.length > 0) || 'Please type your email'
+        (val) => (val && val.length > 0) || 'Please type your email'
       ],
       password,
       passwordRef,
       passwordRules: [
-        val => (val !== null && val !== '') || 'Please input password'
+        (val) => (val !== null && val !== '') || 'Please input password'
       ],
       isPwd: ref(true),
       initFunction () {
@@ -196,13 +251,15 @@ export default {
           this.loading = false
           this.$router.push('/projects')
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error)
           this.loading = false
           this.$q.notify({
             icon: 'cancel',
             color: 'negative',
-            message: error.message?.includes('email-already-in-use') ? 'User not registered: Email already in use' : 'User not registered!',
+            message: error.message?.includes('email-already-in-use')
+              ? 'User not registered: Email already in use'
+              : 'User not registered!',
             position: 'top-right'
           })
         })

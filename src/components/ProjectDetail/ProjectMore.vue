@@ -1,26 +1,44 @@
 <template>
   <div class="flex justify-between q-pa-xs bg-accent">
-    <q-btn @click="this.$router.push('/detail')" flat icon="las la-arrow-left" class="text-primary q-ma-xs" />
-    <q-input dark standout="bg-white" input-class="text-right text-black" v-model="text" :dense="dense" :class="{
-      'q-ma-xs': true
-    }" :style="{
+    <q-btn
+      @click="this.$router.push('/detail')"
+      flat
+      icon="las la-arrow-left"
+      class="text-primary q-ma-xs"
+    />
+    <q-input
+      dark
+      standout="bg-white"
+      input-class="text-right text-black"
+      v-model="text"
+      :dense="dense"
+      :class="{
+        'q-ma-xs': true
+      }"
+      :style="{
         width: '75%'
-      }">
+      }"
+    >
       <template v-slot:append>
         <q-icon v-if="text === ''" name="las la-search" class="text-black" />
-        <q-icon v-else name="clear" class="cursor-pointer text-black" @click="text = ''" />
+        <q-icon
+          v-else
+          name="clear"
+          class="cursor-pointer text-black"
+          @click="text = ''"
+        />
       </template>
     </q-input>
   </div>
-  <q-list bordered padding class="scroll" style="height:74.7vh">
+  <q-list bordered padding class="scroll" style="height: 74.7vh">
     <q-item-label header>User Controls</q-item-label>
 
     <q-item clickable v-ripple>
       <q-item-section>
         <q-item-label>Content filtering</q-item-label>
         <q-item-label caption>
-          Set the content filtering level to restrict
-          apps that can be downloaded
+          Set the content filtering level to restrict apps that can be
+          downloaded
         </q-item-label>
       </q-item-section>
     </q-item>
@@ -29,8 +47,7 @@
       <q-item-section>
         <q-item-label>Password</q-item-label>
         <q-item-label caption>
-          Require password for purchase or use
-          password to restrict purchase
+          Require password for purchase or use password to restrict purchase
         </q-item-label>
       </q-item-section>
     </q-item>
@@ -102,7 +119,9 @@
     <q-item tag="label" v-ripple>
       <q-item-section>
         <q-item-label>Picture uploaded</q-item-label>
-        <q-item-label caption>Allow notification when uploading images</q-item-label>
+        <q-item-label caption
+          >Allow notification when uploading images</q-item-label
+        >
       </q-item-section>
       <q-item-section side top>
         <q-toggle color="red" v-model="notif3" val="picture" />
@@ -129,7 +148,13 @@
         <q-icon color="deep-orange" name="brightness_medium" />
       </q-item-section>
       <q-item-section>
-        <q-slider v-model="brightness" :min="0" :max="10" label color="deep-orange" />
+        <q-slider
+          v-model="brightness"
+          :min="0"
+          :max="10"
+          label
+          color="deep-orange"
+        />
       </q-item-section>
     </q-item>
 
@@ -142,10 +167,14 @@
       </q-item-section>
     </q-item>
   </q-list>
-  <q-inner-loading :showing="visible" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em" />
+  <q-inner-loading
+    :showing="visible"
+    label="Please wait..."
+    label-class="text-teal"
+    label-style="font-size: 1.1em"
+  />
 </template>
 <script>
-
 import { ref } from 'vue'
 
 // Don't forget to specify which animations

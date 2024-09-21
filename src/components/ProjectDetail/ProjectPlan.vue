@@ -1,22 +1,32 @@
 <template>
-    <div class="q-ma-none scroll" style="height: 66vh">
+  <div class="q-ma-none scroll" style="height: 66vh">
     <div class="q-pa-xs">
       <q-date
         v-model="date"
         :events="events"
-        :event-color="(date) => date[9] % 2 === 0 ? 'teal' : 'orange'"
+        :event-color="(date) => (date[9] % 2 === 0 ? 'teal' : 'orange')"
         class="full-width no-border-radius"
         :flat="true"
       />
     </div>
-    <q-inner-loading :showing="visible" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em" />
+    <q-inner-loading
+      :showing="visible"
+      label="Please wait..."
+      label-class="text-teal"
+      label-style="font-size: 1.1em"
+    />
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
-       <q-btn dense fab icon="las la-calendar-plus" color="grey-1" class="text-green"/>
-     </q-page-sticky>
+      <q-btn
+        dense
+        fab
+        icon="las la-calendar-plus"
+        color="grey-1"
+        class="text-green"
+      />
+    </q-page-sticky>
   </div>
 </template>
 <script>
-
 import { ref } from 'vue'
 
 // Don't forget to specify which animations
@@ -36,13 +46,21 @@ export default {
         console.log('initFunction called', visible.value)
       },
       date: ref('2019/02/01'),
-      events: ['2019/02/01', '2019/02/05', '2019/02/06', '2019/02/09', '2019/02/23'],
+      events: [
+        '2019/02/01',
+        '2019/02/05',
+        '2019/02/06',
+        '2019/02/09',
+        '2019/02/23'
+      ],
       eventsFn (date) {
-        if (date === '2019/02/01' ||
+        if (
+          date === '2019/02/01' ||
           date === '2019/02/05' ||
           date === '2019/02/06' ||
           date === '2019/02/09' ||
-          date === '2019/02/23') {
+          date === '2019/02/23'
+        ) {
           return true
         }
         return false

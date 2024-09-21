@@ -1,11 +1,11 @@
 <template>
   <div>
-    <q-list padding class="scroll" style="height:74.7vh">
+    <q-list padding class="scroll" style="height: 74.7vh">
       <q-item tag="todoTitle" :clickable="false">
         <q-item-section>
           <q-item-label>Title</q-item-label>
           <q-item-label caption>
-            <q-input dense outlined  v-model="todoTitle" class="q-ma-xs">
+            <q-input dense outlined v-model="todoTitle" class="q-ma-xs">
             </q-input>
           </q-item-label>
         </q-item-section>
@@ -31,9 +31,19 @@
               change Toggle state.
             -->
 
-            <q-item tag="label" v-ripple class="q-pl-none" v-for="member in memberList" :key="member">
+            <q-item
+              tag="label"
+              v-ripple
+              class="q-pl-none"
+              v-for="member in memberList"
+              :key="member"
+            >
               <q-item-section avatar>
-                <q-checkbox v-model="selectedMember" :val="member.id" color="teal" />
+                <q-checkbox
+                  v-model="selectedMember"
+                  :val="member.id"
+                  color="teal"
+                />
               </q-item-section>
               <q-item-section>
                 <q-item-label>{{ member.label }}</q-item-label>
@@ -41,14 +51,18 @@
               </q-item-section>
             </q-item>
           </q-list>
-          <q-inner-loading :showing="visible" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em" />
+          <q-inner-loading
+            :showing="visible"
+            label="Please wait..."
+            label-class="text-teal"
+            label-style="font-size: 1.1em"
+          />
         </q-item-section>
       </q-item>
 
       <q-separator spaced />
 
       <q-item tag="fileUpload">
-
         <q-item-section>
           <q-uploader
             :factory="factoryFn"
@@ -80,14 +94,12 @@
             </template>
           </q-btn>
         </q-item-section>
-
       </q-item>
     </q-list>
     <!-- <q-inner-loading :showing="visible" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em" /> -->
   </div>
 </template>
 <script>
-
 import { ref } from 'vue'
 import { uid } from 'quasar'
 
@@ -230,7 +242,8 @@ export default {
             message: 'Sucessfully Created',
             position: 'top-right'
           })
-        }).catch((error) => {
+        })
+        .catch((error) => {
           console.log({ error })
           this.loadingSubmit = false
           this.$q.notify({
@@ -246,13 +259,24 @@ export default {
       const metadata = {
         contentType: files[0].type
       }
-      const storageRef = this.$fbstorageref(this.$fbstorage, `files/todo/${files[0].name.split('.')[0]}.${files[0].name.split('.')[1]}`)
-      const uploadTask = this.$uploadbytesresumable(storageRef, files[0], metadata)
-      uploadTask.on('state_changed',
+      const storageRef = this.$fbstorageref(
+        this.$fbstorage,
+        `files/todo/${files[0].name.split('.')[0]}.${
+          files[0].name.split('.')[1]
+        }`
+      )
+      const uploadTask = this.$uploadbytesresumable(
+        storageRef,
+        files[0],
+        metadata
+      )
+      uploadTask.on(
+        'state_changed',
         (snapshot) => {
           // Observe state change events such as progress, pause, and resume
           // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           this.uploadProgressLabel = Number(progress, 2).toFixed(2) + '%'
           console.log('Upload is ' + this.uploadProgressLabel)
           // this.uploadProgress = progress
