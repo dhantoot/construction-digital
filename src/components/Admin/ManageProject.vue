@@ -9,6 +9,7 @@
         </q-card-section>
         <q-card-section class="q-gutter-sm">
           <q-select
+            dense
             filled
             v-model="model"
             use-input
@@ -24,8 +25,9 @@
               </q-item>
             </template>
           </q-select>
-          <q-input filled v-model="text" label="Name" class="bg-grey-2" />
+          <q-input dense filled v-model="text" label="Name" class="bg-grey-2" />
           <q-input
+            dense
             placeholder="Description..."
             v-model="desc"
             filled
@@ -45,9 +47,9 @@
               label="Capture"
             />
           </q-tabs>
-          <div class="full-width" v-if="tab === 'upload'">
+          <div class="full-width q-pt-xs" v-if="tab === 'upload'">
             <q-file
-              outlined
+              dense
               label-color="primary"
               filled
               v-model="file"
@@ -55,7 +57,7 @@
               multiple
               accept=".jpg, image/*"
               size="lg"
-              class="q-ml-sm shadow-1"
+              class="q-ml-sm shadow-2"
             >
               <template v-slot:prepend>
                 <q-icon name="cloud_upload" color="primary" />
@@ -64,8 +66,8 @@
           </div>
           <div class="full-width q-pl-sm q-pt-xs" v-if="tab === 'capture'">
             <q-btn
+              dense
               align="left"
-              size="lg"
               class="text-capitalize full-width no-shadow"
               text-color="primary"
               color="grey-2"
@@ -73,6 +75,7 @@
               label="Open camera"
               @click="captureImage"
               :disable="deviceIsReady"
+              style="height: 40px;"
             />
           </div>
           <q-toggle
@@ -82,6 +85,19 @@
             unchecked-icon="clear"
             label="Set as activated upon submit"
           />
+          <q-input
+            dense
+            prefix="$"
+            filled
+            v-model="budget"
+            label="Budget"
+            mask="#.##"
+            fill-mask="0"
+            reverse-fill-mask
+            input-class="text-right"
+          />
+          <q-input dense v-model="dateFrom" filled type="date" label="Date from" />
+          <q-input dense v-model="dateTo" filled type="date" label="Date to" />
         </q-card-section>
         <q-card-actions align="right" class="q-pr-md">
           <q-btn
@@ -97,7 +113,7 @@
             label="Submit"
             class="text-capitalize bg-info"
             @click="uploadFile"
-            :disable="loadingSubmit || !model || !text || !desc || !file"
+            :disable="loadingSubmit || !model || !text || !desc || !file || !budget || !dateFrom || !dateTo"
             :loading="loadingSubmit"
           >
             <template v-slot:loading>
@@ -134,6 +150,7 @@
           :columns="columns"
           :loading="rowLoading"
           :visible-columns="visibleColumns"
+          :rows-per-page-options="[10]"
         >
           <template v-slot:loading>
             <q-inner-loading :showing="visible">
@@ -151,20 +168,30 @@
               <q-td key="description" :props="props">
                 {{ props.row.description }}
               </q-td>
+              <q-td key="budget" :props="props">
+                {{ props.row.budget }}
+              </q-td>
+              <q-td key="dateFrom" :props="props">
+                {{ props.row.dateFrom }}
+              </q-td>
+              <q-td key="dateTo" :props="props">
+                {{ props.row.dateTo }}
+              </q-td>
               <q-td key="createdBy" :props="props">
                 {{ props.row.createdBy }}
               </q-td>
               <q-td key="dateCreated" :props="props">
                 {{ props.row.dateCreated }}
               </q-td>
-              <q-td key="isActivated" :props="props">
+              <q-td key="isActive" :props="props">
                 <q-toggle
-                  v-model="props.row.isActivated"
-                  :value="props.row.isActivated"
+                  name="djan"
                   checked-icon="check"
                   unchecked-icon="clear"
                   color="secondary"
                   unchecked-color="negative"
+                  @update:model-value="updateStatus(props.row)"
+                  v-model="activatedList[props.row.id]"
                 />
               </q-td>
             </q-tr>
@@ -191,10 +218,13 @@ export default {
       { name: 'id', align: 'left', label: 'ID', field: 'id', sortable: true },
       { name: 'title', align: 'left', label: 'Project Title', field: 'title', sortable: true },
       { name: 'description', align: 'left', label: 'Description', field: 'description', sortable: true },
+      { name: 'budget', align: 'left', label: 'Budget', field: 'budget', sortable: true },
+      { name: 'dateFrom', align: 'left', label: 'From', field: 'dateFrom', sortable: true },
+      { name: 'dateTo', align: 'left', label: 'To', field: 'dateTo', sortable: true },
       { name: 'createdBy', align: 'left', label: 'Created By', field: 'createdBy', sortable: true },
       { name: 'dateCreated', align: 'left', label: 'Date Created', field: 'dateCreated', sortable: true },
       { name: 'avatarFullPath', align: 'right', label: 'Avatar', field: 'avatarFullPath', sortable: true, hidden: true },
-      { name: 'isActivated', align: 'right', label: 'Is Activated', field: 'isActivated', sortable: true, hidden: true }
+      { name: 'isActive', align: 'right', label: 'Is Activated', field: 'isActive' }
     ]
     const timeStamp = Date.now()
     const formattedTimestamp = date.formatDate(
@@ -355,10 +385,14 @@ export default {
     return {
       rows,
       columns,
-      visibleColumns: ref(['id', 'title', 'description', 'avatar', 'dateCreated', 'isActivated']),
+      visibleColumns: ref(['title', 'description', 'budget', 'dateFrom', 'dateTo', 'avatar', 'dateCreated', 'isActive']),
       rowLoading: ref(false),
       loadingSubmit: false,
       isActivated: ref(false),
+      budget: ref(0),
+      dateFrom: ref(''),
+      dateTo: ref(''),
+      activatedList: ref({}),
       breadcrumbs: ref([
         {
           label: 'Back',
@@ -572,11 +606,14 @@ export default {
         avatar: this.projectAvatar,
         avatarFullPath: this.projectAvatarPath,
         id: uid(),
-        isActivated: this.isActivated
+        isActivated: this.isActivated,
+        budget: this.budget,
+        dateFrom: this.dateFrom,
+        dateTo: this.dateTo
       }
       console.log({ payload })
       const updates = {}
-      updates[`projects/${uid()}/`] = payload
+      updates[`projects/${payload.id}/`] = payload
       this.$fbupdate(this.$fbref(this.$fbdb), updates)
         .then(() => {
           // this.loading1 = false
@@ -610,6 +647,9 @@ export default {
       this.desc = null
       this.file = null
       this.isActivated = false
+      this.budget = null
+      this.dateFrom = null
+      this.dateTo = null
     },
     showTextLoading () {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
@@ -643,11 +683,38 @@ export default {
       const results = projectsQuery.val()
       if (!results) return
       this.rows = Object.values(results).map((element, index) => {
-        console.log(element, index)
         element.isActive = element.isActivated || false
+        // The next line is a MAGIC. theres a bug in the framework regarding
+        // qtoggle animation not working inside qTable !!!
+        // I must improvise
+        this.activatedList[element.id] = element.isActive
         return element
       })
       this.rowLoading = false
+    },
+    async updateStatus (val) {
+      delete val.isActive
+      val.isActivated = !val.isActivated
+      const updates = {}
+      updates[`projects/${val.id}/`] = val
+      await this.$fbupdate(this.$fbref(this.$fbdb), updates)
+        .then(() => {
+          this.$q.notify({
+            icon: 'check_circle',
+            color: 'secondary',
+            message: 'Sucessfully Created',
+            position: 'bottom-left'
+          })
+        })
+        .catch((error) => {
+          console.log({ error })
+          this.$q.notify({
+            icon: 'exclamation-circle',
+            color: 'negative',
+            message: 'Error found',
+            position: 'bottom-left'
+          })
+        })
     }
   }
 }
