@@ -30,7 +30,7 @@
       </template>
     </q-input>
   </div>
-  <q-list padding class="scroll" style="height: 66vh">
+  <q-list padding class="scroll">
     <q-item-label header>Todo</q-item-label>
     <div class="q-pa-lg q-gutter-sm" v-if="loadingtodoList">
       <q-skeleton
@@ -120,7 +120,7 @@
         size="lg"
         color="primary"
         text-color="warning"
-        label="Save changes"
+        label="Save"
         class="text-capitalize q-ma-md"
         :loading="loadingSubmit"
       >
