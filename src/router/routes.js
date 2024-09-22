@@ -80,6 +80,33 @@ const routes = [
       }
     ]
   },
+  {
+    path: '/admin',
+    component: () => import('layouts/AdminLayout.vue'),
+    redirect: 'admin-portal',
+    children: [
+      {
+        path: '/admin-portal',
+        component: () => import('src/components/Admin/IndexPage.vue')
+      },
+      {
+        path: '/manage-projects',
+        component: () => import('src/components/Admin/ManageProject.vue')
+      },
+      {
+        path: '/manage-accounts',
+        component: () => import('src/components/Admin/ManageAccount.vue')
+      },
+      {
+        path: '/manage-invites',
+        component: () => import('src/components/Admin/ManageInvites.vue')
+      },
+      {
+        path: '/whats-new',
+        component: () => import('src/components/Admin/WhatsNew.vue')
+      }
+    ]
+  },
 
   // Always leave this as last one,
   // but you can also remove it
