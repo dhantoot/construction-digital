@@ -1,5 +1,5 @@
 <template>
-  <q-layout class="bg-white">
+  <q-layout class="bg-accent">
     <q-header
       elevated
       class="text-warning bg-primary"
