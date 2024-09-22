@@ -11,8 +11,9 @@ export default boot(async (/* { app, router, ... } */) => {
   setCssVar('info', '#45575B')
   setCssVar('positive', '#A3A39B')
 
-  setCssVar('warning', '#E6CAB3')
-  setCssVar('negative', '#82401D')
-
   setCssVar('accent', '#EDE1D2')
+  setCssVar('warning', '#E6CAB3')
+
+  setCssVar('cancel', '#ffa500')
+  setCssVar('negative', '#82401D')
 })
