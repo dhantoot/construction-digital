@@ -129,7 +129,9 @@
     label="Please wait..."
     label-class="text-teal"
     label-style="font-size: 1.1em"
-  />
+  >
+    <q-spinner-bars size="50px" color="secondary" />
+  </q-inner-loading>
 </template>
 <script>
 import { ref } from 'vue'

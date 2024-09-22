@@ -1,5 +1,5 @@
 <template>
-  <div class="q-ma-none scroll" style="height: 66vh">
+  <div class="q-ma-none q-mt-xs scroll" style="height: 66vh">
     <div class="q-pa-xs">
       <q-date
         v-model="date"
@@ -24,7 +24,9 @@
       label="Please wait..."
       label-class="text-teal"
       label-style="font-size: 1.1em"
-    />
+    >
+      <q-spinner-bars size="50px" color="secondary" />
+    </q-inner-loading>
   </div>
 </template>
 <script>

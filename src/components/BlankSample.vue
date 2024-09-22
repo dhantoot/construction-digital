@@ -1,7 +1,9 @@
 <template>
   <q-card class="my-card q-ma-sm">
     <!-- <q-skeleton square /> -->
-    <q-inner-loading :showing="visible" />
+    <q-inner-loading :showing="visible">
+      <q-spinner-bars size="50px" color="secondary" />
+    </q-inner-loading>
   </q-card>
 </template>
 <script>

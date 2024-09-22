@@ -1,7 +1,9 @@
 <template>
   <div style="height: 67.4vh">
     <div class="col text-center justify-center">
-      <q-inner-loading :showing="visible" />
+      <q-inner-loading :showing="visible">
+        <q-spinner-bars size="50px" color="secondary"/>
+      </q-inner-loading>
       <div class="col-4 q-mt-lg q-mb-md">
         <img src="~assets/user.png" width="200px" class="q-pa-xs" />
         <p class="text-h2 q-mb-xl">Register</p>
