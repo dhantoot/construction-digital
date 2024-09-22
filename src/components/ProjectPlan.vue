@@ -5,7 +5,7 @@
         v-model="date"
         :events="events"
         :event-color="(date) => (date[9] % 2 === 0 ? 'teal' : 'orange')"
-        class="full-width no-border-radius bg-accent"
+        class="full-width bg-accent"
         text-color="warning"
         flat
       />
