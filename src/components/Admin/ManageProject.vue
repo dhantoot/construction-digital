@@ -75,6 +75,13 @@
               :disable="deviceIsReady"
             />
           </div>
+          <q-toggle
+            v-model="isActivated"
+            checked-icon="check"
+            color="green"
+            unchecked-icon="clear"
+            label="Set as activated upon submit"
+          />
         </q-card-section>
         <q-card-actions align="right" class="q-pr-md">
           <q-btn
@@ -82,6 +89,7 @@
             class="text-capitalize bg-cancel"
             label="Reset"
             :disable="loadingSubmit"
+            @click="formReset"
           >
           </q-btn>
           <q-btn
@@ -347,9 +355,10 @@ export default {
     return {
       rows,
       columns,
-      visibleColumns: ref(['id', 'title', 'description', 'createdBy', 'avatar', 'dateCreated', 'isActivated']),
+      visibleColumns: ref(['id', 'title', 'description', 'avatar', 'dateCreated', 'isActivated']),
       rowLoading: ref(false),
       loadingSubmit: false,
+      isActivated: ref(false),
       breadcrumbs: ref([
         {
           label: 'Back',
@@ -563,7 +572,7 @@ export default {
         avatar: this.projectAvatar,
         avatarFullPath: this.projectAvatarPath,
         id: uid(),
-        isActivated: false
+        isActivated: this.isActivated
       }
       console.log({ payload })
       const updates = {}
@@ -575,9 +584,11 @@ export default {
             icon: 'check_circle',
             color: 'secondary',
             message: 'Sucessfully Created',
-            position: 'top-right'
+            position: 'bottom-left'
           })
           this.loadingSubmit = false
+          this.formReset()
+          this.fetchProjects()
         })
         .catch((error) => {
           console.log({ error })
@@ -586,10 +597,19 @@ export default {
             icon: 'exclamation-circle',
             color: 'negative',
             message: 'Error found',
-            position: 'top-right'
+            position: 'bottom-left'
           })
           this.loadingSubmit = false
+          this.formReset()
+          this.fetchProjects()
         })
+    },
+    async formReset () {
+      this.model = null
+      this.text = null
+      this.desc = null
+      this.file = null
+      this.isActivated = false
     },
     showTextLoading () {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
