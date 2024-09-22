@@ -44,7 +44,9 @@
     </q-item>
   </q-list>
   <!-- <q-skeleton square /> -->
-  <q-inner-loading :showing="visible" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em" />
+  <q-inner-loading :showing="visible" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em">
+    <q-spinner-bars size="50px" color="secondary" />
+  </q-inner-loading>
   <q-page-sticky position="bottom-right" :offset="[18, 18]">
     <q-btn fab icon="add" color="grey-1" class="text-green" @click="this.$router.push({ path: '/new-project' })" />
   </q-page-sticky>

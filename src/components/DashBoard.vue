@@ -1,5 +1,5 @@
 <template>
-  <q-card class="my-card q-mt-sm q-ml-xs q-mr-xs bg-accent">
+  <q-card flat class="q-mt-sm q-ml-xs q-mr-xs bg-accent">
     <q-card-actions class="bg-primary text-warning">
       <label class="text-bold">Submitted Expenses</label>
       <q-space />
@@ -91,10 +91,12 @@
         </q-card-section>
       </div>
     </q-slide-transition>
-    <q-inner-loading :showing="visible" />
+    <q-inner-loading :showing="visible">
+      <q-spinner-bars size="50px" color="secondary" />
+    </q-inner-loading>
   </q-card>
 
-  <q-card class="my-card q-mt-sm q-ml-xs q-mr-xs bg-accent">
+  <q-card flat class="q-mt-sm q-ml-xs q-mr-xs bg-accent">
     <q-card-actions class="bg-primary text-warning">
       <label class="text-bold">Open Agreements</label>
       <q-space />
@@ -151,7 +153,9 @@
         </q-card-section>
       </div>
     </q-slide-transition>
-    <q-inner-loading :showing="visible2" />
+    <q-inner-loading :showing="visible2">
+      <q-spinner-bars size="50px" color="secondary" />
+    </q-inner-loading>
   </q-card>
 </template>
 <script>
