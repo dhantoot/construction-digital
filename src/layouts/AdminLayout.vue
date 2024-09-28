@@ -11,7 +11,7 @@
           dense
           flat
           :ripple="false"
-          :icon="fabGithub"
+          icon="lab la-jedi-order"
           size="19px"
           color="warning"
           class="q-mr-sm"
@@ -33,12 +33,15 @@
           v-model="text"
           :options="filteredOptions"
           @filter="filter"
-          style="width: 300px"
+          :style="{
+            'max-width': $q.screen.gt.sm ? '300px' : '30vw'
+          }"
         >
           <template v-slot:append>
             <img
               src="https://cdn.quasar.dev/img/layout-gallery/img-github-search-key-slash.svg"
             />
+            <!-- <icon name="las la-jedi-order"/> -->
           </template>
 
           <template v-slot:no-option>
@@ -81,8 +84,8 @@
           class="GL__toolbar-link q-ml-xs q-gutter-md text-body2 text-weight-bold row items-center no-wrap"
         >
           <a href="javascript:void(0)" class="text-warning" @click="this.$router.push('/manage-projects')"> Projects </a>
-          <a href="javascript:void(0)" class="text-warning" @click="this.$router.push('/manage-accounts')"> Manage accounts </a>
           <a href="javascript:void(0)" class="text-warning" @click="this.$router.push('/manage-invites')"> Invites </a>
+          <a href="javascript:void(0)" class="text-warning" @click="this.$router.push('/manage-accounts')"> Manage accounts </a>
           <a href="javascript:void(0)" class="text-warning" @click="this.$router.push('/whats-new')"> Explore </a>
         </div>
 
@@ -97,9 +100,9 @@
             size="sm"
             icon="notifications"
           />
-          <q-btn v-if="$q.screen.gt.xs" dense flat>
+          <q-btn flat>
             <div class="row items-center no-wrap">
-              <q-icon name="add" size="20px" />
+              <q-icon name="las la-bars" size="20px" />
               <q-icon
                 name="arrow_drop_down"
                 size="16px"
@@ -107,36 +110,33 @@
               />
             </div>
             <q-menu auto-close>
-              <q-list dense style="min-width: 100px">
-                <q-item clickable class="GL__menu-link">
-                  <q-item-section>New repository</q-item-section>
+              <q-list dense style="min-width: 200px">
+                <q-item clickable class="GL__menu-link" to="/manage-projects">
+                  <q-item-section>Projects</q-item-section>
                 </q-item>
-                <q-item clickable class="GL__menu-link">
-                  <q-item-section>Import repository</q-item-section>
+                <q-item clickable class="GL__menu-link" to="/manage-invites">
+                  <q-item-section>Invites</q-item-section>
                 </q-item>
-                <q-item clickable class="GL__menu-link">
-                  <q-item-section>New gist</q-item-section>
-                </q-item>
-                <q-item clickable class="GL__menu-link">
-                  <q-item-section>New organization</q-item-section>
+                <q-item clickable class="GL__menu-link" to="/manage-accounts">
+                  <q-item-section>Accounts</q-item-section>
                 </q-item>
                 <q-separator />
-                <q-item-label header>This repository</q-item-label>
-                <q-item clickable class="GL__menu-link">
-                  <q-item-section>New issue</q-item-section>
+                <q-item-label header>Explore</q-item-label>
+                <q-item clickable class="GL__menu-link" to="/whats-new">
+                  <q-item-section>Feature </q-item-section>
                 </q-item>
               </q-list>
             </q-menu>
           </q-btn>
 
-          <q-btn dense flat no-wrap>
+          <q-btn flat no-wrap>
             <q-avatar rounded size="20px">
               <img src="https://cdn.quasar.dev/img/avatar3.jpg" />
             </q-avatar>
             <q-icon name="arrow_drop_down" size="16px" />
 
             <q-menu auto-close>
-              <q-list dense>
+              <q-list dense style="min-width: 200px">
                 <q-item class="GL__menu-link-signed-in">
                   <q-item-section>
                     <div>Signed in as <strong>Mary</strong></div>
@@ -257,6 +257,13 @@ export default {
 }
 </script>
 
+<style lang="scss">
+body.screen--xs {
+  .my-div {
+    color: #000;
+  }
+}
+</style>
 <style lang="sass">
 .GL
   &__select-GL__menu-link
