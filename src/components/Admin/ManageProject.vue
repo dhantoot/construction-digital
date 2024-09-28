@@ -2,7 +2,7 @@
   <h5 class="text-center">Manage your projects here</h5>
   <div class="row">
     <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
-      <q-card class="q-ma-sm">
+      <q-card class="q-ma-sm adminCard">
         <q-card-section>
           <div class="text-h6">New Project</div>
           <div class="text-subtitle2">add a new project here</div>
@@ -100,6 +100,16 @@
           <q-input dense v-model="dateTo" filled type="date" label="Date to" />
         </q-card-section>
         <q-card-actions align="right" class="q-pr-md">
+          <!-- <q-btn
+            flat
+            class="text-capitalize bg-cancel"
+            label="Hello"
+            size="lg">
+          </q-btn> -->
+          <KsBtn
+            :label="'Submit'"
+            :fn="uploadFile"
+          />
           <q-btn
             flat
             class="text-capitalize bg-cancel"
@@ -128,7 +138,7 @@
       </q-card>
     </div>
     <div class="col-lg-9 col-md-8 col-sm-12 col-xs-12">
-      <q-card class="q-ma-sm">
+      <q-card class="q-ma-sm adminCard">
         <q-card-section>
           <div class="text-h6">List of Projects</div>
           <div class="text-subtitle2 text-right">
@@ -204,14 +214,18 @@
 </template>
 <script>
 import { ref } from 'vue'
-import { useQuasar, LocalStorage, uid, date } from 'quasar'
+import { useQuasar, LocalStorage, uid, date, is } from 'quasar'
 const stringOptions = ['Google', 'Facebook', 'Twitter', 'Apple', 'Oracle']
+import KsBtn from 'src/components/Common/Button/KsBtn.vue'
 
 // Don't forget to specify which animations
 // you are using in quasar.config file > animations.
 // Alternatively, if using UMD, load animate.css from CDN.
 export default {
   title: 'ProjectList',
+  components: {
+    KsBtn
+  },
   setup () {
     const rows = []
     const columns = [
@@ -612,6 +626,8 @@ export default {
         dateTo: this.dateTo
       }
       console.log({ payload })
+      console.log('validate date', is.date(this.dateFrom))
+
       const updates = {}
       updates[`projects/${payload.id}/`] = payload
       this.$fbupdate(this.$fbref(this.$fbdb), updates)
@@ -682,6 +698,7 @@ export default {
       const projectsQuery = await this.$fbget(projectsTable)
       const results = projectsQuery.val()
       if (!results) return
+      console.log('results', results)
       this.rows = Object.values(results).map((element, index) => {
         element.isActive = element.isActivated || false
         // The next line is a MAGIC. theres a bug in the framework regarding
@@ -719,3 +736,8 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.adminCard {
+  min-height: 761px;
+}
+</style>
