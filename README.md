@@ -89,3 +89,6 @@ plugin add
 
 ## ESLINT RULES 
 > https://eslint.org/docs/latest/rules/space-after-function-name#rule-details
+
+## Animation
+> https://animate.style/

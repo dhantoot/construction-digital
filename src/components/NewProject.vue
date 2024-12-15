@@ -11,7 +11,7 @@
               :icon="icon"
               :to="route"
               class="clickable"
-            />
+           />
           </q-breadcrumbs>
         </div>
         <div class="col text-center text-weight-bold">Add Project</div>
@@ -34,14 +34,14 @@
         </q-item>
       </template>
     </q-select>
-    <q-input filled v-model="text" label="Name" class="bg-grey-2" />
+    <q-input filled v-model="text" label="Name" class="bg-grey-2"/>
     <div class="q-pa-none" style="max-width: 98%">
       <q-input
         placeholder="Description..."
         v-model="desc"
         filled
         type="textarea"
-      />
+     />
     </div>
 
     <q-tabs v-model="tab" class="bg-white-4" dense align="justify">
@@ -50,13 +50,13 @@
         name="upload"
         icon="las la-upload"
         label="Upload"
-      />
+     />
       <q-tab
         class="text-cyan text-capitalize"
         name="capture"
         icon="las la-camera"
         label="Capture"
-      />
+     />
     </q-tabs>
     <div class="col-24" v-if="tab === 'upload'">
       <q-file
@@ -69,7 +69,7 @@
         accept=".jpg, image/*"
       >
         <template v-slot:prepend>
-          <q-icon name="cloud_upload" color="orange" />
+          <q-icon name="cloud_upload" color="orange"/>
         </template>
       </q-file>
     </div>
@@ -84,7 +84,7 @@
         label="Open camera"
         @click="captureImage"
         :disable="!deviceIsReady"
-      />
+     />
     </div>
 
     <!-- <q-list bordered separator>
@@ -109,7 +109,7 @@
         fit="cover"
         src="imageSrc"
         :ratio="16 / 9"
-      />
+     />
       <div class="caption" v-show="!btnToggle">imageSrc: {{ imageSrc }}</div>
       <div class="caption" v-show="!btnToggle">data: {{ data }}</div>
     </div>
@@ -121,7 +121,7 @@
           size="lg"
           label="FileSystem 1"
           @click="startProject2"
-        />
+       />
       </div>
       <div class="col q-ml-xs">
         <q-btn
@@ -130,7 +130,7 @@
           size="lg"
           label="FileSystem 2"
           @click="startProject"
-        />
+       />
       </div>
     </div>
   </div>
@@ -376,14 +376,13 @@ export default {
     console.log('beforeMount')
   },
   mounted () {
-    console.log('mounted', this.$options)
-    this.$emit('showHeader', false, [
-      {
-        label: 'Back',
-        icon: 'las la-chevron-left',
-        route: '/projects'
-      }
-    ])
+    // this.$emit('showHeader', false, [
+    //   {
+    //     label: 'Back',
+    //     icon: 'las la-chevron-left',
+    //     route: '/projects'
+    //   }
+    // ])
     this.showTextLoading()
     // this.currentUser = LocalStorage.getItem('currentUser')
     // console.log('this.currentUser', this.currentUser)
@@ -402,13 +401,6 @@ export default {
   },
   unmounted () {
     console.log('unmounted')
-  },
-  watch: {
-    visible (newVal, oldVal) {
-      if (newVal === true) {
-        console.log(`visible is updated from ${oldVal} to ${newVal}`)
-      }
-    }
   },
   methods: {
     async startProject () {

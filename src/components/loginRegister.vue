@@ -5,11 +5,11 @@
         <q-spinner-bars size="50px" color="secondary"/>
       </q-inner-loading>
       <div class="col-4 q-mt-lg q-mb-md">
-        <img src="~assets/user.png" width="200px" class="q-pa-xs" />
+        <img src="~assets/user.png" width="200px" class="q-pa-xs"/>
         <p class="text-h2 q-mb-xl">Register</p>
       </div>
       <div class="col-2 q-mt-md q-mb-sm">
-        <hr class="text-white q-ml-xl q-mr-xl" />
+        <hr class="text-white q-ml-xl q-mr-xl"/>
       </div>
       <div class="col-6">
         <p class="q-mt-xs">Choose a role to register</p>
@@ -20,19 +20,19 @@
             unchecked-icon="panorama_fish_eye"
             val="contructor"
             label="Constructor"
-          />
+         />
           <q-radio
             v-model="role"
             checked-icon="task_alt"
             unchecked-icon="panorama_fish_eye"
             val="home owner"
             label="Home Owner"
-          />
+         />
         </div>
       </div>
       <div class="col-2 q-pa-xl">
         <q-input
-          dense
+          :dense="true"
           clearable
           class="col-12"
           ref="regemailRef"
@@ -43,13 +43,13 @@
           :rules="regemailRules"
         >
           <template v-slot:prepend>
-            <q-icon name="email" />
+            <q-icon name="email"/>
           </template>
         </q-input>
         <q-input
           :autocomplete="false"
           :type="isPwd1 ? 'password' : 'text'"
-          dense
+          :dense="true"
           ref="regpasswordRef"
           outline
           v-model="regpassword"
@@ -58,20 +58,20 @@
           :rules="regpasswordRules"
         >
           <template v-slot:prepend>
-            <q-icon name="lock" />
+            <q-icon name="lock"/>
           </template>
           <template v-slot:append>
             <q-icon
               :name="isPwd1 ? 'visibility_off' : 'visibility'"
               class="cursor-pointer"
               @click="isPwd1 = !isPwd1"
-            />
+           />
           </template>
         </q-input>
         <q-input
           autocomplete="off"
           :type="isPwd2 ? 'password' : 'text'"
-          dense
+          :dense="true"
           ref="regverifiedpassRef"
           outline
           v-model="regverifiedpass"
@@ -81,14 +81,14 @@
           v-on:keyup.enter="login"
         >
           <template v-slot:prepend>
-            <q-icon name="lock" />
+            <q-icon name="lock"/>
           </template>
           <template v-slot:append>
             <q-icon
               :name="isPwd2 ? 'visibility_off' : 'visibility'"
               class="cursor-pointer"
               @click="isPwd2 = !isPwd2"
-            />
+           />
           </template>
         </q-input>
         <q-btn
@@ -99,7 +99,7 @@
           flat
           class="q-pl-none q-ml-sm text-capitalize pull-right text-weight-light"
           style="float: left"
-        />
+       />
         <q-btn
           @click="$router.push('/login')"
           label="Back to Login"
@@ -107,7 +107,7 @@
           flat
           class="q-pr-none text-capitalize pull-right text-weight-light"
           style="float: right"
-        />
+       />
       </div>
       <div class="col-2 q-pa-xl">
         <q-btn
@@ -115,7 +115,7 @@
           color="primary"
           label="Register"
           class="text-capitalize full-width q-mb-md"
-        />
+       />
       </div>
     </div>
   </div>
@@ -208,10 +208,8 @@ export default {
     console.log('beforeMount')
   },
   mounted () {
-    console.log('mounted', this.$options)
     this.showTextLoading()
-    console.log('emitting true to main layout..')
-    this.$emit('showHeader', false, [])
+    // this.$emit('showHeader', false, [])
   },
   beforeUpdate () {
     console.log('beforeUpdate')
@@ -224,15 +222,6 @@ export default {
   },
   unmounted () {
     console.log('unmounted')
-  },
-  watch: {
-    visible (newVal, oldVal) {
-      if (newVal === true) {
-        console.log(`visible is updated from ${oldVal} to ${newVal}`)
-        this.$emit('showHeader', false, [])
-        console.log('Emit should be done!')
-      }
-    }
   },
   methods: {
     showTextLoading () {

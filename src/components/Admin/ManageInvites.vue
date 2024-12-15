@@ -4,37 +4,6 @@
     <div
       class="column justify-start col-lg-6 col-md-6 col-sm-12 col-xs-12 q-gutter-y-md"
     >
-      <label> Select email to send invitation </label>
-      <div class="row q-gutter-x-md">
-        <q-select
-          dense
-          filled
-          v-model="model"
-          use-input
-          use-chips
-          multiple
-          input-debounce="0"
-          @new-value="createValue"
-          :options="filterOptions"
-          @filter="filterFn"
-          style="width: 85%"
-          clearable
-          class
-        />
-        <q-btn
-          padding="xs lg"
-          color="secondary"
-          icon="las la-paper-plane"
-          style="height: 40px"
-          :class="{
-            'q-mt-sm': $q.screen.lt.lg
-          }"
-        />
-      </div>
-    </div>
-    <div
-      class="column justify-start col-lg-6 col-md-6 col-sm-12 col-xs-12 q-gutter-y-md"
-    >
       <label
         :class="{
           'q-ml-md': true
@@ -53,31 +22,63 @@
           val="Architect"
           label="Architect"
           color="teal"
-        />
+       />
         <q-radio
           v-model="userTitle"
           val="Engineer"
           label="Engineer"
           color="orange"
-        />
+       />
         <q-radio
           v-model="userTitle"
           val="Foreman"
           label="Foreman"
           color="red"
-        />
+       />
         <q-radio
           v-model="userTitle"
           val="Leadman"
           label="Leadman"
           color="cyan"
-        />
+       />
         <q-radio
           v-model="userTitle"
           val="Worker"
           label="Worker"
           color="secondary"
-        />
+       />
+      </div>
+    </div>
+    <div
+      class="column justify-start col-lg-6 col-md-6 col-sm-12 col-xs-12 q-gutter-y-md"
+    >
+      <label> Select email to send invitation </label>
+      <div class="row q-gutter-x-md">
+        <q-select
+          :dense="true"
+          filled
+          v-model="model"
+          use-input
+          use-chips
+          multiple
+          input-debounce="0"
+          @new-value="createValue"
+          :options="filterOptions"
+          @filter="filterFn"
+          style="width: 85%"
+          clearable
+          option-value="id"
+          option-label="email"
+       />
+        <q-btn
+          padding="xs lg"
+          color="secondary"
+          icon="las la-paper-plane"
+          style="height: 40px"
+          :class="{
+            'q-mt-sm': $q.screen.lt.lg
+          }"
+       />
       </div>
     </div>
   </div>
@@ -99,7 +100,7 @@
       >
         <template v-slot:loading>
           <q-inner-loading :showing="visible">
-            <q-spinner-bars size="50px" color="secondary" />
+            <q-spinner-bars size="50px" color="secondary"/>
           </q-inner-loading>
         </template>
         <template v-slot:body="props">
@@ -128,7 +129,7 @@
                   :icon="getStatusIcon(props.row.status)"
                   :color="getStatusColor(props.row.status)"
                   text-color="white"
-                />
+               />
                 {{ props.row.status }}
               </q-chip>
             </q-td>
@@ -138,7 +139,7 @@
             <q-td key="resend" :props="props">
               <q-btn
                 padding="xs md"
-                dense
+                :dense="true"
                 v-if="props.row.status === 'Pending'"
                 rounded
                 align="between"
@@ -147,26 +148,18 @@
                 color="cancel"
                 label="Resend invite"
                 @click="sendEmail"
-              />
+             />
             </q-td>
           </q-tr>
         </template>
       </q-table>
-      <!-- <q-skeleton square /> -->
+      <!-- <q-skeleton square/> -->
     </q-card>
   </div>
 </template>
 <script>
 import { ref } from 'vue'
 import { uid, useQuasar } from 'quasar'
-// import { Email } from 'assets/smtp/smtp.js'
-const stringOptions = [
-  'dan.tagailo@gmail.com',
-  'tagailo.danvincent@gmail.com',
-  'johndoe.yopmail.com',
-  'janedoe@gmail.com',
-  'dyan@yahoo.com'
-]
 
 // Don't forget to specify which animations
 // you are using in quasar.config file > animations.
@@ -177,7 +170,8 @@ export default {
     const visible = ref(false)
     const question = ref('')
     const model = ref(null)
-    const filterOptions = ref(stringOptions)
+    const stringOptions = ref([])
+    const filterOptions = ref({})
     const rows = []
     const columns = [
       { name: 'id', align: 'left', label: 'ID', field: 'id', sortable: true },
@@ -264,8 +258,8 @@ export default {
             .map((v) => v.trim())
             .filter((v) => v.length > 0)
             .forEach((v) => {
-              if (stringOptions.includes(v) === false) {
-                stringOptions.push(v)
+              if (stringOptions.value.includes(v) === false) {
+                stringOptions.value.push(v)
               }
               if (modelValue.includes(v) === false) {
                 modelValue.push(v)
@@ -275,19 +269,6 @@ export default {
           done(null)
           model.value = modelValue
         }
-      },
-
-      filterFn (val, update) {
-        update(() => {
-          if (val === '') {
-            filterOptions.value = stringOptions
-          } else {
-            const needle = val.toLowerCase()
-            filterOptions.value = stringOptions.filter(
-              (v) => v.toLowerCase().indexOf(needle) > -1
-            )
-          }
-        })
       }
     }
   },
@@ -311,8 +292,24 @@ export default {
     this.fetchProjects()
   },
   mounted () {
-    console.log('mounted', this.$options)
     this.showTextLoading()
+
+    this.stringOptions = [{
+      id: 1,
+      email: 'dan.tagailo@gmail.com'
+    }, {
+      id: 1,
+      email: 'dagailo.danvincent@gmail.com'
+    }, {
+      id: 1,
+      email: 'johndoe.yopmail.com'
+    }, {
+      id: 1,
+      email: 'janedoe@gmail.com'
+    }, {
+      id: 1,
+      email: 'dyan@yahoo.com'
+    }]
   },
   beforeUpdate () {
     console.log('beforeUpdate')
@@ -326,14 +323,19 @@ export default {
   unmounted () {
     console.log('unmounted')
   },
-  watch: {
-    visible (newVal, oldVal) {
-      if (newVal === true) {
-        console.log(`visible is updated from ${oldVal} to ${newVal}`)
-      }
-    }
-  },
   methods: {
+    filterFn (val, update) {
+      update(() => {
+        if (val === '') {
+          this.filterOptions = this.stringOptions
+        } else {
+          const needle = val.toLowerCase()
+          this.filterOptions = this.stringOptions.filter(
+            (v) => v.email.toLowerCase().indexOf(needle) > -1
+          )
+        }
+      })
+    },
     sendEmail () {
       // Email.send({
       //   Host: 'smtp.elasticemail.com',

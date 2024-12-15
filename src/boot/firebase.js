@@ -23,7 +23,18 @@ import {
   uploadString,
   listAll
 } from 'firebase/storage'
+import {} from 'firebase/firestore'
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth'
+const {
+  FIREBASE_API_KEY,
+  FIREBASE_AUTH_DOMAIN,
+  FIREBASE_DATABASE_URL,
+  FIREBASE_PROJECT_ID,
+  FIREBASE_STORAGE_BUCKET,
+  FIREBASE_MESSAGING_SENDER_ID,
+  FIREBASE_APP_ID,
+  FIREBASE_MEASUREMENT_ID
+} = process.env
 // createUserWithEmailAndPassword
 
 // "async" is optional;
@@ -31,15 +42,14 @@ import { getAuth, sendPasswordResetEmail } from 'firebase/auth'
 export default boot(async ({ app } /* { app, router, ... } */) => {
   // something to do
   const firebaseConfig = {
-    apiKey: 'AIzaSyBXkBtP1S7AYU4fd7sFV0hcy-LDmrghkcU',
-    authDomain: 'hofstee-app.firebaseapp.com',
-    databaseURL:
-      'https://hofstee-app-default-rtdb.asia-southeast1.firebasedatabase.app',
-    projectId: 'hofstee-app',
-    storageBucket: 'hofstee-app.appspot.com',
-    messagingSenderId: '478665878321',
-    appId: '1:478665878321:web:4caa9c15ba4a9e99955e10',
-    measurementId: 'G-7LP3N62QZ8'
+    apiKey: FIREBASE_API_KEY,
+    authDomain: FIREBASE_AUTH_DOMAIN,
+    databaseURL: FIREBASE_DATABASE_URL,
+    projectId: FIREBASE_PROJECT_ID,
+    storageBucket: FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: FIREBASE_MESSAGING_SENDER_ID,
+    appId: FIREBASE_APP_ID,
+    measurementId: FIREBASE_MEASUREMENT_ID
   }
   const firebaseApp = initializeApp(firebaseConfig)
   const auth = getAuth()

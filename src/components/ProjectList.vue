@@ -1,56 +1,46 @@
 <template>
-  <div v-if="false" class="flex justify-between q-pa-xs bg-primary">
-    <q-btn flat icon="las la-arrow-left" class="text-warning q-ma-xs"/>
+  <div class="flex justify-between q-pa-xs bg-primary">
     <q-input
+      class="full-width q-px-xs q-pt-sm"
       dark
-      standout="bg-white"
-      input-class="text-right text-primary"
+      standout="bg-transparent"
+      input-class="text-right text-accent"
       v-model="text"
-      :dense="dense"
-      :class="{
-        'q-ma-xs': true
-      }"
-      :style="{
-        width: '75%'
-      }"
-      bordered: false
+      :dense="true"
     >
       <template v-slot:append>
         <q-icon v-if="text === ''" name="las la-search" :class="{
           'text-warning': text === ''
         }"/>
-        <q-icon v-else name="clear" class="cursor-pointer text-primary" @click="text = ''" />
+        <q-icon v-if="!text" name="clear" class="cursor-pointer text-accent" @click="text = ''"/>
       </template>
     </q-input>
   </div>
-  <!-- <q-card class="my-card q-ma-sm"> -->
-  <q-list bordered separator class="scroll bg-accent" style="height: 100vh">
+  <q-list bordered separator class="scroll bg-transparent" style="height: 100vh;">
     <q-item clickable v-ripple @click='$router.push({ path: `/detail` })' v-for="item in arr" :key="item">
       <q-item-section thumbnail>
         <img class="q-ml-sm rounded-borders" :src="`${url}${item}`">
       </q-item-section>
 
       <q-item-section>
-        <q-item-label class="text-bold text-primary">{{ names[item.toString().split('.')[1].slice(-2)] }} Residence</q-item-label>
-        <q-item-label caption lines="2" class="text-secondary">Secondary line text. Lorem ipsum dolor sit amet, consectetur adipiscit
+        <q-item-label class="text-bold text-accent">{{ names[item.toString().split('.')[1].slice(-2)] }} Residence</q-item-label>
+        <q-item-label caption lines="2" class="text-warning">Secondary line text. Lorem ipsum dolor sit amet, consectetur adipiscit
           elit.</q-item-label>
       </q-item-section>
 
       <q-item-section side top>
         <q-item-label caption class="text-info">5 min ago</q-item-label>
-        <q-icon name="star" color="negative" />
+        <q-icon name="star" color="negative"/>
       </q-item-section>
 
     </q-item>
   </q-list>
-  <!-- <q-skeleton square /> -->
   <q-inner-loading :showing="visible" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em">
-    <q-spinner-bars size="50px" color="secondary" />
+    <q-spinner-bars size="50px" color="secondary"/>
   </q-inner-loading>
   <q-page-sticky position="bottom-right" :offset="[18, 18]">
-    <q-btn fab icon="add" color="grey-1" class="text-green" @click="this.$router.push({ path: '/new-project' })" />
+    <q-btn fab icon="add" color="grey-1" class="text-green" @click="this.$router.push({ path: '/new-project' })"/>
   </q-page-sticky>
-  <!-- </q-card> -->
 </template>
 <script>
 import { ref } from 'vue'
@@ -191,7 +181,7 @@ export default {
   },
   mounted () {
     console.log('mounted..', this.$options)
-    this.$emit('showHeader', true, [])
+    // this.$emit('showHeader', true, [])
     this.showTextLoading()
     this.initFunction()
   },
@@ -221,13 +211,6 @@ export default {
   },
   deactivated () {
     console.log('deactivated')
-  },
-  watch: {
-    visible (newVal, oldVal) {
-      if (newVal === true) {
-        console.log(`visible is updated from ${oldVal} to ${newVal}`)
-      }
-    }
   },
   methods: {
     showTextLoading () {

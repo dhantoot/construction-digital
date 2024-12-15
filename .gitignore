@@ -40,3 +40,4 @@ my-release-key.keystore
 .vscode
 src-capacitor
 
+.env

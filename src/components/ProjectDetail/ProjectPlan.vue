@@ -1,13 +1,13 @@
 <template>
-  <div class="q-ma-none scroll" style="height: 66vh">
+  <div class="q-ma-none">
     <div class="q-pa-xs">
       <q-date
         v-model="date"
         :events="events"
         :event-color="(date) => (date[9] % 2 === 0 ? 'teal' : 'orange')"
-        class="full-width bg-accent text-primary"
+        class="full-width bg-transparent text-accent"
         :flat="true"
-      />
+     />
     </div>
     <q-inner-loading
       :showing="visible"
@@ -19,12 +19,12 @@
     </q-inner-loading>
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
       <q-btn
-        dense
+        :dense="true"
         fab
         icon="las la-calendar-plus"
         color="grey-1"
         class="text-green"
-      />
+     />
     </q-page-sticky>
   </div>
 </template>
@@ -88,7 +88,6 @@ export default {
     console.log('beforeMount')
   },
   mounted () {
-    console.log('mounted', this.$options)
     this.showTextLoading()
   },
   beforeUpdate () {
@@ -102,13 +101,6 @@ export default {
   },
   unmounted () {
     console.log('unmounted')
-  },
-  watch: {
-    visible (newVal, oldVal) {
-      if (newVal === true) {
-        console.log(`visible is updated from ${oldVal} to ${newVal}`)
-      }
-    }
   },
   methods: {
     showTextLoading () {

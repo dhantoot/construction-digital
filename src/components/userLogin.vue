@@ -1,14 +1,14 @@
 <template>
-  <div class="col text-center justify-center">
+  <div class="col text-center justify-center login-form">
     <q-inner-loading :showing="visible">
-      <q-spinner-bars size="50px" color="secondary" />
+      <q-spinner-bars size="50px" color="secondary"/>
     </q-inner-loading>
-    <div class="col-4 q-mt-lg q-mb-md">
-      <q-icon name="las la-user-circle" size="100px" class="q-pa-xs" />
+    <div class="col-4 q-mt-lg q-mb-md bg-red">
+      <q-icon name="las la-user-circle" size="100px" class="q-pa-xs"/>
       <p class="text-h2 q-mb-xl">Login</p>
     </div>
     <div class="col-2 q-mt-xl q-mb-md">
-      <hr class="text-white q-ml-xl q-mr-xl" />
+      <hr class="text-white q-ml-xl q-mr-xl"/>
     </div>
     <div class="col-6 q-mt-lg">
       <p class="q-mt-xl">Choose a role to login</p>
@@ -19,34 +19,20 @@
           unchecked-icon="panorama_fish_eye"
           val="contructor"
           label="Constructor"
-        />
+       />
         <q-radio
           v-model="role"
           checked-icon="task_alt"
           unchecked-icon="panorama_fish_eye"
           val="home owner"
           label="Home Owner"
-        />
+       />
       </div>
     </div>
     <div class="col-2 q-mt-sm q-pa-xl">
-      <!-- <q-input
-            outline
-            dense
-            clearable
-            ref="usernameRef"
-            v-model="username"
-            label="Username"
-            lazy-rules
-            :rules="usernameRules"
-          >
-            <template v-slot:prepend>
-              <q-icon name="perm_identity"/>
-            </template>
-</q-input> -->
       <q-input
         outline
-        dense
+        :dense="true"
         clearable
         ref="emailRef"
         v-model="email"
@@ -56,12 +42,12 @@
         v-on:keyup.enter="login"
       >
         <template v-slot:prepend>
-          <q-icon name="perm_identity" />
+          <q-icon name="perm_identity"/>
         </template>
       </q-input>
       <q-input
         :type="isPwd ? 'password' : 'text'"
-        dense
+        :dense="true"
         ref="passwordRef"
         outline
         v-model="password"
@@ -71,14 +57,14 @@
         v-on:keyup.enter="login"
       >
         <template v-slot:prepend>
-          <q-icon name="lock" />
+          <q-icon name="lock"/>
         </template>
         <template v-slot:append>
           <q-icon
             :name="isPwd ? 'visibility_off' : 'visibility'"
             class="cursor-pointer"
             @click="isPwd = !isPwd"
-          />
+         />
         </template>
       </q-input>
       <q-btn
@@ -89,7 +75,7 @@
         flat
         class="q-pl-none q-ml-sm text-capitalize pull-right text-weight-light"
         style="float: left"
-      />
+     />
       <q-btn
         @click="register"
         label="Register"
@@ -97,7 +83,7 @@
         flat
         class="q-pr-none text-capitalize pull-right text-weight-light"
         style="float: right"
-      />
+     />
     </div>
     <div class="col-2 q-mt-xs q-pa-xl">
       <q-btn
@@ -110,7 +96,7 @@
         @click="login"
       >
         <template v-slot:loading>
-          <q-spinner-facebook class="on-center" />
+          <q-spinner-facebook class="on-center"/>
         </template>
       </q-btn>
     </div>
@@ -119,6 +105,7 @@
 <script>
 import { ref } from 'vue'
 import { LocalStorage, SessionStorage } from 'quasar'
+import { useMainStore } from 'stores/main'
 import {
   getAuth,
   /* createUserWithEmailAndPassword, */ signInWithEmailAndPassword
@@ -141,8 +128,10 @@ export default {
     const emailRef = ref(null)
     const password = ref('12345678')
     const passwordRef = ref(null)
+    const mainStore = useMainStore()
 
     return {
+      mainStore,
       visible,
       loading,
       question,
@@ -188,10 +177,9 @@ export default {
     console.log('beforeMount')
   },
   mounted () {
-    console.log('mounted', this.$options)
     this.showTextLoading()
-    console.log('emitting true to main layout..')
-    this.$emit('showHeader', false, [])
+    // this.$emit('showHeader', false, [])
+    this.mainStore.showNav = false
   },
   beforeUpdate () {
     console.log('beforeUpdate')
@@ -204,15 +192,6 @@ export default {
   },
   unmounted () {
     console.log('unmounted')
-  },
-  watch: {
-    visible (newVal, oldVal) {
-      if (newVal === true) {
-        console.log(`visible is updated from ${oldVal} to ${newVal}`)
-        this.$emit('showHeader', false, [])
-        console.log('Emit should be done!')
-      }
-    }
   },
   methods: {
     showTextLoading () {
@@ -250,6 +229,7 @@ export default {
           LocalStorage.set('authUser', user)
           SessionStorage.set('currentUser', currentDbUser)
           SessionStorage.set('authUser', user)
+          this.mainStore.showNav = true
           this.loading = false
           this.$router.push('/projects')
         })
@@ -280,3 +260,9 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.login-form {
+  max-width: 400px;
+  margin: 0 auto;
+}
+</style>

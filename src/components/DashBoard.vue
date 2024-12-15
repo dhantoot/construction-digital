@@ -1,23 +1,23 @@
 <template>
-  <q-card flat class="q-mt-sm q-ml-xs q-mr-xs bg-accent">
+  <q-card flat bordered class="q-mt-sm q-ml-xs q-mr-xs bg-transparent">
     <q-card-actions class="bg-primary text-warning">
       <label class="text-bold">Submitted Expenses</label>
-      <q-space />
+      <q-space/>
       <q-btn
         color="warning"
         round
         flat
-        dense
+        :dense="true"
         :icon="subExp ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
         @click="subExp = !subExp"
-      />
+     />
     </q-card-actions>
     <q-slide-transition>
       <div v-show="subExp">
-        <q-separator />
+        <q-separator/>
         <q-card-section class="text-primary">
           <q-list>
-            <q-item class="bg-accent">
+            <q-item class="bg-transparent">
               <q-item-section>
                 <q-item-label class="text-bold"
                   >Dan Vincent Tagailo</q-item-label
@@ -34,13 +34,13 @@
               </q-item-section>
 
               <q-item-section avatar>
-                <q-icon color="info" name="las la-arrow-right" />
+                <q-icon color="info" name="las la-arrow-right"/>
               </q-item-section>
             </q-item>
 
-            <q-separator spaced />
+            <q-separator spaced/>
 
-            <q-item class="bg-accent">
+            <q-item class="bg-transparent">
               <q-item-section>
                 <q-item-label class="text-bold">John Doe</q-item-label>
                 <q-item-label caption lines="2"
@@ -51,17 +51,17 @@
 
               <q-item-section side top>
                 <q-item-label caption2 class="text-bold text-negative">$1000.00</q-item-label>
-                <!-- <q-icon name="star" color="yellow" /> -->
+                <!-- <q-icon name="star" color="yellow"/> -->
               </q-item-section>
 
               <q-item-section avatar>
-                <q-icon color="info" name="las la-arrow-right" />
+                <q-icon color="info" name="las la-arrow-right"/>
               </q-item-section>
             </q-item>
 
-            <q-separator spaced />
+            <q-separator spaced/>
 
-            <q-item class="bg-accent">
+            <q-item class="bg-transparent">
               <q-item-section>
                 <q-item-label class="text-bold">Chloe Morrets</q-item-label>
                 <q-item-label caption lines="2"
@@ -76,7 +76,7 @@
               </q-item-section>
 
               <q-item-section avatar>
-                <q-icon color="info" name="las la-arrow-right" />
+                <q-icon color="info" name="las la-arrow-right"/>
               </q-item-section>
             </q-item>
 
@@ -85,36 +85,36 @@
               :scroll-offset="150"
               :offset="[18, 18]"
             >
-              <q-btn fab icon="keyboard_arrow_up" color="accent" />
+              <q-btn fab icon="keyboard_arrow_up" color="accent"/>
             </q-page-scroller>
           </q-list>
         </q-card-section>
       </div>
     </q-slide-transition>
     <q-inner-loading :showing="visible">
-      <q-spinner-bars size="50px" color="secondary" />
+      <q-spinner-bars size="50px" color="secondary"/>
     </q-inner-loading>
   </q-card>
 
-  <q-card flat class="q-mt-sm q-ml-xs q-mr-xs bg-accent">
+  <q-card bordered flat class="q-mt-sm q-ml-xs q-mr-xs bg-transparent">
     <q-card-actions class="bg-primary text-warning">
       <label class="text-bold">Open Agreements</label>
-      <q-space />
+      <q-space/>
       <q-btn
         color="warning"
         round
         flat
-        dense
+        :dense="true"
         :icon="openAgreement ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
         @click="openAgreement = !openAgreement"
-      />
+     />
     </q-card-actions>
     <q-slide-transition>
       <div v-show="openAgreement">
-        <q-separator />
+        <q-separator/>
         <q-card-section class="text-primary">
           <q-list>
-            <q-item class="bg-accent">
+            <q-item class="bg-transparent">
               <q-item-section>
                 <q-item-label class="text-bold"
                   >Dan Vincent Tagailo</q-item-label
@@ -128,13 +128,13 @@
               </q-item-section>
 
               <q-item-section avatar>
-                <q-icon color="info" name="las la-arrow-right" />
+                <q-icon color="info" name="las la-arrow-right"/>
               </q-item-section>
             </q-item>
 
-            <q-separator spaced />
+            <q-separator spaced/>
 
-            <q-item class="bg-accent">
+            <q-item class="bg-transparent">
               <q-item-section>
                 <q-item-label class="text-bold">John Doe</q-item-label>
                 <!-- <q-item-label caption lines="2">Secondary line text. Lorem ipsum dolor sit amet, cons</q-item-label> -->
@@ -142,11 +142,11 @@
 
               <q-item-section side top>
                 <q-item-label caption2 class="text-bold text-negative">$1000.00</q-item-label>
-                <!-- <q-icon name="star" color="yellow" /> -->
+                <!-- <q-icon name="star" color="yellow"/> -->
               </q-item-section>
 
               <q-item-section avatar>
-                <q-icon color="info" name="las la-arrow-right" />
+                <q-icon color="info" name="las la-arrow-right"/>
               </q-item-section>
             </q-item>
           </q-list>
@@ -154,7 +154,7 @@
       </div>
     </q-slide-transition>
     <q-inner-loading :showing="visible2">
-      <q-spinner-bars size="50px" color="secondary" />
+      <q-spinner-bars size="50px" color="secondary"/>
     </q-inner-loading>
   </q-card>
 </template>
@@ -198,8 +198,7 @@ export default {
     console.log('beforeMount')
   },
   mounted () {
-    console.log('mounted', this.$options)
-    this.$emit('showHeader', true, [])
+    // this.$emit('showHeader', true, [])
     this.showTextLoading()
     this.showTextLoading2()
   },
@@ -214,13 +213,6 @@ export default {
   },
   unmounted () {
     console.log('unmounted')
-  },
-  watch: {
-    visible (newVal, oldVal) {
-      if (newVal === true) {
-        console.log(`visible is updated from ${oldVal} to ${newVal}`)
-      }
-    }
   },
   methods: {
     showTextLoading () {

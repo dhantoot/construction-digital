@@ -1,11 +1,11 @@
 <template>
   <div>
-    <q-list padding class="scroll" style="height: 74.7vh">
+    <q-list padding>
       <q-item tag="todoTitle" :clickable="false">
         <q-item-section>
           <q-item-label>Title</q-item-label>
           <q-item-label caption>
-            <q-input dense outlined v-model="todoTitle" class="q-ma-xs">
+            <q-input :dense="true" outlined v-model="todoTitle" class="q-ma-xs">
             </q-input>
           </q-item-label>
         </q-item-section>
@@ -14,12 +14,12 @@
         <q-item-section>
           <q-item-label>Description</q-item-label>
           <q-item-label caption>
-            <q-input dense outlined v-model="todoDesc" />
+            <q-input :dense="true" outlined v-model="todoDesc"/>
           </q-item-label>
         </q-item-section>
       </q-item>
 
-      <q-separator spaced />
+      <q-separator spaced/>
 
       <q-item tag="memberList">
         <q-item-section>
@@ -43,7 +43,7 @@
                   v-model="selectedMember"
                   :val="member.id"
                   color="teal"
-                />
+               />
               </q-item-section>
               <q-item-section>
                 <q-item-label>{{ member.label }}</q-item-label>
@@ -57,12 +57,12 @@
             label-class="text-teal"
             label-style="font-size: 1.1em"
           >
-            <q-spinner-bars size="50px" color="secondary" />
+            <q-spinner-bars size="50px" color="secondary"/>
           </q-inner-loading>
         </q-item-section>
       </q-item>
 
-      <q-separator spaced />
+      <q-separator spaced/>
 
       <q-item tag="fileUpload">
         <q-item-section>
@@ -73,11 +73,11 @@
             multiple="false"
             accept=".jpg, image/*"
             class="full-width"
-          />
+         />
         </q-item-section>
       </q-item>
 
-      <q-separator spaced />
+      <q-separator spaced/>
 
       <q-item tag="action">
         <q-item-section>
@@ -91,14 +91,14 @@
             :disable="!todoTitle || !todoDesc"
           >
             <template v-slot:loading>
-              <q-spinner-bars class="on-left" />
+              <q-spinner-bars class="on-left"/>
               Saving...
             </template>
           </q-btn>
         </q-item-section>
       </q-item>
     </q-list>
-    <!-- <q-inner-loading :showing="visible" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em" /> -->
+    <!-- <q-inner-loading :showing="visible" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em"/> -->
   </div>
 </template>
 <script>
@@ -181,7 +181,6 @@ export default {
     console.log('beforeMount')
   },
   mounted () {
-    console.log('mounted', this.$options)
     this.showTextLoading()
   },
   beforeUpdate () {
@@ -195,13 +194,6 @@ export default {
   },
   unmounted () {
     console.log('unmounted')
-  },
-  watch: {
-    visible (newVal, oldVal) {
-      if (newVal === true) {
-        console.log(`visible is updated from ${oldVal} to ${newVal}`)
-      }
-    }
   },
   methods: {
     showTextLoading () {
