@@ -1,9 +1,9 @@
 <template>
   <h5 class="text-center">Welcome to the admin portal</h5>
   <q-card class="my-card q-ma-sm">
-    <!-- <q-skeleton square /> -->
+    <!-- <q-skeleton square/> -->
     <q-inner-loading :showing="visible">
-      <q-spinner-bars size="50px" color="secondary" />
+      <q-spinner-bars size="50px" color="secondary"/>
     </q-inner-loading>
   </q-card>
 </template>
@@ -47,8 +47,7 @@ export default {
     console.log('beforeMount')
   },
   mounted () {
-    console.log('mounted', this.$options)
-    this.$emit('showHeader', true, [])
+    // this.$emit('showHeader', true, [])
     this.showTextLoading()
   },
   beforeUpdate () {
@@ -62,13 +61,6 @@ export default {
   },
   unmounted () {
     console.log('unmounted')
-  },
-  watch: {
-    visible (newVal, oldVal) {
-      if (newVal === true) {
-        console.log(`visible is updated from ${oldVal} to ${newVal}`)
-      }
-    }
   },
   methods: {
     showTextLoading () {

@@ -5,13 +5,13 @@
       Send your invitation to user dhan with the role Employee via email of with
       a link
     </p>
-    <q-input filled v-model="email" label="Email" class="bg-grey-2" />
+    <q-input filled v-model="email" label="Email" class="bg-grey-2"/>
     <q-btn
       size="lg"
       style="background: goldenrod; color: white"
       label="Send E-mail"
       class="fixed-bottom q-mb-lg q-ml-xs q-mr-xs"
-    />
+   />
   </div>
 </template>
 <script>
@@ -78,8 +78,7 @@ export default {
     console.log('beforeMount')
   },
   mounted () {
-    console.log('mounted', this.$options)
-    this.$emit('showHeader', true, [])
+    // this.$emit('showHeader', true, [])
     this.showTextLoading()
   },
   beforeUpdate () {
@@ -93,13 +92,6 @@ export default {
   },
   unmounted () {
     console.log('unmounted')
-  },
-  watch: {
-    visible (newVal, oldVal) {
-      if (newVal === true) {
-        console.log(`visible is updated from ${oldVal} to ${newVal}`)
-      }
-    }
   },
   methods: {
     showTextLoading () {

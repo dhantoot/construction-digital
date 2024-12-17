@@ -5,8 +5,8 @@
     icon="las la-arrow-left"
     class="text-primary q-ma-xs"
     @click="this.$router.push('/projects')"
-  />
-  <router-view />
+ />
+  <router-view/>
   <q-footer bordered class="text-primary">
     <q-tabs
       v-model="tab"
@@ -14,7 +14,7 @@
       no-caps
       switch-indicator
       indicator-color="negative"
-      dense
+      :dense="true"
     >
       <q-tab
         @click="$router.push({ path: `/todo` })"
@@ -60,7 +60,7 @@
         icon="las la-ellipsis-h"
         label="More"
         class="q-pt-sm"
-      />
+     />
     </q-tabs>
   </q-footer>
 </template>
@@ -74,13 +74,13 @@ export default {
   },
   mounted () {
     console.log(this.$route.path)
-    this.$emit('showHeader', false, [
-      {
-        label: 'Back',
-        icon: 'las la-chevron-left',
-        route: '/projects'
-      }
-    ])
+    // this.$emit('showHeader', false, [
+    //   {
+    //     label: 'Back',
+    //     icon: 'las la-chevron-left',
+    //     route: '/projects'
+    //   }
+    // ])
   }
 }
 </script>

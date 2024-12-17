@@ -9,7 +9,7 @@
         </q-card-section>
         <q-card-section class="q-gutter-sm">
           <q-select
-            dense
+            :dense="true"
             filled
             v-model="model"
             use-input
@@ -25,31 +25,31 @@
               </q-item>
             </template>
           </q-select>
-          <q-input dense filled v-model="text" label="Name" class="bg-grey-2" />
+          <q-input :dense="true" filled v-model="text" label="Name" class="bg-grey-2"/>
           <q-input
-            dense
+            :dense="true"
             placeholder="Description..."
             v-model="desc"
             filled
             type="textarea"
-          />
-          <q-tabs v-model="tab" class="bg-white-4" dense align="justify">
+         />
+          <q-tabs v-model="tab" class="bg-white-4" :dense="true" align="justify">
             <q-tab
               class="text-orange text-capitalize"
               name="upload"
               icon="las la-upload"
               label="Upload"
-            />
+           />
             <q-tab
               class="text-negative text-capitalize"
               name="capture"
               icon="las la-camera"
               label="Capture"
-            />
+           />
           </q-tabs>
           <div class="full-width q-pt-xs" v-if="tab === 'upload'">
             <q-file
-              dense
+              :dense="true"
               label-color="primary"
               filled
               v-model="file"
@@ -60,7 +60,7 @@
               class="q-ml-sm shadow-2"
             >
               <template v-slot:prepend>
-                <q-icon name="cloud_upload" color="primary" />
+                <q-icon name="cloud_upload" color="primary"/>
               </template>
             </q-file>
           </div>
@@ -76,7 +76,7 @@
               @click="captureImage"
               :disable="deviceIsReady"
               style="height: 40px;"
-            />
+           />
           </div>
           <q-toggle
             v-model="isActivated"
@@ -84,9 +84,9 @@
             color="green"
             unchecked-icon="clear"
             label="Set as activated upon submit"
-          />
+         />
           <q-input
-            dense
+            :dense="true"
             prefix="$"
             filled
             v-model="budget"
@@ -95,9 +95,9 @@
             fill-mask="0"
             reverse-fill-mask
             input-class="text-right"
-          />
-          <q-input dense v-model="dateFrom" filled type="date" label="Date from" />
-          <q-input dense v-model="dateTo" filled type="date" label="Date to" />
+         />
+          <q-input :dense="true" v-model="dateFrom" filled type="date" label="Date from"/>
+          <q-input :dense="true" v-model="dateTo" filled type="date" label="Date to"/>
         </q-card-section>
         <q-card-actions align="right" class="q-pr-md">
           <!-- <q-btn
@@ -109,7 +109,7 @@
           <KsBtn
             :label="'Submit'"
             :fn="uploadFile"
-          />
+         />
           <q-btn
             flat
             class="text-capitalize bg-cancel"
@@ -127,13 +127,13 @@
             :loading="loadingSubmit"
           >
             <template v-slot:loading>
-              <q-spinner-bars />
+              <q-spinner-bars/>
             </template>
           </q-btn>
         </q-card-actions>
-        <!-- <q-skeleton square /> -->
+        <!-- <q-skeleton square/> -->
         <q-inner-loading :showing="visible">
-          <q-spinner-bars size="50px" color="secondary" />
+          <q-spinner-bars size="50px" color="secondary"/>
         </q-inner-loading>
       </q-card>
     </div>
@@ -164,7 +164,7 @@
         >
           <template v-slot:loading>
             <q-inner-loading :showing="visible">
-              <q-spinner-bars size="50px" color="secondary" />
+              <q-spinner-bars size="50px" color="secondary"/>
             </q-inner-loading>
           </template>
           <template v-slot:body="props">
@@ -202,12 +202,12 @@
                   unchecked-color="negative"
                   @update:model-value="updateStatus(props.row)"
                   v-model="activatedList[props.row.id]"
-                />
+               />
               </q-td>
             </q-tr>
           </template>
         </q-table>
-        <!-- <q-skeleton square /> -->
+        <!-- <q-skeleton square/> -->
       </q-card>
     </div>
   </div>
@@ -482,14 +482,13 @@ export default {
     this.fetchProjects()
   },
   mounted () {
-    console.log('mounted', this.$options)
-    this.$emit('showHeader', false, [
-      {
-        label: 'Back',
-        icon: 'las la-chevron-left',
-        route: '/projects'
-      }
-    ])
+    // this.$emit('showHeader', false, [
+    //   {
+    //     label: 'Back',
+    //     icon: 'las la-chevron-left',
+    //     route: '/projects'
+    //   }
+    // ])
     this.showTextLoading()
     // this.currentUser = LocalStorage.getItem('currentUser')
     // console.log('this.currentUser', this.currentUser)
@@ -508,13 +507,6 @@ export default {
   },
   unmounted () {
     console.log('unmounted')
-  },
-  watch: {
-    visible (newVal, oldVal) {
-      if (newVal === true) {
-        console.log(`visible is updated from ${oldVal} to ${newVal}`)
-      }
-    }
   },
   methods: {
     async startProject () {

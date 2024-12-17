@@ -8,7 +8,7 @@
       <q-toolbar class="q-py-sm q-px-md">
         <q-btn
           round
-          dense
+          :dense="true"
           flat
           :ripple="false"
           icon="lab la-jedi-order"
@@ -17,12 +17,12 @@
           class="q-mr-sm"
           no-caps
           @click="this.$router.push('/admin')"
-        />
+       />
 
         <q-select
           ref="search"
           dark
-          dense
+          :dense="true"
           standout
           use-input
           hide-selected
@@ -40,7 +40,7 @@
           <template v-slot:append>
             <img
               src="https://cdn.quasar.dev/img/layout-gallery/img-github-search-key-slash.svg"
-            />
+           />
             <!-- <icon name="las la-jedi-order"/> -->
           </template>
 
@@ -48,7 +48,7 @@
             <q-item>
               <q-item-section>
                 <div class="text-center">
-                  <q-spinner-pie color="grey-5" size="24px" />
+                  <q-spinner-pie color="grey-5" size="24px"/>
                 </div>
               </q-item-section>
             </q-item>
@@ -57,7 +57,7 @@
           <template v-slot:option="scope">
             <q-item v-bind="scope.itemProps" class="GL__select-GL__menu-link">
               <q-item-section side>
-                <q-icon name="collections_bookmark" />
+                <q-icon name="collections_bookmark"/>
               </q-item-section>
               <q-item-section>
                 <q-item-label>hmm</q-item-label>
@@ -65,14 +65,14 @@
               <q-item-section side :class="{ 'default-type': !scope.opt.type }">
                 <q-btn
                   outline
-                  dense
+                  :dense="true"
                   no-caps
                   text-color="blue-grey-5"
                   size="12px"
                   class="bg-grey-1 q-px-sm"
                 >
                   {{ scope.opt.type || 'Jump to' }}
-                  <q-icon name="subdirectory_arrow_left" size="14px" />
+                  <q-icon name="subdirectory_arrow_left" size="14px"/>
                 </q-btn>
               </q-item-section>
             </q-item>
@@ -89,28 +89,28 @@
           <a href="javascript:void(0)" class="text-warning" @click="this.$router.push('/whats-new')"> Explore </a>
         </div>
 
-        <q-space />
+        <q-space/>
 
         <div class="q-pl-sm q-gutter-sm row items-center no-wrap">
           <q-btn
             v-if="$q.screen.gt.xs"
-            dense
+            :dense="true"
             flat
             round
             size="sm"
             icon="notifications"
-          />
+         />
           <q-btn flat>
             <div class="row items-center no-wrap">
-              <q-icon name="las la-bars" size="20px" />
+              <q-icon name="las la-bars" size="20px"/>
               <q-icon
                 name="arrow_drop_down"
                 size="16px"
                 style="margin-left: -2px"
-              />
+             />
             </div>
             <q-menu auto-close>
-              <q-list dense style="min-width: 200px">
+              <q-list :dense="true" style="min-width: 200px">
                 <q-item clickable class="GL__menu-link" to="/manage-projects">
                   <q-item-section>Projects</q-item-section>
                 </q-item>
@@ -120,7 +120,7 @@
                 <q-item clickable class="GL__menu-link" to="/manage-accounts">
                   <q-item-section>Accounts</q-item-section>
                 </q-item>
-                <q-separator />
+                <q-separator/>
                 <q-item-label header>Explore</q-item-label>
                 <q-item clickable class="GL__menu-link" to="/whats-new">
                   <q-item-section>Feature </q-item-section>
@@ -131,27 +131,27 @@
 
           <q-btn flat no-wrap>
             <q-avatar rounded size="20px">
-              <img src="https://cdn.quasar.dev/img/avatar3.jpg" />
+              <img src="https://cdn.quasar.dev/img/avatar3.jpg"/>
             </q-avatar>
-            <q-icon name="arrow_drop_down" size="16px" />
+            <q-icon name="arrow_drop_down" size="16px"/>
 
             <q-menu auto-close>
-              <q-list dense style="min-width: 200px">
+              <q-list :dense="true" style="min-width: 200px">
                 <q-item class="GL__menu-link-signed-in">
                   <q-item-section>
                     <div>Signed in as <strong>Mary</strong></div>
                   </q-item-section>
                 </q-item>
-                <q-separator />
+                <q-separator/>
                 <q-item clickable class="GL__menu-link-status">
                   <q-item-section>
                     <div>
-                      <q-icon name="tag_faces" color="blue-9" size="18px" />
+                      <q-icon name="tag_faces" color="blue-9" size="18px"/>
                       Set your status
                     </div>
                   </q-item-section>
                 </q-item>
-                <q-separator />
+                <q-separator/>
                 <q-item clickable class="GL__menu-link">
                   <q-item-section>Your profile</q-item-section>
                 </q-item>
@@ -167,7 +167,7 @@
                 <q-item clickable class="GL__menu-link">
                   <q-item-section>Your gists</q-item-section>
                 </q-item>
-                <q-separator />
+                <q-separator/>
                 <q-item clickable class="GL__menu-link">
                   <q-item-section>Help</q-item-section>
                 </q-item>
@@ -185,7 +185,7 @@
     </q-header>
 
     <q-page-container>
-      <router-view />
+      <router-view/>
     </q-page-container>
   </q-layout>
 </template>

@@ -1,11 +1,15 @@
 <template>
   <q-layout view="lHh lpR fFf" class="bg-accent">
+    <q-img
+     src="background.jpg"
+     class="fit absolute"
+   />
 
     <q-header elevated class="text-accent" height-hint="98">
       <q-toolbar class="bg-primary text-warning q-pt-xl">
-        <q-btn @click="leftDrawerOpen = !leftDrawerOpen" flat round dense icon="menu" class="q-mr-sm" />
+        <q-btn @click="leftDrawerOpen = !leftDrawerOpen" flat round :dense="true" icon="menu" class="q-mr-sm"/>
         <q-toolbar-title class="text-center">Hofstee Inc</q-toolbar-title>
-        <q-btn flat round dense icon="whatshot" />
+        <q-btn flat round :dense="true" icon="whatshot"/>
       </q-toolbar>
     </q-header>
 
@@ -19,7 +23,7 @@
         active-class="my-menu-link"
       >
         <q-item-section avatar>
-          <q-icon name="las la-arrow-left" />
+          <q-icon name="las la-arrow-left"/>
         </q-item-section>
 
         <q-item-section></q-item-section>
@@ -32,7 +36,7 @@
         active-class="my-menu-link"
       >
         <q-item-section avatar>
-          <q-icon name="las la-user" />
+          <q-icon name="las la-user"/>
         </q-item-section>
 
         <q-item-section>My profile</q-item-section>
@@ -46,7 +50,7 @@
         active-class="my-menu-link"
       >
         <q-item-section avatar>
-          <q-icon name="las la-building" />
+          <q-icon name="las la-building"/>
         </q-item-section>
 
         <q-item-section>Company Info</q-item-section>
@@ -60,7 +64,7 @@
         active-class="my-menu-link"
       >
         <q-item-section avatar>
-          <q-icon name="las la-envelope" />
+          <q-icon name="las la-envelope"/>
         </q-item-section>
 
         <q-item-section>Email Settings</q-item-section>
@@ -74,7 +78,7 @@
         active-class="my-menu-link"
       >
         <q-item-section avatar>
-          <q-icon name="las la-trash" />
+          <q-icon name="las la-trash"/>
         </q-item-section>
 
         <q-item-section>Archive Projects</q-item-section>
@@ -90,7 +94,7 @@
         active-class="my-menu-link"
       >
         <q-item-section avatar>
-          <q-icon name="las la-file-alt" />
+          <q-icon name="las la-file-alt"/>
         </q-item-section>
 
         <q-item-section>Terms and Condition</q-item-section>
@@ -104,7 +108,7 @@
         active-class="my-menu-link"
       >
         <q-item-section avatar>
-          <q-icon name="las la-shield-alt" />
+          <q-icon name="las la-shield-alt"/>
         </q-item-section>
 
         <q-item-section>Privacy Statement</q-item-section>
@@ -118,7 +122,7 @@
         active-class="my-menu-link"
       >
         <q-item-section avatar>
-          <q-icon name="las la-question" />
+          <q-icon name="las la-question"/>
         </q-item-section>
 
         <q-item-section>About Us</q-item-section>
@@ -134,7 +138,7 @@
         active-class="my-menu-link"
       >
         <q-item-section avatar>
-          <q-icon name="las la-sign-out-alt" />
+          <q-icon name="las la-sign-out-alt"/>
         </q-item-section>
 
         <q-item-section>Logout</q-item-section>
@@ -144,18 +148,18 @@
 
     <q-page-container>
       <q-tabs
-        v-if="headerState"
+        v-if="mainStore.showNav"
         v-model="tab"
         no-caps
         inline-label
-        class="shadow-2 q-mb-none bg-accent"
-        indicator-color="negative"
+        class="shadow-2 q-mb-none bg-transparent"
+        indicator-color="warning"
       >
-        <q-tab name="mails" label="Projects" class="text-primary" @click='$router.push({ path: `/projects` })'/>
-        <q-tab name="alarms" label="Dashboard" class="text-primary" @click='$router.push({ path: `/dashboard` })'/>
-        <q-tab name="movies" label="Planning" class="text-primary" @click='$router.push({ path: `/plans` })'/>
+        <q-tab name="mails" label="Projects" class="text-accent" @click='$router.push({ path: `/projects` })'/>
+        <q-tab name="alarms" label="Dashboard" class="text-accent" @click='$router.push({ path: `/dashboard` })'/>
+        <q-tab name="movies" label="Planning" class="text-accent" @click='$router.push({ path: `/plans` })'/>
       </q-tabs>
-      <router-view @show-header="showHeader"/>
+      <router-view/>
     </q-page-container>
 
   </q-layout>
@@ -163,10 +167,12 @@
 
 <script>
 import { ref } from 'vue'
+import { useMainStore } from 'stores/main'
 export default {
   setup () {
     const leftDrawerOpen = ref(false)
     const deviceIsReady = ref(false)
+    const mainStore = useMainStore()
     // document.addEventListener('deviceready', () => {
     //   deviceIsReady.value = true
     //   // eslint-disable-next-line no-undef
@@ -176,6 +182,7 @@ export default {
     // }, false)
 
     return {
+      mainStore,
       deviceIsReady,
       headerState: ref(true),
       breadcrumbs: [],

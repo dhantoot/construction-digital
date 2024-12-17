@@ -1,23 +1,24 @@
 <template>
-  <div class="q-ma-none q-mt-xs scroll" style="height: 66vh">
+  <div class="q-ma-none q-mt-xs">
     <div class="q-pa-xs">
       <q-date
         v-model="date"
         :events="events"
         :event-color="(date) => (date[9] % 2 === 0 ? 'teal' : 'orange')"
-        class="full-width bg-accent"
+        class="full-width bg-transparent text-accent"
         text-color="warning"
         flat
-      />
+        bordered
+     />
     </div>
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
       <q-btn
-        dense
+        :dense="true"
         fab
         icon="las la-calendar-plus"
-        color="primary"
-        class="text-warning"
-      />
+        color="transparent"
+        class="text-warning q-mb-lg"
+     />
     </q-page-sticky>
     <q-inner-loading
       :showing="visible"
@@ -25,7 +26,7 @@
       label-class="text-teal"
       label-style="font-size: 1.1em"
     >
-      <q-spinner-bars size="50px" color="secondary" />
+      <q-spinner-bars size="50px" color="secondary"/>
     </q-inner-loading>
   </div>
 </template>
@@ -86,8 +87,7 @@ export default {
     console.log('beforeMount')
   },
   mounted () {
-    console.log('mounted', this.$options)
-    this.$emit('showHeader', true, [])
+    // this.$emit('showHeader', true, [])
     this.showTextLoading()
   },
   beforeUpdate () {
@@ -101,13 +101,6 @@ export default {
   },
   unmounted () {
     console.log('unmounted')
-  },
-  watch: {
-    visible (newVal, oldVal) {
-      if (newVal === true) {
-        console.log(`visible is updated from ${oldVal} to ${newVal}`)
-      }
-    }
   },
   methods: {
     showTextLoading () {

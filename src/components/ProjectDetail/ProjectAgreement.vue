@@ -9,20 +9,20 @@
         label="Select options"
         clearable
         emit-value
-      />
+     />
     </div>
     <div class="col-5 text-right">
       <b><i class="las la-euro-sign"></i>27.00</b>
       <p>Total amount</p>
     </div>
   </div>
-  <q-list bordered separator padding class="scroll" style="height: 66vh">
+  <q-list bordered separator padding>
     <q-item-label header>Open Agreements</q-item-label>
 
     <q-item tag="label" v-ripple>
       <q-item-section>
         <q-item-label
-          ><q-badge rounded color="orange" /> Agreement One</q-item-label
+          ><q-badge rounded color="orange"/> Agreement One</q-item-label
         >
         <q-item-label caption class="q-ml-md"
           >Waiting for response from Dan</q-item-label
@@ -36,7 +36,7 @@
     <q-item tag="label" v-ripple>
       <q-item-section>
         <q-item-label
-          ><q-badge rounded color="orange" /> Feb2024 agreement</q-item-label
+          ><q-badge rounded color="orange"/> Feb2024 agreement</q-item-label
         >
         <q-item-label caption class="q-ml-md"
           >Waiting for response from Amton</q-item-label
@@ -50,7 +50,7 @@
     <q-item tag="label" v-ripple>
       <q-item-section>
         <q-item-label
-          ><q-badge rounded color="orange" /> May2024 agreement</q-item-label
+          ><q-badge rounded color="orange"/> May2024 agreement</q-item-label
         >
         <q-item-label caption class="q-ml-md"
           >Waiting for response from Zack</q-item-label
@@ -64,12 +64,12 @@
   </q-list>
   <q-page-sticky position="bottom-right" :offset="[18, 18]">
     <q-btn
-      dense
+      :dense="true"
       fab
       icon="las la-notes-medical"
       color="grey-1"
       class="text-green"
-    />
+   />
   </q-page-sticky>
 </template>
 
@@ -132,7 +132,6 @@ export default {
     console.log('beforeMount')
   },
   mounted () {
-    console.log('mounted', this.$options)
     this.showTextLoading()
   },
   beforeUpdate () {
@@ -146,13 +145,6 @@ export default {
   },
   unmounted () {
     console.log('unmounted')
-  },
-  watch: {
-    visible (newVal, oldVal) {
-      if (newVal === true) {
-        console.log(`visible is updated from ${oldVal} to ${newVal}`)
-      }
-    }
   },
   methods: {
     showTextLoading () {

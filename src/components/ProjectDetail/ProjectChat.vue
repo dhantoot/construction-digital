@@ -1,32 +1,29 @@
 <template>
   <div class="flex justify-between q-pa-xs bg-accent">
-    <q-btn
-      @click="this.$router.push('/detail')"
-      flat
-      icon="las la-arrow-left"
-      class="text-primary q-ma-xs"
-    />
     <q-input
       dark
-      standout="bg-white"
-      input-class="text-right text-black"
+      standout="bg-transparent"
+      input-class="text-right text-accent"
       v-model="text"
       :dense="dense"
       :class="{
-        'q-ma-xs': true
+        'q-ma-xs q-mx-sm': true
       }"
       :style="{
-        width: '75%'
+        width: '100%'
       }"
     >
+      <template v-slot:prepend>
+        <q-icon color="accent" name="las la-arrow-left" @click="this.$router.push('/detail')"/>
+      </template>
       <template v-slot:append>
-        <q-icon v-if="text === ''" name="las la-search" class="text-black" />
+        <q-icon v-if="text === ''" name="las la-search" class="text-accent"/>
         <q-icon
           v-else
           name="clear"
           class="cursor-pointer text-black"
           @click="text = ''"
-        />
+       />
       </template>
     </q-input>
   </div>
@@ -39,7 +36,7 @@
         stamp="7 minutes ago"
         sent
         bg-color="amber-7"
-      />
+     />
       <q-chat-message
         name="Jane"
         avatar="https://cdn.quasar.dev/img/avatar5.jpg"
@@ -51,7 +48,7 @@
         stamp="4 minutes ago"
         text-color="white"
         bg-color="primary"
-      />
+     />
       <q-chat-message
         name="Jane"
         avatar="https://cdn.quasar.dev/img/avatar5.jpg"
@@ -60,7 +57,7 @@
         size="8"
         text-color="white"
         bg-color="primary"
-      />
+     />
       <q-chat-message
         name="me"
         avatar="https://cdn.quasar.dev/img/avatar3.jpg"
@@ -68,7 +65,7 @@
         stamp="7 minutes ago"
         sent
         bg-color="amber-7"
-      />
+     />
       <q-chat-message
         name="me"
         avatar="https://cdn.quasar.dev/img/avatar3.jpg"
@@ -76,7 +73,7 @@
         stamp="7 minutes ago"
         sent
         bg-color="amber-7"
-      />
+     />
       <q-chat-message
         name="me"
         avatar="https://cdn.quasar.dev/img/avatar3.jpg"
@@ -84,7 +81,7 @@
         stamp="7 minutes ago"
         sent
         bg-color="amber-7"
-      />
+     />
       <q-chat-message
         name="Jane"
         avatar="https://cdn.quasar.dev/img/avatar5.jpg"
@@ -96,7 +93,7 @@
         stamp="4 minutes ago"
         text-color="white"
         bg-color="primary"
-      />
+     />
       <q-chat-message
         name="Jane"
         avatar="https://cdn.quasar.dev/img/avatar5.jpg"
@@ -105,7 +102,7 @@
         size="8"
         text-color="white"
         bg-color="primary"
-      />
+     />
       <q-chat-message
         name="me"
         avatar="https://cdn.quasar.dev/img/avatar3.jpg"
@@ -113,7 +110,7 @@
         stamp="7 minutes ago"
         sent
         bg-color="amber-7"
-      />
+     />
       <q-chat-message
         name="me"
         avatar="https://cdn.quasar.dev/img/avatar3.jpg"
@@ -121,7 +118,7 @@
         stamp="7 minutes ago"
         sent
         bg-color="amber-7"
-      />
+     />
     </div>
   </div>
   <q-inner-loading
@@ -130,7 +127,7 @@
     label-class="text-teal"
     label-style="font-size: 1.1em"
   >
-    <q-spinner-bars size="50px" color="secondary" />
+    <q-spinner-bars size="50px" color="secondary"/>
   </q-inner-loading>
 </template>
 <script>
@@ -176,7 +173,6 @@ export default {
     console.log('beforeMount')
   },
   mounted () {
-    console.log('mounted', this.$options)
     this.showTextLoading()
   },
   beforeUpdate () {
@@ -190,13 +186,6 @@ export default {
   },
   unmounted () {
     console.log('unmounted')
-  },
-  watch: {
-    visible (newVal, oldVal) {
-      if (newVal === true) {
-        console.log(`visible is updated from ${oldVal} to ${newVal}`)
-      }
-    }
   },
   methods: {
     showTextLoading () {

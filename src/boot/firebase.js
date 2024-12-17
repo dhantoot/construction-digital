@@ -23,7 +23,18 @@ import {
   uploadString,
   listAll
 } from 'firebase/storage'
+import {} from 'firebase/firestore'
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth'
+const {
+  VITE_FIREBASE_API_KEY,
+  VITE_FIREBASE_AUTH_DOMAIN,
+  VITE_FIREBASE_DATABASE_URL,
+  VITE_FIREBASE_PROJECT_ID,
+  VITE_FIREBASE_STORAGE_BUCKET,
+  VITE_FIREBASE_MESSAGING_SENDER_ID,
+  VITE_FIREBASE_APP_ID,
+  VITE_FIREBASE_MEASUREMENT_ID
+} = import.meta.env
 // createUserWithEmailAndPassword
 
 // "async" is optional;
@@ -31,15 +42,14 @@ import { getAuth, sendPasswordResetEmail } from 'firebase/auth'
 export default boot(async ({ app } /* { app, router, ... } */) => {
   // something to do
   const firebaseConfig = {
-    apiKey: 'AIzaSyBXkBtP1S7AYU4fd7sFV0hcy-LDmrghkcU',
-    authDomain: 'hofstee-app.firebaseapp.com',
-    databaseURL:
-      'https://hofstee-app-default-rtdb.asia-southeast1.firebasedatabase.app',
-    projectId: 'hofstee-app',
-    storageBucket: 'hofstee-app.appspot.com',
-    messagingSenderId: '478665878321',
-    appId: '1:478665878321:web:4caa9c15ba4a9e99955e10',
-    measurementId: 'G-7LP3N62QZ8'
+    apiKey: VITE_FIREBASE_API_KEY,
+    authDomain: VITE_FIREBASE_AUTH_DOMAIN,
+    databaseURL: VITE_FIREBASE_DATABASE_URL,
+    projectId: VITE_FIREBASE_PROJECT_ID,
+    storageBucket: VITE_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: VITE_FIREBASE_MESSAGING_SENDER_ID,
+    appId: VITE_FIREBASE_APP_ID,
+    measurementId: VITE_FIREBASE_MEASUREMENT_ID
   }
   const firebaseApp = initializeApp(firebaseConfig)
   const auth = getAuth()

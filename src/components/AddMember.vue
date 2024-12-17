@@ -1,22 +1,31 @@
 <template>
-  <div class="q-ma-xs q-gutter-xs bg-grey-2">
+  <div class="q-ma-xs q-gutter-md bg-grey-2 q-mt-xl q-pr-md">
     <q-input
-      dense
+      :dense="true"
       filled
       v-model="fname"
       label="First Name"
-      class="bg-grey-2"
-    />
-    <q-input dense filled v-model="lname" label="Last Name" class="bg-grey-2" />
-    <q-select
-      dense
+      input-class="text-warning"
+      label-color="accent"
+   />
+    <q-input
+      :dense="true"
       filled
+      v-model="lname"
+      label="Last Name"
+      class="bg-grey-2"
+      input-class="text-warning"
+      label-color="accent"
+    />
+    <q-select
       v-model="model"
-      use-input
-      input-debounce="0"
+      :dense="true"
+      filled
       label="Role"
+      label-color="accent"
       :options="options"
       @filter="filterFn"
+      input-debounce="0"
     >
       <template v-slot:no-option>
         <q-item>
@@ -24,21 +33,29 @@
         </q-item>
       </template>
     </q-select>
-    <q-input dense filled v-model="text" label="Name" class="bg-grey-2" />
+    <q-input
+      :dense="true"
+      filled
+      v-model="text"
+      label="Project Name"
+      class="bg-grey-2"
+      input-class="text-warning"
+      label-color="accent"
+    />
     <q-input
       v-model="desc"
-      dense
+      :dense="true"
       filled
-      label="Description"
+      label="Project Description"
       autogrow
       class="bg-grey-2"
-    />
+      input-class="text-warning"
+      label-color="accent"
+   />
     <q-btn
-      size="lg"
-      style="background: goldenrod; color: white"
       label="Add Project Member"
-      class="fixed-bottom q-mb-lg q-ml-xs q-mr-xs"
-    />
+      class="q-mb-lg q-mx-md bg-secondary text-capitalize text-accent"
+   />
   </div>
 </template>
 <script>
@@ -105,15 +122,14 @@ export default {
     console.log('beforeMount')
   },
   mounted () {
-    console.log('mounted', this.$options)
     this.showTextLoading()
-    this.$emit('showHeader', false, [
-      {
-        label: 'Back',
-        icon: 'las la-chevron-left',
-        route: '/detail'
-      }
-    ])
+    // this.$emit('showHeader', false, [
+    //   {
+    //     label: 'Back',
+    //     icon: 'las la-chevron-left',
+    //     route: '/detail'
+    //   }
+    // ])
   },
   beforeUpdate () {
     console.log('beforeUpdate')
@@ -126,13 +142,6 @@ export default {
   },
   unmounted () {
     console.log('unmounted')
-  },
-  watch: {
-    visible (newVal, oldVal) {
-      if (newVal === true) {
-        console.log(`visible is updated from ${oldVal} to ${newVal}`)
-      }
-    }
   },
   methods: {
     showTextLoading () {
