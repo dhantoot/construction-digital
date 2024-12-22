@@ -19,8 +19,3 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
-.adminCard {
-  min-height: 761px;
-}
-</style>

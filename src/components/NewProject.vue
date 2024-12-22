@@ -3,7 +3,7 @@
     <div class="q-pa-md bg-none">
       <div class="row">
         <div class="col">
-          <q-breadcrumbs v-if="true">
+          <q-breadcrumbs v-if="true" class="text-accent">
             <q-breadcrumbs-el
               v-for="{ label, icon, route } of breadcrumbs"
               :label="label"
@@ -19,14 +19,16 @@
       </div>
     </div>
     <q-select
+      :dense="true"
       filled
       v-model="model"
-      use-input
+      :use-input="true"
       input-debounce="0"
-      label="Location"
+      hint="Location"
       :options="options"
       @filter="filterFn"
-      class="q-mt-md"
+      class="q-mt-md text-accent"
+      input-class="text-accent"
     >
       <template v-slot:no-option>
         <q-item>
@@ -34,13 +36,14 @@
         </q-item>
       </template>
     </q-select>
-    <q-input filled v-model="text" label="Name" class="bg-grey-2"/>
+    <q-input filled v-model="text" placeholder="Name" class="bg-grey-2" :dense="true" input-class="text-accent"/>
     <div class="q-pa-none" style="max-width: 98%">
       <q-input
         placeholder="Description..."
         v-model="desc"
         filled
         type="textarea"
+        input-class="text-accent"
      />
     </div>
 

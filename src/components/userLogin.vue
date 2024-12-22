@@ -1,17 +1,18 @@
 <template>
-  <div class="col text-center justify-center login-form">
+  <div class="col text-center fullscreen">
     <q-inner-loading :showing="visible">
       <q-spinner-bars size="50px" color="secondary"/>
     </q-inner-loading>
-    <div class="col-4 q-mt-lg q-mb-md bg-red">
-      <q-icon name="las la-user-circle" size="100px" class="q-pa-xs"/>
-      <p class="text-h2 q-mb-xl">Login</p>
+    <div class="col-4 q-mt-xl q-mb-md q-pt-xl">
+      <q-icon name="las la-user-circle" size="100px" class="q-pa-xs" color="primary"/>
+      <p class="text-h2 q-mb-xl text-primary">Login</p>
     </div>
     <div class="col-2 q-mt-xl q-mb-md">
-      <hr class="text-white q-ml-xl q-mr-xl"/>
+      <!-- <hr class="q-ml-xl q-mr-xl" color="black"/> -->
+      <q-separator class="q-ml-xl q-mr-xl" color="positive" inset/>
     </div>
     <div class="col-6 q-mt-lg">
-      <p class="q-mt-xl">Choose a role to login</p>
+      <p class="q-mt-xl text-positive">Choose a role to login</p>
       <div class="q-gutter-sm">
         <q-radio
           v-model="role"
@@ -19,6 +20,9 @@
           unchecked-icon="panorama_fish_eye"
           val="contructor"
           label="Constructor"
+          class="text-positive"
+          color="positive"
+          keep-color
        />
         <q-radio
           v-model="role"
@@ -26,44 +30,53 @@
           unchecked-icon="panorama_fish_eye"
           val="home owner"
           label="Home Owner"
+          class="text-positive"
+          color="positive"
+          keep-color
        />
       </div>
     </div>
-    <div class="col-2 q-mt-sm q-pa-xl">
+    <div class="col-2 q-mt-sm q-pa-xl q-gutter-y-md">
       <q-input
         outline
         :dense="true"
         clearable
         ref="emailRef"
         v-model="email"
-        label="Email"
-        lazy-rules
+        placeholder="Email"
         :rules="emailRules"
         v-on:keyup.enter="login"
+        color="positive"
+        input-class="text-positive"
+        filled
       >
         <template v-slot:prepend>
-          <q-icon name="perm_identity"/>
+          <q-icon name="perm_identity" color="positive"/>
         </template>
       </q-input>
       <q-input
         :type="isPwd ? 'password' : 'text'"
         :dense="true"
+        clearable
         ref="passwordRef"
         outline
         v-model="password"
-        label="Password"
-        lazy-rules
+        placeholder="Password"
         :rules="passwordRules"
         v-on:keyup.enter="login"
+        color="positive"
+        input-class="text-positive"
+        filled
       >
         <template v-slot:prepend>
-          <q-icon name="lock"/>
+          <q-icon name="lock" color="positive"/>
         </template>
         <template v-slot:append>
           <q-icon
             :name="isPwd ? 'visibility_off' : 'visibility'"
             class="cursor-pointer"
             @click="isPwd = !isPwd"
+            color="positive"
          />
         </template>
       </q-input>
@@ -71,7 +84,7 @@
         @click="reset"
         label="Clear"
         type="reset"
-        color="secondary"
+        color="positive"
         flat
         class="q-pl-none q-ml-sm text-capitalize pull-right text-weight-light"
         style="float: left"
@@ -79,13 +92,13 @@
       <q-btn
         @click="register"
         label="Register"
-        color="primary"
+        color="positive"
         flat
         class="q-pr-none text-capitalize pull-right text-weight-light"
         style="float: right"
      />
     </div>
-    <div class="col-2 q-mt-xs q-pa-xl">
+    <div class="col-2 q-mt-xs q-py-xs q-px-xl q-mb-sm">
       <q-btn
         :disabled="$isFalsyString(email) || $isFalsyString(password)"
         :loading="loading"
@@ -260,9 +273,3 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
-.login-form {
-  max-width: 400px;
-  margin: 0 auto;
-}
-</style>

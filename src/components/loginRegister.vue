@@ -1,18 +1,18 @@
 <template>
   <div style="height: 67.4vh">
-    <div class="col text-center justify-center">
+    <div class="col text-center fullscreen">
       <q-inner-loading :showing="visible">
         <q-spinner-bars size="50px" color="secondary"/>
       </q-inner-loading>
-      <div class="col-4 q-mt-lg q-mb-md">
-        <img src="~assets/user.png" width="200px" class="q-pa-xs"/>
+      <div class="col-4 q-mt-xl q-mb-md q-pt-xl">
+        <q-icon name="las la-user-circle" size="100px" class="q-pa-xs" color="primary"/>
         <p class="text-h2 q-mb-xl">Register</p>
       </div>
       <div class="col-2 q-mt-md q-mb-sm">
-        <hr class="text-white q-ml-xl q-mr-xl"/>
+        <q-separator class="q-ml-xl q-mr-xl" color="positive" inset/>
       </div>
       <div class="col-6">
-        <p class="q-mt-xs">Choose a role to register</p>
+        <p class="q-mt-xs text-positive">Choose a role to register</p>
         <div class="q-gutter-sm">
           <q-radio
             v-model="role"
@@ -20,6 +20,9 @@
             unchecked-icon="panorama_fish_eye"
             val="contructor"
             label="Constructor"
+            class="text-positive"
+            color="positive"
+            keep-color
          />
           <q-radio
             v-model="role"
@@ -27,44 +30,53 @@
             unchecked-icon="panorama_fish_eye"
             val="home owner"
             label="Home Owner"
+            class="text-positive"
+            color="positive"
+            keep-color
          />
         </div>
       </div>
-      <div class="col-2 q-pa-xl">
+      <div class="col-2 q-pa-xl q-gutter-y-sm">
         <q-input
           :dense="true"
+          filled
           clearable
           class="col-12"
           ref="regemailRef"
           outline
           v-model="regemail"
-          label="Email"
-          lazy-rules
+          placeholder="Email"
           :rules="regemailRules"
+          input-class="text-positive"
+          color="positive"
         >
           <template v-slot:prepend>
-            <q-icon name="email"/>
+            <q-icon name="email" color="positive"/>
           </template>
         </q-input>
         <q-input
           :autocomplete="false"
           :type="isPwd1 ? 'password' : 'text'"
           :dense="true"
+          clearable
+          filled
           ref="regpasswordRef"
           outline
           v-model="regpassword"
-          label="Password"
-          lazy-rules
+          placeholder="Password"
           :rules="regpasswordRules"
+          input-class="text-positive"
+          color="positive"
         >
           <template v-slot:prepend>
-            <q-icon name="lock"/>
+            <q-icon name="lock" color="positive"/>
           </template>
           <template v-slot:append>
             <q-icon
               :name="isPwd1 ? 'visibility_off' : 'visibility'"
               class="cursor-pointer"
               @click="isPwd1 = !isPwd1"
+              color="positive"
            />
           </template>
         </q-input>
@@ -72,22 +84,25 @@
           autocomplete="off"
           :type="isPwd2 ? 'password' : 'text'"
           :dense="true"
+          filled
           ref="regverifiedpassRef"
           outline
           v-model="regverifiedpass"
-          label="Confirm Password"
-          lazy-rules
+          placeholder="Confirm Password"
           :rules="regverifiedpassRules"
           v-on:keyup.enter="login"
+          input-class="text-positive"
+          color="positive"
         >
           <template v-slot:prepend>
-            <q-icon name="lock"/>
+            <q-icon name="lock" color="positive"/>
           </template>
           <template v-slot:append>
             <q-icon
               :name="isPwd2 ? 'visibility_off' : 'visibility'"
               class="cursor-pointer"
               @click="isPwd2 = !isPwd2"
+              color="positive"
            />
           </template>
         </q-input>
@@ -95,7 +110,7 @@
           @click="reset"
           label="Clear"
           type="reset"
-          color="secondary"
+          color="positive"
           flat
           class="q-pl-none q-ml-sm text-capitalize pull-right text-weight-light"
           style="float: left"
@@ -103,18 +118,18 @@
         <q-btn
           @click="$router.push('/login')"
           label="Back to Login"
-          color="primary"
+          color="positive"
           flat
           class="q-pr-none text-capitalize pull-right text-weight-light"
           style="float: right"
        />
       </div>
-      <div class="col-2 q-pa-xl">
+      <div class="col-2 q-py-xs q-px-xl">
         <q-btn
           size="lg"
           color="primary"
           label="Register"
-          class="text-capitalize full-width q-mb-md"
+          class="text-capitalize full-width"
        />
       </div>
     </div>

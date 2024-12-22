@@ -39,7 +39,7 @@
     <q-spinner-bars size="50px" color="secondary"/>
   </q-inner-loading>
   <q-page-sticky position="bottom-right" :offset="[18, 18]">
-    <q-btn fab icon="add" color="grey-1" class="text-green" @click="this.$router.push({ path: '/new-project' })"/>
+    <q-btn fab icon="add" color="grey-1" class="text-green bg-transparent" @click="this.$router.push({ path: '/new-project' })"/>
   </q-page-sticky>
 </template>
 <script>

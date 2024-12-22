@@ -3,6 +3,7 @@
     <q-img
      src="background.jpg"
      class="fit absolute"
+     v-if="true"
    />
 
     <q-header elevated class="text-accent" height-hint="98">

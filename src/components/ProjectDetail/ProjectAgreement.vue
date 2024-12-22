@@ -2,6 +2,7 @@
   <div class="row q-gutter-sm">
     <div class="col-6">
       <q-select
+        :dense="true"
         filled
         input-debounce="0"
         v-model="model"
