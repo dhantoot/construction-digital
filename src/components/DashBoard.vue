@@ -172,7 +172,7 @@ export default {
       visible2,
       initFunction () {
         // access setup variables here w/o using 'this'
-        console.log('initFunction called', visible.value)
+        // console.log('initFunction called', visible.value)
       },
       subExp: ref(true),
       openAgreement: ref(true),
@@ -189,13 +189,13 @@ export default {
     }
   },
   beforeCreate () {
-    console.log('beforeCreate')
+    // console.log('beforeCreate')
   },
   created () {
-    console.log('created')
+    // console.log('created')
   },
   beforeMount () {
-    console.log('beforeMount')
+    // console.log('beforeMount')
   },
   mounted () {
     // this.$emit('showHeader', true, [])
@@ -203,21 +203,21 @@ export default {
     this.showTextLoading2()
   },
   beforeUpdate () {
-    console.log('beforeUpdate')
+    // console.log('beforeUpdate')
   },
   updated () {
-    console.log('updated')
+    // console.log('updated')
   },
   beforeUnmount () {
-    console.log('beforeUnmount')
+    // console.log('beforeUnmount')
   },
   unmounted () {
-    console.log('unmounted')
+    // console.log('unmounted')
   },
   methods: {
     showTextLoading () {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
-      console.log('loaded in ', ms, ' ms')
+      // console.log('loaded in ', ms, ' ms')
       this.visible = true
       setTimeout(() => {
         this.visible = false
@@ -225,7 +225,7 @@ export default {
     },
     showTextLoading2 () {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 200)
-      console.log('loaded in ', ms, ' ms')
+      // console.log('loaded in ', ms, ' ms')
       this.visible2 = true
       setTimeout(() => {
         this.visible2 = false

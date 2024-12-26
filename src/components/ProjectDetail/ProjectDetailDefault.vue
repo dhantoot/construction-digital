@@ -1,10 +1,32 @@
 <template>
   <q-card class="no-border-radius no-shadow bg-transparent">
     <q-img src="https://cdn.quasar.dev/img/parallax2.jpg" height="160px">
-      <div class="absolute-bottom text-h6 q-mt-none">STAR Residence</div>
+      <div class="absolute-bottom q-mt-none row justify-between items-center">
+        <div>
+          <q-btn
+            color="primary"
+            rounded
+            v-if="this.$route.path === '/detail'"
+            icon="las la-arrow-left"
+            class="text-accent"
+            @click="this.$router.push('/projects')"
+          />
+        </div>
+        <div class="text-h6">STAR Residence</div>
+        <div>
+          <q-btn
+            color="primary"
+            rounded
+            v-if="this.$route.path === '/detail'"
+            icon="las la-user-plus"
+            class="text-accent"
+            @click="this.$router.push({ path: '/new-member' })"
+          />
+        </div>
+      </div>
     </q-img>
     <q-card-section flat class="q-ma-none q-pa-none">
-      <q-list class="scroll" style="height: 62.2vh;">
+      <q-list class="scroll" style="max-height: 46vh;">
         <q-item-label header class="text-bold text-accent">Project Members</q-item-label>
         <q-item clickable v-ripple>
           <q-item-section avatar>
@@ -35,7 +57,7 @@
             </q-chip>
           </q-item-section>
         </q-item>
-        <q-separator inset="item"/>
+        <q-separator inset="item" class="q-ml-none"/>
 
         <q-item clickable v-ripple>
           <q-item-section avatar>
@@ -66,7 +88,7 @@
             </q-chip>
           </q-item-section>
         </q-item>
-        <q-separator inset="item"/>
+        <q-separator inset="item" class="q-ml-none"/>
 
         <q-item clickable v-ripple>
           <q-item-section avatar>
@@ -98,7 +120,7 @@
             </q-chip>
           </q-item-section>
         </q-item>
-        <q-separator inset="item"/>
+        <q-separator inset="item" class="q-ml-none"/>
 
         <q-item clickable v-ripple>
           <q-item-section avatar>
@@ -129,7 +151,7 @@
             </q-chip>
           </q-item-section>
         </q-item>
-        <q-separator inset="item"/>
+        <q-separator inset="item" class="q-ml-none"/>
 
         <q-item clickable v-ripple>
           <q-item-section avatar>
@@ -160,7 +182,7 @@
             </q-chip>
           </q-item-section>
         </q-item>
-        <q-separator inset="item"/>
+        <q-separator inset="item" class="q-ml-none"/>
 
         <q-item clickable v-ripple>
           <q-item-section avatar>
@@ -191,7 +213,7 @@
             </q-chip>
           </q-item-section>
         </q-item>
-        <q-separator inset="item"/>
+        <q-separator inset="item" class="q-ml-none"/>
 
         <q-item clickable v-ripple>
           <q-item-section avatar>
@@ -222,7 +244,7 @@
             </q-chip>
           </q-item-section>
         </q-item>
-        <q-separator inset="item"/>
+        <q-separator inset="item" class="q-ml-none"/>
 
         <q-item clickable v-ripple>
           <q-item-section avatar>
@@ -253,7 +275,7 @@
             </q-chip>
           </q-item-section>
         </q-item>
-        <q-separator inset="item"/>
+        <q-separator inset="item" class="q-ml-none"/>
 
         <q-item clickable v-ripple>
           <q-item-section avatar>
@@ -284,7 +306,7 @@
             </q-chip>
           </q-item-section>
         </q-item>
-        <q-separator inset="item"/>
+        <q-separator inset="item" class="q-ml-none"/>
 
         <q-item clickable v-ripple>
           <q-item-section avatar>
@@ -315,7 +337,7 @@
             </q-chip>
           </q-item-section>
         </q-item>
-        <q-separator inset="item"/>
+        <q-separator inset="item" class="q-ml-none"/>
 
         <q-item clickable v-ripple>
           <q-item-section avatar>
@@ -346,28 +368,19 @@
             </q-chip>
           </q-item-section>
         </q-item>
-        <q-separator inset="item"/>
+        <q-separator inset="item" class="q-ml-none"/>
         <q-item :dense="true">
           <q-item-section>
-            <q-icon
-              name="las la-circle"
-              size="10px"
-              class="q-pb-lg text-primary"
-              style="margin-left: 47%"
-           />
+            <div class="row items-center justify-center">
+              <q-icon
+                name="las la-stroopwafel"
+                size="10px"
+                class="text-accent"
+              />
+            </div>
           </q-item-section>
         </q-item>
       </q-list>
-      <q-page-sticky position="bottom-right" :offset="[18, 18]">
-        <q-btn
-          :dense="true"
-          fab
-          icon="las la-user-plus"
-          color="grey-1"
-          class="text-green"
-          @click="this.$router.push({ path: '/new-member' })"
-       />
-      </q-page-sticky>
     </q-card-section>
     <q-inner-loading
       :showing="visible"

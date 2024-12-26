@@ -14,6 +14,11 @@
     src: url(fonts/Metrophobic-Regular.ttf)
 }
 
+@font-face {
+    font-family: 'victormono';
+    src: url(fonts/VictorMono-Regular.ttf)
+}
+
 .main-layout {
     font-family: 'metrophobic';
 }
@@ -44,4 +49,8 @@ body {
 
 .text-cancel {
     color: $cancel;
+}
+
+.round-btn {
+    border-radius: 12px;
 }

@@ -4,25 +4,22 @@
       :dense="true"
       filled
       v-model="fname"
-      label="First Name"
+      placeholder="First Name"
       input-class="text-warning"
-      label-color="accent"
    />
     <q-input
       :dense="true"
       filled
       v-model="lname"
-      label="Last Name"
+      placeholder="Last Name"
       class="bg-grey-2"
       input-class="text-warning"
-      label-color="accent"
     />
     <q-select
       v-model="model"
       :dense="true"
       filled
-      label="Role"
-      label-color="accent"
+      :placeholder="!model ? 'Address' : ''"
       :options="options"
       @filter="filterFn"
       input-debounce="0"
@@ -37,26 +34,42 @@
       :dense="true"
       filled
       v-model="text"
-      label="Project Name"
+      placeholder="Project Name"
       class="bg-grey-2"
       input-class="text-warning"
-      label-color="accent"
     />
     <q-input
       v-model="desc"
       :dense="true"
       filled
-      label="Project Description"
+      placeholder="Project Description"
       autogrow
       class="bg-grey-2"
       input-class="text-warning"
-      label-color="accent"
    />
-    <q-btn
-      label="Add Project Member"
-      class="q-mb-lg q-mx-md bg-secondary text-capitalize text-accent"
-   />
+   <div class="row justify-between q-mt-lg">
+    <div>
+      <q-btn rounded color="primary" icon="las la-arrow-left" @click="this.$router.push('/detail')"/>
+    </div>
+    <div>
+      <q-btn
+        @click="confirm"
+        rounded
+        color="primary"
+        label="Add Member"
+        class="text-capitalize text-accent"
+        :loading="loadingSubmit"
+        icon="las la-plus"
+      >
+        <template v-slot:loading>
+          <q-spinner-bars class="on-left"/>
+          Saving...
+        </template>
+      </q-btn>
+    </div>
+   </div>
   </div>
+
 </template>
 <script>
 import { ref } from 'vue'
@@ -99,7 +112,7 @@ export default {
       visible,
       initFunction () {
         // access setup variables here w/o using 'this'
-        console.log('initFunction called', visible.value)
+        // console.log('initFunction called', visible.value)
       }
     }
   },
@@ -113,13 +126,13 @@ export default {
     }
   },
   beforeCreate () {
-    console.log('beforeCreate')
+    // console.log('beforeCreate')
   },
   created () {
-    console.log('created')
+    // console.log('created')
   },
   beforeMount () {
-    console.log('beforeMount')
+    // console.log('beforeMount')
   },
   mounted () {
     this.showTextLoading()
@@ -132,21 +145,21 @@ export default {
     // ])
   },
   beforeUpdate () {
-    console.log('beforeUpdate')
+    // console.log('beforeUpdate')
   },
   updated () {
-    console.log('updated')
+    // console.log('updated')
   },
   beforeUnmount () {
-    console.log('beforeUnmount')
+    // console.log('beforeUnmount')
   },
   unmounted () {
-    console.log('unmounted')
+    // console.log('unmounted')
   },
   methods: {
     showTextLoading () {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
-      console.log('loaded in ', ms, ' ms')
+      // console.log('loaded in ', ms, ' ms')
       this.visible = true
       setTimeout(() => {
         this.visible = false

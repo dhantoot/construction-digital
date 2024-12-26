@@ -105,7 +105,7 @@
         size="lg"
         color="primary"
         label="Login"
-        class="text-capitalize full-width q-mb-md"
+        class="text-capitalize full-width q-mb-md round-btn"
         @click="login"
       >
         <template v-slot:loading>
@@ -120,8 +120,10 @@ import { ref } from 'vue'
 import { LocalStorage, SessionStorage } from 'quasar'
 import { useMainStore } from 'stores/main'
 import {
-  getAuth,
-  /* createUserWithEmailAndPassword, */ signInWithEmailAndPassword
+  // signInWithRedirect,
+  // getRedirectResult,
+  signInWithEmailAndPassword,
+  getAuth
 } from 'firebase/auth'
 const auth = getAuth()
 
@@ -167,7 +169,7 @@ export default {
       isPwd: ref(true),
       initFunction () {
         // access setup variables here w/o using 'this'
-        console.log('initFunction called', visible.value)
+        // console.log('initFunction called', visible.value)
       }
     }
   },
@@ -181,13 +183,13 @@ export default {
     }
   },
   beforeCreate () {
-    console.log('beforeCreate')
+    // console.log('beforeCreate')
   },
   created () {
-    console.log('created')
+    // console.log('created')
   },
   beforeMount () {
-    console.log('beforeMount')
+    // console.log('beforeMount')
   },
   mounted () {
     this.showTextLoading()
@@ -195,31 +197,31 @@ export default {
     this.mainStore.showNav = false
   },
   beforeUpdate () {
-    console.log('beforeUpdate')
+    // console.log('beforeUpdate')
   },
   updated () {
-    console.log('updated')
+    // console.log('updated')
   },
   beforeUnmount () {
-    console.log('beforeUnmount')
+    // console.log('beforeUnmount')
   },
   unmounted () {
-    console.log('unmounted')
+    // console.log('unmounted')
   },
   methods: {
     showTextLoading () {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
-      console.log('loaded in ', ms, ' ms')
+      // console.log('loaded in ', ms, ' ms')
       this.visible = true
       setTimeout(() => {
         this.visible = false
       }, ms)
     },
-    login () {
-      console.log('Logging in..')
+    async login () {
+      // console.log('Logging in..')
       this.loading = true
       const [email, password] = [this.email, this.password]
-      console.log({ email, password })
+      // console.log({ email, password })
       if (this.$isFalsyString(email) || this.$isFalsyString(password)) {
         this.$q.notify({
           icon: 'cancel',
@@ -232,6 +234,23 @@ export default {
         }, 2000)
         return -1
       }
+      // try {
+      //   const resp = await signInWithRedirect(this.$fbauth, this.$provider)
+      //   console.log({ resp })
+      // } catch (error) {
+      //   console.error('Error signing in:', error)
+      // }
+
+      // getRedirectResult(this.$fbauth).then((result) => {
+      //   if (result) {
+      //     console.log('Signed in user:', result.user)
+      //   } else {
+      //     console.log('No user signed in')
+      //   }
+      // }).catch((error) => {
+      //   console.error('Error handling redirect result:', error)
+      // })
+
       signInWithEmailAndPassword(auth, email, password)
         .then(async (userCredential) => {
           const user = userCredential.user
@@ -247,7 +266,7 @@ export default {
           this.$router.push('/projects')
         })
         .catch((error) => {
-          console.log(error)
+          // console.log(error)
           this.loading = false
           this.$q.notify({
             icon: 'cancel',
@@ -260,7 +279,7 @@ export default {
         })
     },
     register () {
-      console.log('Registration..')
+      // console.log('Registration..')
       this.$router.push('/login-register')
     },
     reset () {

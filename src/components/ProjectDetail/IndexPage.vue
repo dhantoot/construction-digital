@@ -1,11 +1,13 @@
 <template>
-  <q-btn
+  <!-- <q-btn
+    color="primary"
+    rounded
     v-if="this.$route.path === '/detail'"
     style="position: absolute; z-index: 1"
     icon="las la-arrow-left"
     class="text-primary q-ma-xs"
     @click="this.$router.push('/projects')"
- />
+ /> -->
   <router-view/>
   <q-footer bordered class="text-primary">
     <q-tabs
@@ -73,7 +75,7 @@ export default {
     }
   },
   mounted () {
-    console.log(this.$route.path)
+    // console.log(this.$route.path)
     // this.$emit('showHeader', false, [
     //   {
     //     label: 'Back',

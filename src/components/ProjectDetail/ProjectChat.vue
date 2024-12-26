@@ -27,11 +27,11 @@
       </template>
     </q-input>
   </div>
-  <div class="q-pt-xs q-pl-sm q-pr-xs justify-center">
-    <div class="scroll" style="height: 73.4vh">
+  <div class="q-pt-xs q-pl-sm q-pr-xs justify-center absolute">
+    <div class="scroll" style="max-height: 60vh">
       <q-chat-message
         name="me"
-        avatar="https://cdn.quasar.dev/img/avatar3.jpg"
+        avatar="avatar3.jpg"
         :text="['hey, how are you?']"
         stamp="7 minutes ago"
         sent
@@ -39,7 +39,7 @@
      />
       <q-chat-message
         name="Jane"
-        avatar="https://cdn.quasar.dev/img/avatar5.jpg"
+        avatar="avatar5.jpg"
         :text="[
           'doing fine, how r you?',
           'I just feel like typing a really, really, REALLY long message to annoy you...'
@@ -51,7 +51,7 @@
      />
       <q-chat-message
         name="Jane"
-        avatar="https://cdn.quasar.dev/img/avatar5.jpg"
+        avatar="avatar5.jpg"
         :text="['Did it work?']"
         stamp="1 minutes ago"
         size="8"
@@ -60,7 +60,7 @@
      />
       <q-chat-message
         name="me"
-        avatar="https://cdn.quasar.dev/img/avatar3.jpg"
+        avatar="avatar3.jpg"
         :text="['Yes it worked']"
         stamp="7 minutes ago"
         sent
@@ -68,7 +68,7 @@
      />
       <q-chat-message
         name="me"
-        avatar="https://cdn.quasar.dev/img/avatar3.jpg"
+        avatar="avatar3.jpg"
         :text="['By the way thank you very much', 'I missed you']"
         stamp="7 minutes ago"
         sent
@@ -76,7 +76,7 @@
      />
       <q-chat-message
         name="me"
-        avatar="https://cdn.quasar.dev/img/avatar3.jpg"
+        avatar="avatar3.jpg"
         :text="['hey, how are you?']"
         stamp="7 minutes ago"
         sent
@@ -84,7 +84,7 @@
      />
       <q-chat-message
         name="Jane"
-        avatar="https://cdn.quasar.dev/img/avatar5.jpg"
+        avatar="avatar5.jpg"
         :text="[
           'doing fine, how r you?',
           'I just feel like typing a really, really, REALLY long message to annoy you...'
@@ -96,7 +96,7 @@
      />
       <q-chat-message
         name="Jane"
-        avatar="https://cdn.quasar.dev/img/avatar5.jpg"
+        avatar="avatar5.jpg"
         :text="['Did it work?']"
         stamp="1 minutes ago"
         size="8"
@@ -105,7 +105,7 @@
      />
       <q-chat-message
         name="me"
-        avatar="https://cdn.quasar.dev/img/avatar3.jpg"
+        avatar="avatar3.jpg"
         :text="['Yes it worked']"
         stamp="7 minutes ago"
         sent
@@ -113,7 +113,7 @@
      />
       <q-chat-message
         name="me"
-        avatar="https://cdn.quasar.dev/img/avatar3.jpg"
+        avatar="avatar3.jpg"
         :text="['By the way thank you very much', 'I missed you']"
         stamp="7 minutes ago"
         sent
@@ -147,7 +147,7 @@ export default {
       question,
       initFunction () {
         // access setup variables here w/o using 'this'
-        console.log('initFunction called', visible.value)
+        // console.log('initFunction called', visible.value)
       },
       text: ref(''),
       ph: ref(''),
@@ -164,33 +164,33 @@ export default {
     }
   },
   beforeCreate () {
-    console.log('beforeCreate')
+    // console.log('beforeCreate')
   },
   created () {
-    console.log('created')
+    // console.log('created')
   },
   beforeMount () {
-    console.log('beforeMount')
+    // console.log('beforeMount')
   },
   mounted () {
     this.showTextLoading()
   },
   beforeUpdate () {
-    console.log('beforeUpdate')
+    // console.log('beforeUpdate')
   },
   updated () {
-    console.log('updated')
+    // console.log('updated')
   },
   beforeUnmount () {
-    console.log('beforeUnmount')
+    // console.log('beforeUnmount')
   },
   unmounted () {
-    console.log('unmounted')
+    // console.log('unmounted')
   },
   methods: {
     showTextLoading () {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
-      console.log('loaded in ', ms, ' ms')
+      // console.log('loaded in ', ms, ' ms')
       this.visible = true
       setTimeout(() => {
         this.visible = false

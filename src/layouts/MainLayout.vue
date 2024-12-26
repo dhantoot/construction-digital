@@ -153,7 +153,7 @@
         v-model="tab"
         no-caps
         inline-label
-        class="shadow-2 q-mb-none bg-transparent"
+        class="shadow-2 q-mb-none"
         indicator-color="warning"
       >
         <q-tab name="mails" label="Projects" class="text-accent" @click='$router.push({ path: `/projects` })'/>
@@ -198,6 +198,7 @@ export default {
   },
   mounted () {
     console.log('MainLayout monunter')
+    this.mainStore.showNav = true
   },
   methods: {
     showHeader (arg, breadcrumbs) {

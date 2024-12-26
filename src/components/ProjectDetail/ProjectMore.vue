@@ -27,6 +27,7 @@
       </template>
     </q-input>
   </div>
+  <div class="scroll" style="max-height: 70vh;">
   <q-list bordered padding class="text-accent">
     <q-item-label header>User Controls</q-item-label>
 
@@ -171,6 +172,7 @@
   >
     <q-spinner-bars size="50px" color="secondary"/>
   </q-inner-loading>
+</div>
 </template>
 <script>
 import { ref } from 'vue'
@@ -189,7 +191,7 @@ export default {
       question,
       initFunction () {
         // access setup variables here w/o using 'this'
-        console.log('initFunction called', visible.value)
+        // console.log('initFunction called', visible.value)
       },
       check1: ref(true),
       check2: ref(false),
@@ -217,33 +219,33 @@ export default {
     }
   },
   beforeCreate () {
-    console.log('beforeCreate')
+    // console.log('beforeCreate')
   },
   created () {
-    console.log('created')
+    // console.log('created')
   },
   beforeMount () {
-    console.log('beforeMount')
+    // console.log('beforeMount')
   },
   mounted () {
     this.showTextLoading()
   },
   beforeUpdate () {
-    console.log('beforeUpdate')
+    // console.log('beforeUpdate')
   },
   updated () {
-    console.log('updated')
+    // console.log('updated')
   },
   beforeUnmount () {
-    console.log('beforeUnmount')
+    // console.log('beforeUnmount')
   },
   unmounted () {
-    console.log('unmounted')
+    // console.log('unmounted')
   },
   methods: {
     showTextLoading () {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
-      console.log('loaded in ', ms, ' ms')
+      // console.log('loaded in ', ms, ' ms')
       this.visible = true
       setTimeout(() => {
         this.visible = false

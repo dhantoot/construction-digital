@@ -214,7 +214,7 @@
 </template>
 <script>
 import { ref } from 'vue'
-import { useQuasar, LocalStorage, uid, date, is } from 'quasar'
+import { useQuasar, LocalStorage, uid, date } from 'quasar'
 const stringOptions = ['Google', 'Facebook', 'Twitter', 'Apple', 'Oracle']
 import KsBtn from 'src/components/Common/Button/KsBtn.vue'
 
@@ -238,7 +238,7 @@ export default {
       { name: 'createdBy', align: 'left', label: 'Created By', field: 'createdBy', sortable: true },
       { name: 'dateCreated', align: 'left', label: 'Date Created', field: 'dateCreated', sortable: true },
       { name: 'avatarFullPath', align: 'right', label: 'Avatar', field: 'avatarFullPath', sortable: true, hidden: true },
-      { name: 'isActive', align: 'right', label: 'Is Activated', field: 'isActive' }
+      { name: 'isActive', align: 'right', label: '296Activated', field: 'isActive' }
     ]
     const timeStamp = Date.now()
     const formattedTimestamp = date.formatDate(
@@ -282,20 +282,20 @@ export default {
     }
 
     function printNavigator () {
-      console.log('printing out navigator', navigator)
-      console.log('typeof navigator is ', typeof navigator)
+      // console.log('printing out navigator', navigator)
+      // console.log('typeof navigator 296', typeof navigator)
 
       for (const item in navigator) {
-        console.log('navigatorItem: ', item)
+        // console.log('navigatorItem: ', item)
         navigatorVal.value.push({
           label: item,
           desc: JSON.stringify(navigator[item])
         })
       }
-      console.log('navigatorVal:', navigatorVal)
-      for (const item in window) {
-        console.log('windowItem: ', item)
-      }
+      // console.log('navigatorVal:', navigatorVal)
+      // for (const item in window) {
+      //   // console.log('windowItem: ', item)
+      // }
     }
 
     function saveLocally (f) {
@@ -304,7 +304,7 @@ export default {
         window.resolveLocalFileSystemURL(
           cordova.file.dataDirectory,
           function (dirEntry) {
-            console.log('file system open: ' + dirEntry.name)
+            // console.log('file system open: ' + dirEntry.name)
             this.logs.push('> file system open: ' + dirEntry.name)
             this.$q.notify({
               icon: 'check_circle',
@@ -326,7 +326,7 @@ export default {
             })
           },
           (err) => {
-            console.log(err)
+            // console.log(err)
             this.logs.push('> Error at inner catch: ' + err)
             this.$q.notify({
               icon: 'exclamation-circle',
@@ -356,14 +356,14 @@ export default {
           LocalFileSystem.PERSISTENT,
           0,
           function (fs) {
-            console.log('file system open: ' + fs.name)
+            // console.log('file system open: ' + fs.name)
             this.logs.push('> at requestFileSystem' + fs.name)
             fs.root.getFile(
               f.name,
               { create: true, exclusive: false },
               function (fileEntry) {
                 this.logs.push('> at fs.root.getFile' + fileEntry)
-                console.log('fileEntry is file?' + fileEntry.isFile.toString())
+                // console.log('fileEntry is file?' + fileEntry.isFile.toString())
                 // fileEntry.name == 'someFile.txt'
                 // fileEntry.fullPath == '/someFile.txt'
                 // eslint-disable-next-line no-undef
@@ -458,7 +458,7 @@ export default {
       visible,
       initFunction () {
         // access setup variables here w/o using 'this'
-        console.log('initFunction called', visible.value)
+        // console.log('initFunction called', visible.value)
       }
     }
   },
@@ -472,13 +472,13 @@ export default {
     }
   },
   beforeCreate () {
-    console.log('beforeCreate')
+    // console.log('beforeCreate')
   },
   created () {
-    console.log('created')
+    // console.log('created')
   },
   beforeMount () {
-    console.log('beforeMount')
+    // console.log('beforeMount')
     this.fetchProjects()
   },
   mounted () {
@@ -491,29 +491,29 @@ export default {
     // ])
     this.showTextLoading()
     // this.currentUser = LocalStorage.getItem('currentUser')
-    // console.log('this.currentUser', this.currentUser)
+    // // console.log('this.currentUser', this.currentUser)
     this.authUser = LocalStorage.getItem('authUser')
-    console.log('this.authUser', this.authUser)
+    // console.log('this.authUser', this.authUser)
     this.uid = this.authUser.uid
   },
   beforeUpdate () {
-    console.log('beforeUpdate')
+    // console.log('beforeUpdate')
   },
   updated () {
-    console.log('updated')
+    // console.log('updated')
   },
   beforeUnmount () {
-    console.log('beforeUnmount')
+    // console.log('beforeUnmount')
   },
   unmounted () {
-    console.log('unmounted')
+    // console.log('unmounted')
   },
   methods: {
     async startProject () {
-      console.log('> file', this.file)
+      // console.log('> file', this.file)
       this.logs.push('>' + JSON.stringify(this.file))
       // for (const item in this.file[0]) {
-      //   console.log('navigatorItem: ', this.file[0][item])
+      //   // console.log('navigatorItem: ', this.file[0][item])
       //   this.navigatorVal.push({
       //     label: item,
       //     desc: JSON.stringify(this.file[0][item])
@@ -525,10 +525,10 @@ export default {
       this.saveLocally(this.file[0])
     },
     async startProject2 () {
-      console.log('> file', this.file)
+      // console.log('> file', this.file)
       this.logs.push('>' + JSON.stringify(this.file))
       // for (const item in this.file[0]) {
-      //   console.log('navigatorItem: ', this.file[0][item])
+      //   // console.log('navigatorItem: ', this.file[0][item])
       //   this.navigatorVal.push({
       //     label: item,
       //     desc: JSON.stringify(this.file[0][item])
@@ -541,9 +541,9 @@ export default {
     },
     uploadFile () {
       this.loadingSubmit = true
-      console.log('file', this.file)
+      // console.log('file', this.file)
       const files = this.file
-      console.log({ files })
+      // console.log({ files })
       if (files === null) return -1
       const metadata = {
         contentType: files[0].type
@@ -574,9 +574,9 @@ export default {
               break
           }
         },
-        (error) => {
+        () => {
           // Handle unsuccessful uploads
-          console.log({ error })
+          // console.log({ error })
           this.loadingSubmit = false
           this.$q.notify({
             icon: 'warning',
@@ -590,8 +590,8 @@ export default {
           // For instance, get the download URL: https://firebasestorage.googleapis.com/...
           this.$getdownloadurl(uploadTask.snapshot.ref).then(
             async (downloadURL) => {
-              console.log('File available at', downloadURL)
-              console.log(files)
+              // console.log('File available at', downloadURL)
+              // console.log(files)
               this.projectAvatar = `${files[0].name.split('.')[0]}.${
                 files[0].name.split('.')[1]
               }`
@@ -603,7 +603,7 @@ export default {
       )
     },
     async saveProjectDetails () {
-      console.log('Saving Project details..')
+      // console.log('Saving Project details..')
       const payload = {
         createdBy: this.uid,
         dateCreated: this.formattedTimestamp,
@@ -617,8 +617,8 @@ export default {
         dateFrom: this.dateFrom,
         dateTo: this.dateTo
       }
-      console.log({ payload })
-      console.log('validate date', is.date(this.dateFrom))
+      // console.log({ payload })
+      // console.log('validate date', is.date(this.dateFrom))
 
       const updates = {}
       updates[`projects/${payload.id}/`] = payload
@@ -635,8 +635,8 @@ export default {
           this.formReset()
           this.fetchProjects()
         })
-        .catch((error) => {
-          console.log({ error })
+        .catch(() => {
+          // console.log({ error })
           // this.loading1 = false
           this.$q.notify({
             icon: 'exclamation-circle',
@@ -661,7 +661,7 @@ export default {
     },
     showTextLoading () {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
-      console.log('loaded in ', ms, ' ms')
+      // console.log('loaded in ', ms, ' ms')
       this.visible = true
       setTimeout(() => {
         this.visible = false
@@ -669,7 +669,7 @@ export default {
     },
     factoryFn (files) {
       // returning a Promise
-      console.log(files[0])
+      // console.log(files[0])
 
       const metadata = {
         contentType: files[0].type
@@ -690,7 +690,7 @@ export default {
       const projectsQuery = await this.$fbget(projectsTable)
       const results = projectsQuery.val()
       if (!results) return
-      console.log('results', results)
+      // console.log('results', results)
       this.rows = Object.values(results).map((element, index) => {
         element.isActive = element.isActivated || false
         // The next line is a MAGIC. theres a bug in the framework regarding
@@ -715,8 +715,8 @@ export default {
             position: 'bottom-left'
           })
         })
-        .catch((error) => {
-          console.log({ error })
+        .catch(() => {
+          // console.log({ error })
           this.$q.notify({
             icon: 'exclamation-circle',
             color: 'negative',

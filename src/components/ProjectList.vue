@@ -144,7 +144,7 @@ export default {
       visible,
       initFunction () {
         // access setup variables here w/o using 'this'
-        console.log('initFunction called->', visible.value)
+        // console.log('initFunction called->', visible.value)
         url.value = 'https://picsum.photos/500/300?t='
         for (let i = 0; i < 50; i++) {
           arr.value.push(Math.random())
@@ -168,54 +168,54 @@ export default {
     }
   },
   serverPrefetch () {
-    console.log('serverPrefetch')
+    // console.log('serverPrefetch')
   },
   beforeCreate () {
-    console.log('beforeCreate..', this.$options)
+    // console.log('beforeCreate..', this.$options)
   },
   created () {
-    console.log('created..')
+    // console.log('created..')
   },
   beforeMount () {
-    console.log('beforeMount..')
+    // console.log('beforeMount..')
   },
   mounted () {
-    console.log('mounted..', this.$options)
+    // console.log('mounted..', this.$options)
     // this.$emit('showHeader', true, [])
     this.showTextLoading()
     this.initFunction()
   },
   beforeUpdate () {
-    console.log('beforeUpdate')
+    // console.log('beforeUpdate')
   },
   updated () {
-    console.log('updated')
+    // console.log('updated')
   },
   beforeUnmount () {
-    console.log('beforeUnmount')
+    // console.log('beforeUnmount')
   },
   unmounted () {
-    console.log('unmounted')
+    // console.log('unmounted')
   },
   errorCaptured () {
-    console.log('errorCaptured')
+    // console.log('errorCaptured')
   },
   renderTracked () {
-    console.log('renderTracked')
+    // console.log('renderTracked')
   },
   renderTriggered () {
-    console.log('renderTriggered')
+    // console.log('renderTriggered')
   },
   activated () {
-    console.log('activates')
+    // console.log('activates')
   },
   deactivated () {
-    console.log('deactivated')
+    // console.log('deactivated')
   },
   methods: {
     showTextLoading () {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
-      console.log('loaded in ', ms, ' ms')
+      // console.log('loaded in ', ms, ' ms')
       this.visible = true
       setTimeout(() => {
         this.visible = false

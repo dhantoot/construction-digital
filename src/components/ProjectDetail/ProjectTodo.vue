@@ -13,9 +13,9 @@
         width: '100%'
       }"
     >
-      <template v-slot:prepend>
+      <!-- <template v-slot:prepend>
         <q-icon color="accent" name="las la-arrow-left" @click="this.$router.push('/detail')"/>
-      </template>
+      </template> -->
       <template v-slot:append>
         <q-icon v-if="text === ''" name="las la-search" class="text-accent"/>
         <q-icon
@@ -27,132 +27,142 @@
       </template>
     </q-input>
   </div>
-  <q-list class="scroll bg-transparent" style="height: 100vh;">
-      <q-item-label header class="text-accent">Todo</q-item-label>
-      <div class="q-pa-lg q-gutter-sm" v-if="loadingtodoList">
-        <q-skeleton
-          type="rect"
-          :style="{
-            height: '35px'
-          }"
-      />
-        <q-skeleton
-          type="rect"
-          :style="{
-            height: '35px'
-          }"
-      />
-        <q-skeleton
-          type="rect"
-          :style="{
-            height: '35px'
-          }"
-      />
-      </div>
-      <q-item tag="label" v-ripple v-for="item in todoList" :key="item">
-        <q-item-section side top>
-          <q-checkbox
-            keep-color
-            v-model="selectedMember"
-            :val="item.id"
-            color="warning"
-            @update:model-value="changeSelected"
+  <div class="row full-width justify-between items-center absolute" style="z-index: 1;">
+    <div class="text-bold text-accent q-ml-lg">Todo List</div>
+    <div>
+      <q-btn label="New" rounded class="q-mr-sm text-capitalize" color="primary" icon="las la-plus" @click="this.$router.push({ path: '/createtodo' })"/>
+    </div>
+  </div>
+  <div class="scroll q-mt-xl" style="max-height: 50vh">
+    <q-list>
+        <div class="q-pa-lg q-gutter-sm" v-if="loadingtodoList">
+          <q-skeleton
+            type="rect"
+            :style="{
+              height: '35px'
+            }"
         />
-        </q-item-section>
-
-        <q-item-section>
-          <q-item-label class="text-accent">{{ item.todoTitle }}</q-item-label>
-          <q-item-label class="text-positive" caption>
-            {{ item.todoDesc }}
-          </q-item-label>
-        </q-item-section>
-      </q-item>
-
-      <q-separator spaced/>
-      <q-item-label header>Done</q-item-label>
-
-      <div class="q-pa-lg q-gutter-sm" v-if="loadingtodoList">
-        <q-skeleton
-          type="rect"
-          :style="{
-            height: '35px'
-          }"
-      />
-        <q-skeleton
-          type="rect"
-          :style="{
-            height: '35px'
-          }"
-      />
-        <q-skeleton
-          type="rect"
-          :style="{
-            height: '35px'
-          }"
-      />
-      </div>
-
-      <q-item tag="label" v-ripple v-for="item of completedTodos" :key="item">
-        <q-item-section>
-          <q-item-label>{{ item.todoTitle }}</q-item-label>
-          <q-item-label caption>
-            {{ item.todoDesc }}
-          </q-item-label>
-        </q-item-section>
-
-        <q-item-section side>
-          <q-toggle
-            color="blue"
-            v-model="item.isArchived"
-            :val="item.isArchived"
-            label="Archive"
+          <q-skeleton
+            type="rect"
+            :style="{
+              height: '35px'
+            }"
         />
-        </q-item-section>
-      </q-item>
+          <q-skeleton
+            type="rect"
+            :style="{
+              height: '35px'
+            }"
+        />
+        </div>
+        <q-item tag="label" v-ripple v-for="item in todoList" :key="item">
+          <q-item-section side top>
+            <q-checkbox
+              keep-color
+              v-model="selectedMember"
+              :val="item.id"
+              color="warning"
+              @update:model-value="changeSelected"
+          />
+          </q-item-section>
 
-      <q-separator spaced/>
+          <q-item-section>
+            <q-item-label class="text-accent">{{ item.todoTitle }}</q-item-label>
+            <q-item-label class="text-positive" caption>
+              {{ item.todoDesc }}
+            </q-item-label>
+          </q-item-section>
 
-      <q-item-section>
-        <q-btn
-          @click="confirm"
-          size="lg"
-          color="primary"
-          text-color="warning"
-          label="Save"
-          class="text-capitalize q-ma-md"
-          :loading="loadingSubmit"
-        >
-          <template v-slot:loading>
-            <q-spinner-bars class="on-left"/>
-            Saving...
-          </template>
-        </q-btn>
-      </q-item-section>
-  </q-list>
-  <q-inner-loading
-    :showing="loadingtodoList"
-    label="Please wait..."
-    label-class="text-teal"
-    label-style="font-size: 1.1em"
-    ><q-spinner-bars
-      :style="{
-        'font-size': '40px'
-      }"
-      color="primary"
-   />
-  </q-inner-loading>
-  <q-page-sticky position="bottom-right" :offset="[18, 18]">
-    <q-btn
-      @click="this.$router.push({ path: '/createtodo' })"
-      :dense="true"
-      fab
-      icon="las la-notes-medical"
-      color="grey-1"
-      class="text-green"
-   />
-  </q-page-sticky>
+          <q-item-section avatar>
+            <q-toggle
+              v-model="item.isArchived"
+              :val="item.isArchived"
+              :disable="!item.isCompleted"
+              :class="{
+                'cursor-not-allowed': !item.isCompleted
+              }"
+            >
+            <template v-slot:label>
+              {{ item.isCompleted ? 'Archive' : '' }}
+            </template>
+            </q-toggle>
+          </q-item-section>
+        </q-item>
+
+        <div class="q-pa-lg q-gutter-sm" v-if="loadingtodoList">
+          <q-skeleton
+            type="rect"
+            :style="{
+              height: '35px'
+            }"
+        />
+          <q-skeleton
+            type="rect"
+            :style="{
+              height: '35px'
+            }"
+        />
+          <q-skeleton
+            type="rect"
+            :style="{
+              height: '35px'
+            }"
+        />
+        </div>
+
+        <!-- <q-item tag="label" v-ripple v-for="item of completedTodos" :key="item">
+          <q-item-section>
+            <q-item-label>{{ item.todoTitle }}</q-item-label>
+            <q-item-label caption>
+              {{ item.todoDesc }}
+            </q-item-label>
+          </q-item-section>
+
+          <q-item-section side>
+            <q-toggle
+              color="blue"
+              v-model="item.isArchived"
+              :val="item.isArchived"
+              label="Archive"
+          />
+          </q-item-section>
+        </q-item> -->
+    </q-list>
+    <q-inner-loading
+      :showing="loadingtodoList"
+      label="Please wait..."
+      label-class="text-teal"
+      label-style="font-size: 1.1em"
+      ><q-spinner-bars
+        :style="{
+          'font-size': '40px'
+        }"
+        color="primary"
+    />
+    </q-inner-loading>
+  </div>
+  <div class="row q-px-lg q-pt-sm justify-between items-center">
+    <div>
+      <q-btn rounded class="q-ml-none" color="primary" icon="las la-arrow-left" @click="this.$router.push('/detail')"/>
+    </div>
+    <div>
+      <q-btn
+        @click="confirm"
+        rounded
+        color="primary"
+        label="Update"
+        class="text-capitalize full-width text-accent"
+        :loading="loadingSubmit"
+        icon="las la-edit"
+      >
+        <template v-slot:loading>
+          <q-spinner-bars class="on-left"/>
+          Saving...
+        </template>
+      </q-btn>
+    </div>
+  </div>
 </template>
-
 <script>
 import { ref } from 'vue'
 
@@ -171,7 +181,7 @@ export default {
       question,
       initFunction () {
         // access setup variables here w/o using 'this'
-        console.log('initFunction called', visible.value)
+        // console.log('initFunction called', visible.value)
       },
       check1: ref(true),
       check2: ref(true),
@@ -207,34 +217,34 @@ export default {
     }
   },
   beforeCreate () {
-    console.log('beforeCreate')
+    // console.log('beforeCreate')
   },
   created () {
-    console.log('created')
+    // console.log('created')
   },
   beforeMount () {
-    console.log('beforeMount')
+    // console.log('beforeMount')
   },
   mounted () {
     this.showTextLoading()
     this.getTodoList()
   },
   beforeUpdate () {
-    console.log('beforeUpdate')
+    // console.log('beforeUpdate')
   },
   updated () {
-    console.log('updated')
+    // console.log('updated')
   },
   beforeUnmount () {
-    console.log('beforeUnmount')
+    // console.log('beforeUnmount')
   },
   unmounted () {
-    console.log('unmounted')
+    // console.log('unmounted')
   },
   methods: {
     showTextLoading () {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
-      console.log('loaded in ', ms, ' ms')
+      // console.log('loaded in ', ms, ' ms')
       this.visible = true
       setTimeout(() => {
         this.visible = false
@@ -251,7 +261,7 @@ export default {
         }
         const data_ = Object.values(data)
         this.todoList = data_
-        console.log('this.todoList', this.todoList)
+        // console.log('this.todoList', this.todoList)
         this.selectedMember = this.todoList
           .filter((e) => e.isCompleted)
           .map((x) => x.id)
@@ -260,14 +270,14 @@ export default {
       })
     },
     async changeSelected (val) {
-      console.log(val)
+      // console.log(val)
       if (val.length < 1) {
         this.completedTodos = []
         return -1
       }
       const completed = this.todoList.filter((e) => val.includes(e.id))
       this.completedTodos = completed
-      console.log('->', this.completedTodos)
+      // console.log('->', this.completedTodos)
     },
     getCompletedTodos () {
       const completed = this.todoList.filter((e) => e.isCompleted === true)
@@ -275,8 +285,8 @@ export default {
     },
     updateTodo () {
       this.loadingSubmit = true
-      console.log('updating todo', this.todoList)
-      console.log('this.completedTodos', this.completedTodos)
+      // console.log('updating todo', this.todoList)
+      // console.log('this.completedTodos', this.completedTodos)
       const mapIds = this.completedTodos.map((m) => m.id)
       const updates = {}
 
@@ -289,7 +299,7 @@ export default {
           updates[`todo/${element.id}/isCompleted/`] = false
         }
       })
-      console.log('updated todoList', this.todoList)
+      // console.log('updated todoList', this.todoList)
 
       // slash at the end is very important (../avatar/)
       // updates[`todo/${this.uid}/avatar/`] = 'url-of-avatar.png'
@@ -304,7 +314,7 @@ export default {
       //       position: 'top-right'
       //     })
       //   }).catch((error) => {
-      //     console.log({ error })
+      //     // console.log({ error })
       //     this.loadingSubmit = false
       //     this.$q.notify({
       //       icon: 'exclamation-circle',
@@ -328,10 +338,10 @@ export default {
           this.updateTodo()
         })
         .onCancel(() => {
-          console.log('>>>> Cancel')
+          // console.log('>>>> Cancel')
         })
         .onDismiss(() => {
-          console.log('I am triggered on both OK and Cancel')
+          // console.log('I am triggered on both OK and Cancel')
         })
     }
   }
