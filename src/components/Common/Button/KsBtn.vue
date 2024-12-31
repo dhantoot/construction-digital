@@ -3,7 +3,7 @@
     @click="fn"
     :label="label"
     flat
-    class="text-capitalize bg-primary"
+    class="text-capitalize bg-primary round-btn"
     disabled="true"
    >
   </q-btn>

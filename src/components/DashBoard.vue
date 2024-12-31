@@ -10,6 +10,7 @@
         :dense="true"
         :icon="subExp ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
         @click="subExp = !subExp"
+        class="round-btn"
      />
     </q-card-actions>
     <q-slide-transition>
@@ -92,7 +93,7 @@
       </div>
     </q-slide-transition>
     <q-inner-loading :showing="visible">
-      <q-spinner-bars size="50px" color="secondary"/>
+      <q-spinner-ios size="50px" color="secondary"/>
     </q-inner-loading>
   </q-card>
 
@@ -154,7 +155,7 @@
       </div>
     </q-slide-transition>
     <q-inner-loading :showing="visible2">
-      <q-spinner-bars size="50px" color="secondary"/>
+      <q-spinner-ios size="50px" color="secondary"/>
     </q-inner-loading>
   </q-card>
 </template>

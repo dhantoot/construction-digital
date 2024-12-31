@@ -8,9 +8,9 @@
 
     <q-header elevated class="text-accent" height-hint="98">
       <q-toolbar class="bg-primary text-warning q-pt-xl">
-        <q-btn @click="leftDrawerOpen = !leftDrawerOpen" flat round :dense="true" icon="menu" class="q-mr-sm"/>
+        <q-btn @click="leftDrawerOpen = !leftDrawerOpen" flat round :dense="true" icon="menu" class="q-mr-sm round-btn"/>
         <q-toolbar-title class="text-center">Hofstee Inc</q-toolbar-title>
-        <q-btn flat round :dense="true" icon="whatshot"/>
+        <q-btn flat round :dense="true" icon="whatshot" class="round-btn"/>
       </q-toolbar>
     </q-header>
 
@@ -198,7 +198,6 @@ export default {
   },
   mounted () {
     console.log('MainLayout monunter')
-    this.mainStore.showNav = true
   },
   methods: {
     showHeader (arg, breadcrumbs) {

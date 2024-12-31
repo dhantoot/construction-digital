@@ -1,5 +1,8 @@
 <template>
-  <div class="q-ma-xs q-gutter-md bg-grey-2 q-mt-xl q-pr-md">
+  <div class="row full-width absolute">
+    <div class="text-h6 text-bold q-px-lg q-py-md text-accent">Add Member</div>
+  </div>
+  <div class="q-mx-xs q-gutter-md bg-grey-2 q-pr-md" style="margin-top:70px">
     <q-input
       :dense="true"
       filled
@@ -16,13 +19,14 @@
       input-class="text-warning"
     />
     <q-select
-      v-model="model"
+      v-model="role"
       :dense="true"
       filled
-      :placeholder="!model ? 'Address' : ''"
+      label="Role"
       :options="options"
       @filter="filterFn"
       input-debounce="0"
+      clearable
     >
       <template v-slot:no-option>
         <q-item>
@@ -47,33 +51,34 @@
       class="bg-grey-2"
       input-class="text-warning"
    />
-   <div class="row justify-between q-mt-lg">
+  </div>
+
+  <div class="row full-width q-px-lg q-py-sm justify-between items-start absolute fixed-bottom" style="margin-bottom:82px">
     <div>
-      <q-btn rounded color="primary" icon="las la-arrow-left" @click="this.$router.push('/detail')"/>
+      <q-btn class="round-btn" color="primary" icon="las la-arrow-left" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/>
     </div>
     <div>
       <q-btn
-        @click="confirm"
-        rounded
+        @click="addMember"
         color="primary"
         label="Add Member"
-        class="text-capitalize text-accent"
+        class="text-capitalize text-accent round-btn"
         :loading="loadingSubmit"
         icon="las la-plus"
       >
         <template v-slot:loading>
-          <q-spinner-bars class="on-left"/>
+          <q-spinner-ios class="on-left"/>
           Saving...
         </template>
       </q-btn>
     </div>
-   </div>
   </div>
 
 </template>
 <script>
 import { ref } from 'vue'
 const stringOptions = ['Employee', 'Contractor', 'Admin', 'Client', 'Builders']
+import { useMainStore } from 'stores/main'
 
 // Don't forget to specify which animations
 // you are using in quasar.config file > animations.
@@ -83,9 +88,12 @@ export default {
   setup () {
     const options = ref(stringOptions)
     const visible = ref(false)
+    const mainStore = useMainStore()
 
     return {
-      model: ref(null),
+      loadingSubmit: ref(false),
+      mainStore,
+      role: ref(null),
       fname: ref(null),
       lname: ref(null),
       text: ref(null),
@@ -164,6 +172,9 @@ export default {
       setTimeout(() => {
         this.visible = false
       }, ms)
+    },
+    addMember () {
+      console.log('Adding member')
     }
   }
 }

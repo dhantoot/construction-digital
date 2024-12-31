@@ -3,15 +3,14 @@
     <q-select
       :dense="true"
       filled
-      v-model="model"
+      v-model="searchKey"
       use-input
       input-debounce="0"
-      :options="filterOptions"
+      :options="options"
       @filter="filterFn"
       clearable
-      option-value="address"
-      option-label="address"
-      :placeholder="!model ? 'Address' : ''"
+      :placeholder="!searchKey ? 'Address' : ''"
+      :loading="searchingPlaceLoader"
     >
     </q-select>
     <q-input filled v-model="text" placeholder="Name" class="bg-grey-2" :dense="true" input-class="text-accent"/>
@@ -33,7 +32,7 @@
         label="Upload"
      />
       <q-tab
-        class="text-green text-capitalize"
+        class="text-yellow text-capitalize"
         name="capture"
         icon="las la-camera"
         label="Capture"
@@ -41,13 +40,13 @@
     </q-tabs>
     <div class="col-24" v-if="tab === 'upload'">
       <q-file
-        outlined
+        :dense="true"
+        label-color="orange"
+        filled
         v-model="file"
         label="Choose File"
         multiple
         accept=".jpg, image/*"
-        color="orange"
-        label-color="orange"
       >
         <template v-slot:prepend>
           <q-icon name="cloud_upload" color="orange"/>
@@ -56,15 +55,17 @@
     </div>
 
     <div class="col-24" v-if="tab === 'capture'">
-      <q-btn
-        outline
-        size="lg"
-        class="text-capitalize full-width"
-        icon="las la-camera"
-        text-color="green"
-        label="Open camera"
-        @click="captureImage"
-        :disable="!deviceIsReady"
+     <q-btn
+      dense
+      align="left"
+      class="text-capitalize full-width no-shadow round-btn"
+      text-color="yellow"
+      color="transparent"
+      icon="las la-camera"
+      label="Open camera"
+      @click="captureImage"
+      :disable="deviceIsReady"
+      style="height: 40px;"
      />
     </div>
 
@@ -76,24 +77,24 @@
         src="imageSrc"
         :ratio="16 / 9"
      />
-      <div class="caption" v-show="!btnToggle">imageSrc: {{ imageSrc }}</div>
-      <div class="caption" v-show="!btnToggle">data: {{ data }}</div>
+      <!-- <div class="caption" v-show="!btnToggle">imageSrc: {{ imageSrc }}</div>
+      <div class="caption" v-show="!btnToggle">data: {{ data }}</div> -->
     </div>
     <div class="row justify-between q-mt-lg">
       <div>
-        <q-btn rounded color="primary" icon="las la-arrow-left" @click="this.$router.push('/projects')"/>
+        <q-btn class="round-btn" rounded color="primary" icon="las la-arrow-left" @click="this.$router.push('/projects')"/>
       </div>
       <div>
         <q-btn
           @click="createProject"
-          rounded
           color="primary"
           label="Create"
-          class="text-capitalize text-accent"
+          class="text-capitalize text-accent round-btn"
           icon="las la-plus"
+          :disabled="!searchKey || !text || !desc || !file"
         >
           <template v-slot:loading>
-            <q-spinner-bars class="on-left"/>
+            <q-spinner-ios class="on-left"/>
             Saving...
           </template>
         </q-btn>
@@ -104,7 +105,7 @@
 <script>
 import { ref } from 'vue'
 import { useQuasar, LocalStorage, uid, date } from 'quasar'
-// const stringOptions = ['Google', 'Facebook', 'Twitter', 'Apple', 'Oracle']
+const stringOptions = []
 
 // Don't forget to specify which animations
 // you are using in quasar.config file > animations.
@@ -127,9 +128,9 @@ export default {
     const camData = ref(null)
     const desc = ref('')
     const generatedUid = uid()
-    const model = ref(null)
+    const searchKey = ref(null)
     const stringOptions = ref([])
-    const filterOptions = ref({})
+    const options = ref(stringOptions)
     // document.addEventListener('deviceready', () => {
     //   deviceIsReady.value = true
     //   // eslint-disable-next-line no-undef
@@ -183,9 +184,10 @@ export default {
             this.logs.push('> file system open: ' + dirEntry.name)
             this.$q.notify({
               icon: 'check_circle',
-              color: 'positive',
+              color: 'green',
               message: 'File saved to phone: ' + JSON.toString(dirEntry),
-              position: 'top-right'
+              position: 'top-right',
+              classes: 'notify-custom-css'
             })
             const isAppend = true
             // eslint-disable-next-line no-undef
@@ -195,9 +197,10 @@ export default {
             )
             this.$q.notify({
               icon: 'check_circle',
-              color: 'positive',
+              color: 'green',
               message: 'File saved to phone',
-              position: 'top-right'
+              position: 'top-right',
+              classes: 'notify-custom-css'
             })
           },
           (err) => {
@@ -207,7 +210,8 @@ export default {
               icon: 'exclamation-circle',
               color: 'negative',
               message: 'Error flag 1' + err,
-              position: 'bottom-left'
+              position: 'top-right',
+              classes: 'notify-custom-css'
             })
           }
         )
@@ -217,7 +221,8 @@ export default {
           icon: 'exclamation-circle',
           color: 'negative',
           message: 'Error flag 2' + e,
-          position: 'bottom-right'
+          position: 'top-right',
+          classes: 'notify-custom-css'
         })
       }
     }
@@ -266,13 +271,15 @@ export default {
           icon: 'exclamation-circle',
           color: 'negative',
           message: 'Error flag 2' + e,
-          position: 'bottom-right'
+          position: 'top-right',
+          classes: 'notify-custom-css'
         })
       }
     }
 
     return {
-      model,
+      searchingPlaceLoader: ref(false),
+      searchKey,
       breadcrumbs: ref([
         {
           label: 'Back',
@@ -300,7 +307,7 @@ export default {
       captureImage,
       text: ref(null),
       desc,
-      filterOptions,
+      options,
       visible,
       initFunction () {
         // access setup variables here w/o using 'this'
@@ -321,7 +328,7 @@ export default {
         // and only resets the input textbox to empty string
 
         if (val.length > 0) {
-          const modelValue = (model.value || []).slice()
+          const modelValue = (searchKey.value || []).slice()
 
           val
             .split(/[,;|]+/)
@@ -337,7 +344,7 @@ export default {
             })
 
           done(null)
-          model.value = modelValue
+          searchKey.value = modelValue
         }
       }
     }
@@ -405,20 +412,31 @@ export default {
   },
   methods: {
     setModel (val) {
-      this.model.value = val
+      this.searchKey = val
     },
-    filterFn (val, update) {
-      update(() => {
-        if (val === '') {
-          this.filterOptions = this.stringOptions
-        } else {
-          // console.log('val', val)
-          const needle = val.toLowerCase()
-          // console.log('this.stringOptions', this.stringOptions)
-          this.filterOptions = this.stringOptions.filter(
-            (v) => v.address.toLowerCase().includes(needle)
-          )
-        }
+    filterFn (val, update, abort) {
+      if (val === '') {
+        update(() => {
+          this.options = stringOptions
+        })
+        abort()
+        return
+      }
+      if (val.length < 11) {
+        abort()
+        return
+      }
+      this.searchingPlaceLoader = true
+      update(async () => {
+        const needle = val.toLowerCase()
+        const resp = await this.$findPlace('address', needle)
+        this.options = resp?.data?.predictions.map((e) => {
+          return {
+            label: e.description,
+            value: e.description
+          }
+        })
+        this.searchingPlaceLoader = false
       })
     },
     async createProject () {
@@ -492,7 +510,8 @@ export default {
             icon: 'warning',
             color: 'warning',
             message: 'Error Uploading file\n' + error,
-            position: 'top-right'
+            position: 'top-right',
+            classes: 'notify-custom-css'
           })
         },
         () => {
@@ -524,9 +543,10 @@ export default {
           // this.loading1 = false
           this.$q.notify({
             icon: 'check_circle',
-            color: 'positive',
+            color: 'green',
             message: 'Sucessfully Created',
-            position: 'top-right'
+            position: 'top-right',
+            classes: 'notify-custom-css'
           })
         })
         .catch((error) => {
@@ -535,7 +555,8 @@ export default {
             icon: 'exclamation-circle',
             color: 'negative',
             message: 'Error found\n' + error,
-            position: 'top-right'
+            position: 'top-right',
+            classes: 'notify-custom-css'
           })
         })
     },
@@ -569,5 +590,8 @@ export default {
 <style lang="scss" scoped>
 .q-field__input {
   color: red !important;
+}
+.custom-shadow {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 </style>

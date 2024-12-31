@@ -92,3 +92,18 @@ plugin add
 
 ## Animation
 > https://animate.style/
+
+## Firebase cli reference
+firebase projects:list
+
+## Twilio recovery code
+5KSXMXWSB8QJ5782W3QZ2T3C
+
+## quickl scaffold
+Usage
+    $ quasar new <p|page> [-f <option>] <page_file_name>
+    $ quasar new <l|layout> [-f <option>] <layout_file_name>
+    $ quasar new <c|component> [-f <option>] <component_file_name>
+    $ quasar new <b|boot> [-f ts] <boot_name>
+    $ quasar new <s|store> [-f ts] <store_module_name>
+    $ quasar new ssrmiddleware [-f ts] <middleware_name>

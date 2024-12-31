@@ -15,7 +15,7 @@
       label-class="text-teal"
       label-style="font-size: 1.1em"
     >
-      <q-spinner-bars size="50px" color="secondary"/>
+      <q-spinner-ios size="50px" color="secondary"/>
     </q-inner-loading>
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
       <q-btn
@@ -23,7 +23,7 @@
         fab
         icon="las la-calendar-plus"
         color="grey-1"
-        class="text-green"
+        class="text-green round-btn"
      />
     </q-page-sticky>
   </div>

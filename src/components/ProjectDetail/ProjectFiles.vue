@@ -14,7 +14,7 @@
       }"
     >
       <template v-slot:prepend>
-        <q-icon color="accent" name="las la-arrow-left" @click="this.$router.push('/detail')"/>
+        <q-icon color="accent" name="las la-arrow-left" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/>
       </template>
       <template v-slot:append>
         <q-icon v-if="text === ''" name="las la-search" class="text-accent"/>
@@ -47,7 +47,7 @@
       label-class="text-teal"
       label-style="font-size: 1.1em"
     >
-    <q-spinner-bars size="50px" color="secondary"/>
+    <q-spinner-ios size="50px" color="secondary"/>
     </q-inner-loading>
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
       <q-btn
@@ -55,13 +55,14 @@
         fab
         icon="las la-paperclip"
         color="grey-1"
-        class="text-green"
+        class="text-green round-btn"
      />
     </q-page-sticky>
   </div>
 </template>
 <script>
 import { ref } from 'vue'
+import { useMainStore } from 'stores/main'
 
 // Don't forget to specify which animations
 // you are using in quasar.config file > animations.
@@ -73,8 +74,10 @@ export default {
     const question = ref('')
     const url = ref('https://picsum.photos/500/300')
     const arr = ref([])
+    const mainStore = useMainStore()
 
     return {
+      mainStore,
       visible,
       question,
       url,

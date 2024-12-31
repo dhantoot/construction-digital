@@ -8,7 +8,7 @@
       <div class="text-h2" style="opacity: 0.4">Oops. Nothing here...</div>
 
       <q-btn
-        class="q-mt-xl"
+        class="q-mt-xl round-btn"
         color="white"
         text-color="blue"
         unelevated

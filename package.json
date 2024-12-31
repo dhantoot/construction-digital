@@ -23,9 +23,11 @@
   "dependencies": {
     "@quasar/extras": "^1.16.4",
     "axios": "^1.7.9",
+    "crypto-js": "^4.2.0",
     "dotenv": "^16.4.5",
     "firebase": "^10.12.2",
     "pinia": "^2.3.0",
+    "pinia-plugin-persist": "^1.0.0",
     "quasar": "^2.6.0",
     "request": "^2.88.2",
     "vue": "^3.5.13",

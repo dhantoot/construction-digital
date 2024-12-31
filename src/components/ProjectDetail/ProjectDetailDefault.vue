@@ -1,32 +1,32 @@
 <template>
   <q-card class="no-border-radius no-shadow bg-transparent">
-    <q-img src="https://cdn.quasar.dev/img/parallax2.jpg" height="160px">
+    <q-img :src="`${mainStore?.mobileSelectedProject?.avatarFullPath}`" height="160px">
       <div class="absolute-bottom q-mt-none row justify-between items-center">
         <div>
           <q-btn
             color="primary"
             rounded
-            v-if="this.$route.path === '/detail'"
+            v-if="this.$route.path === `/detail/${mainStore?.mobileSelectedProject?.id}`"
             icon="las la-arrow-left"
-            class="text-accent"
+            class="text-accent round-btn"
             @click="this.$router.push('/projects')"
           />
         </div>
-        <div class="text-h6">STAR Residence</div>
+        <div class="text-h6" v-ellipsis="20">{{ mainStore?.mobileSelectedProject?.title }}</div>
         <div>
           <q-btn
             color="primary"
             rounded
-            v-if="this.$route.path === '/detail'"
+            v-if="this.$route.path === `/detail/${mainStore?.mobileSelectedProject?.id}`"
             icon="las la-user-plus"
-            class="text-accent"
+            class="text-accent round-btn"
             @click="this.$router.push({ path: '/new-member' })"
           />
         </div>
       </div>
     </q-img>
     <q-card-section flat class="q-ma-none q-pa-none">
-      <q-list class="scroll" style="max-height: 46vh;">
+      <q-list class="scroll" style="max-height: 60vh;">
         <q-item-label header class="text-bold text-accent">Project Members</q-item-label>
         <q-item clickable v-ripple>
           <q-item-section avatar>
@@ -388,21 +388,30 @@
       label-class="text-teal"
       label-style="font-size: 1.1em"
     >
-      <q-spinner-bars size="50px" color="secondary"/>
+      <q-spinner-ios size="50px" color="secondary"/>
     </q-inner-loading>
   </q-card>
 </template>
 <script>
 import { ref } from 'vue'
+import { useMainStore } from 'stores/main'
+import ellipsis from 'src/directives/ellipsis'
+
 export default {
+  directives: { ellipsis },
   setup () {
     const visible = ref(false)
+    const mainStore = useMainStore()
 
     return {
       visible,
-      lorem: ref('')
+      lorem: ref(''),
+      mainStore,
+      selectedProject: ref({})
     }
   },
-  mounted () {}
+  mounted () {
+    // this.selectedProject = this.mainStore
+  }
 }
 </script>

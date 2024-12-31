@@ -10,7 +10,7 @@
       size="lg"
       style="background: goldenrod; color: white"
       label="Send E-mail"
-      class="fixed-bottom q-mb-lg q-ml-xs q-mr-xs"
+      class="fixed-bottom q-mb-lg q-ml-xs q-mr-xs round-btn"
    />
   </div>
 </template>

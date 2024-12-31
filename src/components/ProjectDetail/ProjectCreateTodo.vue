@@ -61,7 +61,7 @@
             label-class="text-teal"
             label-style="font-size: 1.1em"
           >
-            <q-spinner-bars size="50px" color="secondary"/>
+            <q-spinner-ios size="50px" color="secondary"/>
           </q-inner-loading>
         </q-item-section>
       </q-item>
@@ -87,7 +87,7 @@
         <q-item-section>
           <div class="row justify-between items-center">
             <div>
-              <q-btn rounded class="q-ml-none" color="primary" icon="las la-arrow-left" @click="this.$router.push('/todo')"/>
+              <q-btn class="q-ml-none round-btn" color="primary" icon="las la-arrow-left" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}/todo`)"/>
             </div>
             <div>
               <q-btn
@@ -95,13 +95,13 @@
                 rounded
                 color="primary"
                 label="Create"
-                class="text-capitalize"
+                class="text-capitalize round-btn"
                 :loading="loadingSubmit"
                 :disable="!todoTitle || !todoDesc"
                 icon="las la-plus"
               >
                 <template v-slot:loading>
-                  <q-spinner-bars class="on-left"/>
+                  <q-spinner-ios class="on-left"/>
                   Saving...
                 </template>
               </q-btn>
@@ -274,9 +274,10 @@ export default {
           this.loadingSubmit = false
           this.$q.notify({
             icon: 'check_circle',
-            color: 'positive',
+            color: 'green',
             message: 'Sucessfully Created',
-            position: 'top-right'
+            position: 'top-right',
+            classes: 'notify-custom-css'
           })
         })
         .catch((error) => {
@@ -286,7 +287,8 @@ export default {
             icon: 'exclamation-circle',
             color: 'negative',
             message: 'Error found\n' + error,
-            position: 'top-right'
+            position: 'top-right',
+            classes: 'notify-custom-css'
           })
         })
     },
@@ -336,7 +338,8 @@ export default {
             icon: 'warning',
             color: 'warning',
             message: 'Error Uploading file:\n' + error,
-            position: 'top-right'
+            position: 'top-right',
+            classes: 'notify-custom-css'
           })
         },
         () => {

@@ -51,6 +51,23 @@ body {
     color: $cancel;
 }
 
+.bg-fuchsia {
+    background: $fuchsia;
+}
+
+.text-fuchsia {
+    color: $fuchsia;
+}
+
 .round-btn {
     border-radius: 12px;
+}
+
+.round-panel {
+    border-radius: 12px;
+}
+
+.notify-custom-css {
+    border-radius: 12px;
+    margin-top: 70px;
 }
