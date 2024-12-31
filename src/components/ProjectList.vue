@@ -17,26 +17,24 @@
     </q-input>
   </div>
   <q-list bordered separator class="scroll bg-transparent" style="height: 100vh;">
-    <q-item clickable v-ripple @click='$router.push({ path: `/detail` })' v-for="item in arr" :key="item">
+    <q-item clickable v-ripple @click='gotoDetail(item)' v-for="item in projects" :key="item">
       <q-item-section thumbnail>
-        <img class="q-ml-sm rounded-borders" :src="`${url}${item}`">
+        <img class="q-ml-sm rounded-borders" :src="`${item.avatarFullPath}`">
       </q-item-section>
 
       <q-item-section>
-        <q-item-label class="text-bold text-accent">{{ names[item.toString().split('.')[1].slice(-2)] }} Residence</q-item-label>
-        <q-item-label caption lines="2" class="text-warning">Secondary line text. Lorem ipsum dolor sit amet, consectetur adipiscit
-          elit.</q-item-label>
+        <q-item-label class="text-bold text-accent">{{ item.title }}</q-item-label>
+        <q-item-label caption lines="2" class="text-warning">{{ item.description }}</q-item-label>
       </q-item-section>
 
       <q-item-section side top>
-        <q-item-label caption class="text-info">5 min ago</q-item-label>
-        <q-icon name="star" color="negative"/>
+          <q-item-label caption class="text-positive q-mb-sm">{{ item.dateCreated.split('T')[0] }}</q-item-label>
+          <q-badge rounded :color="item.isActivated ? 'green' : 'red'" />
       </q-item-section>
-
     </q-item>
   </q-list>
   <q-inner-loading :showing="visible" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em">
-    <q-spinner-bars size="50px" color="secondary"/>
+    <q-spinner-ios size="50px" color="secondary"/>
   </q-inner-loading>
   <q-page-sticky position="bottom-right" :offset="[18, 18]">
     <q-btn fab icon="add" color="grey-1" class="text-green bg-transparent" @click="this.$router.push({ path: '/new-project' })"/>
@@ -44,6 +42,8 @@
 </template>
 <script>
 import { ref } from 'vue'
+import { useMainStore } from 'stores/main'
+import { LocalStorage } from 'quasar'
 
 export default {
   title: 'ProjectList',
@@ -139,6 +139,7 @@ export default {
       'Lauren',
       'Leah'
     ])
+    const mainStore = useMainStore()
 
     return {
       visible,
@@ -155,7 +156,10 @@ export default {
       dense: ref(true),
       url,
       arr,
-      names
+      names,
+      mainStore,
+      getProjectsLoader: ref(false),
+      projects: ref([])
     }
   },
   props: {
@@ -179,11 +183,12 @@ export default {
   beforeMount () {
     // console.log('beforeMount..')
   },
-  mounted () {
+  async mounted () {
     // console.log('mounted..', this.$options)
     // this.$emit('showHeader', true, [])
     this.showTextLoading()
     this.initFunction()
+    await this.getProjects()
   },
   beforeUpdate () {
     // console.log('beforeUpdate')
@@ -220,6 +225,25 @@ export default {
       setTimeout(() => {
         this.visible = false
       }, ms)
+    },
+    async getProjects () {
+      this.getProjectsLoader = true
+      const projects = this.$fbref(this.$fbdb, 'projects')
+      this.$fbonValue(projects, (snapshot) => {
+        const data = snapshot.val()
+        if (this.$isFalsyString(data)) {
+          this.projects = []
+          return -1
+        }
+        const data_ = Object.values(data)
+        this.projects = data_
+        this.getProjectsLoader = false
+      })
+    },
+    gotoDetail (project) {
+      LocalStorage.set('mobileSelectedProject', project)
+      this.mainStore.setSelectedProject(project)
+      this.$router.push({ path: `/detail/${project.id}` })
     }
   }
 }

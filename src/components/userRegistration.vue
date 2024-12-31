@@ -1,8 +1,8 @@
 <template>
-  <div style="height: 67.4vh">
-    <div class="col text-center fullscreen">
+  <div class="row full-width justify-center absolute">
+    <div class="col text-center" style="max-width: 600px;">
       <q-inner-loading :showing="visible">
-        <q-spinner-bars size="50px" color="secondary"/>
+        <q-spinner-ios size="50px" color="secondary"/>
       </q-inner-loading>
       <div class="col-4 q-mt-xl q-mb-md q-pt-xl">
         <q-icon name="las la-user-circle" size="100px" class="q-pa-xs" color="primary"/>
@@ -18,7 +18,7 @@
             v-model="role"
             checked-icon="task_alt"
             unchecked-icon="panorama_fish_eye"
-            val="contructor"
+            val="constructor"
             label="Constructor"
             class="text-positive"
             color="positive"
@@ -90,7 +90,7 @@
           v-model="regverifiedpass"
           placeholder="Confirm Password"
           :rules="regverifiedpassRules"
-          v-on:keyup.enter="login"
+          v-on:keyup.enter="register"
           input-class="text-positive"
           color="positive"
         >
@@ -112,7 +112,7 @@
           type="reset"
           color="positive"
           flat
-          class="q-pl-none q-ml-sm text-capitalize pull-right text-weight-light"
+          class="text-capitalize pull-right text-weight-light round-btn"
           style="float: left"
        />
         <q-btn
@@ -120,16 +120,17 @@
           label="Back to Login"
           color="positive"
           flat
-          class="q-pr-none text-capitalize pull-right text-weight-light"
+          class="text-capitalize pull-right text-weight-light round-btn"
           style="float: right"
        />
       </div>
-      <div class="col-2 q-py-xs q-px-xl">
+      <div class="col-2 q-py-xs q-px-xl q-mt-xs">
         <q-btn
           size="lg"
           color="primary"
           label="Register"
-          class="text-capitalize full-width"
+          class="text-capitalize full-width round-btn"
+          @click="register"
        />
       </div>
     </div>
@@ -137,12 +138,13 @@
 </template>
 <script>
 import { ref } from 'vue'
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
 
 // Don't forget to specify which animations
 // you are using in quasar.config file > animations.
 // Alternatively, if using UMD, load animate.css from CDN.
 export default {
-  title: 'LoginRegister',
+  title: 'UserRegistration',
   emits: ['showHeader'],
   setup () {
     const visible = ref(false)
@@ -201,7 +203,8 @@ export default {
       initFunction () {
         // access setup variables here w/o using 'this'
         // console.log('initFunction called', visible.value)
-      }
+      },
+      registerLoader: ref(false)
     }
   },
   props: {
@@ -223,7 +226,7 @@ export default {
     // console.log('beforeMount')
   },
   mounted () {
-    this.showTextLoading()
+    // this.showTextLoading()
     // this.$emit('showHeader', false, [])
   },
   beforeUpdate () {
@@ -247,8 +250,53 @@ export default {
         this.visible = false
       }, ms)
     },
-    login () {
+    register () {
       // console.log('Logging in..')
+      this.registerLoader = true
+      const auth = getAuth()
+      createUserWithEmailAndPassword(auth, this.regemail, this.regpassword)
+        .then(userCredential => {
+          console.log('Auth Successfull')
+          const user = userCredential.user
+          console.log(user)
+          const formFields = {
+            firstName: '',
+            lastName: '',
+            email: this.regemail,
+            phone_number: '',
+            role: this.role,
+            position: '',
+            isActive: true,
+            avatar: '',
+            uid: user.uid,
+            _ts: this.$serverTimestamp
+          }
+          const updates = {}
+          updates[`users/${user.uid}`] = formFields
+          this.$fbupdate(this.$fbref(this.$fbdb), updates)
+            .then(() => {
+              console.log('Successfully inserted to DB')
+              this.$q.notify({
+                icon: 'done',
+                color: 'green',
+                message: 'Successfully created',
+                position: 'top-right',
+                classes: 'notify-custom-css'
+              })
+              this.registerLoader = false
+            })
+            .catch((error) => {
+              console.log({ error })
+              this.$q.notify({
+                icon: 'cancel',
+                color: 'negative',
+                message: error,
+                position: 'top-right',
+                classes: 'notify-custom-css'
+              })
+              this.registerLoader = false
+            })
+        })
     },
     reset () {
       this.regemail = null

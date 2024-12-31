@@ -69,7 +69,7 @@
       fab
       icon="las la-notes-medical"
       color="grey-1"
-      class="text-green"
+      class="text-green round-btn"
    />
   </q-page-sticky>
 </template>

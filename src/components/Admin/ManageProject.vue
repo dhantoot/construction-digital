@@ -1,8 +1,8 @@
 <template>
   <h5 class="text-center">Manage your projects here</h5>
-  <div class="row">
+  <div class="row q-px-lg">
     <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
-      <q-card class="q-ma-sm adminCard">
+      <q-card class="q-ma-sm adminCard round-panel">
         <q-card-section>
           <div class="text-h6">New Project</div>
           <div class="text-subtitle2">add a new project here</div>
@@ -11,13 +11,15 @@
           <q-select
             :dense="true"
             filled
-            v-model="model"
+            v-model="searchKey"
             use-input
             input-debounce="0"
-            label="Location"
+            label="Location. (trigger search after 10 charaters)"
             :options="options"
             @filter="filterFn"
             class="q-mt-md"
+            :loading="searchingPlaceLoader"
+            clearable
           >
             <template v-slot:no-option>
               <q-item>
@@ -56,7 +58,6 @@
               label="Choose File"
               multiple
               accept=".jpg, image/*"
-              size="lg"
               class="q-ml-sm shadow-2"
             >
               <template v-slot:prepend>
@@ -68,7 +69,7 @@
             <q-btn
               dense
               align="left"
-              class="text-capitalize full-width no-shadow"
+              class="text-capitalize full-width no-shadow round-btn"
               text-color="primary"
               color="grey-2"
               icon="las la-camera"
@@ -91,9 +92,7 @@
             filled
             v-model="budget"
             label="Budget"
-            mask="#.##"
-            fill-mask="0"
-            reverse-fill-mask
+            placeholder="0.00"
             input-class="text-right"
          />
           <q-input :dense="true" v-model="dateFrom" filled type="date" label="Date from"/>
@@ -104,15 +103,15 @@
             flat
             class="text-capitalize bg-cancel"
             label="Hello"
-            size="lg">
+            >
           </q-btn> -->
-          <KsBtn
+          <!-- <KsBtn
             :label="'Submit'"
             :fn="uploadFile"
-         />
+         /> -->
           <q-btn
             flat
-            class="text-capitalize bg-cancel"
+            class="text-capitalize bg-cancel round-btn"
             label="Reset"
             :disable="loadingSubmit"
             @click="formReset"
@@ -121,24 +120,24 @@
           <q-btn
             color="primary"
             label="Submit"
-            class="text-capitalize bg-info"
+            class="text-capitalize bg-info round-btn"
             @click="uploadFile"
-            :disable="loadingSubmit || !model || !text || !desc || !file || !budget || !dateFrom || !dateTo"
+            :disable="loadingSubmit || !searchKey || !text || !desc || !file || !budget || !dateFrom || !dateTo"
             :loading="loadingSubmit"
           >
             <template v-slot:loading>
-              <q-spinner-bars/>
+              <q-spinner-ios/>
             </template>
           </q-btn>
         </q-card-actions>
         <!-- <q-skeleton square/> -->
         <q-inner-loading :showing="visible">
-          <q-spinner-bars size="50px" color="secondary"/>
+          <q-spinner-ios size="50px" color="secondary"/>
         </q-inner-loading>
       </q-card>
     </div>
     <div class="col-lg-9 col-md-8 col-sm-12 col-xs-12">
-      <q-card class="q-ma-sm adminCard">
+      <q-card class="q-ma-sm adminCard round-panel">
         <q-card-section>
           <div class="text-h6">List of Projects</div>
           <div class="text-subtitle2 text-right">
@@ -164,7 +163,7 @@
         >
           <template v-slot:loading>
             <q-inner-loading :showing="visible">
-              <q-spinner-bars size="50px" color="secondary"/>
+              <q-spinner-ios size="50px" color="secondary"/>
             </q-inner-loading>
           </template>
           <template v-slot:body="props">
@@ -215,8 +214,8 @@
 <script>
 import { ref } from 'vue'
 import { useQuasar, LocalStorage, uid, date } from 'quasar'
-const stringOptions = ['Google', 'Facebook', 'Twitter', 'Apple', 'Oracle']
-import KsBtn from 'src/components/Common/Button/KsBtn.vue'
+const stringOptions = []
+// import KsBtn from 'src/components/Common/Button/KsBtn.vue'
 
 // Don't forget to specify which animations
 // you are using in quasar.config file > animations.
@@ -224,7 +223,6 @@ import KsBtn from 'src/components/Common/Button/KsBtn.vue'
 export default {
   title: 'ProjectList',
   components: {
-    KsBtn
   },
   setup () {
     const rows = []
@@ -308,10 +306,12 @@ export default {
             this.logs.push('> file system open: ' + dirEntry.name)
             this.$q.notify({
               icon: 'check_circle',
-              color: 'positive',
+              color: 'green',
               message: 'File saved to phone: ' + JSON.toString(dirEntry),
-              position: 'top-right'
+              position: 'top-right',
+              classes: 'notify-custom-css'
             })
+
             const isAppend = true
             // eslint-disable-next-line no-undef
             createFile(dirEntry, f.name, isAppend)
@@ -320,9 +320,10 @@ export default {
             )
             this.$q.notify({
               icon: 'check_circle',
-              color: 'positive',
+              color: 'green',
               message: 'File saved to phone',
-              position: 'top-right'
+              position: 'top-right',
+              classes: 'notify-custom-css'
             })
           },
           (err) => {
@@ -332,7 +333,8 @@ export default {
               icon: 'exclamation-circle',
               color: 'negative',
               message: 'Error flag 1' + err,
-              position: 'bottom-left'
+              position: 'top-right',
+              classes: 'notify-custom-css'
             })
           }
         )
@@ -342,7 +344,8 @@ export default {
           icon: 'exclamation-circle',
           color: 'negative',
           message: 'Error flag 2' + e,
-          position: 'bottom-right'
+          position: 'top-right',
+          classes: 'notify-custom-css'
         })
       }
     }
@@ -391,12 +394,14 @@ export default {
           icon: 'exclamation-circle',
           color: 'negative',
           message: 'Error flag 2' + e,
-          position: 'bottom-right'
+          position: 'top-right',
+          classes: 'notify-custom-css'
         })
       }
     }
 
     return {
+      searchingPlaceLoader: ref(false),
       rows,
       columns,
       visibleColumns: ref(['title', 'description', 'budget', 'dateFrom', 'dateTo', 'avatar', 'dateCreated', 'isActive']),
@@ -433,28 +438,10 @@ export default {
       navigatorVal,
       imageSrc,
       captureImage,
-      model: ref(null),
+      searchKey: ref(null),
       text: ref(null),
       desc,
       options,
-      filterFn (val, update) {
-        if (val === '') {
-          update(() => {
-            options.value = stringOptions
-
-            // here you have access to "ref" which
-            // is the Vue reference of the QSelect
-          })
-          return
-        }
-
-        update(() => {
-          const needle = val.toLowerCase()
-          options.value = stringOptions.filter(
-            (v) => v.toLowerCase().indexOf(needle) > -1
-          )
-        })
-      },
       visible,
       initFunction () {
         // access setup variables here w/o using 'this'
@@ -509,6 +496,36 @@ export default {
     // console.log('unmounted')
   },
   methods: {
+    enterPressed (evt) {
+      console.log('enter key is pressed', evt)
+      console.log('this.searchKey', this.searchKey)
+      // this.filterFn(this.searchKey, () => {}, () => {})
+    },
+    filterFn (val, update, abort) {
+      if (val === '') {
+        update(() => {
+          this.options = stringOptions
+        })
+        abort()
+        return
+      }
+      if (val.length < 11) {
+        abort()
+        return
+      }
+      this.searchingPlaceLoader = true
+      update(async () => {
+        const needle = val.toLowerCase()
+        const resp = await this.$findPlace('address', needle)
+        this.options = resp?.data?.predictions.map((e) => {
+          return {
+            label: e.description,
+            value: e.description
+          }
+        })
+        this.searchingPlaceLoader = false
+      })
+    },
     async startProject () {
       // console.log('> file', this.file)
       this.logs.push('>' + JSON.stringify(this.file))
@@ -582,7 +599,8 @@ export default {
             icon: 'warning',
             color: 'warning',
             message: 'Error Uploading file, see logs',
-            position: 'top-right'
+            position: 'top-right',
+            classes: 'notify-custom-css'
           })
         },
         () => {
@@ -627,9 +645,10 @@ export default {
           // this.loading1 = false
           this.$q.notify({
             icon: 'check_circle',
-            color: 'secondary',
+            color: 'green',
             message: 'Sucessfully Created',
-            position: 'bottom-left'
+            position: 'top-right',
+            classes: 'notify-custom-css'
           })
           this.loadingSubmit = false
           this.formReset()
@@ -642,7 +661,8 @@ export default {
             icon: 'exclamation-circle',
             color: 'negative',
             message: 'Error found',
-            position: 'bottom-left'
+            position: 'top-right',
+            classes: 'notify-custom-css'
           })
           this.loadingSubmit = false
           this.formReset()
@@ -650,7 +670,7 @@ export default {
         })
     },
     async formReset () {
-      this.model = null
+      this.searchKey = null
       this.text = null
       this.desc = null
       this.file = null
@@ -712,7 +732,8 @@ export default {
             icon: 'check_circle',
             color: 'secondary',
             message: 'Sucessfully Created',
-            position: 'bottom-left'
+            position: 'top-right',
+            classes: 'notify-custom-css'
           })
         })
         .catch(() => {
@@ -721,7 +742,8 @@ export default {
             icon: 'exclamation-circle',
             color: 'negative',
             message: 'Error found',
-            position: 'bottom-left'
+            position: 'top-right',
+            classes: 'notify-custom-css'
           })
         })
     }

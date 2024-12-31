@@ -14,7 +14,7 @@
       }"
     >
       <!-- <template v-slot:prepend>
-        <q-icon color="accent" name="las la-arrow-left" @click="this.$router.push('/detail')"/>
+        <q-icon color="accent" name="las la-arrow-left" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/>
       </template> -->
       <template v-slot:append>
         <q-icon v-if="text === ''" name="las la-search" class="text-accent"/>
@@ -30,10 +30,10 @@
   <div class="row full-width justify-between items-center absolute" style="z-index: 1;">
     <div class="text-bold text-accent q-ml-lg">Todo List</div>
     <div>
-      <q-btn label="New" rounded class="q-mr-sm text-capitalize" color="primary" icon="las la-plus" @click="this.$router.push({ path: '/createtodo' })"/>
+      <q-btn label="New" class="q-mr-lg text-capitalize round-btn" color="primary" icon="las la-plus" @click="this.$router.push({ path: `/detail/${mainStore?.mobileSelectedProject?.id}/todo/create` })"/>
     </div>
   </div>
-  <div class="scroll q-mt-xl" style="max-height: 50vh">
+  <div class="scroll q-mt-xl" style="max-height: 55vh">
     <q-list>
         <div class="q-pa-lg q-gutter-sm" v-if="loadingtodoList">
           <q-skeleton
@@ -133,7 +133,7 @@
       label="Please wait..."
       label-class="text-teal"
       label-style="font-size: 1.1em"
-      ><q-spinner-bars
+      ><q-spinner-ios
         :style="{
           'font-size': '40px'
         }"
@@ -141,22 +141,21 @@
     />
     </q-inner-loading>
   </div>
-  <div class="row q-px-lg q-pt-sm justify-between items-center">
+  <div class="row full-width q-px-lg q-py-sm justify-between items-start absolute fixed-bottom" style="margin-bottom:82px">
     <div>
-      <q-btn rounded class="q-ml-none" color="primary" icon="las la-arrow-left" @click="this.$router.push('/detail')"/>
+      <q-btn class="q-ml-none round-btn" color="primary" icon="las la-arrow-left" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/>
     </div>
     <div>
       <q-btn
         @click="confirm"
-        rounded
         color="primary"
         label="Update"
-        class="text-capitalize full-width text-accent"
+        class="text-capitalize full-width text-accent round-btn"
         :loading="loadingSubmit"
         icon="las la-edit"
       >
         <template v-slot:loading>
-          <q-spinner-bars class="on-left"/>
+          <q-spinner-ios class="on-left"/>
           Saving...
         </template>
       </q-btn>
@@ -165,6 +164,7 @@
 </template>
 <script>
 import { ref } from 'vue'
+import { useMainStore } from 'stores/main'
 
 // Don't forget to specify which animations
 // you are using in quasar.config file > animations.
@@ -175,8 +175,10 @@ export default {
     const visible = ref(false)
     const question = ref('')
     const loadingtodoList = ref(false)
+    const mainStore = useMainStore()
 
     return {
+      mainStore,
       visible,
       question,
       initFunction () {

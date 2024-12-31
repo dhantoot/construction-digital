@@ -1,9 +1,18 @@
 <template>
     <h5 class="text-center">Manage Accounts here</h5>
-    <q-card class="my-card q-ma-sm">
+    <q-card class="q-ma-lg round-btn">
       <!-- <q-skeleton square/> -->
+      <div class="row justify-center q-pa-lg q-gutter-sm">
+        <q-input
+            dense
+            placeholder="Search place"
+            v-model="searchKey"
+            filled
+        />
+        <q-btn icon="las la-search" color="purple" @click="search" class="round-btn"/>
+      </div>
       <q-inner-loading :showing="visible">
-        <q-spinner-bars size="50px" color="secondary"/>
+        <q-spinner-ios size="50px" color="secondary"/>
       </q-inner-loading>
     </q-card>
   </template>
@@ -20,6 +29,7 @@ export default {
     const question = ref('')
 
     return {
+      searchKey: ref(''),
       visible,
       question,
       initFunction () {
@@ -27,6 +37,8 @@ export default {
         // console.log('initFunction called', visible.value)
       }
     }
+  },
+  components: {
   },
   props: {
     title: String,
@@ -70,6 +82,19 @@ export default {
       setTimeout(() => {
         this.visible = false
       }, ms)
+    },
+    async search () {
+      const type = 'address'
+      const input = this.searchKey
+      const resp = await this.$findPlace(type, input)
+      console.log(resp)
+      this.$q.notify({
+        icon: 'check_circle',
+        color: 'green',
+        message: 'Jimm pinged you',
+        position: 'top-right',
+        classes: 'notify-custom-css'
+      })
     }
   }
 }

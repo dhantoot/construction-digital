@@ -17,7 +17,7 @@ const routes = [
         component: () => import('components/ProjectPlan.vue')
       },
       {
-        path: '/detail',
+        path: '/detail/:projectId',
         component: () => import('components/ProjectDetail/IndexPage.vue'),
         // redirect: 'todo',
         children: [
@@ -27,32 +27,32 @@ const routes = [
               import('components/ProjectDetail/ProjectDetailDefault.vue')
           },
           {
-            path: '/todo',
+            path: '/detail/:projectId/todo',
             component: () => import('components/ProjectDetail/ProjectTodo.vue')
           },
           {
-            path: '/files',
+            path: '/detail/:projectId/files',
             component: () => import('components/ProjectDetail/ProjectFiles.vue')
           },
           {
-            path: '/chat',
+            path: '/detail/:projectId/chat',
             component: () => import('components/ProjectDetail/ProjectChat.vue')
           },
           {
-            path: '/planning',
+            path: '/detail/:projectId/planning',
             component: () => import('components/ProjectDetail/ProjectPlan.vue')
           },
           {
-            path: '/more',
+            path: '/detail/:projectId/more',
             component: () => import('components/ProjectDetail/ProjectMore.vue')
           },
           {
-            path: '/agreement',
+            path: '/detail/:projectId/agreement',
             component: () =>
               import('components/ProjectDetail/ProjectAgreement.vue')
           },
           {
-            path: '/createtodo',
+            path: '/detail/:projectId/todo/create',
             component: () =>
               import('components/ProjectDetail/ProjectCreateTodo.vue')
           }
@@ -72,7 +72,7 @@ const routes = [
       },
       {
         path: '/login-register',
-        component: () => import('components/loginRegister.vue')
+        component: () => import('src/components/userRegistration.vue')
       },
       {
         path: '/login',
@@ -104,6 +104,28 @@ const routes = [
       {
         path: '/whats-new',
         component: () => import('src/components/Admin/WhatsNew.vue')
+      }
+    ]
+  },
+  {
+    path: '/accept-invite/:projectId',
+    component: () => import('layouts/PublicLayout.vue'),
+    redirect: '',
+    children: [
+      {
+        path: '',
+        component: () => import('src/components/Public/AcceptInvitePage.vue')
+      }
+    ]
+  },
+  {
+    path: '/reject-invite/:projectId',
+    component: () => import('layouts/PublicLayout.vue'),
+    redirect: '',
+    children: [
+      {
+        path: '',
+        component: () => import('src/components/Public/RejectInvitePage.vue')
       }
     ]
   },

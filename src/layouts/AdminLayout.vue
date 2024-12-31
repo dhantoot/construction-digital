@@ -7,14 +7,13 @@
     >
       <q-toolbar class="q-py-sm q-px-md">
         <q-btn
-          round
           :dense="true"
           flat
           :ripple="false"
           icon="lab la-jedi-order"
           size="19px"
           color="warning"
-          class="q-mr-sm"
+          class="q-mr-sm round-btn"
           no-caps
           @click="this.$router.push('/admin')"
        />
@@ -48,7 +47,7 @@
             <q-item>
               <q-item-section>
                 <div class="text-center">
-                  <q-spinner-pie color="grey-5" size="24px"/>
+                  <q-spinner-ios color="grey-5" size="24px"/>
                 </div>
               </q-item-section>
             </q-item>
@@ -69,7 +68,7 @@
                   no-caps
                   text-color="blue-grey-5"
                   size="12px"
-                  class="bg-grey-1 q-px-sm"
+                  class="bg-grey-1 q-px-sm round-btn"
                 >
                   {{ scope.opt.type || 'Jump to' }}
                   <q-icon name="subdirectory_arrow_left" size="14px"/>

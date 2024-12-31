@@ -29,6 +29,8 @@ import {
   listAll
 } from 'firebase/storage'
 
+import { getFunctions, httpsCallable } from 'firebase/functions'
+
 // Firebase FireStore Instance:
 import {} from 'firebase/firestore'
 
@@ -40,6 +42,8 @@ import {
   // getRedirectResult,
   GoogleAuthProvider
 } from 'firebase/auth'
+
+import CryptoJS from 'crypto-js'
 
 const {
   VITE_FIREBASE_API_KEY,
@@ -111,6 +115,8 @@ export default boot(async ({ app } /* { app, router, ... } */) => {
   // default storage ref
   const storageRef = _ref(storage, 'files')
 
+  const functions = getFunctions()
+  console.log({ functions })
   app.config.globalProperties.$firebase = firebaseApp
   app.config.globalProperties.$fbdb = db
   app.config.globalProperties.$fbref = fireRef
@@ -142,6 +148,60 @@ export default boot(async ({ app } /* { app, router, ... } */) => {
         return ''
       })
   }
+  app.config.globalProperties.$sendEmail = async (to, subject, projectName, projectId) => {
+    try {
+      const emailHash = CryptoJS.SHA256(to).toString()
+      const acceptLink = `https://hofstee-app.web.app/#/accept-invite/${projectId}?h=${emailHash}`
+      const rejectLink = `https://hofstee-app.web.app/#/reject-invite/${projectId}?h=${emailHash}`
+      const html = `
+      <div style="max-width: 600px; margin: 20px auto; padding: 20px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+        <h1 style="color: #333; font-size: 24px; margin-bottom: 20px;">Project: ${projectName}</h1>
+        <p style="color: #666; font-size: 16px;">Your invited to be part of the project. Please click the Accept button.</p>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td style="padding: 20px; text-align: center;">
+              <a href="${acceptLink}" style="display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: #fff; border-radius: 5px; text-decoration: none;">Accept</a>
+              <a href="${rejectLink}" style="display: inline-block; padding: 10px 20px; background-color: #f44336; color: #fff; border-radius: 5px; text-decoration: none; margin-left: 10px;">Reject</a>
+            </td>
+          </tr>
+        </table>
+        <p style="color: #666; font-size: 16px;">Best regards,</p>
+        <p style="color: #666; font-size: 16px;">Hofstee Inc.</p>
+      </div>
+      `
+      console.log({
+        to, subject, html
+      })
+      const myFunction = httpsCallable(functions, 'sendCustomEmail')
+      console.log({ myFunction })
+      return myFunction({ to, subject, html }).then((result) => {
+        console.log(result)
+
+        return true
+      }).catch((error) => {
+        console.log(error)
+
+        return false
+      })
+    } catch (error) {
+      console.error('Error sending email:', error)
+      return false
+    }
+  }
+
+  app.config.globalProperties.$findPlace = async (type, input) => {
+    console.log('searching', input)
+    const myFunction = httpsCallable(functions, 'getPlaces')
+    return myFunction({ type, input }).then((result) => {
+      return result
+    }).catch((error) => {
+      console.log(error)
+
+      return error
+    })
+  }
+
+  return { app }
   // app.config.globalProperties.$signInWithGoogle = async () => {
   //   try {
   //     const resp = await signInWithRedirect(auth, provider)

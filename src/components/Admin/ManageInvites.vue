@@ -1,59 +1,69 @@
 <template>
   <h5 class="text-center">Manage Invites here..</h5>
-  <div class="row full-width q-px-xl">
+  <div class="row full-width q-px-lg items-start">
     <div
-      class="column justify-start col-lg-6 col-md-6 col-sm-12 col-xs-12 q-gutter-y-md"
+      class="column justify-start col-lg-2 col-md-2 col-sm-12 col-xs-12 q-gutter-y-md"
     >
-      <label
-        :class="{
-          'q-ml-md': true
-        }"
-      >
+      <label :class="{ 'q-ml-none': true }" class="text-bold">
+        Select Project
+      </label>
+      <div class="row justify-start full-width" :class="{ 'q-ml-xs': true }">
+        <q-select
+          use-input
+          use-chips
+          dense
+          filled
+          v-model="selectedProject"
+          :options="filterOptions2"
+          @filter="filterProject"
+          class="full-width q-pr-md"
+        />
+      </div>
+    </div>
+    <div
+      class="column justify-start col-lg-4 col-md-4 col-sm-12 col-xs-12 q-gutter-y-md q-pl-md"
+    >
+      <label :class="{ 'q-ml-md': true }" class="text-bold">
         Constructor label
       </label>
-      <div
-        class="row justify-start"
-        :class="{
-          'q-ml-xs': true
-        }"
-      >
+      <div class="row justify-start" :class="{ 'q-ml-xs': true }">
         <q-radio
           v-model="userTitle"
           val="Architect"
           label="Architect"
           color="teal"
-       />
+        />
         <q-radio
           v-model="userTitle"
           val="Engineer"
           label="Engineer"
           color="orange"
-       />
+        />
         <q-radio
           v-model="userTitle"
           val="Foreman"
           label="Foreman"
           color="red"
-       />
+        />
         <q-radio
           v-model="userTitle"
           val="Leadman"
           label="Leadman"
           color="cyan"
-       />
+        />
         <q-radio
           v-model="userTitle"
           val="Worker"
           label="Worker"
           color="secondary"
-       />
+        />
       </div>
     </div>
     <div
       class="column justify-start col-lg-6 col-md-6 col-sm-12 col-xs-12 q-gutter-y-md"
     >
-      <label> Select email to send invitation </label>
-      <div class="row q-gutter-x-md">
+      <label class="text-bold"> Select email to send invitation </label>
+      <div class="row q-gutter-x-md justify-between">
         <q-select
           :dense="true"
           filled
@@ -65,25 +75,40 @@
           @new-value="createValue"
           :options="filterOptions"
           @filter="filterFn"
-          style="width: 85%"
-          clearable
-          option-value="id"
+          style="width: 80%"
+          option-value="email"
           option-label="email"
-       />
+        />
         <q-btn
           padding="xs lg"
           color="secondary"
           icon="las la-paper-plane"
-          style="height: 40px"
+          style="height: 40px; width: 150px"
           :class="{
-            'q-mt-sm': $q.screen.lt.lg
+            'q-mt-sm': q.screen.lt.lg,
+            'text-capitalize': true
           }"
-       />
+          :disabled="
+            !model ||
+            model.map((e) => e.email).length < 1 ||
+            sendEmailLoader ||
+            !selectedProject ||
+            !userTitle
+          "
+          @click="sendInvitation"
+          :loading="sendEmailLoader"
+          label="Send"
+          class="round-btn"
+        >
+          <template v-slot:loading>
+            <q-spinner-ios class="on-left" />Sending...
+          </template>
+        </q-btn>
       </div>
     </div>
   </div>
-  <div class="row full-width q-px-xl">
-    <q-card class="q-mt-lg full-width">
+  <div class="row full-width q-px-lg">
+    <q-card class="q-mt-lg full-width round-btn">
       <q-card-section>
         <div class="text-h6">Invitation sent</div>
         <div class="text-subtitle2 text-right"></div>
@@ -91,7 +116,7 @@
       <q-table
         no-data-label="I didn't find anything for you"
         class="q-mb-sm q-mr-sm"
-        row-key="name"
+        row-key="id"
         :rows="rows"
         :columns="columns"
         :loading="rowLoading"
@@ -100,7 +125,7 @@
       >
         <template v-slot:loading>
           <q-inner-loading :showing="visible">
-            <q-spinner-bars size="50px" color="secondary"/>
+            <q-spinner-ios size="50px" color="secondary" />
           </q-inner-loading>
         </template>
         <template v-slot:body="props">
@@ -108,8 +133,8 @@
             <q-td key="id" :props="props">
               {{ props.row.id }}
             </q-td>
-            <q-td key="project" :props="props">
-              {{ props.row.project }}
+            <q-td key="projectName" :props="props">
+              {{ props.row.projectName }}
             </q-td>
             <q-td key="dateSent" :props="props">
               {{ props.row.dateSent }}
@@ -122,19 +147,22 @@
                 square
                 class="q-pl-sm full-width"
                 :class="{
-                  'full-width q-px-md': $q.screen.lt.md
+                  'full-width q-px-md': q.screen.lt.md
                 }"
               >
                 <q-avatar
                   :icon="getStatusIcon(props.row.status)"
                   :color="getStatusColor(props.row.status)"
                   text-color="white"
-               />
+                />
                 {{ props.row.status }}
               </q-chip>
             </q-td>
             <q-td key="invitee" :props="props">
               {{ props.row.invitee }}
+            </q-td>
+            <q-td key="userTitle" :props="props">
+              {{ props.row.userTitle }}
             </q-td>
             <q-td key="resend" :props="props">
               <q-btn
@@ -143,12 +171,12 @@
                 v-if="props.row.status === 'Pending'"
                 rounded
                 align="between"
-                class="text-capitalize text-secondary"
+                class="text-capitalize text-secondary round-btn"
                 text-color="primary"
                 color="cancel"
                 label="Resend invite"
-                @click="sendEmail"
-             />
+                @click="resendInvite(props.row)"
+              />
             </q-td>
           </q-tr>
         </template>
@@ -159,11 +187,13 @@
 </template>
 <script>
 import { ref } from 'vue'
-import { uid, useQuasar } from 'quasar'
+import { uid, useQuasar, date, patterns } from 'quasar'
+import CryptoJS from 'crypto-js'
 
 // Don't forget to specify which animations
 // you are using in quasar.config file > animations.
 // Alternatively, if using UMD, load animate.css from CDN.
+
 export default {
   title: 'ProjectList',
   setup () {
@@ -171,15 +201,18 @@ export default {
     const question = ref('')
     const model = ref(null)
     const stringOptions = ref([])
-    const filterOptions = ref({})
+    const stringOptions2 = ref([])
+
+    const filterOptions = ref([])
+    const filterOptions2 = ref([])
     const rows = []
     const columns = [
       { name: 'id', align: 'left', label: 'ID', field: 'id', sortable: true },
       {
-        name: 'project',
+        name: 'projectName',
         align: 'left',
         label: 'Project Title',
-        field: 'project',
+        field: 'projectName',
         sortable: true
       },
       {
@@ -210,25 +243,37 @@ export default {
         field: 'invitee',
         sortable: true
       },
+      {
+        name: 'userTitle',
+        align: 'left',
+        label: 'Position',
+        field: 'userTitle',
+        sortable: true
+      },
       { name: 'resend', align: 'left', label: 'Resend', field: 'resend' }
     ]
-    const $q = useQuasar()
+    const q = useQuasar()
 
     return {
-      $q,
+      rowLoading: ref(false),
+      stringOptions2,
+      selectedProject: ref(null),
+      q,
       userTitle: ref(''),
       visibleColumns: ref([
-        'project',
+        'projectName',
         'dateSent',
         'dateResponded',
         'status',
         'invitee',
+        'userTitle',
         'resend'
       ]),
       visible,
       question,
       model,
       filterOptions,
+      filterOptions2,
       rows,
       columns,
       activatedList: ref({}),
@@ -269,7 +314,9 @@ export default {
           done(null)
           model.value = modelValue
         }
-      }
+      },
+      sendEmailLoader: ref(false),
+      getProjectsLoader: ref(false)
     }
   },
   props: {
@@ -287,29 +334,36 @@ export default {
   created () {
     // console.log('created')
   },
-  beforeMount () {
+  async beforeMount () {
     // console.log('beforeMount')
-    this.fetchProjects()
   },
-  mounted () {
+  async mounted () {
     this.showTextLoading()
 
-    this.stringOptions = [{
-      id: 1,
-      email: 'dan.tagailo@gmail.com'
-    }, {
-      id: 1,
-      email: 'dagailo.danvincent@gmail.com'
-    }, {
-      id: 1,
-      email: 'johndoe.yopmail.com'
-    }, {
-      id: 1,
-      email: 'janedoe@gmail.com'
-    }, {
-      id: 1,
-      email: 'dyan@yahoo.com'
-    }]
+    this.stringOptions = [
+      {
+        id: 1,
+        email: 'danvincenttagailo@gmail.com'
+      },
+      {
+        id: 2,
+        email: 'dyantagailo@gmail.com'
+      },
+      {
+        id: 3,
+        email: 'johndoe@yopmail.com'
+      },
+      {
+        id: 4,
+        email: 'janedoe@gmail.com'
+      },
+      {
+        id: 5,
+        email: 'dyan@yopmail.com'
+      }
+    ]
+    this.getProjects()
+    await this.fetchInvites()
   },
   beforeUpdate () {
     // console.log('beforeUpdate')
@@ -324,30 +378,61 @@ export default {
     // console.log('unmounted')
   },
   methods: {
+    filterProject (val, update) {
+      update(() => {
+        if (val === '') {
+          this.filterOptions2 = this.stringOptions2
+        } else {
+          const needle = val.toLowerCase()
+          this.filterOptions2 = this.stringOptions2.filter((v) =>
+            v.value.toLowerCase().includes(needle.toLowerCase())
+          )
+        }
+      })
+    },
     filterFn (val, update) {
       update(() => {
         if (val === '') {
           this.filterOptions = this.stringOptions
         } else {
           const needle = val.toLowerCase()
-          this.filterOptions = this.stringOptions.filter(
-            (v) => v.email.toLowerCase().indexOf(needle) > -1
+          this.filterOptions = this.stringOptions.filter((v) =>
+            v.email.toLowerCase().includes(needle.toLowerCase())
           )
         }
       })
     },
-    sendEmail () {
-      // Email.send({
-      //   Host: 'smtp.elasticemail.com',
-      //   Username: 'tagailo.danvincent@gmail.com',
-      //   Password: 'dhanixblue...123',
-      //   To: 'them@website.com',
-      //   From: 'you@isp.com',
-      //   Subject: 'This is the subject',
-      //   Body: 'And this is the body'
-      // }).then(
-      //   message => alert(message)
-      // )
+    async resendInvite ({ invitee, subject, projectName, projectId }) {
+      const isEmailSent = await this.$sendEmail(invitee, subject, projectName, projectId)
+      if (!isEmailSent) {
+        this.$q.notify({
+          icon: 'cancel',
+          color: 'cancel',
+          message: 'Email not sent',
+          position: 'top-right',
+          classes: 'notify-custom-css'
+        })
+        return
+      }
+
+      const resp = await this.savePendingInvitation(invitee, subject, projectName, projectId)
+      if (resp) {
+        this.$q.notify({
+          icon: 'check_circle',
+          color: 'green',
+          message: 'Email sent',
+          position: 'top-right',
+          classes: 'notify-custom-css'
+        })
+      } else {
+        this.$q.notify({
+          icon: 'cancel',
+          color: 'cancel',
+          message: 'Email not sent',
+          position: 'top-right',
+          classes: 'notify-custom-css'
+        })
+      }
     },
     getStatusColor (rowVal) {
       if (rowVal === 'Pending') return 'cancel'
@@ -361,107 +446,164 @@ export default {
     },
     showTextLoading () {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
-      // console.log('loaded in ', ms, ' ms')
       this.visible = true
       setTimeout(() => {
         this.visible = false
       }, ms)
     },
-    async fetchProjects () {
+    async fetchInvites () {
       this.rowLoading = true
-      this.rows = [
-        {
-          id: uid(),
-          project: 'The House',
-          dateSent: '2024-09-23',
-          dateResponded: '',
-          status: 'Pending',
-          invitee: 'tagailo.danvincent@gmail.com',
-          resend: true
-        },
-        {
-          id: uid(),
-          project: 'The House',
-          dateSent: '2024-09-23',
-          dateResponded: '2024-09-25',
-          status: 'Confirmed',
-          invitee: 'johndoe.yopmail.com',
-          resend: true
-        },
-        {
-          id: uid(),
-          project: 'The House',
-          dateSent: '2024-09-23',
-          dateResponded: '2024-09-25',
-          status: 'Rejected',
-          invitee: 'dan.tagailo@gmail.com',
-          resend: true
-        },
-        {
-          id: uid(),
-          project: 'The House',
-          dateSent: '2024-09-23',
-          dateResponded: '',
-          status: 'Pending',
-          invitee: 'tagailo.danvincent@gmail.com',
-          resend: true
-        },
-        {
-          id: uid(),
-          project: 'The House',
-          dateSent: '2024-09-23',
-          dateResponded: '2024-09-25',
-          status: 'Confirmed',
-          invitee: 'johndoe.yopmail.com',
-          resend: true
-        },
-        {
-          id: uid(),
-          project: 'The House',
-          dateSent: '2024-09-23',
-          dateResponded: '',
-          status: 'Pending',
-          invitee: 'dan.tagailo@gmail.com',
-          resend: true
-        },
-        {
-          id: uid(),
-          project: 'The House',
-          dateSent: '2024-09-23',
-          dateResponded: '2024-09-25',
-          status: 'Rejected',
-          invitee: 'dan.tagailo@gmail.com',
-          resend: true
-        },
-        {
-          id: uid(),
-          project: 'The House',
-          dateSent: '2024-09-23',
-          dateResponded: '',
-          status: 'Pending',
-          invitee: 'tagailo.danvincent@gmail.com',
-          resend: true
-        },
-        {
-          id: uid(),
-          project: 'The House',
-          dateSent: '2024-09-23',
-          dateResponded: '2024-09-25',
-          status: 'Confirmed',
-          invitee: 'johndoe.yopmail.com',
-          resend: true
-        },
-        {
-          id: uid(),
-          project: 'The House',
-          dateSent: '2024-09-23',
-          dateResponded: '',
-          status: 'Pending',
-          invitee: 'dan.tagailo@gmail.com',
-          resend: true
+      console.log(date)
+      const invites = this.$fbref(this.$fbdb, 'invites')
+      this.$fbonValue(invites, (snapshot) => {
+        const data = snapshot.val()
+        if (this.$isFalsyString(data)) {
+          this.rows = []
+          return -1
         }
-      ]
-      this.rowLoading = false
+        const data_ = Object.values(data)
+        this.rows = data_
+        this.rows.forEach((item) => {
+          item.dateSent = date.formatDate(item._ts, 'MMM DD, YYYY HH:mm A')
+          item.dateResponded = date.formatDate(item.dateResponded, 'MMM DD, YYYY HH:mm A')
+          item.id = uid()
+          item.resend = false
+        })
+
+        console.log('this.rows', this.rows)
+        this.rowLoading = false
+      })
+    },
+    async sendInvitation () {
+      try {
+        this.sendEmailLoader = true
+        const { testPattern } = patterns
+        console.log(this.model)
+        const trimmedRecipients = []
+        let hasMalformedEmail = false
+        for await (const item of this.model) {
+          if (typeof item === 'object') {
+            if (testPattern.email(item.email)) {
+              trimmedRecipients.push(item.email)
+            } else {
+              hasMalformedEmail = true
+              break
+            }
+          } else {
+            if (testPattern.email(item)) {
+              trimmedRecipients.push(item)
+            } else {
+              hasMalformedEmail = true
+              break
+            }
+          }
+        }
+        if (hasMalformedEmail) {
+          this.$q.notify({
+            icon: 'cancel',
+            color: 'negative',
+            message: 'Please check all the recepients email addresses',
+            position: 'top-right',
+            classes: 'notify-custom-css'
+          })
+          return
+        }
+        console.log('trimmedRecipients', trimmedRecipients)
+        const recepients = trimmedRecipients.toString()
+        console.log('selectedProject', this.selectedProject)
+        const subject = 'Project Invitation'
+        const projectName = this.selectedProject.title
+        const projectId = this.selectedProject.id
+        console.log({
+          recepients,
+          subject,
+          projectName,
+          projectId
+        })
+        trimmedRecipients.forEach((e) => {
+          this.$sendEmail(e, subject, projectName, projectId)
+        })
+        const resp = await this.savePendingInvitation(recepients, subject, projectName, projectId)
+        if (resp) {
+          this.$q.notify({
+            icon: 'check_circle',
+            color: 'green',
+            message: 'Email sent',
+            position: 'top-right',
+            classes: 'notify-custom-css'
+          })
+        } else {
+          this.$q.notify({
+            icon: 'cancel',
+            color: 'cancel',
+            message: 'Email not sent',
+            position: 'top-right',
+            classes: 'notify-custom-css'
+          })
+        }
+        this.sendEmailLoader = false
+      } catch (e) {
+        this.$q.notify({
+          icon: 'cancel',
+          color: 'negative',
+          message: 'Email not sent',
+          position: 'top-right',
+          classes: 'notify-custom-css'
+        })
+        console.log(e)
+      }
+    },
+    async savePendingInvitation (recepients, subject, projectName, projectId) {
+      console.log('save pending invitation')
+      let invitee = []
+      if (recepients.includes(',')) {
+        invitee = recepients.split(',')
+      } else {
+        invitee = [recepients]
+      }
+      const updates = {}
+      invitee.forEach((item) => {
+        const record = {
+          subject,
+          projectName,
+          projectId,
+          _ts: this.$serverTimestamp,
+          dateResponded: '',
+          status: 'Pending',
+          invitee: item,
+          userTitle: this.userTitle
+        }
+        const emailHash = CryptoJS.SHA256(item).toString()
+        updates[`invites/${emailHash}`] = record
+      })
+      console.log(updates)
+      return this.$fbupdate(this.$fbref(this.$fbdb), updates)
+        .then(() => {
+          console.log('Successfully inserted to DB')
+          return true
+        })
+        .catch((error) => {
+          console.log({ error })
+          return false
+        })
+    },
+    async getProjects () {
+      this.getProjectsLoader = true
+      const projects = this.$fbref(this.$fbdb, 'projects')
+      this.$fbonValue(projects, (snapshot) => {
+        const data = snapshot.val()
+        if (this.$isFalsyString(data)) {
+          this.stringOptions2 = []
+          return -1
+        }
+        const data_ = Object.values(data)
+        data_.forEach((e) => {
+          e.label = e.title
+          e.value = e.title
+        })
+        this.stringOptions2 = data_.filter((e) => e.isActivated)
+        this.getProjectsLoader = false
+      })
     }
   }
 }
