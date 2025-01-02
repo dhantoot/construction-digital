@@ -102,16 +102,6 @@
           <q-input :dense="true" v-model="dateTo" filled type="date" label="Date to"/>
         </q-card-section>
         <q-card-actions align="right" class="q-pr-md">
-          <!-- <q-btn
-            flat
-            class="text-capitalize bg-cancel"
-            label="Hello"
-            >
-          </q-btn> -->
-          <!-- <KsBtn
-            :label="'Submit'"
-            :fn="uploadFile"
-         /> -->
           <q-btn
             flat
             class="text-capitalize bg-cancel round-btn"
@@ -167,11 +157,6 @@
           :visible-columns="visibleColumns"
           :rows-per-page-options="[10]"
         >
-          <!-- <template v-slot:loading>
-            <q-inner-loading :showing="visible">
-              <q-spinner-ios size="50px" color="secondary"/>
-            </q-inner-loading>
-          </template> -->
           <template v-slot:body="props">
             <q-tr :props="props" :selected="props.selected">
               <q-td key="id" :props="props">
@@ -220,7 +205,6 @@
             </q-tr>
           </template>
         </q-table>
-        <!-- <q-skeleton square/> -->
         <q-inner-loading :showing="rowLoading">
             <q-spinner-ios size="50px" color="secondary"/>
         </q-inner-loading>
@@ -837,7 +821,6 @@ export default {
           })
         })
         .catch(() => {
-          // console.log({ error })
           this.$q.notify({
             icon: 'exclamation-circle',
             color: 'negative',
