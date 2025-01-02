@@ -36,7 +36,7 @@ export const useMainStore = defineStore('mainStore', {
         const data = snapshot.val()
         if (this.$isFalsyString(data)) {
           this.todoList = []
-          return -1
+          return
         }
         const data_ = Object.values(data)
         this.todoList = data_
@@ -53,7 +53,7 @@ export const useMainStore = defineStore('mainStore', {
       //   const data = snapshot.val()
       //   if (this.$isFalsyString(data)) {
       //     this.projects = []
-      //     return -1
+      //     return
       //   }
       //   const data_ = Object.values(data)
       //   this.projects = data_

@@ -2,9 +2,9 @@
   <q-layout view="hHh lpR fFf">
     <q-header elevated class="bg-primary text-white">
       <q-toolbar>
-        <q-toolbar-title>
+        <q-toolbar-title class="row items-center">
           <q-avatar>
-            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
+            <q-icon name="las la-envelope-open"/>
           </q-avatar>
           Invitation Response
         </q-toolbar-title>

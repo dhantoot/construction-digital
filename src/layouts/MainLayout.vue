@@ -33,7 +33,7 @@
         clickable
         v-ripple
         :active="link === 'profile'"
-        @click="link = 'profile'"
+        @click="link = 'profile'; mainStore.showNav = false; $router.push(`/profile/${authUser.uid}`);"
         active-class="my-menu-link"
       >
         <q-item-section avatar>
@@ -169,11 +169,15 @@
 <script>
 import { ref } from 'vue'
 import { useMainStore } from 'stores/main'
+import { LocalStorage, useQuasar } from 'quasar'
 export default {
   setup () {
     const leftDrawerOpen = ref(false)
     const deviceIsReady = ref(false)
     const mainStore = useMainStore()
+    const authUser = LocalStorage.getItem('authUser')
+    const $q = useQuasar()
+    $q.addressbarColor.set('#a2e3fa')
     // document.addEventListener('deviceready', () => {
     //   deviceIsReady.value = true
     //   // eslint-disable-next-line no-undef
@@ -183,6 +187,7 @@ export default {
     // }, false)
 
     return {
+      authUser,
       mainStore,
       deviceIsReady,
       headerState: ref(true),

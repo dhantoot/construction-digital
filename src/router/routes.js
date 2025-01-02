@@ -77,6 +77,10 @@ const routes = [
       {
         path: '/login',
         component: () => import('src/components/userLogin.vue')
+      },
+      {
+        path: '/profile/:uid',
+        component: () => import('components/User/MyProfile.vue')
       }
     ]
   },

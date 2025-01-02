@@ -4,22 +4,25 @@
     <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
       <q-card class="q-ma-sm adminCard round-panel">
         <q-card-section>
-          <div class="text-h6">New Project</div>
-          <div class="text-subtitle2">add a new project here</div>
+          <div class="text-h6">{{ selected.length ? 'Update' : 'New' }} Project</div>
+          <div class="text-subtitle2 row justify-between">
+            <div>{{ selected.length ? 'update project details' : 'add a new project' }}</div>
+            <div v-if="selected.length" class="text-blue text-bold">[ Update Mode ]</div>
+          </div>
         </q-card-section>
         <q-card-section class="q-gutter-sm">
           <q-select
-            :dense="true"
             filled
+            clearable
             v-model="searchKey"
             use-input
             input-debounce="0"
             label="Location. (trigger search after 10 charaters)"
-            :options="options"
-            @filter="filterFn"
             class="q-mt-md"
+            :dense="true"
+            :options="options"
             :loading="searchingPlaceLoader"
-            clearable
+            @filter="filterFn"
           >
             <template v-slot:no-option>
               <q-item>
@@ -118,12 +121,12 @@
           >
           </q-btn>
           <q-btn
-            color="primary"
-            label="Submit"
-            class="text-capitalize bg-info round-btn"
             @click="uploadFile"
-            :disable="loadingSubmit || !searchKey || !text || !desc || !file || !budget || !dateFrom || !dateTo"
+            color="primary"
+            :label="selected.length ? 'Update' : 'Submit'"
+            class="text-capitalize bg-info round-btn"
             :loading="loadingSubmit"
+            :disable="loadingSubmit || !searchKey || !text || !desc || (updateMode ? false : !file ) || !budget || !dateFrom || !dateTo"
           >
             <template v-slot:loading>
               <q-spinner-ios/>
@@ -154,28 +157,39 @@
         <q-table
           no-data-label="I didn't find anything for you"
           class="q-mb-sm q-mr-sm"
-          row-key="name"
+          row-key="title"
+          selection="single"
+          v-model:selected="selected"
+          :selection-options="selectionOptions"
           :rows="rows"
           :columns="columns"
           :loading="rowLoading"
           :visible-columns="visibleColumns"
           :rows-per-page-options="[10]"
         >
-          <template v-slot:loading>
+          <!-- <template v-slot:loading>
             <q-inner-loading :showing="visible">
               <q-spinner-ios size="50px" color="secondary"/>
             </q-inner-loading>
-          </template>
+          </template> -->
           <template v-slot:body="props">
-            <q-tr :props="props">
+            <q-tr :props="props" :selected="props.selected">
               <q-td key="id" :props="props">
                 {{ props.row.id }}
+              </q-td>
+              <q-td auto-width>
+                <q-checkbox v-model="props.selected" @update:model-value="setSelected"/>
+              </q-td>
+              <q-td key="avatarFullPath" :props="props">
+                <q-avatar rounded>
+                  <img :src="`${props.row.avatarFullPath}`"/>
+                </q-avatar>
               </q-td>
               <q-td key="title" :props="props">
                 {{ props.row.title }}
               </q-td>
-              <q-td key="description" :props="props">
-                {{ props.row.description }}
+              <q-td key="description" :props="props" v-ellipsis="30">
+                {{ props.row.description.length > maxLength ? props.row.descriptionShortened : props.row.description }}
               </q-td>
               <q-td key="budget" :props="props">
                 {{ props.row.budget }}
@@ -189,7 +203,7 @@
               <q-td key="createdBy" :props="props">
                 {{ props.row.createdBy }}
               </q-td>
-              <q-td key="dateCreated" :props="props">
+              <q-td v-formatdate key="dateCreated" :props="props">
                 {{ props.row.dateCreated }}
               </q-td>
               <q-td key="isActive" :props="props">
@@ -207,6 +221,9 @@
           </template>
         </q-table>
         <!-- <q-skeleton square/> -->
+        <q-inner-loading :showing="rowLoading">
+            <q-spinner-ios size="50px" color="secondary"/>
+        </q-inner-loading>
       </q-card>
     </div>
   </div>
@@ -214,6 +231,8 @@
 <script>
 import { ref } from 'vue'
 import { useQuasar, LocalStorage, uid, date } from 'quasar'
+import ellipsis from 'src/directives/ellipsis'
+import formatdate from 'src/directives/formatdate'
 const stringOptions = []
 // import KsBtn from 'src/components/Common/Button/KsBtn.vue'
 
@@ -224,19 +243,20 @@ export default {
   title: 'ProjectList',
   components: {
   },
+  directives: { ellipsis, formatdate },
   setup () {
     const rows = []
     const columns = [
       { name: 'id', align: 'left', label: 'ID', field: 'id', sortable: true },
-      { name: 'title', align: 'left', label: 'Project Title', field: 'title', sortable: true },
+      { name: 'avatarFullPath', align: 'left', label: 'Avatar', field: 'avatarFullPath' },
+      { name: 'title', required: true, align: 'left', label: 'Project Title', field: 'title', sortable: true },
       { name: 'description', align: 'left', label: 'Description', field: 'description', sortable: true },
       { name: 'budget', align: 'left', label: 'Budget', field: 'budget', sortable: true },
       { name: 'dateFrom', align: 'left', label: 'From', field: 'dateFrom', sortable: true },
       { name: 'dateTo', align: 'left', label: 'To', field: 'dateTo', sortable: true },
       { name: 'createdBy', align: 'left', label: 'Created By', field: 'createdBy', sortable: true },
       { name: 'dateCreated', align: 'left', label: 'Date Created', field: 'dateCreated', sortable: true },
-      { name: 'avatarFullPath', align: 'right', label: 'Avatar', field: 'avatarFullPath', sortable: true, hidden: true },
-      { name: 'isActive', align: 'right', label: '296Activated', field: 'isActive' }
+      { name: 'isActive', align: 'right', label: 'Activated', field: 'isActive' }
     ]
     const timeStamp = Date.now()
     const formattedTimestamp = date.formatDate(
@@ -404,9 +424,16 @@ export default {
       searchingPlaceLoader: ref(false),
       rows,
       columns,
-      visibleColumns: ref(['title', 'description', 'budget', 'dateFrom', 'dateTo', 'avatar', 'dateCreated', 'isActive']),
+      selected: ref([]),
+      selectionOptions: {
+        type: 'single',
+        checkbox: true,
+        highlight: true
+      },
+      updateMode: ref(false),
+      visibleColumns: ref(['avatarFullPath', 'title', 'description', 'budget', 'dateFrom', 'dateTo', 'avatar', 'dateCreated', 'isActive']),
       rowLoading: ref(false),
-      loadingSubmit: false,
+      loadingSubmit: ref(false),
       isActivated: ref(false),
       budget: ref(0),
       dateFrom: ref(''),
@@ -446,7 +473,8 @@ export default {
       initFunction () {
         // access setup variables here w/o using 'this'
         // console.log('initFunction called', visible.value)
-      }
+      },
+      maxLength: 30
     }
   },
   props: {
@@ -496,6 +524,23 @@ export default {
     // console.log('unmounted')
   },
   methods: {
+    setSelected (value, evt) {
+      console.log(value, this.selected[0])
+      this.updateMode = value
+
+      this.searchKey = {
+        value: this.selected[0]?.location || '',
+        label: this.selected[0]?.location || ''
+      }
+      this.text = this.selected[0]?.title
+      this.desc = this.selected[0]?.description
+      this.projectAvatar = this.selected[0]?.avatar
+      this.projectAvatarPath = this.selected[0]?.avatarFullPath
+      this.isActivated = this.selected[0]?.isActivated || false
+      this.budget = this.selected[0]?.budget
+      this.dateFrom = this.selected[0]?.dateFrom
+      this.dateTo = this.selected[0]?.dateTo
+    },
     enterPressed (evt) {
       console.log('enter key is pressed', evt)
       console.log('this.searchKey', this.searchKey)
@@ -556,12 +601,16 @@ export default {
       this.logs.push('>' + JSON.stringify(this.file[0]))
       this.saveLocally2(this.file[0])
     },
-    uploadFile () {
+    async uploadFile () {
       this.loadingSubmit = true
-      // console.log('file', this.file)
       const files = this.file
-      // console.log({ files })
-      if (files === null) return -1
+      if (files === null) {
+        if (this.updateMode) {
+          await this.updateProjectDetails()
+          return
+        }
+        return
+      }
       const metadata = {
         contentType: files[0].type
       }
@@ -593,7 +642,6 @@ export default {
         },
         () => {
           // Handle unsuccessful uploads
-          // console.log({ error })
           this.loadingSubmit = false
           this.$q.notify({
             icon: 'warning',
@@ -614,14 +662,66 @@ export default {
                 files[0].name.split('.')[1]
               }`
               this.projectAvatarPath = downloadURL
-              await this.saveProjectDetails()
+              if (this.updateMode) {
+                console.log('update mode')
+                await this.updateProjectDetails()
+              } else {
+                console.log('insert mode')
+                await this.saveProjectDetails()
+              }
             }
           )
         }
       )
     },
+    async updateProjectDetails () {
+      const payload = {
+        createdBy: this.selected[0]?.createdBy,
+        location: this.searchKey.value || this.searchKey.label,
+        title: this.text,
+        description: this.desc,
+        avatar: this.projectAvatar,
+        avatarFullPath: this.projectAvatarPath,
+        id: this.selected[0].id,
+        isActivated: this.isActivated,
+        budget: this.budget,
+        dateFrom: this.dateFrom,
+        dateTo: this.dateTo,
+        dateCreated: this.selected[0]?.dateCreated
+      }
+      const updates = {}
+      updates[`projects/${this.selected[0].id}/`] = payload
+      this.$fbupdate(this.$fbref(this.$fbdb), updates)
+        .then(async () => {
+          this.$q.notify({
+            icon: 'check_circle',
+            color: 'green',
+            message: 'Sucessfully Updated',
+            position: 'top-right',
+            classes: 'notify-custom-css'
+          })
+          this.loadingSubmit = false
+          this.formReset()
+          this.selected = []
+          this.updateMode = false
+          await this.fetchProjects()
+        })
+        .catch(async () => {
+          this.$q.notify({
+            icon: 'exclamation-circle',
+            color: 'negative',
+            message: 'Error found',
+            position: 'top-right',
+            classes: 'notify-custom-css'
+          })
+          this.loadingSubmit = false
+          this.formReset()
+          this.selected = []
+          this.updateMode = false
+          await this.fetchProjects()
+        })
+    },
     async saveProjectDetails () {
-      // console.log('Saving Project details..')
       const payload = {
         createdBy: this.uid,
         dateCreated: this.formattedTimestamp,
@@ -633,16 +733,13 @@ export default {
         isActivated: this.isActivated,
         budget: this.budget,
         dateFrom: this.dateFrom,
-        dateTo: this.dateTo
+        dateTo: this.dateTo,
+        location: this.searchKey.value || this.searchKey.label
       }
-      // console.log({ payload })
-      // console.log('validate date', is.date(this.dateFrom))
-
       const updates = {}
       updates[`projects/${payload.id}/`] = payload
       this.$fbupdate(this.$fbref(this.$fbdb), updates)
-        .then(() => {
-          // this.loading1 = false
+        .then(async () => {
           this.$q.notify({
             icon: 'check_circle',
             color: 'green',
@@ -652,11 +749,9 @@ export default {
           })
           this.loadingSubmit = false
           this.formReset()
-          this.fetchProjects()
+          await this.fetchProjects()
         })
-        .catch(() => {
-          // console.log({ error })
-          // this.loading1 = false
+        .catch(async () => {
           this.$q.notify({
             icon: 'exclamation-circle',
             color: 'negative',
@@ -666,7 +761,7 @@ export default {
           })
           this.loadingSubmit = false
           this.formReset()
-          this.fetchProjects()
+          await this.fetchProjects()
         })
     },
     async formReset () {
@@ -711,13 +806,18 @@ export default {
       const results = projectsQuery.val()
       if (!results) return
       // console.log('results', results)
-      this.rows = Object.values(results).map((element, index) => {
+      this.rows = Object.values(results)
+      this.rows.forEach((element, index) => {
         element.isActive = element.isActivated || false
         // The next line is a MAGIC. theres a bug in the framework regarding
         // qtoggle animation not working inside qTable !!!
         // I must improvise
         this.activatedList[element.id] = element.isActive
-        return element
+
+        // apply ellipsis to long text description
+        if (element.description.length > this.maxLength) {
+          element.descriptionShortened = element.description.substring(0, this.maxLength) + '..'
+        }
       })
       this.rowLoading = false
     },
@@ -752,6 +852,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .adminCard {
-  min-height: 761px;
+  min-height: 824px;
 }
 </style>

@@ -107,3 +107,15 @@ Usage
     $ quasar new <b|boot> [-f ts] <boot_name>
     $ quasar new <s|store> [-f ts] <store_module_name>
     $ quasar new ssrmiddleware [-f ts] <middleware_name>
+
+moHpJqjxvzZBUiQ4wG11bqbl7IQ2
+    _ts:1735633548753
+    avatar:""
+    email:"dyan@yopmail.com"
+    firstName:""
+    isActive:true
+    lastName:""
+    phone_number:""
+    position:""
+    role:"constructor"
+    uid:"moHpJqjxvzZBUiQ4wG11bqbl7IQ2"

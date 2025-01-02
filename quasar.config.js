@@ -33,7 +33,8 @@ module.exports = configure(function (/* ctx */) {
       'axios',
       'firebase',
       'utils',
-      'brand-colors'
+      'brand-colors',
+      'addressbar-color'
     ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
@@ -132,7 +133,8 @@ module.exports = configure(function (/* ctx */) {
         'SessionStorage',
         'Dialog',
         'QTable',
-        'Loading'
+        'Loading',
+        'AddressbarColor'
       ]
     },
 
