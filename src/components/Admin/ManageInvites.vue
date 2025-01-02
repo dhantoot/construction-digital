@@ -1,13 +1,11 @@
 <template>
   <h5 class="text-center">Manage Invites here..</h5>
   <div class="row full-width q-px-lg items-start">
-    <div
-      class="column justify-start col-lg-2 col-md-2 col-sm-12 col-xs-12 q-gutter-y-md"
-    >
-      <label :class="{ 'q-ml-none': true }" class="text-bold">
+    <div class="column justify-start col-lg-2 col-md-2 col-sm-12 col-xs-12 q-gutter-y-md">
+      <label class="text-bold">
         Select Project
       </label>
-      <div class="row justify-start full-width" :class="{ 'q-ml-xs': true }">
+      <div class="row justify-start full-width q-py-md">
         <q-select
           use-input
           use-chips
@@ -16,17 +14,17 @@
           v-model="selectedProject"
           :options="filterOptions2"
           @filter="filterProject"
-          class="full-width q-pr-md"
+          class="full-width"
         />
       </div>
     </div>
-    <div
-      class="column justify-start col-lg-4 col-md-4 col-sm-12 col-xs-12 q-gutter-y-md q-pl-md"
-    >
-      <label :class="{ 'q-ml-md': true }" class="text-bold">
+    <div class="column justify-start col-lg-4 col-md-4 col-sm-12 col-xs-12 q-gutter-y-md items-start" :class="{
+      'q-pl-xl': $q.screen.gt.sm
+    }">
+      <label class="text-bold">
         Constructor label
       </label>
-      <div class="row justify-start" :class="{ 'q-ml-xs': true }">
+      <div class="row justify-start full-width q-py-md">
         <q-radio
           v-model="userTitle"
           val="Architect"
@@ -59,11 +57,9 @@
         />
       </div>
     </div>
-    <div
-      class="column justify-start col-lg-6 col-md-6 col-sm-12 col-xs-12 q-gutter-y-md"
-    >
+    <div class="column justify-start col-lg-6 col-md-6 col-sm-12 col-xs-12 q-gutter-y-md">
       <label class="text-bold"> Select email to send invitation </label>
-      <div class="row q-gutter-x-md justify-between">
+      <div class="row justify-start full-width q-py-md q-gutter-x-sm">
         <q-select
           :dense="true"
           filled
@@ -75,9 +71,11 @@
           @new-value="createValue"
           :options="filterOptions"
           @filter="filterFn"
-          style="width: 80%"
           option-value="email"
           option-label="email"
+          :style="{
+            'max-width': $q.screen.gt.sm ? '70%' : '100%'
+          }"
         />
         <q-btn
           padding="xs lg"
@@ -88,7 +86,7 @@
             'q-mt-sm': q.screen.lt.lg,
             'text-capitalize': true
           }"
-          :disabled="
+          :disable="
             !model ||
             model.map((e) => e.email).length < 1 ||
             sendEmailLoader ||
@@ -101,14 +99,15 @@
           class="round-btn"
         >
           <template v-slot:loading>
-            <q-spinner-ios class="on-left" />Sending...
+            <q-spinner-ios class="on-left" />
+            <small>Sending..</small>
           </template>
         </q-btn>
       </div>
     </div>
   </div>
   <div class="row full-width q-px-lg">
-    <q-card class="q-mt-lg full-width round-btn">
+    <q-card class="q-mt-lg full-width round-btn adminCard">
       <q-card-section>
         <div class="text-h6">Invitation sent</div>
         <div class="text-subtitle2 text-right"></div>
@@ -166,17 +165,25 @@
             </q-td>
             <q-td key="resend" :props="props">
               <q-btn
+                icon="las la-share"
                 padding="xs md"
-                :dense="true"
                 v-if="props.row.status === 'Pending'"
                 rounded
                 align="between"
-                class="text-capitalize text-secondary round-btn"
+                class="text-capitalize text-secondary round-btn shadow-5"
                 text-color="primary"
                 color="cancel"
                 label="Resend invite"
-                @click="resendInvite(props.row)"
-              />
+                @click="resendInvite(props.row, props.rowIndex)"
+                :dense="true"
+                :loading="resendInviteLoader[props.rowIndex]"
+                :disable="resendInviteLoader[props.rowIndex]"
+              >
+                <template v-slot:loading>
+                  <q-spinner-ios class="on-left"/>
+                  <small>Sending..</small>
+                </template>
+              </q-btn>
             </q-td>
           </q-tr>
         </template>
@@ -189,6 +196,7 @@
 import { ref } from 'vue'
 import { uid, useQuasar, date, patterns } from 'quasar'
 import CryptoJS from 'crypto-js'
+// import formatdate from 'src/directives/formatdate'
 
 // Don't forget to specify which animations
 // you are using in quasar.config file > animations.
@@ -196,6 +204,7 @@ import CryptoJS from 'crypto-js'
 
 export default {
   title: 'ProjectList',
+  // directives: { formatdate },
   setup () {
     const visible = ref(false)
     const question = ref('')
@@ -205,7 +214,7 @@ export default {
 
     const filterOptions = ref([])
     const filterOptions2 = ref([])
-    const rows = []
+    const rows = ref([])
     const columns = [
       { name: 'id', align: 'left', label: 'ID', field: 'id', sortable: true },
       {
@@ -250,7 +259,7 @@ export default {
         field: 'userTitle',
         sortable: true
       },
-      { name: 'resend', align: 'left', label: 'Resend', field: 'resend' }
+      { name: 'resend', align: 'right', label: 'Resend', field: 'resend' }
     ]
     const q = useQuasar()
 
@@ -316,7 +325,8 @@ export default {
         }
       },
       sendEmailLoader: ref(false),
-      getProjectsLoader: ref(false)
+      getProjectsLoader: ref(false),
+      resendInviteLoader: ref([])
     }
   },
   props: {
@@ -336,6 +346,7 @@ export default {
   },
   async beforeMount () {
     // console.log('beforeMount')
+    await this.fetchInvites()
   },
   async mounted () {
     this.showTextLoading()
@@ -363,7 +374,6 @@ export default {
       }
     ]
     this.getProjects()
-    await this.fetchInvites()
   },
   beforeUpdate () {
     // console.log('beforeUpdate')
@@ -402,7 +412,8 @@ export default {
         }
       })
     },
-    async resendInvite ({ invitee, subject, projectName, projectId }) {
+    async resendInvite ({ invitee, subject, projectName, projectId }, index) {
+      this.resendInviteLoader[index] = true
       const isEmailSent = await this.$sendEmail(invitee, subject, projectName, projectId)
       if (!isEmailSent) {
         this.$q.notify({
@@ -416,11 +427,12 @@ export default {
       }
 
       const resp = await this.savePendingInvitation(invitee, subject, projectName, projectId)
+      this.resendInviteLoader[index] = false
       if (resp) {
         this.$q.notify({
           icon: 'check_circle',
           color: 'green',
-          message: 'Email sent',
+          message: 'Email Successfully sent',
           position: 'top-right',
           classes: 'notify-custom-css'
         })
@@ -453,13 +465,12 @@ export default {
     },
     async fetchInvites () {
       this.rowLoading = true
-      console.log(date)
-      const invites = this.$fbref(this.$fbdb, 'invites')
+      const invites = await this.$fbref(this.$fbdb, 'invites')
       this.$fbonValue(invites, (snapshot) => {
         const data = snapshot.val()
         if (this.$isFalsyString(data)) {
           this.rows = []
-          return -1
+          return
         }
         const data_ = Object.values(data)
         this.rows = data_
@@ -470,7 +481,6 @@ export default {
           item.resend = false
         })
 
-        console.log('this.rows', this.rows)
         this.rowLoading = false
       })
     },
@@ -478,7 +488,6 @@ export default {
       try {
         this.sendEmailLoader = true
         const { testPattern } = patterns
-        console.log(this.model)
         const trimmedRecipients = []
         let hasMalformedEmail = false
         for await (const item of this.model) {
@@ -508,18 +517,10 @@ export default {
           })
           return
         }
-        console.log('trimmedRecipients', trimmedRecipients)
         const recepients = trimmedRecipients.toString()
-        console.log('selectedProject', this.selectedProject)
         const subject = 'Project Invitation'
         const projectName = this.selectedProject.title
         const projectId = this.selectedProject.id
-        console.log({
-          recepients,
-          subject,
-          projectName,
-          projectId
-        })
         trimmedRecipients.forEach((e) => {
           this.$sendEmail(e, subject, projectName, projectId)
         })
@@ -554,7 +555,6 @@ export default {
       }
     },
     async savePendingInvitation (recepients, subject, projectName, projectId) {
-      console.log('save pending invitation')
       let invitee = []
       if (recepients.includes(',')) {
         invitee = recepients.split(',')
@@ -576,7 +576,6 @@ export default {
         const emailHash = CryptoJS.SHA256(item).toString()
         updates[`invites/${emailHash}`] = record
       })
-      console.log(updates)
       return this.$fbupdate(this.$fbref(this.$fbdb), updates)
         .then(() => {
           console.log('Successfully inserted to DB')
@@ -594,7 +593,7 @@ export default {
         const data = snapshot.val()
         if (this.$isFalsyString(data)) {
           this.stringOptions2 = []
-          return -1
+          return
         }
         const data_ = Object.values(data)
         data_.forEach((e) => {
@@ -608,3 +607,8 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.adminCard {
+  min-height: 824px;
+}
+</style>

@@ -28,7 +28,7 @@
       </q-item-section>
 
       <q-item-section side top>
-          <q-item-label caption class="text-positive q-mb-sm">{{ item.dateCreated.split('T')[0] }}</q-item-label>
+          <q-item-label caption class="text-positive q-mb-sm">{{ item.dateCreated?.split('T')[0] || 'No Date'}}</q-item-label>
           <q-badge rounded :color="item.isActivated ? 'green' : 'red'" />
       </q-item-section>
     </q-item>
@@ -233,7 +233,7 @@ export default {
         const data = snapshot.val()
         if (this.$isFalsyString(data)) {
           this.projects = []
-          return -1
+          return
         }
         const data_ = Object.values(data)
         this.projects = data_

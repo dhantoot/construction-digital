@@ -4,7 +4,7 @@
     :label="label"
     flat
     class="text-capitalize bg-primary round-btn"
-    disabled="true"
+    disable="true"
    >
   </q-btn>
 </template>

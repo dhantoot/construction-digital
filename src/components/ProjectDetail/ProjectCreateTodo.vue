@@ -115,7 +115,8 @@
 </template>
 <script>
 import { ref } from 'vue'
-import { uid } from 'quasar'
+import { uid, LocalStorage } from 'quasar'
+import { useMainStore } from 'stores/main'
 
 // Don't forget to specify which animations
 // you are using in quasar.config file > animations.
@@ -127,8 +128,12 @@ export default {
     const question = ref('')
     const loadingSubmit = ref(false)
     const loadingtodoList = ref(false)
+    const mainStore = useMainStore()
+    const authUser = LocalStorage.getItem('authUser')
 
     return {
+      mainStore,
+      authUser,
       loadingSubmit,
       loadingtodoList,
       visible,

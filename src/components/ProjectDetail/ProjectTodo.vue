@@ -259,7 +259,7 @@ export default {
         const data = snapshot.val()
         if (this.$isFalsyString(data)) {
           this.todoList = []
-          return -1
+          return
         }
         const data_ = Object.values(data)
         this.todoList = data_
@@ -275,7 +275,7 @@ export default {
       // console.log(val)
       if (val.length < 1) {
         this.completedTodos = []
-        return -1
+        return
       }
       const completed = this.todoList.filter((e) => val.includes(e.id))
       this.completedTodos = completed

@@ -99,18 +99,18 @@
           style="float: right"
       />
       </div>
-      <div class="col-2 q-mt-sm q-py-xs q-px-xl">
+      <div class="col-2 q-mt-sm q-px-xl">
         <q-btn
-          :disabled="$isFalsyString(email) || $isFalsyString(password)"
+          :disable="$isFalsyString(email) || $isFalsyString(password) || loading"
           :loading="loading"
           size="lg"
           color="primary"
           label="Login"
-          class="text-capitalize full-width q-mb-md round-btn"
+          class="text-capitalize full-width round-btn"
           @click="login"
         >
           <template v-slot:loading>
-            <q-spinner-ios class="on-center"/>
+            <q-spinner-ios class="on-left"/>
           </template>
         </q-btn>
       </div>
@@ -141,9 +141,9 @@ export default {
     const question = ref('')
     const username = ref(null)
     const usernameRef = ref(null)
-    const email = ref('dt@yopmail.com')
+    const email = ref('dyan@yopmail.com')
     const emailRef = ref(null)
-    const password = ref('12345678')
+    const password = ref('Admin@123')
     const passwordRef = ref(null)
     const mainStore = useMainStore()
 
@@ -235,7 +235,7 @@ export default {
         setTimeout(() => {
           this.loading = false
         }, 2000)
-        return -1
+        return
       }
       // try {
       //   const resp = await signInWithRedirect(this.$fbauth, this.$provider)

@@ -91,7 +91,7 @@
           label="Create"
           class="text-capitalize text-accent round-btn"
           icon="las la-plus"
-          :disabled="!searchKey || !text || !desc || !file"
+          :disable="!searchKey || !text || !desc || !file"
         >
           <template v-slot:loading>
             <q-spinner-ios class="on-left"/>
@@ -473,7 +473,7 @@ export default {
       // console.log('file', this.file)
       const files = this.file
       // console.log({ files })
-      if (files === null) return -1
+      if (files === null) return
       const metadata = {
         contentType: files[0].type
       }

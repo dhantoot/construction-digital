@@ -131,7 +131,12 @@
           label="Register"
           class="text-capitalize full-width round-btn"
           @click="register"
-       />
+       >
+          <template v-slot:loading>
+            <q-spinner-ios class="on-left"/>
+            <small>Creating account..</small>
+          </template>
+        </q-btn>
       </div>
     </div>
   </div>
@@ -162,7 +167,7 @@ export default {
     return {
       visible,
       question,
-      role: ref('line'),
+      role: ref('constructor'),
       regemail,
       regemailRef,
       regemailRules: [

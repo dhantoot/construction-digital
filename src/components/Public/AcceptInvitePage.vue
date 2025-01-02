@@ -16,8 +16,8 @@
               <div class="text-caption text-grey">{{ projectDetail?.description }}</div>
           </q-card-section>
           <q-card-actions align="right">
-              <q-btn class="round-btn" color="primary" label="Sign in" @click="$router.push('/login')"/>
-              <q-btn class="round-btn" color="primary" label="Create account" @click="$router.push('/login-register')"/>
+              <q-btn class="round-btn text-capitalize" color="primary" label="Sign in" @click="$router.push('/login')"/>
+              <q-btn class="round-btn text-capitalize" color="primary" label="Create account" @click="$router.push('/login-register')"/>
           </q-card-actions>
       </q-card>
     </div>
@@ -58,11 +58,12 @@ export default {
   async beforeMount () {
     // console.log('beforeMount..')
     // update invitation status to Confirmed
-    await this.acceptInvite()
+    // await this.acceptInvite()
   },
   async mounted () {
     // console.log('mounted..', this.$options)
     // this.$emit('showHeader', true, [])
+    await this.acceptInvite()
     await this.fetchProjectDetail()
   },
   beforeUpdate () {
