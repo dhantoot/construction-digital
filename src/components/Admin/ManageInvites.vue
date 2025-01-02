@@ -168,8 +168,6 @@
                 icon="las la-share"
                 padding="xs md"
                 v-if="props.row.status === 'Pending'"
-                rounded
-                align="between"
                 class="text-capitalize text-secondary round-btn shadow-5"
                 text-color="primary"
                 color="cancel"
@@ -259,7 +257,7 @@ export default {
         field: 'userTitle',
         sortable: true
       },
-      { name: 'resend', align: 'right', label: 'Resend', field: 'resend' }
+      { name: 'resend', align: 'center', label: 'Resend', field: 'resend' }
     ]
     const q = useQuasar()
 

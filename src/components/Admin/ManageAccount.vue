@@ -4,28 +4,62 @@
       <q-card class="q-mt-lg full-width round-btn adminCard">
       <q-card-section>
         <div class="text-h6">Account list</div>
-        <div class="text-subtitle2 text-right"></div>
+        <div class="row full-width justify-left q-pt-lg">
+          <div class="" v-if="selected[0]">
+            <q-btn
+              flat
+              :label="selected[0].isActive ? 'Deactivate' : 'Activate'"
+              icon="las la-power-off"
+              color="transparent"
+              class="text-capitalize round-btn"
+              text-color="cancel"
+              @click="openConfirmDialog(`Would you like to ${selected[0].isActive ? 'Deactivate' : 'Activate'} this account?`, 'updateAccountStatus')">
+            </q-btn>
+          </div>
+          <div class="" v-if="selected[0]">
+            <q-btn
+              flat
+              label="Delete"
+              icon="las la-trash-alt"
+              color="transparent"
+              class="text-capitalize round-btn"
+              text-color="negative"
+              @click="openConfirmDialog('Would you like to delete this account?', 'deleteAccount')">
+            </q-btn>
+          </div>
+          <div class="">
+            <q-btn
+              flat
+              label="New"
+              icon="las la-user-tie"
+              color="transparent"
+              class="text-capitalize round-btn"
+              text-color="primary">
+            </q-btn>
+          </div>
+      </div>
       </q-card-section>
       <q-table
         no-data-label="I didn't find anything for you"
         class="q-mb-sm q-mr-sm"
         row-key="uid"
+        selection="single"
+        v-model:selected="selected"
+        :selection-options="selectionOptions"
         :rows="rows"
         :columns="columns"
         :loading="rowLoading"
         :visible-columns="visibleColumns"
         :rows-per-page-options="[10]"
       >
-        <template v-slot:loading>
-          <q-inner-loading :showing="visible">
-            <q-spinner-ios size="50px" color="secondary" />
-          </q-inner-loading>
-        </template>
         <template v-slot:body="props">
-          <q-tr :props="props">
+          <q-tr :props="props" :selected="props.selected">
             <q-td key="uid" :props="props">
               {{ props.row.uid }}
             </q-td>
+            <q-td auto-width>
+                <q-checkbox v-model="props.selected" @update:model-value="setSelected"/>
+              </q-td>
             <q-td key="avatar" :props="props">
               <q-avatar rounded>
                 <img :src="`${props.row.avatar}`"/>
@@ -53,7 +87,7 @@
                   :color="getStatusColor(props.row.isActive)"
                   text-color="white"
                 />
-                {{ props.row.isActive }}
+                {{ props.row.isActive ? 'Active' : 'Inactive' }}
               </q-chip>
             </q-td>
             <q-td key="role" :props="props">
@@ -68,23 +102,28 @@
           </q-tr>
         </template>
       </q-table>
-      <!-- <q-skeleton square/> -->
-    </q-card>
-    </div>
-    <!-- <q-card class="q-ma-lg round-btn">
-      <div class="row justify-center q-pa-lg q-gutter-sm">
-        <q-input
-            dense
-            placeholder="Search place"
-            v-model="searchKey"
-            filled
-        />
-        <q-btn icon="las la-search" color="purple" @click="search" class="round-btn"/>
-      </div>
-      <q-inner-loading :showing="visible">
+      <q-inner-loading :showing="rowLoading">
         <q-spinner-ios size="50px" color="secondary"/>
       </q-inner-loading>
-    </q-card> -->
+    </q-card>
+    </div>
+    <q-dialog v-model="confirm" persistent>
+      <q-card class="round-panel">
+        <q-card-section class="row items-center">
+          <q-avatar icon="las la-question" color="primary" text-color="white" />
+          <span class="q-ml-sm text-h6">{{ confirmMsg }}</span>
+        </q-card-section>
+
+        <q-card-actions align="right" class="q-pa-md">
+          <q-btn icon="las la-times" class="round-btn text-capitalize" label="Close" color="negative" v-close-popup/>
+          <q-btn icon="las la-check" class="round-btn text-capitalize" label="Confirm" color="primary" @click="callConfirmFn()" :loading="actionAccountLoader" :disable="actionAccountLoader">
+            <template v-slot:loading>
+              <q-spinner-ios/>
+            </template>
+          </q-btn>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </template>
 <script>
 import { ref } from 'vue'
@@ -163,10 +202,21 @@ export default {
     ]
 
     return {
+      confirm: ref(false),
+      confirmMsg: '',
+      confirmCallbackFn: '',
+      actionAccountLoader: ref(false),
+      updateMode: ref(false),
       rowLoading: ref(false),
       rows,
       columns,
       visibleColumns,
+      selected: ref([]),
+      selectionOptions: {
+        type: 'single',
+        checkbox: true,
+        highlight: true
+      },
       searchKey: ref(''),
       visible,
       question,
@@ -214,6 +264,68 @@ export default {
     // console.log('unmounted')
   },
   methods: {
+    openConfirmDialog (confirmMsg, confirmCallbackFn) {
+      this.confirmMsg = confirmMsg
+      this.confirmCallbackFn = confirmCallbackFn
+      this.confirm = true
+    },
+    callConfirmFn () {
+      const fn = this.confirmCallbackFn
+      this[fn]()
+    },
+    async updateAccountStatus () {
+      this.actionAccountLoader = true
+      console.log('updating account status..')
+      const uid = this.selected[0].uid
+      const status = !this.selected[0].isActive
+      const updates = {}
+      updates[`users/${uid}/isActive/`] = status
+      await this.$fbupdate(this.$fbref(this.$fbdb), updates)
+        .then(() => {
+          this.$q.notify({
+            icon: 'check_circle',
+            color: 'secondary',
+            message: 'Sucessfully Updated',
+            position: 'top-right',
+            classes: 'notify-custom-css'
+          })
+          this.actionAccountLoader = false
+          this.selected = []
+          this.confirm = false
+        })
+        .catch(() => {
+          this.$q.notify({
+            icon: 'exclamation-circle',
+            color: 'negative',
+            message: 'Update Error Found',
+            position: 'top-right',
+            classes: 'notify-custom-css'
+          })
+          this.actionAccountLoader = false
+          this.selected = []
+          this.confirm = false
+        })
+    },
+    async deleteAccount () {
+      console.log('deleting account..')
+      this.actionAccountLoader = true
+      setTimeout(() => {
+        this.actionAccountLoader = false
+        this.$q.notify({
+          icon: 'check_circle',
+          color: 'cancel',
+          message: 'Feature is not ready yet',
+          position: 'top-right',
+          classes: 'notify-custom-css'
+        })
+        this.selected = []
+        this.confirm = false
+      }, 3000)
+    },
+    setSelected (value, evt) {
+      console.log(value, this.selected[0])
+      this.updateMode = value
+    },
     showTextLoading () {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
       // console.log('loaded in ', ms, ' ms')
