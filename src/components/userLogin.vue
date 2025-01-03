@@ -12,7 +12,7 @@
         <!-- <hr class="q-ml-xl q-mr-xl" color="black"/> -->
         <q-separator class="q-ml-xl q-mr-xl" color="positive" inset/>
       </div>
-      <div class="col-6 q-mt-lg">
+      <div class="col-6 q-mt-lg" v-if="false">
         <p class="q-mt-xl text-positive">Choose a role to login</p>
         <div class="q-gutter-sm">
           <q-radio
@@ -111,6 +111,7 @@
         >
           <template v-slot:loading>
             <q-spinner-ios class="on-left"/>
+            <small>Logging in..</small>
           </template>
         </q-btn>
       </div>
@@ -141,7 +142,7 @@ export default {
     const question = ref('')
     const username = ref(null)
     const usernameRef = ref(null)
-    const email = ref('dyan@yopmail.com')
+    const email = ref('tagailo.danvincent@gmail.com')
     const emailRef = ref(null)
     const password = ref('Admin@123')
     const passwordRef = ref(null)
@@ -257,7 +258,7 @@ export default {
       signInWithEmailAndPassword(auth, email, password)
         .then(async (userCredential) => {
           const user = userCredential.user
-          const userRef = this.$fbref(this.$fbdb, 'user/' + user.uid)
+          const userRef = this.$fbref(this.$fbdb, 'users/' + user.uid)
           const userInfoSnapshot = await this.$fbget(userRef)
           const currentDbUser = userInfoSnapshot?.val()
           LocalStorage.set('currentUser', currentDbUser)

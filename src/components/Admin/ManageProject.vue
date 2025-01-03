@@ -573,10 +573,7 @@ export default {
   },
   mounted () {
     this.showTextLoading()
-    // this.currentUser = LocalStorage.getItem('currentUser')
-    // // console.log('this.currentUser', this.currentUser)
     this.authUser = LocalStorage.getItem('authUser')
-    // console.log('this.authUser', this.authUser)
     this.uid = this.authUser.uid
     this.agentStringOptions = [
       {

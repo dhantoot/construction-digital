@@ -110,7 +110,7 @@
     <q-dialog v-model="confirm" persistent>
       <q-card>
         <q-card-section class="row items-center">
-          <q-avatar icon="las la-exclamation" color="cancel" text-color="white" />
+          <q-avatar size="sm" icon="las la-exclamation" color="cancel" text-color="white" />
           <span class="q-ml-sm text-h6">{{ confirmMsg }}</span>
         </q-card-section>
 

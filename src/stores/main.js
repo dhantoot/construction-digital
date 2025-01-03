@@ -10,7 +10,8 @@ export const useMainStore = defineStore('mainStore', {
     getTodoListLoader: false,
     getProjectsLoader: false,
     selectedMember: [],
-    mobileSelectedProject: LocalStorage.getItem('mobileSelectedProject')
+    mobileSelectedProject: LocalStorage.getItem('mobileSelectedProject'),
+    adminUser: LocalStorage.getItem('adminUser') || {}
   }),
 
   // not working, currently used localstorage
