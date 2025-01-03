@@ -1,5 +1,5 @@
 <template>
-  <h5 class="text-center">Manage Invites here..</h5>
+  <h5 class="text-center">Manage Invites here..{{ $q.screen.size }}</h5>
   <div class="row full-width q-px-lg items-start">
     <div class="column justify-start col-lg-2 col-md-2 col-sm-12 col-xs-12 q-gutter-y-md">
       <label class="text-bold">
@@ -14,7 +14,6 @@
           v-model="selectedProject"
           :options="filterOptions2"
           @filter="filterProject"
-          class="full-width"
         />
       </div>
     </div>
@@ -59,7 +58,7 @@
     </div>
     <div class="column justify-start col-lg-6 col-md-6 col-sm-12 col-xs-12 q-gutter-y-md">
       <label class="text-bold"> Select email to send invitation </label>
-      <div class="row justify-start full-width q-py-md q-gutter-x-sm">
+      <div class="row justify-start full-width q-py-md q-gutter-x-sm items-center">
         <q-select
           :dense="true"
           filled
@@ -73,8 +72,8 @@
           @filter="filterFn"
           option-value="email"
           option-label="email"
-          :style="{
-            'max-width': $q.screen.gt.sm ? '70%' : '100%'
+          :class="{
+            'q-pb-sm full-width' : $q.screen.width < 433
           }"
         />
         <q-btn
@@ -83,8 +82,8 @@
           icon="las la-paper-plane"
           style="height: 40px; width: 150px"
           :class="{
-            'q-mt-sm': q.screen.lt.lg,
-            'text-capitalize': true
+            'text-capitalize': true,
+            'q-ml-none full-width' : $q.screen.width < 433
           }"
           :disable="
             !model ||

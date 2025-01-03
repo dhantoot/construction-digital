@@ -108,15 +108,15 @@
     </q-card>
     </div>
     <q-dialog v-model="confirm" persistent>
-      <q-card class="round-panel">
+      <q-card>
         <q-card-section class="row items-center">
-          <q-avatar icon="las la-question" color="primary" text-color="white" />
+          <q-avatar icon="las la-exclamation" color="cancel" text-color="white" />
           <span class="q-ml-sm text-h6">{{ confirmMsg }}</span>
         </q-card-section>
 
         <q-card-actions align="right" class="q-pa-md">
-          <q-btn icon="las la-times" class="round-btn text-capitalize" label="Close" color="negative" v-close-popup/>
-          <q-btn icon="las la-check" class="round-btn text-capitalize" label="Confirm" color="primary" @click="callConfirmFn()" :loading="actionAccountLoader" :disable="actionAccountLoader">
+          <q-btn padding="sm xl" icon="las la-times" class="round-btn text-capitalize" label="Close" color="negative" v-close-popup/>
+          <q-btn padding="sm xl" icon="las la-check" class="round-btn text-capitalize" label="Confirm" color="primary" @click="callConfirmFn()" :loading="actionAccountLoader" :disable="actionAccountLoader">
             <template v-slot:loading>
               <q-spinner-ios/>
             </template>

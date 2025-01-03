@@ -100,9 +100,41 @@
          />
           <q-input :dense="true" v-model="dateFrom" filled type="date" label="Date from"/>
           <q-input :dense="true" v-model="dateTo" filled type="date" label="Date to"/>
+          <q-select
+            :placeholder="agent.length ? '' : 'Agent'"
+            :dense="true"
+            filled
+            v-model="agent"
+            use-input
+            use-chips
+            multiple
+            input-debounce="0"
+            @new-value="createAgentValue"
+            :options="filterAgentOptions"
+            @filter="filterAgentFn"
+            option-value="email"
+            option-label="email"
+          />
+          <q-select
+            :placeholder="client.length ? '' : 'Client'"
+            :dense="true"
+            filled
+            v-model="client"
+            use-input
+            use-chips
+            multiple
+            input-debounce="0"
+            @new-value="createClientValue"
+            :options="filterClientOptions"
+            @filter="filterClientFn"
+            option-value="email"
+            option-label="email"
+          />
         </q-card-section>
         <q-card-actions align="right" class="q-pr-md">
           <q-btn
+            icon="las la-undo"
+            padding="sm xl"
             flat
             class="text-capitalize bg-cancel round-btn"
             label="Reset"
@@ -111,6 +143,8 @@
           >
           </q-btn>
           <q-btn
+            icon="las la-check"
+            padding="sm xl"
             @click="uploadFile"
             color="primary"
             :label="selected.length ? 'Update' : 'Submit'"
@@ -123,7 +157,6 @@
             </template>
           </q-btn>
         </q-card-actions>
-        <!-- <q-skeleton square/> -->
         <q-inner-loading :showing="visible">
           <q-spinner-ios size="50px" color="secondary"/>
         </q-inner-loading>
@@ -257,6 +290,14 @@ export default {
     const camData = ref(null)
     const desc = ref('')
     const generatedUid = uid()
+
+    const agent = ref([])
+    const agentStringOptions = ref([])
+    const filterAgentOptions = ref([])
+
+    const client = ref([])
+    const clientStringOptions = ref([])
+    const filterClientOptions = ref([])
     // document.addEventListener('deviceready', () => {
     //   deviceIsReady.value = true
     //   // eslint-disable-next-line no-undef
@@ -405,6 +446,12 @@ export default {
     }
 
     return {
+      filterClientOptions,
+      clientStringOptions,
+      client,
+      filterAgentOptions,
+      agentStringOptions,
+      agent,
       searchingPlaceLoader: ref(false),
       rows,
       columns,
@@ -455,8 +502,52 @@ export default {
       options,
       visible,
       initFunction () {
-        // access setup variables here w/o using 'this'
-        // console.log('initFunction called', visible.value)
+      },
+      createAgentValue (val, done) {
+        if (val.length > 0) {
+          const modelValue = (agent.value || []).slice()
+
+          val
+            .split(/[,;|]+/)
+            .map((v) => v.trim())
+            .filter((v) => v.length > 0)
+            .forEach((v) => {
+              if (agentStringOptions.value.includes(v) === false) {
+                agentStringOptions.value.push(v)
+              }
+              if (modelValue.includes(v) === false) {
+                modelValue.push({
+                  email: v
+                })
+              }
+            })
+
+          done(null)
+          agent.value = modelValue
+        }
+      },
+      createClientValue (val, done) {
+        if (val.length > 0) {
+          const modelValue = (client.value || []).slice()
+
+          val
+            .split(/[,;|]+/)
+            .map((v) => v.trim())
+            .filter((v) => v.length > 0)
+            .forEach((v) => {
+              if (clientStringOptions.value.includes(v) === false) {
+                clientStringOptions.value.push(v)
+              }
+              if (modelValue.includes(v) === false) {
+                modelValue.push({
+                  email: v
+                })
+              }
+            })
+
+          done(null)
+          client.value = modelValue
+        }
       },
       maxLength: 30
     }
@@ -481,19 +572,46 @@ export default {
     this.fetchProjects()
   },
   mounted () {
-    // this.$emit('showHeader', false, [
-    //   {
-    //     label: 'Back',
-    //     icon: 'las la-chevron-left',
-    //     route: '/projects'
-    //   }
-    // ])
     this.showTextLoading()
     // this.currentUser = LocalStorage.getItem('currentUser')
     // // console.log('this.currentUser', this.currentUser)
     this.authUser = LocalStorage.getItem('authUser')
     // console.log('this.authUser', this.authUser)
     this.uid = this.authUser.uid
+    this.agentStringOptions = [
+      {
+        email: 'agent.one@yopmail.com'
+      },
+      {
+        email: 'agent.two@yopmail.com'
+      },
+      {
+        email: 'agent.three@yopmail.com'
+      },
+      {
+        email: 'agent.four@yopmail.com'
+      },
+      {
+        email: 'agent.five@yopmail.com'
+      }
+    ]
+    this.clientStringOptions = [
+      {
+        email: 'client.one@yopmail.com'
+      },
+      {
+        email: 'client.two@yopmail.com'
+      },
+      {
+        email: 'client.three@yopmail.com'
+      },
+      {
+        email: 'client.four@yopmail.com'
+      },
+      {
+        email: 'client.five@yopmail.com'
+      }
+    ]
   },
   beforeUpdate () {
     // console.log('beforeUpdate')
@@ -508,6 +626,30 @@ export default {
     // console.log('unmounted')
   },
   methods: {
+    filterClientFn (val, update) {
+      update(() => {
+        if (val === '') {
+          this.filterClientOptions = this.clientStringOptions
+        } else {
+          const needle = val.toLowerCase()
+          this.filterClientOptions = this.clientStringOptions?.filter((v) =>
+            v.email?.toLowerCase().includes(needle.toLowerCase())
+          )
+        }
+      })
+    },
+    filterAgentFn (val, update) {
+      update(() => {
+        if (val === '') {
+          this.filterAgentOptions = this.agentStringOptions
+        } else {
+          const needle = val.toLowerCase()
+          this.filterAgentOptions = this.agentStringOptions?.filter((v) =>
+            v.email?.toLowerCase().includes(needle.toLowerCase())
+          )
+        }
+      })
+    },
     setSelected (value, evt) {
       console.log(value, this.selected[0])
       this.updateMode = value
@@ -524,6 +666,8 @@ export default {
       this.budget = this.selected[0]?.budget
       this.dateFrom = this.selected[0]?.dateFrom
       this.dateTo = this.selected[0]?.dateTo
+      this.agent = this.selected[0]?.agent || []
+      this.client = this.selected[0]?.client || []
     },
     enterPressed (evt) {
       console.log('enter key is pressed', evt)
@@ -671,7 +815,9 @@ export default {
         budget: this.budget,
         dateFrom: this.dateFrom,
         dateTo: this.dateTo,
-        dateCreated: this.selected[0]?.dateCreated
+        dateCreated: this.selected[0]?.dateCreated,
+        client: this.client,
+        agent: this.agent
       }
       const updates = {}
       updates[`projects/${this.selected[0].id}/`] = payload
@@ -718,7 +864,9 @@ export default {
         budget: this.budget,
         dateFrom: this.dateFrom,
         dateTo: this.dateTo,
-        location: this.searchKey.value || this.searchKey.label
+        location: this.searchKey.value || this.searchKey.label,
+        agent: this.agent,
+        client: this.client
       }
       const updates = {}
       updates[`projects/${payload.id}/`] = payload
@@ -732,6 +880,7 @@ export default {
             classes: 'notify-custom-css'
           })
           this.loadingSubmit = false
+          await this.sendClientEmail(payload.id)
           this.formReset()
           await this.fetchProjects()
         })
@@ -748,6 +897,18 @@ export default {
           await this.fetchProjects()
         })
     },
+    async sendClientEmail (projectId) {
+      const clients = this.client.map(e => e.email)
+      const agents = this.agent.map(e => e.email)
+      const subject = 'Join to Application'
+      const projectName = this.text
+      clients.forEach((recepient) => {
+        this.$sendEmailToAgentAndClient(recepient, subject, projectName, projectId)
+      })
+      agents.forEach((agent) => {
+        this.$sendEmailToAgentAndClient(agent, subject, projectName, projectId)
+      })
+    },
     async formReset () {
       this.searchKey = null
       this.text = null
@@ -757,6 +918,8 @@ export default {
       this.budget = null
       this.dateFrom = null
       this.dateTo = null
+      this.client = []
+      this.agent = []
     },
     showTextLoading () {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
@@ -767,9 +930,6 @@ export default {
       }, ms)
     },
     factoryFn (files) {
-      // returning a Promise
-      // console.log(files[0])
-
       const metadata = {
         contentType: files[0].type
       }
@@ -814,8 +974,8 @@ export default {
         .then(() => {
           this.$q.notify({
             icon: 'check_circle',
-            color: 'secondary',
-            message: 'Sucessfully Created',
+            color: 'green',
+            message: 'Sucessfully Activated',
             position: 'top-right',
             classes: 'notify-custom-css'
           })
