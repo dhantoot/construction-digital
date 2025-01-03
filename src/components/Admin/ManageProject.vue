@@ -744,7 +744,7 @@ export default {
       }
       const storageRef = this.$fbstorageref(
         this.$fbstorage,
-        `files/${files[0].name.split('.')[0]}.${files[0].name.split('.')[1]}`
+        `files/projects/${files[0].name.split('.')[0]}.${files[0].name.split('.')[1]}`
       )
       const uploadTask = this.$uploadbytesresumable(
         storageRef,
@@ -903,10 +903,10 @@ export default {
       const subject = 'Join to Application'
       const projectName = this.text
       clients.forEach((recepient) => {
-        this.$sendEmailToAgentAndClient(recepient, subject, projectName, projectId)
+        this.$sendEmailToAgentAndClient(recepient, subject, projectName, projectId, 'client')
       })
       agents.forEach((agent) => {
-        this.$sendEmailToAgentAndClient(agent, subject, projectName, projectId)
+        this.$sendEmailToAgentAndClient(agent, subject, projectName, projectId, 'agent')
       })
     },
     async formReset () {

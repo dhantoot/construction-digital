@@ -155,6 +155,8 @@
           label="Register"
           class="text-capitalize full-width round-btn"
           @click="register"
+          :loading="registerLoader"
+          :disable="registerLoader"
        >
           <template v-slot:loading>
             <q-spinner-ios class="on-left"/>
@@ -330,6 +332,7 @@ export default {
                 classes: 'notify-custom-css'
               })
               this.registerLoader = false
+              this.$router.push('/login')
             })
             .catch((error) => {
               console.log({ error })

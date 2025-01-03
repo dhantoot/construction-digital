@@ -188,14 +188,15 @@ export default boot(async ({ app } /* { app, router, ... } */) => {
       return false
     }
   }
-  app.config.globalProperties.$sendEmailToAgentAndClient = async (to, subject, projectName, projectId) => {
+  app.config.globalProperties.$sendEmailToAgentAndClient = async (to, subject, projectName, projectId, arg) => {
     try {
       const emailHash = CryptoJS.SHA256(to).toString()
-      const clientJoinLink = `https://hofstee-app.web.app/#/login-register?clientId=${emailHash}&pid=${projectId}&e=${to}`
+      const externalUserType = arg === 'client' ? 'clientId' : 'agentId'
+      const clientJoinLink = `https://hofstee-app.web.app/#/login-register?${externalUserType}=${emailHash}&pid=${projectId}&e=${to}`
       const html = `
       <div style="max-width: 600px; margin: 20px auto; padding: 20px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
         <h1 style="color: #333; font-size: 24px; margin-bottom: 20px;">Project: ${projectName}</h1>
-        <p style="color: #666; font-size: 16px;">Thank you for selecting Hofstee as your trusted building partner. <br><br>Please click the Join button and register to our app.</p>
+        <p style="color: #666; font-size: 16px;">Thank you for selecting Hofstee as your trusted builder. <br><br>Please click the Join button and register to our app.</p>
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td style="padding: 20px; text-align: center;">

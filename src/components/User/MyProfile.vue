@@ -176,7 +176,7 @@ export default {
         }
         const storageRef = this.$fbstorageref(
           this.$fbstorage,
-          `files/${files.name.split('.')[0]}.${files.name.split('.')[1]}`
+          `files/users/${files.name.split('.')[0]}.${files.name.split('.')[1]}`
         )
         const uploadTask = this.$uploadbytesresumable(
           storageRef,
