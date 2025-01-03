@@ -48,6 +48,7 @@
                 keep-color
             />
             <q-radio
+                :disable="true"
                 v-model="role"
                 checked-icon="task_alt"
                 unchecked-icon="panorama_fish_eye"

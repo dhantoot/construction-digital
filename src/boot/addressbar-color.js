@@ -5,5 +5,5 @@ import { AddressbarColor } from 'quasar'
 // more info on params: https://v2.quasar.dev/quasar-cli/boot-files
 export default boot(async (/* { app, router, ... } */) => {
   // something to do
-  AddressbarColor.set('#a2e3fa')
+  AddressbarColor.set('#14252C')
 })

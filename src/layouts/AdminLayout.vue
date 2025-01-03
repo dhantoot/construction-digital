@@ -19,6 +19,7 @@
        />
 
         <q-select
+          v-if="mainStore?.adminUser?.uid"
           ref="search"
           dark
           :dense="true"
@@ -77,9 +78,8 @@
             </q-item>
           </template>
         </q-select>
-
         <div
-          v-if="$q.screen.gt.sm"
+          v-if="$q.screen.gt.sm && mainStore?.adminUser?.uid"
           class="GL__toolbar-link q-ml-xs q-gutter-md text-body2 text-weight-bold row items-center no-wrap"
         >
           <a href="javascript:void(0)" class="text-warning" @click="this.$router.push('/manage-projects')"> Projects </a>
@@ -92,14 +92,14 @@
 
         <div class="q-pl-sm q-gutter-sm row items-center no-wrap">
           <q-btn
-            v-if="$q.screen.gt.xs"
+            v-if="$q.screen.gt.xs && mainStore?.adminUser?.uid"
             :dense="true"
             flat
             round
             size="sm"
             icon="notifications"
          />
-          <q-btn flat>
+          <q-btn flat v-if="mainStore?.adminUser?.uid">
             <div class="row items-center no-wrap">
               <q-icon name="las la-bars" size="20px"/>
               <q-icon
@@ -128,9 +128,9 @@
             </q-menu>
           </q-btn>
 
-          <q-btn flat no-wrap>
+          <q-btn flat no-wrap v-if="mainStore?.adminUser?.uid">
             <q-avatar rounded size="20px">
-              <img src="https://cdn.quasar.dev/img/avatar3.jpg"/>
+              <img :src="`${authUser.avatar}`"/>
             </q-avatar>
             <q-icon name="arrow_drop_down" size="16px"/>
 
@@ -138,7 +138,7 @@
               <q-list :dense="true" style="min-width: 200px">
                 <q-item class="GL__menu-link-signed-in">
                   <q-item-section>
-                    <div>Signed in as <strong>Mary</strong></div>
+                    <div>Signed in as <strong>{{ authUser.firstName }}</strong></div>
                   </q-item-section>
                 </q-item>
                 <q-separator/>
@@ -152,9 +152,9 @@
                 </q-item>
                 <q-separator/>
                 <q-item clickable class="GL__menu-link">
-                  <q-item-section>Your profile</q-item-section>
+                  <q-item-section>My profile</q-item-section>
                 </q-item>
-                <q-item clickable class="GL__menu-link">
+                <!-- <q-item clickable class="GL__menu-link">
                   <q-item-section>Your repositories</q-item-section>
                 </q-item>
                 <q-item clickable class="GL__menu-link">
@@ -165,7 +165,7 @@
                 </q-item>
                 <q-item clickable class="GL__menu-link">
                   <q-item-section>Your gists</q-item-section>
-                </q-item>
+                </q-item> -->
                 <q-separator/>
                 <q-item clickable class="GL__menu-link">
                   <q-item-section>Help</q-item-section>
@@ -174,7 +174,7 @@
                   <q-item-section>Settings</q-item-section>
                 </q-item>
                 <q-item clickable class="GL__menu-link">
-                  <q-item-section>Sign out</q-item-section>
+                  <q-item-section @click="openConfirmDialog('Confirm Logout', 'logout')">Sign out</q-item-section>
                 </q-item>
               </q-list>
             </q-menu>
@@ -187,11 +187,31 @@
       <router-view/>
     </q-page-container>
   </q-layout>
+  <q-dialog v-model="confirm" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar size="sm"  icon="las la-exclamation" color="cancel" text-color="white" />
+          <span class="q-ml-sm text-h6">{{ confirmMsg }}</span>
+        </q-card-section>
+
+        <q-card-actions align="right" class="q-pa-md">
+          <q-btn padding="sm xl" icon="las la-times" class="round-btn text-capitalize" label="Close" color="negative" v-close-popup/>
+          <q-btn padding="sm xl" icon="las la-check" class="round-btn text-capitalize" label="Confirm" color="primary" @click="callConfirmFn()" :loading="actionAccountLoader" :disable="actionAccountLoader">
+            <template v-slot:loading>
+              <q-spinner-ios class="on-left"/>
+              <small>Logging out..</small>
+            </template>
+          </q-btn>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
 </template>
 
 <script>
 import { ref } from 'vue'
 import { fabGithub } from '@quasar/extras/fontawesome-v6'
+import { useMainStore } from 'stores/main'
+import { LocalStorage } from 'quasar'
 
 const stringOptions = [
   'quasarframework/quasar',
@@ -202,6 +222,7 @@ export default {
   name: 'MyLayout',
 
   setup () {
+    const mainStore = useMainStore()
     const text = ref('')
     const options = ref(null)
     const filteredOptions = ref([])
@@ -243,14 +264,43 @@ export default {
     }
 
     return {
+      confirm: ref(false),
+      confirmMsg: '',
+      confirmCallbackFn: '',
+      actionAccountLoader: ref(false),
+      authUser: ref(null),
       fabGithub,
-
+      mainStore,
       text,
       options,
       filteredOptions,
       search,
-
       filter
+    }
+  },
+  mounted () {
+    this.authUser = LocalStorage.getItem('authUser')
+  },
+  methods: {
+    openConfirmDialog (confirmMsg, confirmCallbackFn) {
+      this.confirmMsg = confirmMsg
+      this.confirmCallbackFn = confirmCallbackFn
+      this.confirm = true
+    },
+    callConfirmFn () {
+      const fn = this.confirmCallbackFn
+      this[fn]()
+    },
+    logout () {
+      this.actionAccountLoader = true
+      setTimeout(() => {
+        LocalStorage.removeItem('adminUser')
+        LocalStorage.removeItem('authUser')
+        this.mainStore.adminUser = null
+        this.actionAccountLoader = false
+        this.confirm = false
+        this.$router.push('/admin-portal')
+      }, 2000)
     }
   }
 }

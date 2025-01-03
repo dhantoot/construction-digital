@@ -16,26 +16,26 @@
     <q-slide-transition>
       <div v-show="subExp">
         <q-separator/>
-        <q-card-section class="text-primary">
+        <q-card-section class="text-accent">
           <q-list>
             <q-item class="bg-transparent">
               <q-item-section>
                 <q-item-label class="text-bold"
                   >Dan Vincent Tagailo</q-item-label
                 >
-                <q-item-label caption lines="2"
+                <q-item-label caption lines="2" class="text-positive"
                   >Secondary line text. Lorem ipsum dolor sit amet, consectetur
                   adipiscit elit.</q-item-label
                 >
               </q-item-section>
 
               <q-item-section side top>
-                <q-item-label caption2 class="text-bold text-negative">$500.00</q-item-label>
-                <q-item-label caption2 class="text-info">Inc. BTW</q-item-label>
+                <q-item-label caption2 class="text-bold text-cancel">$500.00</q-item-label>
+                <q-item-label caption2 class="text-positive">Inc. BTW</q-item-label>
               </q-item-section>
 
               <q-item-section avatar>
-                <q-icon color="info" name="las la-arrow-right"/>
+                <q-icon color="positive" name="las la-arrow-right"/>
               </q-item-section>
             </q-item>
 
@@ -44,19 +44,19 @@
             <q-item class="bg-transparent">
               <q-item-section>
                 <q-item-label class="text-bold">John Doe</q-item-label>
-                <q-item-label caption lines="2"
+                <q-item-label caption lines="2" class="text-positive"
                   >Secondary line text. Lorem ipsum dolor sit amet,
                   cons</q-item-label
                 >
               </q-item-section>
 
               <q-item-section side top>
-                <q-item-label caption2 class="text-bold text-negative">$1000.00</q-item-label>
+                <q-item-label caption2 class="text-bold text-cancel">$1000.00</q-item-label>
                 <!-- <q-icon name="star" color="yellow"/> -->
               </q-item-section>
 
               <q-item-section avatar>
-                <q-icon color="info" name="las la-arrow-right"/>
+                <q-icon color="positive" name="las la-arrow-right"/>
               </q-item-section>
             </q-item>
 
@@ -65,19 +65,19 @@
             <q-item class="bg-transparent">
               <q-item-section>
                 <q-item-label class="text-bold">Chloe Morrets</q-item-label>
-                <q-item-label caption lines="2"
+                <q-item-label caption lines="2" class="text-positive"
                   >Secondary line text. Lorem ipsum dolor sit amet, consectetur
                   adipiscit elit.</q-item-label
                 >
               </q-item-section>
 
               <q-item-section side top>
-                <q-item-label caption2 class="text-bold text-negative">$2300.00</q-item-label>
-                <q-item-label caption2 class="text-info">Inc. BTW</q-item-label>
+                <q-item-label caption2 class="text-bold text-cancel">$2300.00</q-item-label>
+                <q-item-label caption2 class="text-positive">Inc. BTW</q-item-label>
               </q-item-section>
 
               <q-item-section avatar>
-                <q-icon color="info" name="las la-arrow-right"/>
+                <q-icon color="positive" name="las la-arrow-right"/>
               </q-item-section>
             </q-item>
 
@@ -113,23 +113,23 @@
     <q-slide-transition>
       <div v-show="openAgreement">
         <q-separator/>
-        <q-card-section class="text-primary">
+        <q-card-section class="text-accent">
           <q-list>
             <q-item class="bg-transparent">
               <q-item-section>
                 <q-item-label class="text-bold"
                   >Dan Vincent Tagailo</q-item-label
                 >
-                <!-- <q-item-label caption lines="2">Secondary line text. Lorem ipsum dolor sit amet, consectetur adipiscit elit.</q-item-label> -->
+                <!-- <q-item-label caption lines="2" class="text-positive">Secondary line text. Lorem ipsum dolor sit amet, consectetur adipiscit elit.</q-item-label> -->
               </q-item-section>
 
               <q-item-section side top>
-                <q-item-label caption2 class="text-bold text-negative">$500.00</q-item-label>
+                <q-item-label caption2 class="text-bold text-cancel">$500.00</q-item-label>
                 <!-- <q-item-label caption2 class="">Inc. BTW</q-item-label> -->
               </q-item-section>
 
               <q-item-section avatar>
-                <q-icon color="info" name="las la-arrow-right"/>
+                <q-icon color="positive" name="las la-arrow-right"/>
               </q-item-section>
             </q-item>
 
@@ -138,16 +138,16 @@
             <q-item class="bg-transparent">
               <q-item-section>
                 <q-item-label class="text-bold">John Doe</q-item-label>
-                <!-- <q-item-label caption lines="2">Secondary line text. Lorem ipsum dolor sit amet, cons</q-item-label> -->
+                <!-- <q-item-label caption lines="2" class="text-positive">Secondary line text. Lorem ipsum dolor sit amet, cons</q-item-label> -->
               </q-item-section>
 
               <q-item-section side top>
-                <q-item-label caption2 class="text-bold text-negative">$1000.00</q-item-label>
+                <q-item-label caption2 class="text-bold text-cancel">$1000.00</q-item-label>
                 <!-- <q-icon name="star" color="yellow"/> -->
               </q-item-section>
 
               <q-item-section avatar>
-                <q-icon color="info" name="las la-arrow-right"/>
+                <q-icon color="positive" name="las la-arrow-right"/>
               </q-item-section>
             </q-item>
           </q-list>

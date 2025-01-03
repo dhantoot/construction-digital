@@ -1,15 +1,15 @@
 <template>
-  <q-layout view="lHh lpR fFf" class="bg-accent">
+  <q-layout view="lHh lpR fFf">
     <q-img
-     src="background.jpg"
+     src="background3.jpg"
      class="fit absolute"
      v-if="true"
    />
 
     <q-header elevated class="text-accent" height-hint="98">
-      <q-toolbar class="bg-primary text-warning q-pt-xl">
+      <q-toolbar class="text-warning q-pt-lg" :style="{ 'margin-top': '-1px'}">
         <q-btn @click="leftDrawerOpen = !leftDrawerOpen" flat round :dense="true" icon="menu" class="q-mr-sm round-btn"/>
-        <q-toolbar-title class="text-center">Hofstee Inc</q-toolbar-title>
+        <q-toolbar-title class="text-center q-pb-xs">Hofstee Inc.</q-toolbar-title>
         <q-btn flat round :dense="true" icon="whatshot" class="round-btn"/>
       </q-toolbar>
     </q-header>
@@ -177,7 +177,7 @@ export default {
     const mainStore = useMainStore()
     const authUser = LocalStorage.getItem('authUser')
     const $q = useQuasar()
-    $q.addressbarColor.set('#a2e3fa')
+    $q.addressbarColor.set('#14252C')
     // document.addEventListener('deviceready', () => {
     //   deviceIsReady.value = true
     //   // eslint-disable-next-line no-undef
