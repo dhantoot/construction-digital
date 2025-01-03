@@ -12,28 +12,52 @@
         <q-separator class="q-ml-xl q-mr-xl" color="positive" inset/>
       </div>
       <div class="col-6">
-        <p class="q-mt-xs text-positive">Choose a role to register</p>
-        <div class="q-gutter-sm">
-          <q-radio
-            v-model="role"
-            checked-icon="task_alt"
-            unchecked-icon="panorama_fish_eye"
-            val="constructor"
-            label="Constructor"
-            class="text-positive"
-            color="positive"
-            keep-color
-         />
-          <q-radio
-            v-model="role"
-            checked-icon="task_alt"
-            unchecked-icon="panorama_fish_eye"
-            val="home owner"
-            label="Home Owner"
-            class="text-positive"
-            color="positive"
-            keep-color
-         />
+        <p class="q-mt-xs text-accent">Choose a role to register</p>
+        <div class="row justify-center">
+          <div class="column justify-center items-start q-px-md">
+            <q-radio
+                v-model="role"
+                checked-icon="task_alt"
+                unchecked-icon="panorama_fish_eye"
+                val="constructor"
+                label="Constructor"
+                class="text-accent"
+                color="positive"
+                keep-color
+            />
+              <q-radio
+                v-model="role"
+                checked-icon="task_alt"
+                unchecked-icon="panorama_fish_eye"
+                val="client"
+                label="Home Owner"
+                class="text-accent"
+                color="positive"
+                keep-color
+            />
+          </div>
+          <div class="column justify-center items-start q-px-md">
+            <q-radio
+                v-model="role"
+                checked-icon="task_alt"
+                unchecked-icon="panorama_fish_eye"
+                val="agent"
+                label="Agent"
+                class="text-accent"
+                color="positive"
+                keep-color
+            />
+            <q-radio
+                v-model="role"
+                checked-icon="task_alt"
+                unchecked-icon="panorama_fish_eye"
+                val="admin"
+                label="Admin"
+                class="text-accent"
+                color="positive"
+                keep-color
+            />
+          </div>
         </div>
       </div>
       <div class="col-2 q-pa-xl q-gutter-y-sm">
@@ -47,7 +71,7 @@
           v-model="regemail"
           placeholder="Email"
           :rules="regemailRules"
-          input-class="text-positive"
+          input-class="text-accent"
           color="positive"
         >
           <template v-slot:prepend>
@@ -65,7 +89,7 @@
           v-model="regpassword"
           placeholder="Password"
           :rules="regpasswordRules"
-          input-class="text-positive"
+          input-class="text-accent"
           color="positive"
         >
           <template v-slot:prepend>
@@ -91,7 +115,7 @@
           placeholder="Confirm Password"
           :rules="regverifiedpassRules"
           v-on:keyup.enter="register"
-          input-class="text-positive"
+          input-class="text-accent"
           color="positive"
         >
           <template v-slot:prepend>
@@ -144,6 +168,7 @@
 <script>
 import { ref } from 'vue'
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
+import { useMainStore } from 'stores/main'
 
 // Don't forget to specify which animations
 // you are using in quasar.config file > animations.
@@ -164,7 +189,10 @@ export default {
     const regverifiedpass = ref(null)
     const regverifiedpassRef = ref(null)
 
+    const mainStore = useMainStore()
+
     return {
+      mainStore,
       visible,
       question,
       role: ref('constructor'),
@@ -231,8 +259,21 @@ export default {
     // console.log('beforeMount')
   },
   mounted () {
-    // this.showTextLoading()
-    // this.$emit('showHeader', false, [])
+    this.mainStore.showNav = false
+    console.log(this.$route.query)
+    const { e, clientId, agentId, pid } = this.$route.query
+    this.regemail = e
+    if (pid) {
+      if (clientId) {
+        this.role = 'client'
+      } else if (agentId) {
+        this.role = 'agent'
+      } else {
+        this.role = 'constructor'
+      }
+    } else {
+      this.role = 'constructor'
+    }
   },
   beforeUpdate () {
     // console.log('beforeUpdate')

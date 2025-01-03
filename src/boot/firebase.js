@@ -188,6 +188,44 @@ export default boot(async ({ app } /* { app, router, ... } */) => {
       return false
     }
   }
+  app.config.globalProperties.$sendEmailToAgentAndClient = async (to, subject, projectName, projectId) => {
+    try {
+      const emailHash = CryptoJS.SHA256(to).toString()
+      const clientJoinLink = `https://hofstee-app.web.app/#/login-register?clientId=${emailHash}&pid=${projectId}&e=${to}`
+      const html = `
+      <div style="max-width: 600px; margin: 20px auto; padding: 20px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+        <h1 style="color: #333; font-size: 24px; margin-bottom: 20px;">Project: ${projectName}</h1>
+        <p style="color: #666; font-size: 16px;">Thank you for selecting Hofstee as your trusted building partner. <br><br>Please click the Join button and register to our app.</p>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td style="padding: 20px; text-align: center;">
+              <a href="${clientJoinLink}" style="display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: #fff; border-radius: 5px; text-decoration: none;">Join</a>
+            </td>
+          </tr>
+        </table>
+        <p style="color: #666; font-size: 16px;">Best regards,</p>
+        <p style="color: #666; font-size: 16px;">Hofstee Inc.</p>
+      </div>
+      `
+      console.log({
+        to, subject, html
+      })
+      const myFunction = httpsCallable(functions, 'sendCustomEmail')
+      console.log({ myFunction })
+      return myFunction({ to, subject, html }).then((result) => {
+        console.log(result)
+
+        return true
+      }).catch((error) => {
+        console.log(error)
+
+        return false
+      })
+    } catch (error) {
+      console.error('Error sending email:', error)
+      return false
+    }
+  }
 
   app.config.globalProperties.$findPlace = async (type, input) => {
     console.log('searching', input)

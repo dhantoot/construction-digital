@@ -133,6 +133,8 @@
         </q-card-section>
         <q-card-actions align="right" class="q-pr-md">
           <q-btn
+            icon="las la-undo"
+            padding="sm xl"
             flat
             class="text-capitalize bg-cancel round-btn"
             label="Reset"
@@ -141,6 +143,8 @@
           >
           </q-btn>
           <q-btn
+            icon="las la-check"
+            padding="sm xl"
             @click="uploadFile"
             color="primary"
             :label="selected.length ? 'Update' : 'Submit'"
@@ -876,6 +880,7 @@ export default {
             classes: 'notify-custom-css'
           })
           this.loadingSubmit = false
+          await this.sendClientEmail(payload.id)
           this.formReset()
           await this.fetchProjects()
         })
@@ -891,6 +896,18 @@ export default {
           this.formReset()
           await this.fetchProjects()
         })
+    },
+    async sendClientEmail (projectId) {
+      const clients = this.client.map(e => e.email)
+      const agents = this.agent.map(e => e.email)
+      const subject = 'Join to Application'
+      const projectName = this.text
+      clients.forEach((recepient) => {
+        this.$sendEmailToAgentAndClient(recepient, subject, projectName, projectId)
+      })
+      agents.forEach((agent) => {
+        this.$sendEmailToAgentAndClient(agent, subject, projectName, projectId)
+      })
     },
     async formReset () {
       this.searchKey = null
@@ -957,8 +974,8 @@ export default {
         .then(() => {
           this.$q.notify({
             icon: 'check_circle',
-            color: 'secondary',
-            message: 'Sucessfully Created',
+            color: 'green',
+            message: 'Sucessfully Activated',
             position: 'top-right',
             classes: 'notify-custom-css'
           })
