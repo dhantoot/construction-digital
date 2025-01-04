@@ -28,347 +28,36 @@
     <q-card-section flat class="q-ma-none q-pa-none">
       <q-list class="scroll" style="max-height: 60vh;">
         <q-item-label header class="text-bold text-accent">Project Members</q-item-label>
-        <q-item clickable v-ripple>
+        <q-item clickable v-ripple v-for="item of invites" :key="item">
           <q-item-section avatar>
             <q-avatar>
-              <img src="https://cdn.quasar.dev/img/avatar1.jpg"/>
+              <img :src="`${item?.avatar || 'default-user.jpeg'}`"/>
             </q-avatar>
           </q-item-section>
 
           <q-item-section>
             <q-item-label caption lines="2">
-              <span class="text-weight-bold text-warning">Dan Xblue</span>
+              <span class="text-weight-bold text-accent">{{ item?.fullName }}</span>
             </q-item-label>
             <q-item-label caption lines="1">
-              <span class="text-weight-light text-positive">***</span>
+              <span class="text-weight-light text-accent">{{ item?.userTitle }}</span>
             </q-item-label>
           </q-item-section>
 
           <q-item-section side top>
             <q-chip
               square
-              outline
               :dense="true"
-              color="teal"
+              :color="getColor(item)"
               text-color="white"
-              icon="las la-shield-alt"
+              :icon="getIcon(item)"
             >
-              admin
+              <small>{{ item?.role }}</small>
             </q-chip>
           </q-item-section>
         </q-item>
         <q-separator inset="item" class="q-ml-none"/>
 
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-avatar>
-              <img src="https://cdn.quasar.dev/img/avatar2.jpg"/>
-            </q-avatar>
-          </q-item-section>
-
-          <q-item-section>
-            <q-item-label caption lines="2">
-              <span class="text-weight-bold text-accent">Vcuii XD</span>
-            </q-item-label>
-            <q-item-label caption lines="1">
-              <span class="text-weight-light text-positive">***</span>
-            </q-item-label>
-          </q-item-section>
-
-          <q-item-section side top>
-            <q-chip
-              square
-              outline
-              :dense="true"
-              color="purple"
-              text-color="white"
-              icon="las la-home"
-            >
-              home owner
-            </q-chip>
-          </q-item-section>
-        </q-item>
-        <q-separator inset="item" class="q-ml-none"/>
-
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-avatar>
-              <img src="https://cdn.quasar.dev/img/avatar3.jpg"/>
-            </q-avatar>
-          </q-item-section>
-
-          <q-item-section>
-            <!-- <q-item-label lines="1">Linear Project</q-item-label> -->
-            <q-item-label caption lines="2">
-              <span class="text-weight-bold text-accent">Clin XD</span>
-            </q-item-label>
-            <q-item-label caption lines="1">
-              <span class="text-weight-light text-positive">Engineer</span>
-            </q-item-label>
-          </q-item-section>
-
-          <q-item-section side top>
-            <q-chip
-              square
-              outline
-              :dense="true"
-              color="indigo"
-              text-color="white"
-              icon="las la-user-secret"
-            >
-              contractor
-            </q-chip>
-          </q-item-section>
-        </q-item>
-        <q-separator inset="item" class="q-ml-none"/>
-
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-avatar>
-              <img src="https://cdn.quasar.dev/img/avatar4.jpg"/>
-            </q-avatar>
-          </q-item-section>
-
-          <q-item-section>
-            <q-item-label caption lines="2">
-              <span class="text-weight-bold text-accent">Chris Clauz</span>
-            </q-item-label>
-            <q-item-label caption lines="1">
-              <span class="text-weight-light text-positive">Architech</span>
-            </q-item-label>
-          </q-item-section>
-
-          <q-item-section side top>
-            <q-chip
-              square
-              outline
-              :dense="true"
-              color="deep-orange"
-              text-color="white"
-              icon="las la-redo-alt"
-            >
-              resend
-            </q-chip>
-          </q-item-section>
-        </q-item>
-        <q-separator inset="item" class="q-ml-none"/>
-
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-avatar>
-              <img src="https://cdn.quasar.dev/img/avatar5.jpg"/>
-            </q-avatar>
-          </q-item-section>
-
-          <q-item-section>
-            <q-item-label caption lines="2">
-              <span class="text-weight-bold text-accent">Kinn Ny</span>
-            </q-item-label>
-            <q-item-label caption lines="1">
-              <span class="text-weight-light text-positive">Engineer</span>
-            </q-item-label>
-          </q-item-section>
-
-          <q-item-section side top>
-            <q-chip
-              square
-              outline
-              :dense="true"
-              color="indigo"
-              text-color="white"
-              icon="las la-user-secret"
-            >
-              contractor
-            </q-chip>
-          </q-item-section>
-        </q-item>
-        <q-separator inset="item" class="q-ml-none"/>
-
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-avatar>
-              <img src="https://cdn.quasar.dev/img/avatar6.jpg"/>
-            </q-avatar>
-          </q-item-section>
-
-          <q-item-section>
-            <q-item-label caption lines="2">
-              <span class="text-weight-bold text-accent">Dyan Marie</span>
-            </q-item-label>
-            <q-item-label caption lines="1">
-              <span class="text-weight-light text-positive">***</span>
-            </q-item-label>
-          </q-item-section>
-
-          <q-item-section side top>
-            <q-chip
-              square
-              outline
-              :dense="true"
-              color="teal"
-              text-color="white"
-              icon="las la-shield-alt"
-            >
-              admin
-            </q-chip>
-          </q-item-section>
-        </q-item>
-        <q-separator inset="item" class="q-ml-none"/>
-
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-avatar>
-              <img src="https://cdn.quasar.dev/img/avatar2.jpg"/>
-            </q-avatar>
-          </q-item-section>
-
-          <q-item-section>
-            <q-item-label caption lines="2">
-              <span class="text-weight-bold text-accent">Nyx Skyler</span>
-            </q-item-label>
-            <q-item-label caption lines="1">
-              <span class="text-weight-light text-positive">Engineer</span>
-            </q-item-label>
-          </q-item-section>
-
-          <q-item-section side top>
-            <q-chip
-              square
-              outline
-              :dense="true"
-              color="indigo"
-              text-color="white"
-              icon="las la-user-secret"
-            >
-              contractor
-            </q-chip>
-          </q-item-section>
-        </q-item>
-        <q-separator inset="item" class="q-ml-none"/>
-
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-avatar>
-              <img src="https://cdn.quasar.dev/img/avatar3.jpg"/>
-            </q-avatar>
-          </q-item-section>
-
-          <q-item-section>
-            <q-item-label caption lines="2">
-              <span class="text-weight-bold text-accent">Hestia Vinrie</span>
-            </q-item-label>
-            <q-item-label caption lines="1">
-              <span class="text-weight-light text-positive">Architech</span>
-            </q-item-label>
-          </q-item-section>
-
-          <q-item-section side top>
-            <q-chip
-              square
-              outline
-              :dense="true"
-              color="deep-orange"
-              text-color="white"
-              icon="las la-redo-alt"
-            >
-              resend
-            </q-chip>
-          </q-item-section>
-        </q-item>
-        <q-separator inset="item" class="q-ml-none"/>
-
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-avatar>
-              <img src="https://cdn.quasar.dev/img/avatar5.jpg"/>
-            </q-avatar>
-          </q-item-section>
-
-          <q-item-section>
-            <q-item-label caption lines="2">
-              <span class="text-weight-bold text-accent">Man Sweto</span>
-            </q-item-label>
-            <q-item-label caption lines="1">
-              <span class="text-weight-light text-positive">Engineer</span>
-            </q-item-label>
-          </q-item-section>
-
-          <q-item-section side top>
-            <q-chip
-              square
-              outline
-              :dense="true"
-              color="indigo"
-              text-color="white"
-              icon="las la-user-secret"
-            >
-              contractor
-            </q-chip>
-          </q-item-section>
-        </q-item>
-        <q-separator inset="item" class="q-ml-none"/>
-
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-avatar>
-              <img src="https://cdn.quasar.dev/img/avatar5.jpg"/>
-            </q-avatar>
-          </q-item-section>
-
-          <q-item-section>
-            <q-item-label caption lines="2">
-              <span class="text-weight-bold text-accent">Fatima Luisa</span>
-            </q-item-label>
-            <q-item-label caption lines="1">
-              <span class="text-weight-light text-positive">Engineer</span>
-            </q-item-label>
-          </q-item-section>
-
-          <q-item-section side top>
-            <q-chip
-              square
-              outline
-              :dense="true"
-              color="indigo"
-              text-color="white"
-              icon="las la-user-secret"
-            >
-              contractor
-            </q-chip>
-          </q-item-section>
-        </q-item>
-        <q-separator inset="item" class="q-ml-none"/>
-
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-avatar>
-              <img src="https://cdn.quasar.dev/img/avatar2.jpg"/>
-            </q-avatar>
-          </q-item-section>
-
-          <q-item-section>
-            <q-item-label caption lines="2">
-              <span class="text-weight-bold text-accent">Vince Aisa</span>
-            </q-item-label>
-            <q-item-label caption lines="1">
-              <span class="text-weight-light text-positive">Engineer</span>
-            </q-item-label>
-          </q-item-section>
-
-          <q-item-section side top>
-            <q-chip
-              square
-              outline
-              :dense="true"
-              color="indigo"
-              text-color="white"
-              icon="las la-user-secret"
-            >
-              contractor
-            </q-chip>
-          </q-item-section>
-        </q-item>
-        <q-separator inset="item" class="q-ml-none"/>
         <q-item :dense="true">
           <q-item-section>
             <div class="row items-center justify-center">
@@ -404,14 +93,135 @@ export default {
     const mainStore = useMainStore()
 
     return {
+      invites: ref([]),
+      users: ref([]),
+      members: ref([]),
+      getInvitesLoader: ref(false),
+      getUsersLoader: ref(false),
       visible,
       lorem: ref(''),
       mainStore,
       selectedProject: ref({})
     }
   },
-  mounted () {
+  async mounted () {
     // this.selectedProject = this.mainStore
+    await this.fetchAllUsers()
+    await this.fetchAllInvites()
+  },
+  methods: {
+    getColor (item) {
+      if (item.role) {
+        if (item.role === 'constructor') {
+          return 'secondary'
+        }
+        if (item.role === 'admin') {
+          return 'primary'
+        }
+        if (item.role === 'client') {
+          return 'cancel'
+        }
+        if (item.role === 'agent') {
+          return 'pink'
+        }
+      } else {
+        return 'negative'
+      }
+    },
+    getIcon (item) {
+      if (item.role !== 'admin' && item.role !== 'client' && item.role !== 'agent') {
+        if (item.status === 'Pending') {
+          return 'las la-user-clock'
+        } else if (item.status === 'Confirmed') {
+          return 'las la-user-check'
+        } else {
+          return 'las la-user-times'
+        }
+      } else if (item.role === 'admin') {
+        return 'las la-user-shield'
+      } else if (item.role === 'client') {
+        return 'las la-user-tie'
+      } else if (item.role === 'agent') {
+        return 'las la-user-secret'
+      }
+    },
+    async fetchAllUsers () {
+      this.getUsersLoader = true
+      const users = this.$fbref(this.$fbdb, 'users')
+      this.$fbonValue(users, (snapshot) => {
+        const data = snapshot.val()
+        if (this.$isFalsyString(data)) {
+          this.users = []
+          return
+        }
+        this.users = Object.values(data)
+        this.getUsersLoader = false
+      })
+    },
+    async fetchAllInvites () {
+      this.getInvitesLoader = true
+      const invites = this.$fbref(this.$fbdb, 'invites')
+      this.$fbonValue(invites, (snapshot) => {
+        const data = snapshot.val()
+        if (this.$isFalsyString(data)) {
+          this.invites = []
+          return
+        }
+        const data_ = Object.values(data)
+        this.invites = data_.filter((e) => e.projectId === this.$route.params.projectId)
+
+        // get invitees
+        this.invites.forEach((item) => {
+          const resp = this.users.find((e) => e.email === item.invitee)
+          if (resp) {
+            item.firstName = resp?.firstName
+            item.lastName = resp?.lastName
+            item.role = resp?.role
+            item.avatar = resp?.avatar
+            item.fullName = (resp?.firstName || resp?.lastName) ? `${resp?.firstName} ${resp?.lastName}` : item.invitee
+          } else {
+            item.fullName = item.invitee
+            item.avatar = undefined
+          }
+        })
+
+        // get agent details
+        for (const item of this.mainStore?.mobileSelectedProject?.agent) {
+          const agent = this.users.find((e) => e.email === item.email)
+          this.invites.unshift({
+            role: 'agent',
+            userTitle: 'agent',
+            fullName: (agent?.firstName || agent?.lastName) ? `${agent?.firstName} ${agent?.lastName}` : agent?.email || item.email,
+            avatar: agent?.avatar,
+            uid: agent?.uid
+          })
+        }
+
+        // get admin details
+        const resp = this.users.find((e) => e.uid === this.mainStore?.mobileSelectedProject?.createdBy)
+        this.invites.unshift({
+          role: resp?.role,
+          userTitle: resp?.role,
+          fullName: (resp?.firstName || resp?.lastName) ? `${resp?.firstName} ${resp?.lastName}` : resp?.email,
+          avatar: resp?.avatar,
+          uid: resp?.uid
+        })
+
+        // get client details
+        for (const client of this.mainStore?.mobileSelectedProject?.client) {
+          const owner = this.users.find((e) => e.email === client.email)
+          this.invites.unshift({
+            role: 'client',
+            userTitle: 'client',
+            fullName: (owner?.firstName || owner?.lastName) ? `${owner?.firstName} ${owner?.lastName}` : owner?.email || client.email,
+            avatar: owner?.avatar,
+            uid: owner?.uid
+          })
+        }
+
+        this.getInvitesLoader = false
+      })
+    }
   }
 }
 </script>

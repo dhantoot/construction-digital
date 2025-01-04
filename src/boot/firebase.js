@@ -1,3 +1,5 @@
+// ========== https://firebase.google.com/docs/database/web/read-and-write ==========
+
 import Firebase from 'firebase/compat/app'
 import { boot } from 'quasar/wrappers'
 // Import the functions you need from the SDKs you need

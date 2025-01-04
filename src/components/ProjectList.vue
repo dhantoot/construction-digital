@@ -241,6 +241,7 @@ export default {
       })
     },
     gotoDetail (project) {
+      console.log('project', project)
       LocalStorage.set('mobileSelectedProject', project)
       this.mainStore.setSelectedProject(project)
       this.$router.push({ path: `/detail/${project.id}` })

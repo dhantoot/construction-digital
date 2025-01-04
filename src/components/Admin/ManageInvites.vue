@@ -518,6 +518,9 @@ export default {
         const subject = 'Project Invitation'
         const projectName = this.selectedProject.title
         const projectId = this.selectedProject.id
+        console.log({
+          recepients, subject, projectName, projectId
+        })
         trimmedRecipients.forEach((e) => {
           this.$sendEmail(e, subject, projectName, projectId)
         })

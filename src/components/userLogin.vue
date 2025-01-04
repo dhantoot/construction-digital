@@ -48,7 +48,7 @@
           :rules="emailRules"
           v-on:keyup.enter="login"
           color="positive"
-          input-class="text-positive"
+          input-class="text-accent"
           filled
         >
           <template v-slot:prepend>
@@ -66,7 +66,7 @@
           :rules="passwordRules"
           v-on:keyup.enter="login"
           color="positive"
-          input-class="text-positive"
+          input-class="text-accent"
           filled
         >
           <template v-slot:prepend>
@@ -77,7 +77,7 @@
               :name="isPwd ? 'visibility_off' : 'visibility'"
               class="cursor-pointer"
               @click="isPwd = !isPwd"
-              color="positive"
+              color="accent"
           />
           </template>
         </q-input>
@@ -85,7 +85,7 @@
           @click="reset"
           label="Clear"
           type="reset"
-          color="positive"
+          color="accent"
           flat
           class="text-capitalize pull-right text-weight-light round-btn"
           style="float: left"
@@ -93,7 +93,7 @@
         <q-btn
           @click="register"
           label="Register"
-          color="positive"
+          color="accent"
           flat
           class="text-capitalize pull-right text-weight-light round-btn"
           style="float: right"
