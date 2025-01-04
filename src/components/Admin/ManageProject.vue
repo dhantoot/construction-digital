@@ -1,6 +1,9 @@
 <template>
   <h5 class="text-center">Manage your projects here</h5>
-  <div class="row q-px-lg">
+  <div class="row" :class="{
+    'q-px-lg': $q.screen.gt.xs,
+    'q-px-sm': $q.screen.xs
+  }">
     <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
       <q-card class="q-ma-sm adminCard round-panel">
         <q-card-section>
@@ -131,7 +134,10 @@
             option-label="email"
           />
         </q-card-section>
-        <q-card-actions align="right" class="q-pr-md">
+        <q-card-actions :align="$q.screen.gt.xs ? 'right' : 'center'" :class="{
+          'q-pr-md': $q.screen.gt.xs,
+          'q-px-none': $q.screen.xs
+        }">
           <q-btn
             icon="las la-undo"
             padding="sm xl"

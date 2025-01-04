@@ -211,7 +211,14 @@ export default {
       this.breadcrumbs = breadcrumbs
     },
     signOut () {
+      console.log('logging out..')
       this.link = 'signout'
+      LocalStorage.removeItem('authUser')
+      LocalStorage.removeItem('currentUser')
+      LocalStorage.removeItem('mobileSelectedProject')
+      LocalStorage.removeItem('showNav')
+      this.mainStore.mobileSelectedProject = null
+      this.mainStore.showNav = false
       this.$router.push('/login')
     }
   }

@@ -130,7 +130,7 @@
 
           <q-btn flat no-wrap v-if="mainStore?.adminUser?.uid">
             <q-avatar rounded size="20px">
-              <img :src="`${authUser.avatar}`"/>
+              <img :src="`${authUser?.avatar}`"/>
             </q-avatar>
             <q-icon name="arrow_drop_down" size="16px"/>
 
@@ -138,7 +138,7 @@
               <q-list :dense="true" style="min-width: 200px">
                 <q-item class="GL__menu-link-signed-in">
                   <q-item-section>
-                    <div>Signed in as <strong>{{ authUser.firstName }}</strong></div>
+                    <div>Signed in as <strong>{{ authUser?.firstName }}</strong></div>
                   </q-item-section>
                 </q-item>
                 <q-separator/>
