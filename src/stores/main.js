@@ -4,7 +4,7 @@ import { LocalStorage } from 'quasar'
 export const useMainStore = defineStore('mainStore', {
   state: () => ({
     counter: 0,
-    showNav: LocalStorage.getItem('showNav'),
+    showNav: LocalStorage.getItem(''),
     todoList: [],
     projects: [],
     getTodoListLoader: false,

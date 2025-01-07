@@ -4,9 +4,9 @@
       <q-inner-loading :showing="visible">
         <q-spinner-ios size="50px" color="secondary"/>
       </q-inner-loading>
-      <div class="col-4 q-mt-xl q-mb-md q-pt-xl">
+      <div class="col-4 q-mt-xs q-mb-md q-pt-md">
         <q-icon name="las la-user-circle" size="100px" class="q-pa-xs" color="primary"/>
-        <p class="text-h2 q-mb-xl">Register</p>
+        <p class="text-h2 q-mb-xl text-primary">Register</p>
       </div>
       <div class="col-2 q-mt-md q-mb-sm">
         <q-separator class="q-ml-xl q-mr-xl" color="positive" inset/>
@@ -22,7 +22,7 @@
                 val="constructor"
                 label="Constructor"
                 class="text-accent"
-                color="positive"
+                color="primary"
                 keep-color
             />
               <q-radio
@@ -32,7 +32,7 @@
                 val="client"
                 label="Home Owner"
                 class="text-accent"
-                color="positive"
+                color="primary"
                 keep-color
             />
           </div>
@@ -44,7 +44,7 @@
                 val="agent"
                 label="Agent"
                 class="text-accent"
-                color="positive"
+                color="primary"
                 keep-color
             />
             <q-radio
@@ -55,7 +55,7 @@
                 val="admin"
                 label="Admin"
                 class="text-accent"
-                color="positive"
+                color="primary"
                 keep-color
             />
           </div>
@@ -135,7 +135,7 @@
           @click="reset"
           label="Clear"
           type="reset"
-          color="positive"
+          color="accent"
           flat
           class="text-capitalize pull-right text-weight-light round-btn"
           style="float: left"
@@ -143,7 +143,7 @@
         <q-btn
           @click="$router.push('/login')"
           label="Back to Login"
-          color="positive"
+          color="accent"
           flat
           class="text-capitalize pull-right text-weight-light round-btn"
           style="float: right"

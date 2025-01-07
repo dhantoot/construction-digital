@@ -111,19 +111,12 @@ export default {
   },
   methods: {
     getColor (item) {
-      if (item.role) {
-        if (item.role === 'constructor') {
-          return 'secondary'
-        }
-        if (item.role === 'admin') {
-          return 'primary'
-        }
-        if (item.role === 'client') {
-          return 'cancel'
-        }
-        if (item.role === 'agent') {
-          return 'pink'
-        }
+      if (item.role === 'admin') {
+        return 'primary'
+      } else if (item.role === 'client') {
+        return 'cancel'
+      } else if (item.role === 'agent') {
+        return 'pink'
       } else {
         return 'negative'
       }

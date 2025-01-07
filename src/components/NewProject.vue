@@ -1,5 +1,8 @@
 <template>
-  <div class="q-pa-md q-gutter-md bg-grey-2">
+  <div class="row full-width absolute">
+    <div class="text-h6 text-bold q-px-lg q-py-md text-accent">Add Project</div>
+  </div>
+  <div class="q-pa-md q-gutter-md bg-grey-2 q-mt-xl">
     <q-select
       :dense="true"
       filled
