@@ -37,7 +37,7 @@
     <q-spinner-ios size="50px" color="secondary"/>
   </q-inner-loading>
   <q-page-sticky position="bottom-right" :offset="[18, 18]">
-    <q-btn fab icon="add" color="grey-1" class="text-green bg-transparent" @click="this.$router.push({ path: '/new-project' })"/>
+    <q-btn fab icon="add" color="grey-1" text-color="primary" class="bg-transparent" @click="this.$router.push({ path: '/new-project' })"/>
   </q-page-sticky>
 </template>
 <script>
@@ -49,96 +49,6 @@ export default {
   title: 'ProjectList',
   setup () {
     const visible = ref(false)
-    const url = ref('https://picsum.photos/500/300')
-    const arr = ref([])
-    const names = ref([
-      'Abigail',
-      'Alexandra',
-      'Alison',
-      'Amanda',
-      'Amelia',
-      'Amy',
-      'Andrea',
-      'Angela',
-      'Anna',
-      'Anne',
-      'Audrey',
-      'Ava',
-      'Bella',
-      'Bernadette',
-      'Carol',
-      'Caroline',
-      'Carolyn',
-      'Chloe',
-      'Claire',
-      'Deirdre',
-      'Diana',
-      'Diane',
-      'Donna',
-      'Dorothy',
-      'Elizabeth',
-      'Ella',
-      'Emily',
-      'Emma',
-      'Faith',
-      'Felicity',
-      'Fiona',
-      'Gabrielle',
-      'Grace',
-      'Hannah',
-      'Heather',
-      'Irene',
-      'Jan',
-      'Jane',
-      'Jasmine',
-      'Jenni',
-      'Lillian',
-      'Lily',
-      'Lisa',
-      'Madeleine',
-      'Maria',
-      'Mary',
-      'Megan',
-      'Melanie',
-      'Michelle',
-      'Molly',
-      'Natalie',
-      'Nicola',
-      'Olivia',
-      'Penelope',
-      'Pippa',
-      'Rachel',
-      'Rebecca',
-      'Rose',
-      'Ruth',
-      'Sally',
-      'Samantha',
-      'Sarah',
-      'Sonia',
-      'Sophie',
-      'Stephanie',
-      'Sue',
-      'Theresa',
-      'Tracey',
-      'Una',
-      'Vanessa',
-      'Victoria',
-      'Virginia',
-      'Wanda',
-      'Wendy',
-      'Yvonne',
-      'Zoefer',
-      'Jessica',
-      'Joan',
-      'Joanne',
-      'Julia',
-      'Karen',
-      'Katherine',
-      'Kimberly',
-      'Kylie',
-      'Lauren',
-      'Leah'
-    ])
     const mainStore = useMainStore()
 
     return {
@@ -146,17 +56,10 @@ export default {
       initFunction () {
         // access setup variables here w/o using 'this'
         // console.log('initFunction called->', visible.value)
-        url.value = 'https://picsum.photos/500/300?t='
-        for (let i = 0; i < 50; i++) {
-          arr.value.push(Math.random())
-        }
       },
       text: ref(''),
       ph: ref(''),
       dense: ref(true),
-      url,
-      arr,
-      names,
       mainStore,
       getProjectsLoader: ref(false),
       projects: ref([])

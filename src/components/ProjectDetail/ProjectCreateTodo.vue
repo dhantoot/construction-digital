@@ -1,25 +1,35 @@
 <template>
-  <div class="scroll">
-    <q-list padding>
-      <q-item tag="todoTitle" :clickable="false">
+  <div class="row full-width absolute">
+    <div class="text-h6 text-bold q-px-lg q-py-md text-accent">Add Todo</div>
+  </div>
+  <div class="row q-pa-md full-width q-gutter-md bg-grey-2 q-mt-xl">
+    <q-input
+      class="full-width"
+      :dense="true"
+      filled
+      v-model="todoTitle"
+      placeholder="Title"
+      input-class="text-accent"/>
+    <q-input class="full-width"
+      :dense="true"
+      placeholder="Description..."
+      v-model="todoDesc"
+      filled
+      autogrow
+      input-class="text-accent"/>
+  </div>
+  <div class="scroll q-pb-xl">
+    <q-list padding dense>
+      <q-item tag="fileUpload">
         <q-item-section>
-          <q-item-label caption>
-            <q-input :dense="true" filled v-model="todoTitle" placeholder="Title" input-class="text-accent">
-            </q-input>
-          </q-item-label>
-        </q-item-section>
-      </q-item>
-      <q-item tag="todoDesc" :clickable="false">
-        <q-item-section>
-          <q-item-label caption>
-            <q-input
-                placeholder="Description..."
-                v-model="todoDesc"
-                filled
-                type="textarea"
-                input-class="text-accent"
-            />
-          </q-item-label>
+          <q-uploader
+            :factory="factoryFn"
+            :uploadProgressLabel="uploadProgressLabel"
+            label="Upload Files"
+            :multiple="false"
+            accept=".jpg, image/*"
+            class="full-width"
+         />
         </q-item-section>
       </q-item>
 
@@ -27,8 +37,8 @@
 
       <q-item tag="memberList">
         <q-item-section>
-          <q-item-label class="text-accent">Assign Members</q-item-label>
-          <q-list class="q-pl-none scroll" style="max-height: 30vh;">
+          <q-item-label class="text-accent q-mb-md">Assign Members</q-item-label>
+          <q-list class="q-pl-none scroll" style="max-height: 23vh;">
             <!--
               Rendering a <label> tag (notice tag="label")
               so QCheckboxes will respond to clicks on QItems to
@@ -60,58 +70,36 @@
             label="Please wait..."
             label-class="text-teal"
             label-style="font-size: 1.1em"
+            class="q-mx-md"
           >
             <q-spinner-ios size="50px" color="secondary"/>
           </q-inner-loading>
         </q-item-section>
       </q-item>
-
-      <q-separator spaced/>
-
-      <q-item tag="fileUpload">
-        <q-item-section>
-          <q-uploader
-            :factory="factoryFn"
-            :uploadProgressLabel="uploadProgressLabel"
-            label="Upload Files"
-            multiple="false"
-            accept=".jpg, image/*"
-            class="full-width"
-         />
-        </q-item-section>
-      </q-item>
-
-      <q-separator spaced/>
-
-      <q-item tag="action">
-        <q-item-section>
-          <div class="row justify-between items-center">
-            <div>
-              <q-btn class="q-ml-none round-btn" color="primary" icon="las la-arrow-left" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}/todo`)"/>
-            </div>
-            <div>
-              <q-btn
-                @click="saveTodo"
-                rounded
-                color="primary"
-                label="Create"
-                class="text-capitalize round-btn"
-                :loading="loadingSubmit"
-                :disable="!todoTitle || !todoDesc"
-                icon="las la-plus"
-              >
-                <template v-slot:loading>
-                  <q-spinner-ios class="on-left"/>
-                  Saving...
-                </template>
-              </q-btn>
-            </div>
-          </div>
-        </q-item-section>
-      </q-item>
     </q-list>
-    <!-- <q-inner-loading :showing="visible" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em"/> -->
   </div>
+  <div class="row full-width q-px-sm q-py-sm justify-between items-start absolute fixed-bottom" style="margin-bottom:82px">
+      <div class="q-pl-xs">
+        <q-btn class="round-btn" color="primary" icon="las la-arrow-left" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}/todo`)"/>
+      </div>
+      <div class="q-pr-xs">
+        <q-btn
+          @click="saveTodo"
+          rounded
+          color="primary"
+          label="Create"
+          class="text-capitalize round-btn"
+          :loading="loadingSubmit"
+          :disable="!todoTitle || !todoDesc || loadingSubmit"
+          icon="las la-plus"
+        >
+          <template v-slot:loading>
+            <q-spinner-ios class="on-left"/>
+            Saving...
+          </template>
+        </q-btn>
+      </div>
+    </div>
 </template>
 <script>
 import { ref } from 'vue'

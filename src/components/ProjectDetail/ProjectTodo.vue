@@ -28,12 +28,12 @@
     </q-input>
   </div>
   <div class="row full-width justify-between items-center absolute" style="z-index: 1;">
-    <div class="text-bold text-accent q-ml-lg">Todo List</div>
-    <div>
-      <q-btn label="New" class="q-mr-lg text-capitalize round-btn" color="primary" icon="las la-plus" @click="this.$router.push({ path: `/detail/${mainStore?.mobileSelectedProject?.id}/todo/create` })"/>
+    <div class="text-bold text-accent q-ml-sm q-pl-xs">Todo List</div>
+    <div class="q-mr-sm q-pr-xs">
+      <q-btn label="New" class="text-capitalize round-btn" color="primary" icon="las la-plus" @click="this.$router.push({ path: `/detail/${mainStore?.mobileSelectedProject?.id}/todo/create` })"/>
     </div>
   </div>
-  <div class="scroll q-mt-xl" style="max-height: 55vh">
+  <div class="row full-width scroll q-mt-xl" style="max-height: 55vh">
     <q-list>
         <div class="q-pa-lg q-gutter-sm" v-if="loadingtodoList">
           <q-skeleton
@@ -55,6 +55,7 @@
             }"
         />
         </div>
+
         <q-item tag="label" v-ripple v-for="item in todoList" :key="item">
           <q-item-section side top>
             <q-checkbox
@@ -75,12 +76,15 @@
 
           <q-item-section avatar>
             <q-toggle
+              v-if="item.isCompleted"
               v-model="item.isArchived"
               :val="item.isArchived"
-              :disable="!item.isCompleted"
               :class="{
                 'cursor-not-allowed': !item.isCompleted
               }"
+              checked-icon="clear"
+              unchecked-icon="check"
+              color="negative"
             >
             <template v-slot:label>
               {{ item.isCompleted ? 'Archive' : '' }}
@@ -109,24 +113,6 @@
             }"
         />
         </div>
-
-        <!-- <q-item tag="label" v-ripple v-for="item of completedTodos" :key="item">
-          <q-item-section>
-            <q-item-label>{{ item.todoTitle }}</q-item-label>
-            <q-item-label caption>
-              {{ item.todoDesc }}
-            </q-item-label>
-          </q-item-section>
-
-          <q-item-section side>
-            <q-toggle
-              color="blue"
-              v-model="item.isArchived"
-              :val="item.isArchived"
-              label="Archive"
-          />
-          </q-item-section>
-        </q-item> -->
     </q-list>
     <q-inner-loading
       :showing="loadingtodoList"
@@ -141,16 +127,16 @@
     />
     </q-inner-loading>
   </div>
-  <div class="row full-width q-px-lg q-py-sm justify-between items-start absolute fixed-bottom" style="margin-bottom:82px">
-    <div>
-      <q-btn class="q-ml-none round-btn" color="primary" icon="las la-arrow-left" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/>
+  <div class="row full-width q-px-sm q-py-sm justify-between items-start absolute fixed-bottom" style="margin-bottom:82px">
+    <div class="q-ml-xs">
+      <q-btn class="round-btn" color="primary" icon="las la-arrow-left" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/>
     </div>
-    <div>
+    <div class="q-mr-xs">
       <q-btn
-        @click="confirm"
+        @click="openConfirmDialog('Save changes?', 'updateTodo')"
         color="primary"
         label="Update"
-        class="text-capitalize full-width text-accent round-btn"
+        class="text-capitalize full-width text-accent round-btn q-mr-xs"
         :loading="loadingSubmit"
         icon="las la-edit"
       >
@@ -161,6 +147,23 @@
       </q-btn>
     </div>
   </div>
+  <q-dialog v-model="confirm" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar size="sm" icon="las la-exclamation" color="cancel" text-color="white" />
+          <span class="q-ml-sm text-h6">{{ confirmMsg }}</span>
+        </q-card-section>
+
+        <q-card-actions align="right" class="q-pa-md">
+          <q-btn padding="sm xl" icon="las la-times" class="round-btn text-capitalize" label="Close" color="negative" v-close-popup/>
+          <q-btn padding="sm xl" icon="las la-check" class="round-btn text-capitalize" label="Confirm" color="primary" @click="callConfirmFn()" :loading="confirmBtnLoader" :disable="confirmBtnLoader">
+            <template v-slot:loading>
+              <q-spinner-ios/>
+            </template>
+          </q-btn>
+        </q-card-actions>
+      </q-card>
+  </q-dialog>
 </template>
 <script>
 import { ref } from 'vue'
@@ -178,6 +181,10 @@ export default {
     const mainStore = useMainStore()
 
     return {
+      confirm: ref(false),
+      confirmMsg: '',
+      confirmCallbackFn: '',
+      confirmBtnLoader: ref(false),
       mainStore,
       visible,
       question,
@@ -286,13 +293,14 @@ export default {
       this.completedTodos = completed
     },
     updateTodo () {
-      this.loadingSubmit = true
+      this.confirmBtnLoader = true
       // console.log('updating todo', this.todoList)
       // console.log('this.completedTodos', this.completedTodos)
       const mapIds = this.completedTodos.map((m) => m.id)
       const updates = {}
 
       this.todoList.forEach((element) => {
+        console.log(element.id)
         if (mapIds.includes(element.id)) {
           element.isCompleted = true
           updates[`todo/${element.id}/isCompleted/`] = true
@@ -300,52 +308,72 @@ export default {
           element.isCompleted = false
           updates[`todo/${element.id}/isCompleted/`] = false
         }
+
+        updates[`todo/${element.id}/isArchived/`] = element.isArchived
       })
-      // console.log('updated todoList', this.todoList)
+      console.log('updated todoList', this.todoList)
+      console.log('updates', updates)
 
       // slash at the end is very important (../avatar/)
       // updates[`todo/${this.uid}/avatar/`] = 'url-of-avatar.png'
 
-      // this.$fbupdate(this.$fbref(this.$fbdb), updates)
-      //   .then(() => {
-      //     this.loadingSubmit = false
-      //     this.$q.notify({
-      //       icon: 'check_circle',
-      //       color: 'positive',
-      //       message: 'Sucessfully Updated',
-      //       position: 'top-right'
-      //     })
-      //   }).catch((error) => {
-      //     // console.log({ error })
-      //     this.loadingSubmit = false
-      //     this.$q.notify({
-      //       icon: 'exclamation-circle',
-      //       color: 'negative',
-      //       message: 'Error found',
-      //       position: 'top-right'
-      //     })
-      //   })
+      this.$fbupdate(this.$fbref(this.$fbdb), updates)
+        .then(() => {
+          setTimeout(() => {
+            this.confirmBtnLoader = false
+            this.confirm = false
+            this.$q.notify({
+              icon: 'check_circle',
+              color: 'green',
+              message: 'Sucessfully Updated',
+              position: 'top-right',
+              classes: 'notify-custom-css'
+            })
+          }, 1000)
+        }).catch((error) => {
+          setTimeout(() => {
+            console.log({ error })
+            this.confirmBtnLoader = false
+            this.confirm = false
+            this.$q.notify({
+              icon: 'cancel',
+              color: 'negative',
+              message: 'Error found',
+              position: 'top-right',
+              classes: 'notify-custom-css'
+            })
+          })
+        })
     },
-    async confirm () {
-      this.$q
-        .dialog({
-          dark: false,
-          title: 'Confirm',
-          message: 'Save changes ?',
-          cancel: true,
-          persistent: true
-        })
-        .onOk(() => {
-          // this.addDeceasedPersonnel()
-          this.updateTodo()
-        })
-        .onCancel(() => {
-          // console.log('>>>> Cancel')
-        })
-        .onDismiss(() => {
-          // console.log('I am triggered on both OK and Cancel')
-        })
+    openConfirmDialog (confirmMsg, confirmCallbackFn) {
+      this.confirmMsg = confirmMsg
+      this.confirmCallbackFn = confirmCallbackFn
+      this.confirm = true
+    },
+    callConfirmFn () {
+      const fn = this.confirmCallbackFn
+      this[fn]()
     }
+    // async confirm () {
+    //   this.$q
+    //     .dialog({
+    //       dark: false,
+    //       title: 'Confirm',
+    //       message: 'Save changes ?',
+    //       cancel: true,
+    //       persistent: true
+    //     })
+    //     .onOk(() => {
+    //       // this.addDeceasedPersonnel()
+    //       this.updateTodo()
+    //     })
+    //     .onCancel(() => {
+    //       // console.log('>>>> Cancel')
+    //     })
+    //     .onDismiss(() => {
+    //       // console.log('I am triggered on both OK and Cancel')
+    //     })
+    // }
   }
 }
 </script>
