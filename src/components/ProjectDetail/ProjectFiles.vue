@@ -32,23 +32,18 @@
       <q-img
         v-for="item in arr"
         :key="item"
-        :src="`${url}${item}`"
+        :src="`${item.url}`"
         spinner-color="white"
         style="height: 100px; max-width: 111px"
-        img-class="my-custom-image"
         class="rounded-borders q-mb-xs"
       >
-        <div class="absolute-bottom text-caption text-center">Caption</div>
+        <template v-slot:loading>
+          <div class="text-accent">
+            <q-spinner-ios />
+          </div>
+        </template>
       </q-img>
     </div>
-    <q-inner-loading
-      :showing="visible"
-      label="Please wait..."
-      label-class="text-teal"
-      label-style="font-size: 1.1em"
-    >
-    <q-spinner-ios size="50px" color="secondary"/>
-    </q-inner-loading>
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
       <q-btn
         :dense="true"
@@ -82,14 +77,6 @@ export default {
       question,
       url,
       arr,
-      initFunction () {
-        // access setup variables here w/o using 'this'
-        // console.log('initFunction called', visible.value)
-        url.value = 'https://picsum.photos/500/300?t='
-        for (let i = 0; i < 100; i++) {
-          arr.value.push(Math.random())
-        }
-      },
       text: ref(''),
       ph: ref(''),
       dense: ref(true)
@@ -115,7 +102,7 @@ export default {
   },
   mounted () {
     this.showTextLoading()
-    this.initFunction()
+    this.getFiles()
   },
   beforeUpdate () {
     // console.log('beforeUpdate')
@@ -137,6 +124,25 @@ export default {
       setTimeout(() => {
         this.visible = false
       }, ms)
+    },
+    async getFiles () {
+      const paths = ['projects', 'todo', '']
+      Promise.all(paths.map((dir) => {
+        return this.$storageListAll(this.$getStorageRef(`files/${dir}`)).then(response => {
+          const images = response.items
+          images.forEach(image => {
+            this.$getdownloadurl(image).then(url => {
+              // Use URL to display the image
+              this.arr.push({
+                url,
+                name: dir ? `${dir}` : 'root'
+              })
+            })
+          })
+        }).catch(error => {
+          console.error(error)
+        })
+      }))
     }
   }
 }
