@@ -115,7 +115,8 @@ export default boot(async ({ app } /* { app, router, ... } */) => {
   const db = getDatabase(firebaseApp)
 
   // default storage ref
-  const storageRef = _ref(storage, 'files')
+  const fileRootDir = 'files'
+  const storageRef = _ref(storage, fileRootDir)
 
   const functions = getFunctions()
   console.log({ functions })
@@ -229,7 +230,6 @@ export default boot(async ({ app } /* { app, router, ... } */) => {
       return false
     }
   }
-
   app.config.globalProperties.$findPlace = async (type, input) => {
     console.log('searching', input)
     const myFunction = httpsCallable(functions, 'getPlaces')
@@ -240,6 +240,9 @@ export default boot(async ({ app } /* { app, router, ... } */) => {
 
       return error
     })
+  }
+  app.config.globalProperties.$getStorageRef = (path) => {
+    return _ref(storage, path)
   }
 
   return { app }
