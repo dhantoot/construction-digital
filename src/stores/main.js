@@ -4,13 +4,14 @@ import { LocalStorage } from 'quasar'
 export const useMainStore = defineStore('mainStore', {
   state: () => ({
     counter: 0,
-    showNav: LocalStorage.getItem(''),
+    showNav: LocalStorage.getItem('showNav'),
     todoList: [],
     projects: [],
     getTodoListLoader: false,
     getProjectsLoader: false,
     selectedMember: [],
     mobileSelectedProject: LocalStorage.getItem('mobileSelectedProject'),
+    mobileSelectedProjectTodo: LocalStorage.getItem('mobileSelectedProjectTodo'),
     adminUser: LocalStorage.getItem('adminUser') || {}
   }),
 

@@ -202,9 +202,12 @@ export default {
     ]
 
     return {
+      // -- Confirm Dialog Start --
       confirm: ref(false),
       confirmMsg: '',
       confirmCallbackFn: '',
+      // -- Confirm Dialog End --
+
       actionAccountLoader: ref(false),
       updateMode: ref(false),
       rowLoading: ref(false),
@@ -264,6 +267,7 @@ export default {
     // console.log('unmounted')
   },
   methods: {
+    // -- Confirm Dialog Start --
     openConfirmDialog (confirmMsg, confirmCallbackFn) {
       this.confirmMsg = confirmMsg
       this.confirmCallbackFn = confirmCallbackFn
@@ -273,6 +277,7 @@ export default {
       const fn = this.confirmCallbackFn
       this[fn]()
     },
+    // -- Confirm Dialog End --
     async updateAccountStatus () {
       this.actionAccountLoader = true
       console.log('updating account status..')

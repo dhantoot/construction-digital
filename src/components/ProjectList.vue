@@ -12,12 +12,12 @@
         <q-icon v-if="text === ''" name="las la-search" :class="{
           'text-warning': text === ''
         }"/>
-        <q-icon v-if="!text" name="clear" class="cursor-pointer text-accent" @click="text = ''"/>
+        <q-icon v-if="text" name="clear" class="cursor-pointer text-accent" @click="text = ''"/>
       </template>
     </q-input>
   </div>
   <q-list bordered separator class="scroll bg-transparent" style="height: 100vh;">
-    <q-item clickable v-ripple @click='gotoDetail(item)' v-for="item in projects" :key="item">
+    <q-item clickable v-ripple @click='gotoDetail(item)' v-for="item in projects.filter(e => e.title.toLowerCase().includes(text.toLowerCase()))" :key="item">
       <q-item-section thumbnail>
         <img class="q-ml-sm rounded-borders" :src="`${item.avatarFullPath}`">
       </q-item-section>

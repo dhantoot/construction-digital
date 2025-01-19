@@ -29,6 +29,7 @@
             :multiple="false"
             accept=".jpg, image/*"
             class="full-width"
+            auto-upload
          />
         </q-item-section>
       </q-item>
@@ -37,7 +38,7 @@
 
       <q-item tag="memberList">
         <q-item-section>
-          <q-item-label class="text-accent q-mb-md">Assign Members</q-item-label>
+          <q-item-label class="text-accent q-mb-md">Assign Members <small class="text-smallest"><i>(scroll to view more)</i></small></q-item-label>
           <q-list class="q-pl-none scroll" style="max-height: 23vh;">
             <!--
               Rendering a <label> tag (notice tag="label")
@@ -46,27 +47,36 @@
             -->
 
             <q-item
+              :clickable="false"
               tag="label"
               v-ripple
               class="q-pl-none"
-              v-for="member in memberList"
+              v-for="member in invitee"
               :key="member"
             >
               <q-item-section avatar>
                 <q-checkbox
-                  v-model="selectedMember"
+                  v-model="member.isSelected"
                   :val="member.id"
                   color="teal"
+                  :disable="!member.id"
                />
               </q-item-section>
               <q-item-section>
-                <q-item-label class="text-accent">{{ member.label }}</q-item-label>
-                <q-item-label class="text-positive">{{ member.role }}</q-item-label>
+                <q-item-label class="text-accent">{{ member?.fullname || member?.email }}</q-item-label>
+                <q-item-label class="text-primary">{{ member.userTitle }}</q-item-label>
               </q-item-section>
+
+              <q-item-section avatar>
+                <q-avatar rounded>
+                  <img :src="`${member?.avatar || 'default-user.jpeg'}`"/>
+                </q-avatar>
+              </q-item-section>
+
             </q-item>
           </q-list>
           <q-inner-loading
-            :showing="visible"
+            :showing="fetchInviteeLoader"
             label="Please wait..."
             label-class="text-teal"
             label-style="font-size: 1.1em"
@@ -103,7 +113,7 @@
 </template>
 <script>
 import { ref } from 'vue'
-import { uid, LocalStorage } from 'quasar'
+import { uid, LocalStorage, date } from 'quasar'
 import { useMainStore } from 'stores/main'
 
 // Don't forget to specify which animations
@@ -120,6 +130,9 @@ export default {
     const authUser = LocalStorage.getItem('authUser')
 
     return {
+      invitee: ref([]),
+      fetchInviteeLoader: ref(false),
+      fetchUsersLoader: ref(false),
       mainStore,
       authUser,
       loadingSubmit,
@@ -145,7 +158,7 @@ export default {
       todoDesc: ref(''),
       ph: ref(''),
       dense: ref(true),
-      selectedMember: ref([1, 3]),
+      selectedMember: ref([]),
       memberList: ref([
         {
           id: 1,
@@ -194,7 +207,8 @@ export default {
         }
       ]),
       uploadProgressLabel: ref(''),
-      todoFiles: ref([])
+      todoFiles: ref([]),
+      users: ref([])
     }
   },
   props: {
@@ -212,10 +226,12 @@ export default {
   created () {
     // console.log('created')
   },
-  beforeMount () {
+  async beforeMount () {
     // console.log('beforeMount')
+    await this.fetchUsers()
+    await this.fetchInvitee()
   },
-  mounted () {
+  async mounted () {
     this.showTextLoading()
   },
   beforeUpdate () {
@@ -245,7 +261,7 @@ export default {
       const payload = {
         todoTitle: this.todoTitle,
         todoDesc: this.todoDesc,
-        members: this.selectedMember,
+        members: this.invitee.filter(e => e.isSelected).map(f => f.id),
         files: this.todoFiles || [],
         isArchived: false,
         isCompleted: false,
@@ -309,12 +325,12 @@ export default {
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           this.uploadProgressLabel = Number(progress, 2).toFixed(2) + '%'
-          // console.log('Upload is ' + this.uploadProgressLabel)
+          console.log('Upload is ' + this.uploadProgressLabel)
           // this.uploadProgress = progress
 
           files[0].__progressLabel = this.uploadProgressLabel
-          // // console.log('files[0].__progressLabel -> ', files[0].__progressLabel)
-          // // console.log('this.uploadProgressLabel -> ', this.uploadProgressLabel)
+          console.log('files[0].__progressLabel -> ', files[0].__progressLabel)
+          console.log('this.uploadProgressLabel -> ', this.uploadProgressLabel)
           switch (snapshot.state) {
             case 'paused':
               // console.log('Upload is paused')
@@ -336,17 +352,61 @@ export default {
           })
         },
         () => {
+          console.log('Upload successful')
           // Handle successful uploads on complete
           // For instance, get the download URL: https://firebasestorage.googleapis.com/...
           this.$getdownloadurl(uploadTask.snapshot.ref).then((downloadURL) => {
-            // console.log('File available at', downloadURL)
+            console.log('File available at', downloadURL)
             this.todoFiles.push(downloadURL)
             // this.avatar = `${files[0].name.split('.')[0]}.${files[0].name.split('.')[1]}`
-            // // console.log('this.avatar', this.avatar)
-            // this.updateAvatar()
           })
         }
       )
+    },
+    async fetchUsers () {
+      this.fetchUsersLoader = true
+      const users = await this.$fbref(this.$fbdb, 'users')
+      this.$fbonValue(users, (snapshot) => {
+        const data = snapshot.val()
+        if (this.$isFalsyString(data)) {
+          return
+        }
+        this.users = Object.values(data)
+        console.log('this.users', this.users)
+        this.fetchUsersLoader = false
+      })
+    },
+    async fetchInvitee () {
+      this.fetchInviteeLoader = true
+      const invites = await this.$fbref(this.$fbdb, 'invites')
+      this.$fbonValue(invites, async (snapshot) => {
+        const data = snapshot.val()
+        if (this.$isFalsyString(data)) {
+          return
+        }
+        const data_ = Object.values(data)
+        data_.forEach((item) => {
+          item.dateSent = date.formatDate(item._ts, 'MMM DD, YYYY HH:mm A')
+          item.dateResponded = date.formatDate(item.dateResponded, 'MMM DD, YYYY HH:mm A')
+          item.resend = false
+        })
+        for await (const item of data_) {
+          if (item.projectId === this.$route.params.projectId && item.status !== 'Rejected') {
+            const userDetail = this.users.find((user) => user.email === item.invitee)
+            item.id = userDetail?.uid || undefined
+            console.log({ userDetail })
+            item.fullname = userDetail?.firstName && userDetail?.lastName
+              ? `${userDetail?.firstName} ${userDetail?.lastName}`
+              : item.invitee
+            item.avatar = userDetail?.avatar
+            item.isSelected = false
+            this.invitee.push(item)
+          }
+          continue
+        }
+        console.log('this.invitee', this.invitee)
+        this.fetchInviteeLoader = false
+      })
     }
   }
 }
