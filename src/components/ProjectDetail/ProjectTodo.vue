@@ -34,7 +34,7 @@
     </div>
   </div>
   <div class="row full-width scroll q-mt-xl" style="max-height: 55vh">
-    <q-list>
+    <q-list class="full-width">
         <div class="q-pa-lg q-gutter-sm" v-if="loadingtodoList">
           <q-skeleton
             type="rect"
@@ -64,6 +64,7 @@
               :val="item.id"
               color="warning"
               @update:model-value="changeSelected"
+              :disable="item.isArchived"
           />
           </q-item-section>
 
@@ -76,7 +77,6 @@
 
           <q-item-section avatar>
             <q-toggle
-              v-if="item.isCompleted"
               v-model="item.isArchived"
               :val="item.isArchived"
               :class="{
@@ -85,13 +85,36 @@
               checked-icon="clear"
               unchecked-icon="check"
               color="negative"
+              size="xs"
             >
             <template v-slot:label>
               {{ item.isCompleted ? 'Archive' : '' }}
             </template>
             </q-toggle>
           </q-item-section>
+
+          <q-item-section top side>
+            <div class="text-grey-8 q-pt-sm">
+              <q-btn rounded dense icon="las la-eye" flat class="text-accent" size="sm" @click="viewTodoDetail(item)"/>
+            </div>
+          </q-item-section>
+
         </q-item>
+
+        <!-- <q-slide-item @right="onRight" class="bg-transparent">
+            <template v-slot:right>
+              <div class="row items-center" style="width: 30%;">
+                <q-btn flat dense icon="las la-edit" class="text-accent" @click="finalize()"/>
+              </div>
+            </template>
+
+            <q-item class="bg-white">
+              <q-item-section avatar>
+                <q-icon color="primary" name="cell_wifi" />
+              </q-item-section>
+              <q-item-section>Custom colors (red, purple)</q-item-section>
+            </q-item>
+          </q-slide-item> -->
 
         <div class="q-pa-lg q-gutter-sm" v-if="loadingtodoList">
           <q-skeleton
@@ -168,6 +191,7 @@
 <script>
 import { ref } from 'vue'
 import { useMainStore } from 'stores/main'
+import { LocalStorage } from 'quasar'
 
 // Don't forget to specify which animations
 // you are using in quasar.config file > animations.
@@ -213,7 +237,8 @@ export default {
       selectedMember: ref([]),
       completedTodos: ref([]),
       loadingtodoList,
-      loadingSubmit: ref(false)
+      loadingSubmit: ref(false),
+      reset_: null
     }
   },
   props: {
@@ -266,11 +291,12 @@ export default {
         const data = snapshot.val()
         if (this.$isFalsyString(data)) {
           this.todoList = []
+          this.loadingtodoList = false
           return
         }
         const data_ = Object.values(data)
         this.todoList = data_
-        // console.log('this.todoList', this.todoList)
+        console.log('this.todoList', this.todoList)
         this.selectedMember = this.todoList
           .filter((e) => e.isCompleted)
           .map((x) => x.id)
@@ -353,27 +379,26 @@ export default {
     callConfirmFn () {
       const fn = this.confirmCallbackFn
       this[fn]()
+    },
+    finalize () {
+      this.reset_()
+    },
+    onLeft ({ reset }) {
+      // $q.notify('Left action triggered. Resetting in 1 second.')
+      // finalize(reset)
+      console.log('on left')
+      this.reset_ = reset
+    },
+    onRight ({ reset }) {
+      // $q.notify('Right action triggered. Resetting in 1 second.')
+      // finalize(reset)
+      console.log('on right')
+      this.reset_ = reset
+    },
+    viewTodoDetail (selectedTodo) {
+      LocalStorage.set('mobileSelectedProjectTodo', selectedTodo)
+      this.$router.push(`/detail/${this.mainStore?.mobileSelectedProject?.id}/todo/${selectedTodo.id}/update`)
     }
-    // async confirm () {
-    //   this.$q
-    //     .dialog({
-    //       dark: false,
-    //       title: 'Confirm',
-    //       message: 'Save changes ?',
-    //       cancel: true,
-    //       persistent: true
-    //     })
-    //     .onOk(() => {
-    //       // this.addDeceasedPersonnel()
-    //       this.updateTodo()
-    //     })
-    //     .onCancel(() => {
-    //       // console.log('>>>> Cancel')
-    //     })
-    //     .onDismiss(() => {
-    //       // console.log('I am triggered on both OK and Cancel')
-    //     })
-    // }
   }
 }
 </script>

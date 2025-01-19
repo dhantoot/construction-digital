@@ -54,7 +54,12 @@ const routes = [
           {
             path: '/detail/:projectId/todo/create',
             component: () =>
-              import('components/ProjectDetail/ProjectCreateTodo.vue')
+              import('src/components/ProjectDetail/ProjectTodoCreate.vue')
+          },
+          {
+            path: '/detail/:projectId/todo/:todoId/update',
+            component: () =>
+              import('src/components/ProjectDetail/ProjectTodoUpdate.vue')
           }
         ]
       },
@@ -93,6 +98,10 @@ const routes = [
         path: '/admin-portal',
         component: () => import('src/components/Admin/IndexPage.vue')
       },
+      // {
+      //   path: '/manage-sow',
+      //   component: () => import('src/components/Admin/SowTemplate.vue')
+      // },
       {
         path: '/manage-projects',
         component: () => import('src/components/Admin/ManageProject.vue')

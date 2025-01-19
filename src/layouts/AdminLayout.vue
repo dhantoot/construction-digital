@@ -82,6 +82,7 @@
           v-if="$q.screen.gt.sm && mainStore?.adminUser?.uid"
           class="GL__toolbar-link q-ml-xs q-gutter-md text-body2 text-weight-bold row items-center no-wrap"
         >
+          <!-- <a href="javascript:void(0)" class="text-warning" @click="this.$router.push('/manage-sow')"> Sow Template </a> -->
           <a href="javascript:void(0)" class="text-warning" @click="this.$router.push('/manage-projects')"> Projects </a>
           <a href="javascript:void(0)" class="text-warning" @click="this.$router.push('/manage-invites')"> Invites </a>
           <a href="javascript:void(0)" class="text-warning" @click="this.$router.push('/manage-accounts')"> Manage accounts </a>
@@ -110,6 +111,9 @@
             </div>
             <q-menu auto-close>
               <q-list :dense="true" style="min-width: 200px">
+                <!-- <q-item clickable class="GL__menu-link" to="/manage-sow">
+                  <q-item-section>SOW Template</q-item-section>
+                </q-item> -->
                 <q-item clickable class="GL__menu-link" to="/manage-projects">
                   <q-item-section>Projects</q-item-section>
                 </q-item>
