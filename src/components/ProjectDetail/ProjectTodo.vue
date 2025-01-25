@@ -85,7 +85,6 @@
               checked-icon="clear"
               unchecked-icon="check"
               color="negative"
-              size="xs"
             >
             <template v-slot:label>
               {{ item.isCompleted ? 'Archive' : '' }}

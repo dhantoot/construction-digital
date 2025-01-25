@@ -19,7 +19,6 @@ const routes = [
       {
         path: '/detail/:projectId',
         component: () => import('components/ProjectDetail/IndexPage.vue'),
-        // redirect: 'todo',
         children: [
           {
             path: '',
@@ -98,10 +97,20 @@ const routes = [
         path: '/admin-portal',
         component: () => import('src/components/Admin/IndexPage.vue')
       },
-      // {
-      //   path: '/manage-sow',
-      //   component: () => import('src/components/Admin/SowTemplate.vue')
-      // },
+      {
+        path: '/manage-sow',
+        component: () => import('src/components/Admin/SowComponents/IndexPage.vue'),
+        children: [
+          {
+            path: '',
+            component: () => import('src/components/Admin/SowComponents/ListPage.vue')
+          },
+          {
+            path: '/manage-sow/create',
+            component: () => import('src/components/Admin/SowComponents/CreatePage.vue')
+          }
+        ]
+      },
       {
         path: '/manage-projects',
         component: () => import('src/components/Admin/ManageProject.vue')

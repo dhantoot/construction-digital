@@ -108,6 +108,7 @@
         :dense="true"
         :icon="openAgreement ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
         @click="openAgreement = !openAgreement"
+        class="round-btn"
      />
     </q-card-actions>
     <q-slide-transition>

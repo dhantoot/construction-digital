@@ -4,14 +4,18 @@
       class="full-width q-px-xs q-pt-sm"
       dark
       standout="bg-transparent"
-      input-class="text-right text-accent"
+      input-class="text-left text-accent"
       v-model="text"
       :dense="true"
+      @focus="onFocus"
+      @blur="onBlur"
     >
-      <template v-slot:append>
-        <q-icon v-if="text === ''" name="las la-search" :class="{
+      <template v-slot:prepend>
+        <q-icon name="las la-search" :class="{
           'text-warning': text === ''
         }"/>
+      </template>
+      <template v-slot:append>
         <q-icon v-if="text" name="clear" class="cursor-pointer text-accent" @click="text = ''"/>
       </template>
     </q-input>
@@ -62,7 +66,8 @@ export default {
       dense: ref(true),
       mainStore,
       getProjectsLoader: ref(false),
-      projects: ref([])
+      projects: ref([]),
+      searchIconHidden: ref(false)
     }
   },
   props: {
@@ -121,6 +126,12 @@ export default {
     // console.log('deactivated')
   },
   methods: {
+    onBlur () {
+      this.searchIconHidden = false
+    },
+    onfocus () {
+      this.searchIconHidden = true
+    },
     showTextLoading () {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
       // console.log('loaded in ', ms, ' ms')

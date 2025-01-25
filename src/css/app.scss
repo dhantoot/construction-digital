@@ -75,3 +75,36 @@ body {
 .q-card {
     border-radius: 12px !important;
 }
+
+.q-toggle__track {
+    height: 22px;
+    border-radius: 14px;
+    margin-top: -3px;
+}
+
+.q-toggle__thumb {
+    height: 22px;
+    width: 22px;
+}
+
+.q-toggle__inner .q-toggle__inner--truthy {
+    font-size: 40px;
+    width: 40px;
+    min-width: 2em;
+    height: 1em;
+    padding: 0.350em 0.4em;
+    -webkit-print-color-adjust: exact;
+}
+
+.q-field--filled .q-field__control {
+    padding: 0 12px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 4px 4px 4px 4px;
+    border-bottom: none;
+    box-shadow: none;
+}
+
+.q-field--filled .q-field__control:focus {
+    border-bottom: none;
+    box-shadow: none;
+  }
