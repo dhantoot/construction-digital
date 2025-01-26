@@ -16,16 +16,11 @@
               :disable="!selected.length"
               flat
               label="View"
-              icon="las la-power-off"
+              icon="las la-eye"
               color="transparent"
               class="text-capitalize round-btn"
               text-color="cancel"
-              @click="
-                openConfirmDialog(
-                  `Would you like to ${selected[0].isActive ? 'Deactivate' : 'Activate'} this account?`,
-                  'updateAccountStatus'
-                )
-              "
+              @click="gotoTemplateDetail(selected[0].id)"
             >
             </q-btn>
           </div>
@@ -52,7 +47,7 @@
               @click="createTemplate"
               flat
               label="New"
-              icon="las la-user-tie"
+              icon="las la-plus"
               color="transparent"
               class="text-capitalize round-btn"
               text-color="primary"
@@ -764,6 +759,11 @@ export default {
     },
     async createTemplate () {
       this.$router.push('/manage-sow/create')
+    },
+    async gotoTemplateDetail (templateId) {
+      console.log('templateId', templateId)
+      console.log('this.$route.url', this.$route.url)
+      this.$router.push({ path: `/manage-sow/${templateId}/detail` })
     }
   }
 }

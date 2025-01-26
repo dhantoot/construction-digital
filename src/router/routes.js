@@ -108,6 +108,10 @@ const routes = [
           {
             path: '/manage-sow/create',
             component: () => import('src/components/Admin/SowComponents/CreatePage.vue')
+          },
+          {
+            path: '/manage-sow/:templateId/detail',
+            component: () => import('src/components/Admin/SowComponents/DetailPage.vue')
           }
         ]
       },
