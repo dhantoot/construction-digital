@@ -3,8 +3,8 @@
     <q-card class="q-mt-lg full-width round-btn adminCard">
       <q-card-section>
         <div class="row items-center justify-between">
-        <div class="text-h6">Create</div>
-        <q-btn
+          <div class="text-h6">Detail</div>
+          <q-btn
             dense
             flat
             icon="las la-arrow-left"
@@ -16,8 +16,8 @@
             <template v-slot:loading>
               <q-spinner-ios />
             </template>
-        </q-btn>
-    </div>
+          </q-btn>
+        </div>
         <div
           class="row justify-between q-gutter-x-sm q-gutter-y-sm q-gutter-y-sm q-mb-lg q-mt-lg"
         >
@@ -138,23 +138,24 @@
           </div>
           <div class="row justify-end">
             <q-btn
-                v-if="rows.length > 0"
-                icon="las la-save"
-                padding="sm xl"
-                color="primary"
-                label="Save"
-                class="text-capitalize bg-info round-btn"
-                @click="saveTemplate"
-                :loading="loadingSubmit"
-                :disable="loadingSubmit || rows.length < 1">
-                <template v-slot:loading>
-                    <q-spinner-ios />
-                </template>
+              v-if="rows.length > 0"
+              icon="las la-edit"
+              padding="sm xl"
+              color="primary"
+              label="Update"
+              class="text-capitalize bg-info round-btn"
+              @click="updateTemplate"
+              :loading="loadingSubmit"
+              :disable="loadingSubmit || rows.length < 1"
+            >
+              <template v-slot:loading>
+                <q-spinner-ios />
+              </template>
             </q-btn>
           </div>
         </div>
       </q-card-section>
-      <q-inner-loading :showing="visible">
+      <q-inner-loading :showing="loadingSubmit">
         <q-spinner-ios size="50px" color="secondary" />
       </q-inner-loading>
     </q-card>
@@ -212,6 +213,7 @@ export default {
     const question = ref('')
 
     return {
+      templateFullDetail: ref({}),
       rows: ref([]),
       title: ref(''),
       section: ref(''),
@@ -246,6 +248,7 @@ export default {
   },
   mounted () {
     // this.$emit('showHeader', true, [])
+    this.getTemplateDetail()
   },
   beforeUpdate () {
     // console.log('beforeUpdate')
@@ -260,6 +263,33 @@ export default {
     // console.log('unmounted')
   },
   methods: {
+    getTemplateDetail () {
+      const templateDetail = this.$fbref(this.$fbdb, `sowTemplates/${this.$route.params.templateId}`)
+      this.$fbonValue(templateDetail, (snapshot) => {
+        const data = snapshot.val()
+        const sow_ = Object.values(data.sow)
+        console.log(sow_)
+        this.templateFullDetail = data
+        console.log(data)
+        this.title = data.name
+        this.sortList(sow_, 'section')
+      })
+    },
+    async sortList (arr, field) {
+      this.rows = arr?.sort((a, b) => {
+        const nameA = a[field].toUpperCase() // ignore upper and lowercase
+        const nameB = b[field].toUpperCase()
+        if (nameA < nameB) {
+          return -1
+        }
+        if (nameA > nameB) {
+          return 1
+        }
+
+        // names must be equal
+        return 0
+      })
+    },
     clearFields () {
       this.section = ''
       this.sowCategory = ''
@@ -269,41 +299,39 @@ export default {
       this.duration = ''
     },
     addToList () {
-      this.rows.push({
+      const newId = uid()
+      const timeStamp = Date.now()
+      const toAdd = {
+        id: newId,
         uid: uid(),
         section: this.section,
         sowCategory: this.sowCategory,
         sowDescription: this.sowDescription,
         contractPrice: this.contractPrice,
         weight: this.weight,
-        duration: this.duration
-      })
+        duration: this.duration,
+        dateUpdated: date.formatDate(timeStamp, 'YYYY-MM-DDTHH:mm:ss.SSSZ')
+      }
+      this.templateFullDetail.sow[newId] = toAdd
+      console.log('this.templateFullDetail', this.templateFullDetail)
+      this.rows.push(toAdd)
       this.clearFields()
     },
-    saveTemplate () {
+    updateTemplate () {
+      console.log('updateTemplate', this.templateFullDetail)
       this.loadingSubmit = true
-      const timeStamp = Date.now()
-      const payload = {
-        createdBy: uid(),
-        dateCreated: date.formatDate(timeStamp, 'YYYY-MM-DDTHH:mm:ss.SSSZ'),
-        name: this.title,
-        id: uid(),
-        isArchived: false,
-        sow: []
-      }
       const updates = {}
-      updates[`sowTemplates/${payload.id}/`] = payload
+      updates[`sowTemplates/${this.templateFullDetail.id}/`] = this.templateFullDetail
       console.log(updates)
       this.$fbupdate(this.$fbref(this.$fbdb), updates)
         .then(async () => {
           this.$q.notify({
             icon: 'check_circle',
             color: 'green',
-            message: 'Sucessfully Created',
+            message: 'Sucessfully Updated',
             position: 'top-right',
             classes: 'notify-custom-css'
           })
-          await this.populateSOW(payload.id)
           this.loadingSubmit = false
         })
         .catch(async (err) => {
@@ -316,39 +344,6 @@ export default {
             classes: 'notify-custom-css'
           })
           this.loadingSubmit = false
-        })
-    },
-    async populateSOW (templateId) {
-      const updates = {}
-      for await (const e of this.rows) {
-        const sowId = uid()
-        const sowPayload = {
-          id: sowId,
-          ...e
-        }
-        updates[`sowTemplates/${templateId}/sow/${sowId}/`] = sowPayload
-      }
-      this.$fbupdate(this.$fbref(this.$fbdb), updates)
-        .then(async () => {
-          this.$q.notify({
-            icon: 'check_circle',
-            color: 'green',
-            message: 'Sucessfully Created SOW',
-            position: 'top-right',
-            classes: 'notify-custom-css'
-          })
-        })
-        .catch(async (err) => {
-          console.log(err)
-          this.$q.notify({
-            icon: 'exclamation-circle',
-            color: 'negative',
-            message: 'Error found',
-            position: 'top-right',
-            classes: 'notify-custom-css'
-          })
-          // this.loadingSubmit = false
-          console.log('hello world')
         })
     }
   }
