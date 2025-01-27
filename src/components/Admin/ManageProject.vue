@@ -133,6 +133,20 @@
             option-value="email"
             option-label="email"
           />
+          <q-select
+            :label="'SOW Template'"
+            :dense="true"
+            filled
+            v-model="templateId"
+            input-debounce="0"
+            :options="sowTemplates"
+            :loading="sowTemplateLoader || loadingTodoSubmit">
+            <template v-slot:loading>
+              <div class="row justify-center">
+                <q-spinner-ios/>
+            </div>
+            </template>
+          </q-select>
         </q-card-section>
         <q-card-actions :align="$q.screen.gt.xs ? 'right' : 'center'" :class="{
           'q-pr-md': $q.screen.gt.xs,
@@ -156,7 +170,7 @@
             :label="selected.length ? 'Update' : 'Submit'"
             class="text-capitalize bg-info round-btn"
             :loading="loadingSubmit"
-            :disable="loadingSubmit || !searchKey || !text || !desc || (updateMode ? false : !file ) || !budget || !dateFrom || !dateTo"
+            :disable="loadingSubmit || !searchKey || !text || !desc || (updateMode ? false : !file ) || !budget || !dateFrom || !dateTo || !templateId"
           >
             <template v-slot:loading>
               <q-spinner-ios/>
@@ -381,7 +395,7 @@ export default {
             // console.log(err)
             this.logs.push('> Error at inner catch: ' + err)
             this.$q.notify({
-              icon: 'exclamation-circle',
+              icon: 'las la-exclamation-circle',
               color: 'negative',
               message: 'Error flag 1' + err,
               position: 'top-right',
@@ -392,7 +406,7 @@ export default {
       } catch (e) {
         this.logs.push('> Error at outer catch: ' + e)
         this.$q.notify({
-          icon: 'exclamation-circle',
+          icon: 'las la-exclamation-circle',
           color: 'negative',
           message: 'Error flag 2' + e,
           position: 'top-right',
@@ -442,7 +456,7 @@ export default {
       } catch (e) {
         this.logs.push('> Error at outer catch: ' + e)
         this.$q.notify({
-          icon: 'exclamation-circle',
+          icon: 'las la-exclamation-circle',
           color: 'negative',
           message: 'Error flag 2' + e,
           position: 'top-right',
@@ -555,7 +569,11 @@ export default {
           client.value = modelValue
         }
       },
-      maxLength: 30
+      maxLength: 30,
+      sowTemplateLoader: ref(false),
+      templateId: ref(null),
+      sowTemplates: ref([]),
+      loadingTodoSubmit: ref(false)
     }
   },
   props: {
@@ -577,7 +595,7 @@ export default {
     // console.log('beforeMount')
     this.fetchProjects()
   },
-  mounted () {
+  async mounted () {
     this.showTextLoading()
     this.authUser = LocalStorage.getItem('authUser')
     this.uid = this.authUser.uid
@@ -615,6 +633,8 @@ export default {
         email: 'client.five@yopmail.com'
       }
     ]
+    await this.getSowTemplate()
+    this.autoMapTodoList()
   },
   beforeUpdate () {
     // console.log('beforeUpdate')
@@ -655,6 +675,7 @@ export default {
     },
     setSelected (value, evt) {
       console.log(value, this.selected[0])
+      console.log('this.sowTemplates', this.sowTemplates)
       this.updateMode = value
 
       this.searchKey = {
@@ -671,6 +692,7 @@ export default {
       this.dateTo = this.selected[0]?.dateTo
       this.agent = this.selected[0]?.agent || []
       this.client = this.selected[0]?.client || []
+      this.templateId = this.sowTemplates.find((e) => e.id === this.selected[0]?.templateId)
     },
     enterPressed (evt) {
       console.log('enter key is pressed', evt)
@@ -806,6 +828,7 @@ export default {
       )
     },
     async updateProjectDetails () {
+      console.log('this.templateId', this.templateId)
       const payload = {
         createdBy: this.selected[0]?.createdBy,
         location: this.searchKey.value || this.searchKey.label,
@@ -820,8 +843,11 @@ export default {
         dateTo: this.dateTo,
         dateCreated: this.selected[0]?.dateCreated,
         client: this.client,
-        agent: this.agent
+        agent: this.agent,
+        templateId: this.templateId.id
       }
+      console.log(payload)
+      console.log('this.sowTemplate', this.sowTemplates)
       const updates = {}
       updates[`projects/${this.selected[0].id}/`] = payload
       this.$fbupdate(this.$fbref(this.$fbdb), updates)
@@ -833,6 +859,7 @@ export default {
             position: 'top-right',
             classes: 'notify-custom-css'
           })
+          this.saveTodo(this.selected[0].id)
           this.loadingSubmit = false
           this.formReset()
           this.selected = []
@@ -841,7 +868,7 @@ export default {
         })
         .catch(async () => {
           this.$q.notify({
-            icon: 'exclamation-circle',
+            icon: 'las la-exclamation-circle',
             color: 'negative',
             message: 'Error found',
             position: 'top-right',
@@ -869,7 +896,8 @@ export default {
         dateTo: this.dateTo,
         location: this.searchKey.value || this.searchKey.label,
         agent: this.agent,
-        client: this.client
+        client: this.client,
+        templateId: this.templateId.id
       }
       const updates = {}
       updates[`projects/${payload.id}/`] = payload
@@ -884,12 +912,13 @@ export default {
           })
           this.loadingSubmit = false
           await this.sendClientEmail(payload.id)
+          this.saveTodo(payload.id)
           this.formReset()
           await this.fetchProjects()
         })
         .catch(async () => {
           this.$q.notify({
-            icon: 'exclamation-circle',
+            icon: 'las la-exclamation-circle',
             color: 'negative',
             message: 'Error found',
             position: 'top-right',
@@ -923,6 +952,7 @@ export default {
       this.dateTo = null
       this.client = []
       this.agent = []
+      this.templateId = null
     },
     showTextLoading () {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
@@ -986,9 +1016,75 @@ export default {
         })
         .catch(() => {
           this.$q.notify({
-            icon: 'exclamation-circle',
+            icon: 'las la-exclamation-circle',
             color: 'negative',
             message: 'Error found',
+            position: 'top-right',
+            classes: 'notify-custom-css'
+          })
+        })
+    },
+    async getSowTemplate () {
+      this.sowTemplateLoader = true
+      const sowTemplates = this.$fbref(this.$fbdb, 'sowTemplates')
+      this.$fbonValue(sowTemplates, (snapshot) => {
+        const data = snapshot.val()
+        if (this.$isFalsyString(data)) {
+          this.sowTemplates = []
+          return
+        }
+        const data_ = Object.values(data)
+        this.sowTemplates = data_
+        this.sowTemplates.forEach((item) => {
+          item.dateCreated = date.formatDate(
+            item.dateCreated,
+            'MMM DD, YYYY HH:mm A'
+          )
+          item.label = item.name
+          item.value = item.id
+        })
+        this.sowTemplateLoader = false
+      })
+    },
+    async autoMapTodoList () {
+      console.log('this.sowTemplates before:', this.sowTemplates)
+      for (const outerItem of this.sowTemplates) {
+        for (const item in outerItem.sow) {
+          Object.assign(outerItem.sow[item], {
+            files: {},
+            isArchived: false,
+            isCompleted: false,
+            members: [],
+            todoDesc: outerItem?.sow[item]?.sowDescription || '',
+            todoTitle: outerItem?.sow[item]?.sowCategory || ''
+          })
+        }
+      }
+      console.log('this.sowTemplates after:', this.sowTemplates)
+    },
+    async saveTodo (projectId) {
+      this.loadingTodoSubmit = true
+      console.log('this.templateId', this.templateId)
+      const updates = {}
+      updates[`task/${projectId}/`] = this.templateId.sow
+      this.$fbupdate(this.$fbref(this.$fbdb), updates)
+        .then(() => {
+          this.loadingTodoSubmit = false
+          this.$q.notify({
+            icon: 'check_circle',
+            color: 'green',
+            message: 'Sucessfully Created',
+            position: 'top-right',
+            classes: 'notify-custom-css'
+          })
+        })
+        .catch((error) => {
+          // console.log({ error })
+          this.loadingTodoSubmit = false
+          this.$q.notify({
+            icon: 'las la-exclamation-circle',
+            color: 'negative',
+            message: 'Error found\n' + error,
             position: 'top-right',
             classes: 'notify-custom-css'
           })
@@ -999,6 +1095,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .adminCard {
-  min-height: 824px;
+  min-height: 857px;
 }
 </style>

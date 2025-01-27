@@ -210,7 +210,7 @@ export default {
             // console.log(err)
             this.logs.push('> Error at inner catch: ' + err)
             this.$q.notify({
-              icon: 'exclamation-circle',
+              icon: 'las la-exclamation-circle',
               color: 'negative',
               message: 'Error flag 1' + err,
               position: 'top-right',
@@ -221,7 +221,7 @@ export default {
       } catch (e) {
         this.logs.push('> Error at outer catch: ' + e)
         this.$q.notify({
-          icon: 'exclamation-circle',
+          icon: 'las la-exclamation-circle',
           color: 'negative',
           message: 'Error flag 2' + e,
           position: 'top-right',
@@ -271,7 +271,7 @@ export default {
       } catch (e) {
         this.logs.push('> Error at outer catch: ' + e)
         this.$q.notify({
-          icon: 'exclamation-circle',
+          icon: 'las la-exclamation-circle',
           color: 'negative',
           message: 'Error flag 2' + e,
           position: 'top-right',
@@ -555,7 +555,7 @@ export default {
         .catch((error) => {
           // this.loading1 = false
           this.$q.notify({
-            icon: 'exclamation-circle',
+            icon: 'las la-exclamation-circle',
             color: 'negative',
             message: 'Error found\n' + error,
             position: 'top-right',

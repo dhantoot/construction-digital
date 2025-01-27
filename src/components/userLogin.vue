@@ -50,6 +50,7 @@
           color="positive"
           input-class="text-accent"
           filled
+          style="font-size: 15px;"
         >
           <template v-slot:prepend>
             <q-icon name="perm_identity" color="positive"/>
@@ -68,6 +69,7 @@
           color="positive"
           input-class="text-accent"
           filled
+          style="font-size: 20px;"
         >
           <template v-slot:prepend>
             <q-icon name="lock" color="positive"/>
@@ -198,6 +200,7 @@ export default {
     // this.showTextLoading()
     // this.$emit('showHeader', false, [])
     this.mainStore.showNav = false
+    this.clearLocalStorage()
   },
   beforeUpdate () {
     // console.log('beforeUpdate')
@@ -212,6 +215,11 @@ export default {
     // console.log('unmounted')
   },
   methods: {
+    clearLocalStorage () {
+      LocalStorage.set('adminUser', null)
+      LocalStorage.set('authUser', null)
+      LocalStorage.set('mobileSelectedProjectTodo', null)
+    },
     showTextLoading () {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
       // console.log('loaded in ', ms, ' ms')

@@ -10,8 +10,8 @@
           </div>
         </q-card-section>
         <q-card-section class="q-gutter-sm">
-          <q-input :dense="true" filled v-model="username" label="Username" @keydown.enter.prevent="login"/>
-          <q-input :dense="true" filled v-model="password" label="Password" type="password" @keydown.enter.prevent="login"/>
+          <q-input :dense="true" filled v-model="username" placeholder="Username" @keydown.enter.prevent="login" style="font-size: 18px;"/>
+          <q-input :dense="true" filled v-model="password" placeholder="Password" type="password" @keydown.enter.prevent="login" style="font-size: 20px;"/>
         </q-card-section>
         <q-card-actions align="center">
           <q-btn

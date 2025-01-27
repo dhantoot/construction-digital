@@ -246,7 +246,7 @@ export default {
           console.log({ error })
           // this.loading1 = false
           this.$q.notify({
-            icon: 'exclamation-circle',
+            icon: 'las la-exclamation-circle',
             color: 'negative',
             message: 'Error found',
             position: 'top-right',

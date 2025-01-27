@@ -92,7 +92,7 @@
             </q-toggle>
           </q-item-section>
 
-          <q-item-section top side>
+          <q-item-section side>
             <div class="text-grey-8 q-pt-sm">
               <q-btn rounded dense icon="las la-eye" flat class="text-accent" size="sm" @click="viewTodoDetail(item)"/>
             </div>
@@ -285,7 +285,9 @@ export default {
     },
     async getTodoList () {
       this.loadingtodoList = true
-      const todo = this.$fbref(this.$fbdb, 'todo')
+      console.log('this.$route', this.$route.params.projectId)
+      // const todo = this.$fbref(this.$fbdb, 'todo')
+      const todo = this.$fbref(this.$fbdb, `task/${this.$route.params.projectId}`)
       this.$fbonValue(todo, (snapshot) => {
         const data = snapshot.val()
         if (this.$isFalsyString(data)) {
@@ -294,13 +296,30 @@ export default {
           return
         }
         const data_ = Object.values(data)
-        this.todoList = data_
+        console.log(data_)
+        this.sortList(data_, 'section')
+        // this.todoList = data_
         console.log('this.todoList', this.todoList)
         this.selectedMember = this.todoList
           .filter((e) => e.isCompleted)
           .map((x) => x.id)
         this.getCompletedTodos()
         this.loadingtodoList = false
+      })
+    },
+    async sortList (arr, field) {
+      this.todoList = arr?.sort((a, b) => {
+        const nameA = a[field].toUpperCase() // ignore upper and lowercase
+        const nameB = b[field].toUpperCase()
+        if (nameA < nameB) {
+          return -1
+        }
+        if (nameA > nameB) {
+          return 1
+        }
+
+        // names must be equal
+        return 0
       })
     },
     async changeSelected (val) {
