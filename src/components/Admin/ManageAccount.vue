@@ -281,6 +281,19 @@ export default {
     async updateAccountStatus () {
       this.actionAccountLoader = true
       console.log('updating account status..')
+      if (this.selected[0].email === 'tagailo.danvincent@gmail.com') {
+        this.$q.notify({
+          icon: 'las la-las la-exclamation-circle',
+          color: 'negative',
+          message: 'You cannot deactivate and Admin account',
+          position: 'top-right',
+          classes: 'notify-custom-css'
+        })
+        this.actionAccountLoader = false
+        this.selected = []
+        this.confirm = false
+        return
+      }
       const uid = this.selected[0].uid
       const status = !this.selected[0].isActive
       const updates = {}
@@ -300,7 +313,7 @@ export default {
         })
         .catch(() => {
           this.$q.notify({
-            icon: 'exclamation-circle',
+            icon: 'las la-exclamation-circle',
             color: 'negative',
             message: 'Update Error Found',
             position: 'top-right',
@@ -325,7 +338,7 @@ export default {
         })
         this.selected = []
         this.confirm = false
-      }, 3000)
+      }, 2000)
     },
     setSelected (value, evt) {
       console.log(value, this.selected[0])
@@ -378,6 +391,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .adminCard {
-  min-height: 824px;
+  min-height: 857px;
 }
 </style>

@@ -309,7 +309,7 @@ export default {
         .catch(async (err) => {
           console.log(err)
           this.$q.notify({
-            icon: 'exclamation-circle',
+            icon: 'las la-exclamation-circle',
             color: 'negative',
             message: 'Error found',
             position: 'top-right',
@@ -341,7 +341,7 @@ export default {
         .catch(async (err) => {
           console.log(err)
           this.$q.notify({
-            icon: 'exclamation-circle',
+            icon: 'las la-exclamation-circle',
             color: 'negative',
             message: 'Error found',
             position: 'top-right',
@@ -356,7 +356,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .adminCard {
-  min-height: 824px;
+  min-height: 857px;
 }
 .dhan {
   border-radius: 20px;

@@ -609,6 +609,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .adminCard {
-  min-height: 824px;
+  min-height: 730px;
 }
 </style>

@@ -7,8 +7,6 @@
       input-class="text-left text-accent"
       v-model="text"
       :dense="true"
-      @focus="onFocus"
-      @blur="onBlur"
     >
       <template v-slot:prepend>
         <q-icon name="las la-search" :class="{

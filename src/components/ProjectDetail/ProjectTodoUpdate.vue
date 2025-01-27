@@ -260,7 +260,7 @@ export default {
           // console.log({ error })
           this.loadingSubmit = false
           this.$q.notify({
-            icon: 'exclamation-circle',
+            icon: 'las la-exclamation-circle',
             color: 'negative',
             message: 'Error found\n' + error,
             position: 'top-right',
