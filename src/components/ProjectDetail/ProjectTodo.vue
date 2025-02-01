@@ -69,13 +69,13 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label class="text-accent">{{ item.todoTitle }}</q-item-label>
+            <q-item-label class="text-accent">{{ item.todoDesc }}</q-item-label>
             <q-item-label class="text-positive" caption>
-              {{ item.todoDesc }}
+              {{ item.todoTitle }}
             </q-item-label>
           </q-item-section>
 
-          <q-item-section avatar>
+          <!-- <q-item-section avatar>
             <q-toggle
               v-model="item.isArchived"
               :val="item.isArchived"
@@ -90,12 +90,29 @@
               {{ item.isCompleted ? 'Archive' : '' }}
             </template>
             </q-toggle>
-          </q-item-section>
+          </q-item-section> -->
 
           <q-item-section side>
-            <div class="text-grey-8 q-pt-sm">
-              <q-btn rounded dense icon="las la-eye" flat class="text-accent" size="sm" @click="viewTodoDetail(item)"/>
+            <div class="row items-center">
+              <q-toggle
+              v-model="item.isArchived"
+              :val="item.isArchived"
+              :class="{
+                'cursor-not-allowed': !item.isCompleted
+              }"
+              checked-icon="clear"
+              unchecked-icon="check"
+              color="negative"
+            >
+            <template v-slot:label>
+              {{ item.isCompleted ? 'Archive' : '' }}
+            </template>
+            </q-toggle>
+              <q-btn rounded dense icon="las la-glasses" flat class="text-accent" @click="viewTodoDetail(item)"/>
             </div>
+            <!-- <div class="text-grey-8 q-pt-sm">
+              <q-btn rounded dense icon="las la-eye" flat class="text-accent" size="sm" @click="viewTodoDetail(item)"/>
+            </div> -->
           </q-item-section>
 
         </q-item>
