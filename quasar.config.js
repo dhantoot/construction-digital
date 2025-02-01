@@ -34,7 +34,8 @@ module.exports = configure(function (/* ctx */) {
       'firebase',
       'utils',
       'brand-colors',
-      'addressbar-color'
+      'addressbar-color',
+      'apexcharts'
     ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css

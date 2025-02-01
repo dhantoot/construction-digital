@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh lpR fFf">
     <q-img
-     src="background3.jpg"
+     :src="themeStore.getCurrentTheme()"
      class="fit absolute"
      v-if="true"
    />
@@ -170,8 +170,11 @@
 import { ref } from 'vue'
 import { useMainStore } from 'stores/main'
 import { LocalStorage, useQuasar } from 'quasar'
+import { useThemeStore } from 'stores/theme'
+
 export default {
   setup () {
+    const themeStore = useThemeStore()
     const leftDrawerOpen = ref(false)
     const deviceIsReady = ref(false)
     const mainStore = useMainStore()
@@ -187,6 +190,7 @@ export default {
     // }, false)
 
     return {
+      themeStore,
       authUser,
       mainStore,
       deviceIsReady,
@@ -203,6 +207,7 @@ export default {
   },
   mounted () {
     console.log('MainLayout monunter')
+    this.themeStore.setCurrentTheme(17) // 1,17, 20(light), 22(light)
   },
   methods: {
     showHeader (arg, breadcrumbs) {

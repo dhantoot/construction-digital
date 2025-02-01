@@ -10,101 +10,162 @@
 // }
 
 @font-face {
-    font-family: 'metrophobic';
-    src: url(fonts/Metrophobic-Regular.ttf)
+  font-family: 'metrophobic';
+  src: url(fonts/Metrophobic-Regular.ttf);
 }
 
 @font-face {
-    font-family: 'victormono';
-    src: url(fonts/VictorMono-Regular.ttf)
+  font-family: 'victormono';
+  src: url(fonts/VictorMono-Regular.ttf);
 }
 
 .main-layout {
-    font-family: 'metrophobic';
+  font-family: 'metrophobic';
 }
 
 body {
-    font-family: 'metrophobic';
+  font-family: 'metrophobic';
 }
 
 .bg-tertiary {
-    background: $tertiary;
+  background: $tertiary;
 }
 
 .text-tertiary {
-    color: $tertiary;
+  color: $tertiary;
 }
 
 .bg-standoutBackground {
-    background: $standoutBackground;
+  background: $standoutBackground;
 }
 
 .text-standoutBackground {
-    color: $standoutBackground;
+  color: $standoutBackground;
 }
 
 .bg-cancel {
-    background: $cancel;
+  background: $cancel;
 }
 
 .text-cancel {
-    color: $cancel;
+  color: $cancel;
 }
 
 .bg-fuchsia {
-    background: $fuchsia;
+  background: $fuchsia;
 }
 
 .text-fuchsia {
-    color: $fuchsia;
+  color: $fuchsia;
 }
 
 .round-btn {
-    border-radius: 12px;
+  border-radius: 12px;
 }
 
 .round-panel {
-    border-radius: 12px;
+  border-radius: 12px;
 }
 
 .notify-custom-css {
-    border-radius: 12px;
-    margin-top: 70px;
+  border-radius: 12px;
+  margin-top: 70px;
 }
 
 .q-card {
-    border-radius: 12px !important;
+  border-radius: 12px !important;
 }
 
 .q-toggle__track {
-    height: 22px;
-    border-radius: 14px;
-    margin-top: -3px;
+  height: 22px;
+  border-radius: 14px;
+  margin-top: -3px;
 }
 
 .q-toggle__thumb {
-    height: 22px;
-    width: 22px;
+  height: 22px;
+  width: 22px;
 }
 
 .q-toggle__inner .q-toggle__inner--truthy {
-    font-size: 40px;
-    width: 40px;
-    min-width: 2em;
-    height: 1em;
-    padding: 0.350em 0.4em;
-    -webkit-print-color-adjust: exact;
+  font-size: 40px;
+  width: 40px;
+  min-width: 2em;
+  height: 1em;
+  padding: 0.35em 0.4em;
 }
 
 .q-field--filled .q-field__control {
-    padding: 0 12px;
-    background: rgba(0, 0, 0, 0.05);
-    border-radius: 4px 4px 4px 4px;
-    border-bottom: none;
-    box-shadow: none;
+  padding: 0 12px;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px 4px 4px 4px;
+  border-bottom: none;
+  box-shadow: none;
 }
 
 .q-field--filled .q-field__control:focus {
-    border-bottom: none;
-    box-shadow: none;
+  border-bottom: none;
+  box-shadow: none;
+}
+
+@for $i from 0 through 100 {
+  .m-#{$i} {
+    margin: #{$i}px;
+  }
+
+  .p-#{$i} {
+    padding: #{$i}px;
+  }
+
+  .mx-#{$i} {
+    margin-left: #{$i}px;
+    margin-right: #{$i}px;
+  }
+
+  .px-#{$i} {
+    padding-left: #{$i}px;
+    padding-right: #{$i}px;
+  }
+
+  .my-#{$i} {
+    margin-top: #{$i}px;
+    margin-bottom: #{$i}px;
+  }
+
+  .py-#{$i} {
+    padding-top: #{$i}px;
+    padding-bottom: #{$i}px;
+  }
+
+  .mt-#{$i} {
+    margin-top: #{$i}px;
+  }
+
+  .pt-#{$i} {
+    padding-top: #{$i}px;
+  }
+
+  .mr-#{$i} {
+    margin-right: #{$i}px;
+  }
+
+  .pr-#{$i} {
+    padding-right: #{$i}px;
+  }
+
+  .mb-#{$i} {
+    margin-bottom: #{$i}px;
+  }
+
+  .pb-#{$i} {
+    padding-bottom: #{$i}px;
+  }
+
+  .ml-#{$i} {
+    margin-left: #{$i}px;
+  }
+
+  .pl-#{$i} {
+    padding-left: #{$i}px;
+  }
 }
