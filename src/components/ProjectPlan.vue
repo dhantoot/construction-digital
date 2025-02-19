@@ -8,7 +8,6 @@
         class="full-width bg-transparent text-accent"
         text-color="warning"
         flat
-        bordered
      />
     </div>
     <q-page-sticky position="bottom-right" :offset="[18, 18]">

@@ -7,6 +7,7 @@
         :event-color="(date) => (date[9] % 2 === 0 ? 'teal' : 'orange')"
         class="full-width bg-transparent text-accent"
         :flat="true"
+        style="background-color: transparent;"
      />
     </div>
     <q-inner-loading

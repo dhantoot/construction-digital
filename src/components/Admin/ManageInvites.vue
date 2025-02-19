@@ -1,192 +1,112 @@
 <template>
-  <h5 class="text-center">Manage Invites here..{{ $q.screen.size }}</h5>
-  <div class="row full-width q-px-lg items-start">
-    <div class="column justify-start col-lg-2 col-md-2 col-sm-12 col-xs-12 q-gutter-y-md">
-      <label class="text-bold">
-        Select Project
-      </label>
-      <div class="row justify-start full-width q-py-md">
-        <q-select
-          use-input
-          use-chips
-          dense
-          filled
-          v-model="selectedProject"
-          :options="filterOptions2"
-          @filter="filterProject"
-        />
-      </div>
-    </div>
-    <div class="column justify-start col-lg-4 col-md-4 col-sm-12 col-xs-12 q-gutter-y-md items-start" :class="{
-      'q-pl-xl': $q.screen.gt.sm
-    }">
-      <label class="text-bold">
-        Constructor label
-      </label>
-      <div class="row justify-start full-width q-py-md">
-        <q-radio
-          v-model="userTitle"
-          val="Architect"
-          label="Architect"
-          color="teal"
-        />
-        <q-radio
-          v-model="userTitle"
-          val="Engineer"
-          label="Engineer"
-          color="orange"
-        />
-        <q-radio
-          v-model="userTitle"
-          val="Foreman"
-          label="Foreman"
-          color="red"
-        />
-        <q-radio
-          v-model="userTitle"
-          val="Leadman"
-          label="Leadman"
-          color="cyan"
-        />
-        <q-radio
-          v-model="userTitle"
-          val="Worker"
-          label="Worker"
-          color="secondary"
-        />
-      </div>
-    </div>
-    <div class="column justify-start col-lg-6 col-md-6 col-sm-12 col-xs-12 q-gutter-y-md">
-      <label class="text-bold"> Select email to send invitation </label>
-      <div class="row justify-start full-width q-py-md q-gutter-x-sm items-center">
-        <q-select
-          :dense="true"
-          filled
-          v-model="model"
-          use-input
-          use-chips
-          multiple
-          input-debounce="0"
-          @new-value="createValue"
-          :options="filterOptions"
-          @filter="filterFn"
-          option-value="email"
-          option-label="email"
-          :class="{
-            'q-pb-sm full-width' : $q.screen.width < 433
-          }"
-        />
-        <q-btn
-          padding="xs lg"
-          color="secondary"
-          icon="las la-paper-plane"
-          style="height: 40px; width: 150px"
-          :class="{
-            'text-capitalize': true,
-            'q-ml-none full-width' : $q.screen.width < 433
-          }"
-          :disable="
-            !model ||
-            model.map((e) => e.email).length < 1 ||
-            sendEmailLoader ||
-            !selectedProject ||
-            !userTitle
-          "
-          @click="sendInvitation"
-          :loading="sendEmailLoader"
-          label="Send"
-          class="round-btn"
-        >
-          <template v-slot:loading>
-            <q-spinner-ios class="on-left" />
-            <small>Sending..</small>
-          </template>
-        </q-btn>
-      </div>
-    </div>
-  </div>
-  <div class="row full-width q-px-lg">
-    <q-card class="q-mt-lg full-width round-btn adminCard">
-      <q-card-section>
-        <div class="text-h6">Invitation sent</div>
-        <div class="text-subtitle2 text-right"></div>
-      </q-card-section>
-      <q-table
-        no-data-label="I didn't find anything for you"
-        class="q-mb-sm q-mr-sm"
-        row-key="id"
-        :rows="rows"
-        :columns="columns"
-        :loading="rowLoading"
-        :visible-columns="visibleColumns"
-        :rows-per-page-options="[10]"
-      >
-        <template v-slot:loading>
-          <q-inner-loading :showing="visible">
-            <q-spinner-ios size="50px" color="secondary" />
-          </q-inner-loading>
-        </template>
-        <template v-slot:body="props">
-          <q-tr :props="props">
-            <q-td key="id" :props="props">
-              {{ props.row.id }}
-            </q-td>
-            <q-td key="projectName" :props="props">
-              {{ props.row.projectName }}
-            </q-td>
-            <q-td key="dateSent" :props="props">
-              {{ props.row.dateSent }}
-            </q-td>
-            <q-td key="dateResponded" :props="props">
-              {{ props.row.dateResponded }}
-            </q-td>
-            <q-td key="status" :props="props">
-              <q-chip
-                square
-                class="q-pl-sm full-width"
+  <div class="text-center text-h6 text-bold text-white q-my-sm">Manage Invites here..{{ $q.screen.size }}</div>
+  <div class="row" :class="{
+    'q-px-lg': $q.screen.gt.xs,
+    'q-px-sm': $q.screen.xs
+  }">
+    <div class="full-width">
+      <q-card class="q-ma-sm round-panel">
+        <div class="row justify-start gap-20 q-pa-md">
+          <div class="column justify-start gap-20">
+            <div class="caption">Select Project</div>
+            <q-select use-input use-chips dense filled v-model="selectedProject" :options="filterOptions2"
+              @filter="filterProject" />
+          </div>
+          <div class="column justify-start gap-20">
+            <div class="caption">Constructor label</div>
+            <div class="row gap-10 items-center">
+              <q-radio dense v-model="userTitle" val="Architect" label="Architect" color="teal" />
+              <q-radio dense v-model="userTitle" val="Engineer" label="Engineer" color="orange" />
+              <q-radio dense v-model="userTitle" val="Foreman" label="Foreman" color="red" />
+              <q-radio dense v-model="userTitle" val="Leadman" label="Leadman" color="cyan" />
+              <q-radio dense v-model="userTitle" val="Worker" label="Worker" color="secondary" />
+            </div>
+          </div>
+          <div class="column justify-start gap-20">
+            <div class="caption">Select email to send invitation</div>
+            <div class="row gap-10">
+              <q-select :dense="true" filled v-model="model" use-input use-chips multiple input-debounce="0"
+                @new-value="createValue" :options="filterOptions" @filter="filterFn" option-value="email"
+                option-label="email" :class="{
+                  'q-pb-sm full-width': $q.screen.width < 433
+                }" />
+              <q-btn padding="xs lg" color="secondary" icon="las la-paper-plane" style="height: 40px; width: 150px"
                 :class="{
-                  'full-width q-px-md': q.screen.lt.md
-                }"
-              >
-                <q-avatar
-                  :icon="getStatusIcon(props.row.status)"
-                  :color="getStatusColor(props.row.status)"
-                  text-color="white"
-                />
-                {{ props.row.status }}
-              </q-chip>
-            </q-td>
-            <q-td key="invitee" :props="props">
-              {{ props.row.invitee }}
-            </q-td>
-            <q-td key="userTitle" :props="props">
-              {{ props.row.userTitle }}
-            </q-td>
-            <q-td key="resend" :props="props">
-              <q-btn
-                icon="las la-share"
-                padding="xs md"
-                v-if="props.row.status === 'Pending'"
-                class="text-capitalize text-secondary round-btn shadow-5"
-                text-color="primary"
-                color="cancel"
-                label="Resend invite"
-                @click="resendInvite(props.row, props.rowIndex)"
-                :dense="true"
-                :loading="resendInviteLoader[props.rowIndex]"
-                :disable="resendInviteLoader[props.rowIndex]"
-              >
+                  'text-capitalize': true,
+                  'q-ml-none full-width': $q.screen.width < 433
+                }" :disable="!model ||
+                  model.map((e) => e.email).length < 1 ||
+                  sendEmailLoader ||
+                  !selectedProject ||
+                  !userTitle
+                  " @click="sendInvitation" :loading="sendEmailLoader" label="Send" class="round-btn">
                 <template v-slot:loading>
-                  <q-spinner-ios class="on-left"/>
+                  <q-spinner-ios class="on-left" />
                   <small>Sending..</small>
                 </template>
               </q-btn>
-            </q-td>
-          </q-tr>
-        </template>
-      </q-table>
-      <!-- <q-skeleton square/> -->
-    </q-card>
+            </div>
+          </div>
+        </div>
+      </q-card>
+
+      <q-card class="q-ma-sm round-panel adminCard">
+        <q-card-section>
+          <div class="text-h6">Invitation sent</div>
+          <div class="text-subtitle2 text-right"></div>
+        </q-card-section>
+        <q-table dense no-data-label="I didn't find anything for you" class="q-mb-sm q-mr-sm" row-key="id" :rows="rows"
+          :columns="columns" :loading="rowLoading" :visible-columns="visibleColumns" :rows-per-page-options="[12]">
+          <template v-slot:loading>
+            <q-inner-loading :showing="visible">
+              <q-spinner-ios size="50px" color="secondary" />
+            </q-inner-loading>
+          </template>
+          <template v-slot:body="props">
+            <q-tr :props="props">
+              <q-td key="id" :props="props">
+                {{ props.row.id }}
+              </q-td>
+              <q-td key="projectName" :props="props">
+                {{ props.row.projectName }}
+              </q-td>
+              <q-td key="dateSent" :props="props">
+                {{ props.row.dateSent }}
+              </q-td>
+              <q-td key="dateResponded" :props="props">
+                {{ props.row.dateResponded }}
+              </q-td>
+              <q-td key="status" :props="props">
+                <q-chip square class="q-pl-sm full-width" :class="{
+                  'full-width q-px-md': q.screen.lt.md
+                }">
+                  <q-avatar :icon="getStatusIcon(props.row.status)" :color="getStatusColor(props.row.status)"
+                    text-color="white" />
+                  {{ props.row.status }}
+                </q-chip>
+              </q-td>
+              <q-td key="invitee" :props="props">
+                {{ props.row.invitee }}
+              </q-td>
+              <q-td key="userTitle" :props="props">
+                {{ props.row.userTitle }}
+              </q-td>
+              <q-td key="resend" :props="props">
+                <q-btn icon="las la-share" padding="xs md" v-if="props.row.status === 'Pending'"
+                  class="text-capitalize text-secondary round-btn shadow-5" text-color="primary" color="cancel"
+                  label="Resend invite" @click="resendInvite(props.row, props.rowIndex)" :dense="true"
+                  :loading="resendInviteLoader[props.rowIndex]" :disable="resendInviteLoader[props.rowIndex]">
+                  <template v-slot:loading>
+                    <q-spinner-ios class="on-left" />
+                    <small>Sending..</small>
+                  </template>
+                </q-btn>
+              </q-td>
+            </q-tr>
+          </template>
+        </q-table>
+      </q-card>
+    </div>
   </div>
 </template>
 <script>
@@ -609,6 +529,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .adminCard {
-  min-height: 730px;
+  min-height: 685px;
 }
 </style>

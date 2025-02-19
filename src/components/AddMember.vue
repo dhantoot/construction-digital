@@ -1,15 +1,60 @@
 <template>
-  <div class="row full-width absolute">
-    <div class="text-h6 text-bold q-px-lg q-py-md text-accent">Add Member</div>
+  <div class="column gap-10 q-pa-sm">
+    <div class="row justify-start">
+      <strong class="text-h6 text-bold text-white">Add Member</strong>
+    </div>
+    <div class="column gap-10">
+      <q-input
+        :dense="true"
+        filled
+        v-model="fname"
+        placeholder="First Name"
+      />
+      <q-input
+        :dense="true"
+        filled
+        v-model="lname"
+        placeholder="Last Name"
+      />
+      <q-select
+        v-model="role"
+        :dense="true"
+        filled
+        label="Role"
+        :options="options"
+        @filter="filterFn"
+        input-debounce="0"
+        clearable
+      >
+        <template v-slot:no-option>
+          <q-item>
+            <q-item-section class="text-grey"> No results </q-item-section>
+          </q-item>
+        </template>
+      </q-select>
+      <q-input
+        :dense="true"
+        filled
+        v-model="text"
+        placeholder="Project Name"
+      />
+      <q-input
+        v-model="desc"
+        :dense="true"
+        filled
+        placeholder="Project Description"
+        autogrow
+      />
+    </div>
   </div>
-  <div class="q-mx-xs q-gutter-md bg-grey-2 q-pr-md" style="margin-top:70px">
+  <!-- <div class="q-mx-xs q-gutter-md bg-grey-2 q-pr-md" style="margin-top:70px">
     <q-input
       :dense="true"
       filled
       v-model="fname"
       placeholder="First Name"
       input-class="text-warning"
-   />
+    />
     <q-input
       :dense="true"
       filled
@@ -50,8 +95,8 @@
       autogrow
       class="bg-grey-2"
       input-class="text-warning"
-   />
-  </div>
+    />
+  </div> -->
 
   <div class="row full-width q-px-lg q-py-sm justify-between items-start absolute fixed-bottom" style="margin-bottom:82px">
     <div>

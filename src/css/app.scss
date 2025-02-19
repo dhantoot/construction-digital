@@ -108,6 +108,29 @@ body {
   box-shadow: none;
 }
 
+.q-message-text--received {
+    border-radius: 12px 12px 12px 0;
+}
+
+.q-message-text--sent {
+    color: #e0e0e0;
+    border-radius: 12px 12px 0 12px;
+}
+
+.q-date__header {
+    border-top-left-radius: inherit;
+    color: #fff;
+    background-color: transparent;
+    padding: 16px;
+}
+
+.q-item {
+    min-height: 48px;
+    padding: 8px 0px;
+    color: inherit;
+    transition: color 0.3s, background-color 0.3s;
+}
+
 @for $i from 0 through 100 {
   .m-#{$i} {
     margin: #{$i}px;
@@ -168,4 +191,21 @@ body {
   .pl-#{$i} {
     padding-left: #{$i}px;
   }
+}
+
+$weights: 100, 200, 300, 400, 500, 600, 700, 800, 900;
+@each $i in $weights {
+    .f-w-#{$i} {
+        font-weight: #{$i};
+    }
+}
+
+@for $i from 0 through 100 {
+    .gap-#{$i} {
+        gap: #{$i}px;
+    }
+}
+
+.debug {
+    border: 1px dashed coral;
 }

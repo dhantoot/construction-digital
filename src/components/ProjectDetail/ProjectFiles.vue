@@ -1,58 +1,35 @@
 <template>
-  <div class="flex justify-between q-pa-xs bg-accent">
-   <q-input
-      dark
-      standout="bg-transparent"
-      input-class="text-right text-accent"
-      v-model="text"
-      :dense="dense"
-      :class="{
-        'q-ma-xs q-mx-sm': true
-      }"
-      :style="{
+  <div class="column gap-10 q-pa-sm">
+    <div class="row">
+      <q-input dark standout="bg-transparent" input-class="text-right text-accent" v-model="text" :dense="dense" :style="{
         width: '100%'
-      }"
-    >
-      <template v-slot:prepend>
-        <q-icon color="accent" name="las la-arrow-left" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/>
-      </template>
-      <template v-slot:append>
-        <q-icon v-if="text === ''" name="las la-search" class="text-accent"/>
-        <q-icon
-          v-else
-          name="clear"
-          class="cursor-pointer text-black"
-          @click="text = ''"
-       />
-      </template>
-    </q-input>
-  </div>
-  <div class="scroll" style="height: 75.5vh">
-    <div class="q-gutter-sm row justify-evenly">
-      <q-img
-        v-for="item in arr"
-        :key="item"
-        :src="`${item.url}`"
-        spinner-color="white"
-        style="height: 100px; max-width: 111px"
-        class="rounded-borders q-mb-xs"
-      >
-        <template v-slot:loading>
-          <div class="text-accent">
-            <q-spinner-ios />
-          </div>
+      }">
+        <template v-slot:prepend>
+          <q-icon color="accent" name="las la-arrow-left"
+            @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)" />
         </template>
-      </q-img>
+        <template v-slot:append>
+          <q-icon v-if="text === ''" name="las la-search" class="text-accent" />
+          <q-icon v-else name="clear" class="cursor-pointer text-black" @click="text = ''" />
+        </template>
+      </q-input>
     </div>
-    <q-page-sticky position="bottom-right" :offset="[18, 18]">
-      <q-btn
-        :dense="true"
-        fab
-        icon="las la-paperclip"
-        color="grey-1"
-        class="text-green round-btn"
-     />
-    </q-page-sticky>
+    <div class="scroll" style="height: 75.5vh">
+      <div class="q-gutter-md row justify-between">
+        <q-img v-for="item in arr" :key="item" :src="`${item.url}`" spinner-color="white"
+          style="height: 100px; max-width: 100px" class="rounded-borders q-mb-xs">
+          <template v-slot:loading>
+            <div class="text-accent">
+              <q-spinner-ios />
+            </div>
+          </template>
+        </q-img>
+      </div>
+      <!-- <q-page-sticky position="bottom-left" :offset="[18, 18]">
+        <q-btn class="round-btn" color="primary" icon="las la-arrow-left"
+          @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)" />
+      </q-page-sticky> -->
+    </div>
   </div>
 </template>
 <script>

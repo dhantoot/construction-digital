@@ -1,14 +1,12 @@
 <template>
-  <div class="flex justify-between q-pa-xs bg-accent">
-    <q-input
+  <div class="column gap-10 q-pa-sm">
+    <div class="row justify-between">
+      <q-input
       dark
       standout="bg-transparent"
       input-class="text-right text-accent"
       v-model="text"
       :dense="dense"
-      :class="{
-        'q-ma-xs q-mx-sm': true
-      }"
       :style="{
         width: '100%'
       }"
@@ -26,8 +24,7 @@
        />
       </template>
     </q-input>
-  </div>
-  <div class="q-pt-xs q-pl-sm q-pr-xs justify-center absolute">
+    </div>
     <div class="scroll" style="max-height: 60vh">
       <q-chat-message
         name="me"

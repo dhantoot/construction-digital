@@ -1,6 +1,13 @@
 <template>
-    <h5 class="text-center">Scope of Works Template</h5>
-    <router-view/>
+    <div class="text-center text-h6 text-bold text-white q-my-sm">Scope of Work Template</div>
+    <div class="row" :class="{
+    'q-px-lg': $q.screen.gt.xs,
+    'q-px-sm': $q.screen.xs
+    }">
+    <div class="full-width">
+      <router-view/>
+    </div>
+  </div>
 </template>
 <script>
 import { ref } from 'vue'
