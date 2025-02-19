@@ -2,7 +2,7 @@
   <div v-if="false" class="row">
     <div class="full-width">
       <q-card class="m-10">
-        <q-card-section>
+        <q-card-section class="p-0">
           <apexchart
             type="rangeBar"
             height="350"
@@ -152,15 +152,6 @@
       </q-card>
     </div>
   </div>
-  <div v-if="false" class="row">
-    <div class="full-width">
-      <q-card class="m-10">
-        <q-card-section>
-          <b class="text-black">sdasd</b>
-        </q-card-section>
-      </q-card>
-    </div>
-  </div>
 </template>
 <script>
 import { ref } from 'vue'
@@ -228,7 +219,11 @@ export default {
           },
           zoom: {
             show: false,
-            allowMouseWheelZoom: false
+            allowMouseWheelZoom: false,
+            enabled: false
+          },
+          pan: {
+            enabled: false
           }
         },
         plotOptions: {
@@ -277,7 +272,11 @@ export default {
           },
           zoom: {
             show: false,
-            allowMouseWheelZoom: false
+            allowMouseWheelZoom: false,
+            enabled: false
+          },
+          pan: {
+            enabled: false
           }
         },
         dataLabels: {
@@ -426,7 +425,11 @@ export default {
           },
           zoom: {
             show: false,
-            allowMouseWheelZoom: false
+            allowMouseWheelZoom: false,
+            enabled: false
+          },
+          pan: {
+            enabled: false
           },
           animations: {
             enabled: true,
@@ -521,7 +524,11 @@ export default {
           },
           zoom: {
             show: false,
-            allowMouseWheelZoom: false
+            allowMouseWheelZoom: false,
+            enabled: false
+          },
+          pan: {
+            enabled: false
           },
           animations: {
             enabled: true,
@@ -616,6 +623,21 @@ export default {
           type: 'radialBar',
           toolbar: {
             show: true
+          },
+          pan: {
+            enabled: false
+          },
+          animations: {
+            enabled: true,
+            speed: 800,
+            animateGradually: {
+              enabled: true,
+              delay: 150
+            },
+            dynamicAnimation: {
+              enabled: true,
+              speed: 350
+            }
           }
         },
         plotOptions: {

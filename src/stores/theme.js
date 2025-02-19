@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 
 export const useThemeStore = defineStore('theme', {
   state: () => ({
-    themeIndex: 24,
+    themeIndex: 23,
     currentTheme: 'bg-',
     counter: 0
   }),

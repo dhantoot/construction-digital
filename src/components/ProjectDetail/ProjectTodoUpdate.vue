@@ -1,55 +1,40 @@
 <template>
-    <div class="row full-width absolute">
-      <div class="text-h6 text-bold q-px-lg q-py-md text-accent">Update Todo</div>
+  <div class="column gap-10 q-pa-sm">
+    <div class="row justify-between items-center">
+      <strong class="text-h6 text-bold text-white">Update Todo</strong>
+      <q-icon size="md" color="accent" name="las la-undo" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}/todo`)"/>
     </div>
-    <div class="row q-pa-md full-width q-gutter-md bg-grey-2 q-mt-xl">
-      <q-input
-        class="full-width"
-        :dense="true"
-        filled
-        v-model="todoTitle"
-        placeholder="Title"
-        input-class="text-accent"/>
-      <q-input class="full-width"
-        :dense="true"
-        placeholder="Description..."
-        v-model="todoDesc"
-        filled
-        autogrow
-        input-class="text-accent"/>
-    </div>
+    <q-input class="full-width" :dense="true" filled v-model="todoTitle" placeholder="Title"
+      input-class="text-accent" />
+    <q-input class="full-width" :dense="true" placeholder="Description..." v-model="todoDesc" filled autogrow
+      input-class="text-accent" />
     <div class="scroll q-pb-xl">
-      <q-list padding dense>
+      <q-list dense>
         <q-item tag="fileUpload">
           <q-item-section>
-            <q-uploader
-              :factory="factoryFn"
-              :uploadProgressLabel="uploadProgressLabel"
-              label="Upload Files"
-              accept=".jpg, image/*"
-              class="full-width"
-              multiple
-              auto-upload>
-                <template v-slot:list="">
-                    <q-list>
-                        <q-item v-for="item of todoFiles" :key="item">
-                            <q-item-section>
-                                <q-img :src="`${item} || 'broken-img.png'`" style="max-height: 200px;" :style="{
-                                    'border-radius': '5px'
-                                }"/>
-                            </q-item-section>
-                        </q-item>
-                    </q-list>
-                </template>
-           </q-uploader>
+            <q-uploader :factory="factoryFn" :uploadProgressLabel="uploadProgressLabel" label="Upload Files"
+              accept=".jpg, image/*" class="full-width" multiple auto-upload>
+              <template v-slot:list="">
+                <q-list>
+                  <q-item v-for="item of todoFiles" :key="item">
+                    <q-item-section>
+                      <q-img :src="item || 'broken-img.png'" style="max-height: 200px;" :style="{
+                        'border-radius': '5px'
+                      }" />
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+              </template>
+            </q-uploader>
           </q-item-section>
         </q-item>
 
-        <q-separator spaced/>
+        <q-separator spaced />
 
         <q-item tag="invitee">
           <q-item-section>
-            <q-item-label class="text-accent q-mb-md">Assign Members <small class="text-smallest"><i>(scroll to view more)</i></small></q-item-label>
+            <q-item-label class="text-accent q-mb-md">Assign Members <small class="text-smallest"><i>(scroll to view
+                  more)</i></small></q-item-label>
             <q-list class="q-pl-none scroll" style="max-height: 23vh;">
               <!--
                 Rendering a <label> tag (notice tag="label")
@@ -57,21 +42,9 @@
                 change Toggle state.
               -->
 
-              <q-item
-                :clickable="false"
-                tag="label"
-                v-ripple
-                class="q-pl-none"
-                v-for="member in invitee"
-                :key="member"
-              >
+              <q-item :clickable="false" tag="label" v-ripple class="q-pl-none" v-for="member in invitee" :key="member">
                 <q-item-section avatar>
-                  <q-checkbox
-                    v-model="member.isSelected"
-                    :val="member.id"
-                    color="teal"
-                    :disable="!member.id"
-                 />
+                  <q-checkbox v-model="member.isSelected" :val="member.id" color="teal" :disable="!member.id" />
                 </q-item-section>
                 <q-item-section>
                   <q-item-label class="text-accent">{{ member?.fullname || member?.email }}</q-item-label>
@@ -80,48 +53,50 @@
 
                 <q-item-section avatar>
                   <q-avatar rounded>
-                    <img :src="`${member?.avatar || 'default-user.jpeg'}`"/>
+                    <img :src="`${member?.avatar || 'default-user.jpeg'}`" />
                   </q-avatar>
                 </q-item-section>
 
               </q-item>
             </q-list>
-            <q-inner-loading
-              :showing="fetchInviteeLoader"
-              label="Please wait..."
-              label-class="text-teal"
-              label-style="font-size: 1.1em"
-              class="q-mx-md"
-            >
-              <q-spinner-ios size="50px" color="secondary"/>
+            <q-inner-loading :showing="fetchInviteeLoader" label="Please wait..." label-class="text-teal"
+              label-style="font-size: 1.1em" class="q-mx-md">
+              <q-spinner-ios size="50px" color="secondary" />
             </q-inner-loading>
           </q-item-section>
         </q-item>
       </q-list>
     </div>
-    <div class="row full-width q-px-sm q-py-sm justify-between items-start absolute fixed-bottom" style="margin-bottom:82px">
-        <div class="q-pl-xs">
-          <q-btn class="round-btn" color="primary" icon="las la-arrow-left" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}/todo`)"/>
-        </div>
-        <div class="q-pr-xs">
-          <q-btn
-            @click="updateTodo"
-            rounded
-            color="primary"
-            label="Update"
-            class="text-capitalize round-btn"
-            :loading="loadingSubmit"
-            :disable="!todoTitle || !todoDesc || loadingSubmit"
-            icon="las la-edit"
-          >
-            <template v-slot:loading>
-              <q-spinner-ios class="on-left"/>
-              Saving...
-            </template>
-          </q-btn>
-        </div>
-      </div>
-  </template>
+  </div>
+  <div class="row full-width q-px-sm q-py-sm justify-between items-start absolute fixed-bottom" style="margin-bottom:82px">
+    <div class="q-pl-xs">
+      <q-btn class="round-btn" color="primary" icon="las la-arrow-left"
+        @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}/todo`)" />
+    </div>
+    <div class="q-pr-xs">
+      <q-btn @click="openConfirmDialog('Save changes?', 'updateTodo')" rounded color="primary" label="Update" class="text-capitalize round-btn" :disable="!todoTitle || !todoDesc || confirmBtnLoader" icon="las la-edit" />
+    </div>
+  </div>
+  <q-dialog v-model="confirm" persistent>
+    <q-card>
+      <q-card-section class="row items-center">
+        <q-avatar size="sm" icon="las la-exclamation" color="cancel" text-color="white" />
+        <span class="q-ml-sm text-h6">{{ confirmMsg }}</span>
+      </q-card-section>
+
+      <q-card-actions align="right" class="q-pa-md">
+        <q-btn padding="sm xl" icon="las la-times" class="round-btn text-capitalize" label="Close" color="negative"
+          v-close-popup />
+        <q-btn padding="sm xl" icon="las la-check" class="round-btn text-capitalize" label="Confirm" color="primary"
+          @click="callConfirmFn()" :loading="confirmBtnLoader" :disable="confirmBtnLoader">
+          <template v-slot:loading>
+            <q-spinner-ios />
+          </template>
+        </q-btn>
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
+</template>
 <script>
 import { ref } from 'vue'
 import { uid, LocalStorage, date } from 'quasar'
@@ -141,6 +116,11 @@ export default {
     const authUser = LocalStorage.getItem('authUser')
 
     return {
+      confirm: ref(false),
+      confirmMsg: '',
+      confirmCallbackFn: '',
+      confirmBtnLoader: ref(false),
+
       invitee: ref([]),
       fetchInviteeLoader: ref(false),
       fetchUsersLoader: ref(false),
@@ -222,17 +202,26 @@ export default {
         this.visible = false
       }, ms)
     },
+    openConfirmDialog (confirmMsg, confirmCallbackFn) {
+      this.confirmMsg = confirmMsg
+      this.confirmCallbackFn = confirmCallbackFn
+      this.confirm = true
+    },
+    callConfirmFn () {
+      const fn = this.confirmCallbackFn
+      this[fn]()
+    },
     updateTodo () {
-      this.loadingSubmit = true
+      this.confirmBtnLoader = true
       const generatedUid = uid()
+      const {
+        projectId,
+        todoId
+      } = this.$route.params
       const payload = {
-        todoTitle: this.todoTitle,
-        todoDesc: this.todoDesc,
-        members: this.invitee.filter(e => e.isSelected).map(f => f.id),
-        files: this.todoFiles || [],
-        isArchived: this.selectedTodoDetail.isArchived,
-        isCompleted: this.selectedTodoDetail.isCompleted,
-        id: this.selectedTodoDetail.id
+        ...this.mainStore?.mobileSelectedProjectTodo,
+        avatar: this.todoFiles.length > 0 ? this.todoFiles[0] : undefined,
+        assignee: this.invitee.filter(e => e.isSelected).map(f => f.id)
       }
       const updates = {}
       console.log({
@@ -241,13 +230,11 @@ export default {
         updates
       })
 
-      // data will be save to `projects` table
-      // slash at the end is very important (..projects/1/)
-      updates[`todo/${this.selectedTodoDetail.id}/`] = payload
-
+      updates[`task/${projectId}/${todoId}/`] = payload
+      console.log('updates:', updates)
       this.$fbupdate(this.$fbref(this.$fbdb), updates)
         .then(() => {
-          this.loadingSubmit = false
+          this.confirmBtnLoader = false
           this.$q.notify({
             icon: 'check_circle',
             color: 'info',
@@ -257,8 +244,7 @@ export default {
           })
         })
         .catch((error) => {
-          // console.log({ error })
-          this.loadingSubmit = false
+          this.confirmBtnLoader = false
           this.$q.notify({
             icon: 'las la-exclamation-circle',
             color: 'negative',
@@ -268,6 +254,53 @@ export default {
           })
         })
     },
+    // OLD STYLE. Changes in todo table.
+    // updateTodo () {
+    //   this.loadingSubmit = true
+    //   const generatedUid = uid()
+    //   const payload = {
+    //     todoTitle: this.todoTitle,
+    //     todoDesc: this.todoDesc,
+    //     members: this.invitee.filter(e => e.isSelected).map(f => f.id),
+    //     files: this.todoFiles || [],
+    //     isArchived: this.selectedTodoDetail.isArchived,
+    //     isCompleted: this.selectedTodoDetail.isCompleted,
+    //     id: this.selectedTodoDetail.id
+    //   }
+    //   const updates = {}
+    //   console.log({
+    //     generatedUid,
+    //     payload,
+    //     updates
+    //   })
+
+    //   // data will be save to `projects` table
+    //   // slash at the end is very important (..projects/1/)
+    //   updates[`todo/${this.selectedTodoDetail.id}/`] = payload
+
+    //   this.$fbupdate(this.$fbref(this.$fbdb), updates)
+    //     .then(() => {
+    //       this.loadingSubmit = false
+    //       this.$q.notify({
+    //         icon: 'check_circle',
+    //         color: 'info',
+    //         message: 'Sucessfully Updated',
+    //         position: 'top-right',
+    //         classes: 'notify-custom-css'
+    //       })
+    //     })
+    //     .catch((error) => {
+    //       // console.log({ error })
+    //       this.loadingSubmit = false
+    //       this.$q.notify({
+    //         icon: 'las la-exclamation-circle',
+    //         color: 'negative',
+    //         message: 'Error found\n' + error,
+    //         position: 'top-right',
+    //         classes: 'notify-custom-css'
+    //       })
+    //     })
+    // },
     factoryFn (files) {
       // console.log({ files })
       this.todoFiles = []
@@ -341,7 +374,7 @@ export default {
           return
         }
         this.users = Object.values(data)
-        console.log('this.users', this.users)
+        // console.log('this.users', this.users)
         this.fetchUsersLoader = false
       })
     },
@@ -367,7 +400,7 @@ export default {
               : item.invitee
             item.avatar = userDetail?.avatar
             item.id = userDetail?.uid || undefined
-            if (this.selectedTodoDetail.members.includes(item.id)) {
+            if (this.selectedTodoDetail?.members?.includes(item.id)) {
               item.isSelected = true
             } else {
               item.isSelected = false
@@ -376,13 +409,13 @@ export default {
           }
           continue
         }
-        console.log('this.invitee', this.invitee)
+        // console.log('this.invitee', this.invitee)
         this.fetchInviteeLoader = false
       })
     },
     setUpdateValues () {
       this.selectedTodoDetail = LocalStorage.getItem('mobileSelectedProjectTodo')
-      console.log('this.selectedTodoDetail', this.selectedTodoDetail)
+      // console.log('this.selectedTodoDetail', this.selectedTodoDetail)
       this.todoTitle = this.selectedTodoDetail.todoTitle
       this.todoDesc = this.selectedTodoDetail.todoDesc
       this.todoFiles = this.selectedTodoDetail?.files || ['broken-img.png']
@@ -390,3 +423,9 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.q-list--dense > .q-item, .q-item--dense {
+    min-height: 32px;
+    padding: 2px;
+}
+</style>

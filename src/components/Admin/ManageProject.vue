@@ -1,5 +1,5 @@
 <template>
-  <h5 class="text-center">Manage your projects here</h5>
+  <div class="text-center text-h6 text-bold text-white q-my-sm">Manage your projects here</div>
   <div class="row" :class="{
     'q-px-lg': $q.screen.gt.xs,
     'q-px-sm': $q.screen.xs
@@ -148,10 +148,8 @@
             </template>
           </q-select>
         </q-card-section>
-        <q-card-actions :align="$q.screen.gt.xs ? 'right' : 'center'" :class="{
-          'q-pr-md': $q.screen.gt.xs,
-          'q-px-none': $q.screen.xs
-        }">
+        <q-card-actions>
+        <div class="row justify-between full-width q-px-sm">
           <q-btn
             icon="las la-undo"
             padding="sm xl"
@@ -159,8 +157,7 @@
             class="text-capitalize bg-cancel round-btn"
             label="Reset"
             :disable="loadingSubmit"
-            @click="formReset"
-          >
+            @click="formReset">
           </q-btn>
           <q-btn
             icon="las la-check"
@@ -170,12 +167,12 @@
             :label="selected.length ? 'Update' : 'Submit'"
             class="text-capitalize bg-info round-btn"
             :loading="loadingSubmit"
-            :disable="loadingSubmit || !searchKey || !text || !desc || (updateMode ? false : !file ) || !budget || !dateFrom || !dateTo || !templateId"
-          >
+            :disable="loadingSubmit || !searchKey || !text || !desc || (updateMode ? false : !file ) || !budget || !dateFrom || !dateTo || !templateId">
             <template v-slot:loading>
               <q-spinner-ios/>
             </template>
           </q-btn>
+        </div>
         </q-card-actions>
         <q-inner-loading :showing="visible">
           <q-spinner-ios size="50px" color="secondary"/>

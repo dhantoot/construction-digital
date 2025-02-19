@@ -1,7 +1,8 @@
 <template>
-  <div class="flex justify-between q-pa-xs bg-primary">
-    <q-input
-      class="full-width q-px-xs q-pt-sm"
+  <div class="column gap-10 q-pa-sm">
+    <div class="row justify-center items-center">
+      <q-input
+      class="full-width"
       dark
       standout="bg-transparent"
       input-class="text-left text-accent"
@@ -17,24 +18,27 @@
         <q-icon v-if="text" name="clear" class="cursor-pointer text-accent" @click="text = ''"/>
       </template>
     </q-input>
+    </div>
+    <div class="">
+      <q-list separator class="scroll bg-transparent" style="height: 100vh;">
+        <q-item clickable v-ripple @click='gotoDetail(item)' v-for="item in projects.filter(e => e.title.toLowerCase().includes(text.toLowerCase()))" :key="item">
+          <q-item-section thumbnail>
+            <img class="q-ml-sm rounded-borders" :src="`${item.avatarFullPath}`">
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label class="text-bold text-primary">{{ item.title }}</q-item-label>
+            <q-item-label caption lines="2" class="text-secondary">{{ item.description }}</q-item-label>
+          </q-item-section>
+
+          <q-item-section side top>
+              <q-item-label caption class="text-secondary q-mb-sm">{{ item.dateCreated?.split('T')[0] || 'No Date'}}</q-item-label>
+              <q-badge rounded :color="item.isActivated ? 'green' : 'red'" />
+          </q-item-section>
+        </q-item>
+      </q-list>
+    </div>
   </div>
-  <q-list bordered separator class="scroll bg-transparent" style="height: 100vh;">
-    <q-item clickable v-ripple @click='gotoDetail(item)' v-for="item in projects.filter(e => e.title.toLowerCase().includes(text.toLowerCase()))" :key="item">
-      <q-item-section thumbnail>
-        <img class="q-ml-sm rounded-borders" :src="`${item.avatarFullPath}`">
-      </q-item-section>
-
-      <q-item-section>
-        <q-item-label class="text-bold text-accent">{{ item.title }}</q-item-label>
-        <q-item-label caption lines="2" class="text-warning">{{ item.description }}</q-item-label>
-      </q-item-section>
-
-      <q-item-section side top>
-          <q-item-label caption class="text-positive q-mb-sm">{{ item.dateCreated?.split('T')[0] || 'No Date'}}</q-item-label>
-          <q-badge rounded :color="item.isActivated ? 'green' : 'red'" />
-      </q-item-section>
-    </q-item>
-  </q-list>
   <q-inner-loading :showing="visible" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em">
     <q-spinner-ios size="50px" color="secondary"/>
   </q-inner-loading>

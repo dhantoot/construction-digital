@@ -1,111 +1,117 @@
 <template>
-    <h5 class="text-center">Manage Accounts here</h5>
-    <div class="row full-width q-px-lg">
-      <q-card class="q-mt-lg full-width round-btn adminCard">
-      <q-card-section>
-        <div class="text-h6">Account list</div>
-        <div class="row full-width justify-left q-pt-lg">
-          <div class="" v-if="selected[0]">
-            <q-btn
-              flat
-              :label="selected[0].isActive ? 'Deactivate' : 'Activate'"
-              icon="las la-power-off"
-              color="transparent"
-              class="text-capitalize round-btn"
-              text-color="cancel"
-              @click="openConfirmDialog(`Would you like to ${selected[0].isActive ? 'Deactivate' : 'Activate'} this account?`, 'updateAccountStatus')">
-            </q-btn>
-          </div>
-          <div class="" v-if="selected[0]">
-            <q-btn
-              flat
-              label="Delete"
-              icon="las la-trash-alt"
-              color="transparent"
-              class="text-capitalize round-btn"
-              text-color="negative"
-              @click="openConfirmDialog('Would you like to delete this account?', 'deleteAccount')">
-            </q-btn>
-          </div>
-          <div class="">
-            <q-btn
-              flat
-              label="New"
-              icon="las la-user-tie"
-              color="transparent"
-              class="text-capitalize round-btn"
-              text-color="primary">
-            </q-btn>
-          </div>
-      </div>
-      </q-card-section>
-      <q-table
-        no-data-label="I didn't find anything for you"
-        class="q-mb-sm q-mr-sm"
-        row-key="uid"
-        selection="single"
-        v-model:selected="selected"
-        :selection-options="selectionOptions"
-        :rows="rows"
-        :columns="columns"
-        :loading="rowLoading"
-        :visible-columns="visibleColumns"
-        :rows-per-page-options="[10]"
-      >
-        <template v-slot:body="props">
-          <q-tr :props="props" :selected="props.selected">
-            <q-td key="uid" :props="props">
-              {{ props.row.uid }}
-            </q-td>
-            <q-td auto-width>
-                <q-checkbox v-model="props.selected" @update:model-value="setSelected"/>
+    <div class="text-center text-h6 text-bold text-white q-my-sm">Manage Accounts here</div>
+    <div class="row" :class="{
+      'q-px-lg': $q.screen.gt.xs,
+      'q-px-sm': $q.screen.xs
+    }">
+    <div class="full-width">
+      <q-card class="q-ma-sm adminCard round-panel">
+        <q-card-section>
+          <div class="text-h6">Account list</div>
+          <div class="row full-width justify-left q-pt-lg">
+            <div class="" v-if="selected[0]">
+              <q-btn
+                flat
+                :label="selected[0].isActive ? 'Deactivate' : 'Activate'"
+                icon="las la-power-off"
+                color="transparent"
+                class="text-capitalize round-btn"
+                text-color="cancel"
+                @click="openConfirmDialog(`Would you like to ${selected[0].isActive ? 'Deactivate' : 'Activate'} this account?`, 'updateAccountStatus')">
+              </q-btn>
+            </div>
+            <div class="" v-if="selected[0]">
+              <q-btn
+                flat
+                label="Delete"
+                icon="las la-trash-alt"
+                color="transparent"
+                class="text-capitalize round-btn"
+                text-color="negative"
+                @click="openConfirmDialog('Would you like to delete this account?', 'deleteAccount')">
+              </q-btn>
+            </div>
+            <div class="">
+              <q-btn
+                flat
+                label="New"
+                icon="las la-user-tie"
+                color="transparent"
+                class="text-capitalize round-btn"
+                text-color="primary">
+              </q-btn>
+            </div>
+        </div>
+        </q-card-section>
+        <q-table
+          dense
+          no-data-label="I didn't find anything for you"
+          class="q-mb-sm q-mr-sm"
+          row-key="uid"
+          selection="single"
+          v-model:selected="selected"
+          :selection-options="selectionOptions"
+          :rows="rows"
+          :columns="columns"
+          :loading="rowLoading"
+          :visible-columns="visibleColumns"
+          :rows-per-page-options="[10]"
+        >
+          <template v-slot:body="props">
+            <q-tr :props="props" :selected="props.selected">
+              <q-td key="uid" :props="props">
+                {{ props.row.uid }}
               </q-td>
-            <q-td key="avatar" :props="props">
-              <q-avatar rounded>
-                <img :src="`${props.row.avatar}`"/>
-              </q-avatar>
-            </q-td>
-            <q-td key="email" :props="props">
-              {{ props.row.email }}
-            </q-td>
-            <q-td key="firstName" :props="props">
-              {{ props.row.firstName }}
-            </q-td>
-            <q-td key="lastName" :props="props">
-              {{ props.row.lastName }}
-            </q-td>
-            <q-td key="isActive" :props="props">
-              <q-chip
-                square
-                class="q-pl-sm full-width"
-                :class="{
-                  'full-width q-px-md': $q.screen.lt.md
-                }"
-              >
-                <q-avatar
-                  :icon="getStatusIcon(props.row.isActive)"
-                  :color="getStatusColor(props.row.isActive)"
-                  text-color="white"
-                />
-                {{ props.row.isActive ? 'Active' : 'Inactive' }}
-              </q-chip>
-            </q-td>
-            <q-td key="role" :props="props">
-              {{ props.row.role }}
-            </q-td>
-            <q-td key="position" :props="props">
-              {{ props.row.position }}
-            </q-td>
-            <q-td key="phone_number" :props="props">
-              {{ props.row.phone_number }}
-            </q-td>
-          </q-tr>
-        </template>
-      </q-table>
-      <q-inner-loading :showing="rowLoading">
-        <q-spinner-ios size="50px" color="secondary"/>
-      </q-inner-loading>
+              <q-td auto-width>
+                  <q-checkbox v-model="props.selected" @update:model-value="setSelected"/>
+                </q-td>
+              <q-td key="avatar" :props="props">
+                <q-avatar rounded>
+                  <img :src="`${props.row.avatar}`"/>
+                </q-avatar>
+              </q-td>
+              <q-td key="email" :props="props">
+                {{ props.row.email }}
+              </q-td>
+              <q-td key="firstName" :props="props">
+                {{ props.row.firstName }}
+              </q-td>
+              <q-td key="lastName" :props="props">
+                {{ props.row.lastName }}
+              </q-td>
+              <q-td key="isActive" :props="props">
+                <q-chip
+                  square
+                  class="q-pl-sm full-width"
+                  :class="{
+                    'full-width q-px-md': $q.screen.lt.md
+                  }"
+                >
+                  <q-avatar
+                    :icon="getStatusIcon(props.row.isActive)"
+                    :color="getStatusColor(props.row.isActive)"
+                    text-color="white"
+                  />
+                  {{ props.row.isActive ? 'Active' : 'Inactive' }}
+                </q-chip>
+              </q-td>
+              <q-td key="role" :props="props">
+                {{ props.row.role }}
+              </q-td>
+              <q-td key="position" :props="props">
+                {{ props.row.position }}
+              </q-td>
+              <q-td key="phone_number" :props="props">
+                {{ props.row.phone_number }}
+              </q-td>
+            </q-tr>
+          </template>
+        </q-table>
+        <q-inner-loading :showing="rowLoading">
+          <q-spinner-ios size="50px" color="secondary"/>
+        </q-inner-loading>
     </q-card>
+    </div>
     </div>
     <q-dialog v-model="confirm" persistent>
       <q-card>
@@ -391,6 +397,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .adminCard {
-  min-height: 857px;
+  min-height: 807px;
 }
 </style>

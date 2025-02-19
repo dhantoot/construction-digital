@@ -23,7 +23,6 @@ npm run lint
 ```
 
 
-
 ### Build the app for production
 ```bash
 quasar build
@@ -93,13 +92,10 @@ plugin add
 ## Animation
 > https://animate.style/
 
-## Firebase cli reference
-firebase projects:list
-
 ## Twilio recovery code
 5KSXMXWSB8QJ5782W3QZ2T3C
 
-## quickl scaffold
+## quickly scaffold
 Usage
     $ quasar new <p|page> [-f <option>] <page_file_name>
     $ quasar new <l|layout> [-f <option>] <layout_file_name>
@@ -108,14 +104,35 @@ Usage
     $ quasar new <s|store> [-f ts] <store_module_name>
     $ quasar new ssrmiddleware [-f ts] <middleware_name>
 
-moHpJqjxvzZBUiQ4wG11bqbl7IQ2
-    _ts:1735633548753
-    avatar:""
-    email:"dyan@yopmail.com"
-    firstName:""
-    isActive:true
-    lastName:""
-    phone_number:""
-    position:""
-    role:"constructor"
-    uid:"moHpJqjxvzZBUiQ4wG11bqbl7IQ2"
+### Build the app for production
+```bash
+quasar build -m pwa
+firebase login
+firebase init
+### CLI Q and A ---- begin
+Q: Are you ready to proceed?
+A: Yes
+Q: Which Firebase features do you want to set up for this directory?
+A Hosting: Configure files for Firebase Hosting and (optionally) set up GitHub Action deploys
+Q: What do you want to use as your public directory?
+A dist/pwa
+Q: Configure as a single-page app (rewrite all urls to /index.html)?
+A no
+Q: Set up automatic builds and deploys with GitHub?
+A no
+Q: File dist/pwa/index.html already exists. Overwrite?
+A no
+### CLI Q and A ---- end
+firebase deploy
+```
+
+### Firebase cli reference
+```bash
+firebase projects:list
+```
+
+## Deploy Firebase Functions
+```bash
+firebase deploy --only functions:getPlaces
+```
+

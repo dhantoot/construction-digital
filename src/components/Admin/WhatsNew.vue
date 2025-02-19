@@ -1,12 +1,21 @@
 <template>
-    <h5 class="text-center">Whats new ? See all upcomming features here</h5>
-    <q-card class="my-card q-ma-sm">
-      <!-- <q-skeleton square/> -->
-      <q-inner-loading :showing="visible">
-        <q-spinner-ios size="50px" color="secondary"/>
-      </q-inner-loading>
-    </q-card>
-  </template>
+  <div class="text-center text-h6 text-bold text-white q-my-sm">Whats new ? See all upcomming features here</div>
+  <div class="row" :class="{
+    'q-px-lg': $q.screen.gt.xs,
+    'q-px-sm': $q.screen.xs
+  }">
+    <div class="full-width">
+      <q-card class="q-ma-sm round-panel">
+        <q-card-section>
+          Yow
+        </q-card-section>
+        <q-inner-loading :showing="visible">
+          <q-spinner-ios size="50px" color="secondary" />
+        </q-inner-loading>
+      </q-card>
+    </div>
+  </div>
+</template>
 <script>
 import { ref } from 'vue'
 

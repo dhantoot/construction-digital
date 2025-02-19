@@ -3,81 +3,49 @@
     <q-img :src="`${mainStore?.mobileSelectedProject?.avatarFullPath}`" height="160px">
       <div class="absolute-bottom q-mt-none row justify-between items-center">
         <div>
-          <q-btn
-            color="primary"
-            rounded
-            v-if="this.$route.path === `/detail/${mainStore?.mobileSelectedProject?.id}`"
-            icon="las la-arrow-left"
-            class="text-accent round-btn"
-            @click="this.$router.push('/projects')"
-          />
+          <q-btn color="primary" rounded v-if="this.$route.path === `/detail/${mainStore?.mobileSelectedProject?.id}`"
+            icon="las la-arrow-left" class="text-accent round-btn" @click="this.$router.push('/projects')" />
         </div>
         <div class="text-h6" v-ellipsis="20">{{ mainStore?.mobileSelectedProject?.title }}</div>
         <div>
-          <q-btn
-            color="primary"
-            rounded
-            v-if="this.$route.path === `/detail/${mainStore?.mobileSelectedProject?.id}`"
-            icon="las la-user-plus"
-            class="text-accent round-btn"
-            @click="this.$router.push({ path: '/new-member' })"
-          />
+          <q-btn color="primary" rounded v-if="this.$route.path === `/detail/${mainStore?.mobileSelectedProject?.id}`"
+            icon="las la-user-plus" class="text-accent round-btn" @click="this.$router.push({ path: '/new-member' })" />
         </div>
       </div>
     </q-img>
     <q-card-section flat class="q-ma-none q-pa-none">
-      <q-list class="scroll" style="max-height: 60vh;">
-        <q-item-label header class="text-bold text-accent">Project Members</q-item-label>
-        <q-item clickable v-ripple v-for="item of invites" :key="item">
-          <q-item-section avatar>
-            <q-avatar>
-              <img :src="`${item?.avatar || 'default-user.jpeg'}`"/>
-            </q-avatar>
-          </q-item-section>
+      <div class="column full-width gap-10 q-pa-sm">
+        <div class="row justify-start">
+          <strong class="text-bold text-h6 text-white">Project Member</strong>
+        </div>
+        <q-list class="scroll" style="height: 50vh;">
+          <q-item clickable v-ripple v-for="item of invites" :key="item">
+            <q-item-section avatar>
+              <q-avatar>
+                <img :src="`${item?.avatar || 'default-user.jpeg'}`" />
+              </q-avatar>
+            </q-item-section>
 
-          <q-item-section>
-            <q-item-label caption lines="2">
-              <span class="text-weight-bold text-accent">{{ item?.fullName }}</span>
-            </q-item-label>
-            <q-item-label caption lines="1">
-              <span class="text-weight-light text-accent">{{ item?.userTitle }}</span>
-            </q-item-label>
-          </q-item-section>
+            <q-item-section>
+              <q-item-label caption lines="2">
+                <span class="text-weight-bold text-primary">{{ item?.fullName }}</span>
+              </q-item-label>
+              <q-item-label caption lines="1">
+                <span class="text-weight-light text-secondary">{{ item?.userTitle }}</span>
+              </q-item-label>
+            </q-item-section>
 
-          <q-item-section side top>
-            <q-chip
-              square
-              :dense="true"
-              :color="getColor(item)"
-              text-color="white"
-              :icon="getIcon(item)"
-            >
-              <small>{{ item?.role }}</small>
-            </q-chip>
-          </q-item-section>
-        </q-item>
-        <q-separator inset="item" class="q-ml-none"/>
-
-        <q-item :dense="true">
-          <q-item-section>
-            <div class="row items-center justify-center">
-              <q-icon
-                name="las la-stroopwafel"
-                size="10px"
-                class="text-accent"
-              />
-            </div>
-          </q-item-section>
-        </q-item>
-      </q-list>
+            <q-item-section side top>
+              <q-chip square :dense="true" :color="getColor(item)" text-color="white" :icon="getIcon(item)">
+                <small>{{ item?.role }}</small>
+              </q-chip>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </div>
     </q-card-section>
-    <q-inner-loading
-      :showing="visible"
-      label="Please wait..."
-      label-class="text-teal"
-      label-style="font-size: 1.1em"
-    >
-      <q-spinner-ios size="50px" color="secondary"/>
+    <q-inner-loading :showing="visible" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em">
+      <q-spinner-ios size="50px" color="secondary" />
     </q-inner-loading>
   </q-card>
 </template>
@@ -218,3 +186,11 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.q-card {
+  border-radius: 0px !important;
+}
+.hmm {
+  height: calc(100vh - 81px);
+}
+</style>

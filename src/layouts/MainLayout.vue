@@ -1,13 +1,13 @@
 <template>
-  <q-layout view="lHh lpR fFf">
-    <q-img
+  <q-layout view="lHh lpR fFf" class="bgcover">
+    <!-- <q-img
      :src="themeStore.getCurrentTheme()"
      class="fit absolute"
      v-if="true"
-   />
+   /> -->
 
     <q-header elevated class="text-accent" height-hint="98">
-      <q-toolbar class="text-warning q-pt-lg" :style="{ 'margin-top': '-1px'}">
+      <q-toolbar class="text-warning q-pt-lg bg-transparent" :style="{ 'margin-top': '-1px'}">
         <q-btn @click="leftDrawerOpen = !leftDrawerOpen" flat round :dense="true" icon="menu" class="q-mr-sm round-btn"/>
         <q-toolbar-title class="text-center q-pb-xs">Hofstee Inc.</q-toolbar-title>
         <q-btn flat round :dense="true" icon="whatshot" class="round-btn"/>
@@ -180,6 +180,7 @@ export default {
     const mainStore = useMainStore()
     const authUser = LocalStorage.getItem('authUser')
     const $q = useQuasar()
+    // const bgPhoto = ''
     $q.addressbarColor.set('#14252C')
     // document.addEventListener('deviceready', () => {
     //   deviceIsReady.value = true
@@ -229,3 +230,12 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.bgcover {
+  background-image: url('/bg-1.jpeg'); /** bg-17 bg-23 */
+  // height: 500px; /* Add height to make the div visible */
+  background-size: cover; /* Cover the entire div with the image */
+  // background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Prevent the image from repeating */
+}
+</style>

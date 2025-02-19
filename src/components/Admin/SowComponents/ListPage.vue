@@ -1,130 +1,67 @@
 <template>
-  <div class="row full-width q-px-lg">
-    <q-card class="q-mt-lg full-width round-btn adminCard">
-      <q-card-section>
-        <div class="text-h6">S-CURVE</div>
-        <q-option-group
-          v-model="group"
-          :options="options"
-          color="green"
-          type="toggle"
-          v-if="false"
-        />
-        <div class="row full-width justify-left q-pt-lg">
-          <div class="">
-            <q-btn
-              :disable="!selected.length"
-              flat
-              label="View"
-              icon="las la-eye"
-              color="transparent"
-              class="text-capitalize round-btn"
-              text-color="cancel"
-              @click="gotoTemplateDetail(selected[0].id)"
-            >
-            </q-btn>
-          </div>
-          <div class="">
-            <q-btn
-              :disable="!selected.length"
-              flat
-              label="Delete"
-              icon="las la-trash-alt"
-              color="transparent"
-              class="text-capitalize round-btn"
-              text-color="negative"
-              @click="
-                openConfirmDialog(
-                  'Would you like to delete this account?',
-                  'deleteAccount'
-                )
-              "
-            >
-            </q-btn>
-          </div>
-          <div class="">
-            <q-btn
-              @click="createTemplate"
-              flat
-              label="New"
-              icon="las la-plus"
-              color="transparent"
-              class="text-capitalize round-btn"
-              text-color="primary"
-            >
-            </q-btn>
-          </div>
+  <q-card class="q-ma-sm adminCard round-panel">
+    <q-card-section>
+      <div class="text-h6">S-CURVE</div>
+      <q-option-group v-model="group" :options="options" color="green" type="toggle" v-if="false" />
+      <div class="row full-width justify-left q-pt-lg">
+        <div class="">
+          <q-btn :disable="!selected.length" flat label="View" icon="las la-eye" color="transparent"
+            class="text-capitalize round-btn" text-color="cancel" @click="gotoTemplateDetail(selected[0].id)">
+          </q-btn>
         </div>
-      </q-card-section>
-      <q-table
-        no-data-label="I didn't find anything for you"
-        class="q-mb-sm q-mr-sm"
-        row-key="id"
-        selection="single"
-        v-model:selected="selected"
-        :selection-options="selectionOptions"
-        :rows="rows"
-        :columns="columns"
-        :loading="rowLoading"
-        :visible-columns="visibleColumns"
-        :rows-per-page-options="[10]"
-      >
-        <template v-slot:body="props">
-          <q-tr :props="props" :selected="props.selected">
-            <q-td auto-width>
-              <q-checkbox
-                v-model="props.selected"
-                @update:model-value="setSelected"
-              />
-            </q-td>
-            <q-td key="name" :props="props">
-              {{ props.row.name }}
-            </q-td>
-            <q-td key="description" :props="props">
-              {{ props.row.description }}
-            </q-td>
-            <q-td v-formatdate key="dateCreated" :props="props">
-              {{ props.row.dateCreated }}
-            </q-td>
-          </q-tr>
-        </template>
-      </q-table>
-      <q-inner-loading :showing="rowLoading">
-        <q-spinner-ios size="50px" color="secondary" />
-      </q-inner-loading>
-    </q-card>
-  </div>
+        <div class="">
+          <q-btn :disable="!selected.length" flat label="Delete" icon="las la-trash-alt" color="transparent"
+            class="text-capitalize round-btn" text-color="negative" @click="
+              openConfirmDialog(
+                'Would you like to delete this account?',
+                'deleteAccount'
+              )
+              ">
+          </q-btn>
+        </div>
+        <div class="">
+          <q-btn @click="createTemplate" flat label="New" icon="las la-plus" color="transparent"
+            class="text-capitalize round-btn" text-color="primary">
+          </q-btn>
+        </div>
+      </div>
+    </q-card-section>
+    <q-table no-data-label="I didn't find anything for you" class="q-mb-sm q-mr-sm" row-key="id" selection="single"
+      v-model:selected="selected" :selection-options="selectionOptions" :rows="rows" :columns="columns"
+      :loading="rowLoading" :visible-columns="visibleColumns" :rows-per-page-options="[10]">
+      <template v-slot:body="props">
+        <q-tr :props="props" :selected="props.selected">
+          <q-td auto-width>
+            <q-checkbox v-model="props.selected" @update:model-value="setSelected" />
+          </q-td>
+          <q-td key="name" :props="props">
+            {{ props.row.name }}
+          </q-td>
+          <q-td key="description" :props="props">
+            {{ props.row.description }}
+          </q-td>
+          <q-td v-formatdate key="dateCreated" :props="props">
+            {{ props.row.dateCreated }}
+          </q-td>
+        </q-tr>
+      </template>
+    </q-table>
+    <q-inner-loading :showing="rowLoading">
+      <q-spinner-ios size="50px" color="secondary" />
+    </q-inner-loading>
+  </q-card>
   <q-dialog v-model="confirm" persistent>
     <q-card>
       <q-card-section class="row items-center">
-        <q-avatar
-          size="sm"
-          icon="las la-exclamation"
-          color="cancel"
-          text-color="white"
-        />
+        <q-avatar size="sm" icon="las la-exclamation" color="cancel" text-color="white" />
         <span class="q-ml-sm text-h6">{{ confirmMsg }}</span>
       </q-card-section>
 
       <q-card-actions align="right" class="q-pa-md">
-        <q-btn
-          padding="sm xl"
-          icon="las la-times"
-          class="round-btn text-capitalize"
-          label="Close"
-          color="negative"
-          v-close-popup
-        />
-        <q-btn
-          padding="sm xl"
-          icon="las la-check"
-          class="round-btn text-capitalize"
-          label="Confirm"
-          color="primary"
-          @click="callConfirmFn()"
-          :loading="actionAccountLoader"
-          :disable="actionAccountLoader"
-        >
+        <q-btn padding="sm xl" icon="las la-times" class="round-btn text-capitalize" label="Close" color="negative"
+          v-close-popup />
+        <q-btn padding="sm xl" icon="las la-check" class="round-btn text-capitalize" label="Confirm" color="primary"
+          @click="callConfirmFn()" :loading="actionAccountLoader" :disable="actionAccountLoader">
           <template v-slot:loading>
             <q-spinner-ios />
           </template>
@@ -770,6 +707,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .adminCard {
-  min-height: 857px;
+  min-height: 807px;
 }
 </style>

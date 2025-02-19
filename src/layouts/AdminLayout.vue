@@ -1,5 +1,5 @@
 <template>
-  <q-layout class="bg-accent">
+  <q-layout class="bgcover">
     <q-header
       elevated
       class="text-warning bg-primary"
@@ -311,6 +311,14 @@ export default {
 </script>
 
 <style lang="scss">
+.bgcover {
+  background-image: url('bg-17.jpeg');
+  // height: 500px; /* Add height to make the div visible */
+  background-size: cover; /* Cover the entire div with the image */
+  // background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Prevent the image from repeating */
+}
+
 body.screen--xs {
   .my-div {
     color: #000;
