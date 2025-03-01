@@ -1,5 +1,5 @@
 <template>
-  <div v-if="false" class="row">
+  <!-- <div v-if="false" class="row">
     <div class="full-width">
       <q-card class="m-10">
         <q-card-section class="p-0">
@@ -12,7 +12,7 @@
         </q-card-section>
       </q-card>
     </div>
-  </div>
+  </div> -->
   <div class="row">
     <div class="full-width">
       <q-card class="m-10">
@@ -20,8 +20,8 @@
           <apexchart
             type="line"
             height="350"
-            :options="chartOptions4"
-            :series="series4"
+            :options="projectTaskCompleted"
+            :series="projects"
           ></apexchart>
         </q-card-section>
       </q-card>
@@ -501,21 +501,21 @@ export default {
           }
         }
       },
-      series4: [
+      projects: [
         {
-          name: 'Session Duration',
+          name: 'Big House',
           data: [45, 52, 38, 24, 33, 26, 21, 20, 6, 8, 15, 10]
         },
         {
-          name: 'Page Views',
+          name: 'Dhans Place',
           data: [35, 41, 62, 42, 13, 18, 29, 37, 36, 51, 32, 35]
         },
         {
-          name: 'Total Visits',
+          name: 'Cedoys Mansion',
           data: [87, 57, 74, 99, 75, 38, 62, 47, 82, 56, 45, 47]
         }
       ],
-      chartOptions4: {
+      projectTaskCompleted: {
         chart: {
           height: 350,
           type: 'line',

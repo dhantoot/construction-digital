@@ -276,30 +276,33 @@ export default {
 
       // data will be save to `projects` table
       // slash at the end is very important (..projects/1/)
-      updates[`todo/${generatedUid}/`] = payload
+      /**
+       * This is now obsolete!!
+       */
+      // updates[`todo/${generatedUid}/`] = payload
 
-      this.$fbupdate(this.$fbref(this.$fbdb), updates)
-        .then(() => {
-          this.loadingSubmit = false
-          this.$q.notify({
-            icon: 'check_circle',
-            color: 'green',
-            message: 'Sucessfully Created',
-            position: 'top-right',
-            classes: 'notify-custom-css'
-          })
-        })
-        .catch((error) => {
-          // console.log({ error })
-          this.loadingSubmit = false
-          this.$q.notify({
-            icon: 'las la-exclamation-circle',
-            color: 'negative',
-            message: 'Error found\n' + error,
-            position: 'top-right',
-            classes: 'notify-custom-css'
-          })
-        })
+      // this.$fbupdate(this.$fbref(this.$fbdb), updates)
+      //   .then(() => {
+      //     this.loadingSubmit = false
+      //     this.$q.notify({
+      //       icon: 'check_circle',
+      //       color: 'green',
+      //       message: 'Sucessfully Created',
+      //       position: 'top-right',
+      //       classes: 'notify-custom-css'
+      //     })
+      //   })
+      //   .catch((error) => {
+      //     // console.log({ error })
+      //     this.loadingSubmit = false
+      //     this.$q.notify({
+      //       icon: 'las la-exclamation-circle',
+      //       color: 'negative',
+      //       message: 'Error found\n' + error,
+      //       position: 'top-right',
+      //       classes: 'notify-custom-css'
+      //     })
+      //   })
     },
     factoryFn (files) {
       // console.log({ files })

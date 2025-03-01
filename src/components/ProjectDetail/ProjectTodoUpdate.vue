@@ -13,13 +13,13 @@
         <q-item tag="fileUpload">
           <q-item-section>
             <q-uploader :factory="factoryFn" :uploadProgressLabel="uploadProgressLabel" label="Upload Files"
-              accept=".jpg, image/*" class="full-width" multiple auto-upload>
+              accept=".jpg, image/*" class="full-width bg-transparent" multiple auto-upload thumbnail-fit>
               <template v-slot:list="">
                 <q-list>
                   <q-item v-for="item of todoFiles" :key="item">
                     <q-item-section>
                       <q-img :src="item || 'broken-img.png'" style="max-height: 200px;" :style="{
-                        'border-radius': '5px'
+                        'border-radius': '10px'
                       }" />
                     </q-item-section>
                   </q-item>
@@ -44,7 +44,13 @@
 
               <q-item :clickable="false" tag="label" v-ripple class="q-pl-none" v-for="member in invitee" :key="member">
                 <q-item-section avatar>
-                  <q-checkbox v-model="member.isSelected" :val="member.id" color="teal" :disable="!member.id" />
+                  <q-checkbox
+                    v-model="member.isSelected"
+                    :val="member.id"
+                    keep-color
+                    :color="[member.id ? 'teal' : 'grey']"
+                    :disable="!member.id"
+                    />
                 </q-item-section>
                 <q-item-section>
                   <q-item-label class="text-accent">{{ member?.fullname || member?.email }}</q-item-label>
@@ -235,6 +241,7 @@ export default {
       this.$fbupdate(this.$fbref(this.$fbdb), updates)
         .then(() => {
           this.confirmBtnLoader = false
+          this.confirm = false
           this.$q.notify({
             icon: 'check_circle',
             color: 'info',
@@ -245,6 +252,7 @@ export default {
         })
         .catch((error) => {
           this.confirmBtnLoader = false
+          this.confirm = false
           this.$q.notify({
             icon: 'las la-exclamation-circle',
             color: 'negative',
@@ -415,10 +423,10 @@ export default {
     },
     setUpdateValues () {
       this.selectedTodoDetail = LocalStorage.getItem('mobileSelectedProjectTodo')
-      // console.log('this.selectedTodoDetail', this.selectedTodoDetail)
+      console.log('this.selectedTodoDetail', this.selectedTodoDetail)
       this.todoTitle = this.selectedTodoDetail.todoTitle
       this.todoDesc = this.selectedTodoDetail.todoDesc
-      this.todoFiles = this.selectedTodoDetail?.files || ['broken-img.png']
+      this.todoFiles = [this.selectedTodoDetail?.avatar] || ['broken-img.png']
     }
   }
 }
@@ -427,5 +435,13 @@ export default {
 .q-list--dense > .q-item, .q-item--dense {
     min-height: 32px;
     padding: 2px;
+}
+.q-uploader__list {
+    position: relative;
+    border-bottom-left-radius: inherit;
+    border-bottom-right-radius: inherit;
+    /* padding: 8px; */
+    min-height: 60px;
+    flex: 1 1 auto;
 }
 </style>
