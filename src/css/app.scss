@@ -131,7 +131,15 @@ body {
     transition: color 0.3s, background-color 0.3s;
 }
 
-@for $i from 0 through 100 {
+.q-uploader__list {
+  position: relative;
+  padding: 0px;
+  min-height: 60px;
+  flex: 1 1 auto;
+  border-radius: 0;
+}
+
+@for $i from 1 through 100 {
   .m-#{$i} {
     margin: #{$i}px;
   }

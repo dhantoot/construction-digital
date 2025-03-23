@@ -42,7 +42,7 @@
         }" />
       </div>
 
-      <q-item tag="label" v-ripple v-for="item in todoList" :key="item">
+      <q-item @click="noop(item, $event)" tag="label" v-for="item in todoList" :key="item">
         <q-item-section>
           <q-item-label class="text-primary">{{ item.todoDesc }}</q-item-label>
           <q-item-label class="text-secondary" caption>
@@ -181,6 +181,9 @@ export default {
     // console.log('unmounted')
   },
   methods: {
+    noop (data, e) {
+      e.preventDefault()
+    },
     showTextLoading () {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
       // console.log('loaded in ', ms, ' ms')
@@ -214,7 +217,12 @@ export default {
       })
     },
     async sortList (arr, field) {
-      this.todoList = arr?.sort((a, b) => {
+      console.log('arr', arr)
+      console.log('field', field)
+      if (!arr || arr.length < 1) {
+        return
+      }
+      this.todoList = arr.filter(e => !this.$isFalsyString(e.section)).sort((a, b) => {
         const nameA = a[field].toUpperCase() // ignore upper and lowercase
         const nameB = b[field].toUpperCase()
         if (nameA < nameB) {
@@ -250,57 +258,6 @@ export default {
         position: 'top-right',
         classes: 'notify-custom-css'
       })
-      // this.confirmBtnLoader = true
-      // // console.log('updating todo', this.todoList)
-      // // console.log('this.completedTodos', this.completedTodos)
-      // const mapIds = this.completedTodos.map((m) => m.id)
-      // const updates = {}
-
-      // this.todoList.forEach((element) => {
-      //   console.log(element.id)
-      //   if (mapIds.includes(element.id)) {
-      //     element.isCompleted = true
-      //     updates[`todo/${element.id}/isCompleted/`] = true
-      //   } else {
-      //     element.isCompleted = false
-      //     updates[`todo/${element.id}/isCompleted/`] = false
-      //   }
-
-      //   updates[`todo/${element.id}/isArchived/`] = element.isArchived
-      // })
-      // console.log('updated todoList', this.todoList)
-      // console.log('updates', updates)
-
-      // // slash at the end is very important (../avatar/)
-      // // updates[`todo/${this.uid}/avatar/`] = 'url-of-avatar.png'
-
-      // this.$fbupdate(this.$fbref(this.$fbdb), updates)
-      //   .then(() => {
-      //     setTimeout(() => {
-      //       this.confirmBtnLoader = false
-      //       this.confirm = false
-      //       this.$q.notify({
-      //         icon: 'check_circle',
-      //         color: 'green',
-      //         message: 'Sucessfully Updated',
-      //         position: 'top-right',
-      //         classes: 'notify-custom-css'
-      //       })
-      //     }, 1000)
-      //   }).catch((error) => {
-      //     setTimeout(() => {
-      //       console.log({ error })
-      //       this.confirmBtnLoader = false
-      //       this.confirm = false
-      //       this.$q.notify({
-      //         icon: 'cancel',
-      //         color: 'negative',
-      //         message: 'Error found',
-      //         position: 'top-right',
-      //         classes: 'notify-custom-css'
-      //       })
-      //     })
-      //   })
     },
     openConfirmDialog (confirmMsg, confirmCallbackFn) {
       this.confirmMsg = confirmMsg
