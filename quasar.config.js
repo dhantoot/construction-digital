@@ -107,7 +107,16 @@ module.exports = configure(function (/* ctx */) {
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework
     framework: {
       config: {
-        brand: {
+        screen: {
+          tiny: 200,
+          xxs: 383,
+          xs: 480,
+          sm: 600,
+          tablet: 800,
+          md: 1024,
+          lg: 1440,
+          xl: 1920
+          // Add a new screen spec
         }
       },
 
@@ -135,7 +144,8 @@ module.exports = configure(function (/* ctx */) {
         'Dialog',
         'QTable',
         'Loading',
-        'AddressbarColor'
+        'AddressbarColor',
+        'Screen'
       ]
     },
 

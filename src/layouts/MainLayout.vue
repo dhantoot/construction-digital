@@ -1,16 +1,12 @@
 <template>
   <q-layout view="lHh lpR fFf" class="bgcover">
-    <!-- <q-img
-     :src="themeStore.getCurrentTheme()"
-     class="fit absolute"
-     v-if="true"
-   /> -->
-
-    <q-header elevated class="text-accent" height-hint="98">
-      <q-toolbar class="text-warning q-pt-lg bg-transparent" :style="{ 'margin-top': '-1px'}">
-        <q-btn @click="leftDrawerOpen = !leftDrawerOpen" flat round :dense="true" icon="menu" class="q-mr-sm round-btn"/>
-        <q-toolbar-title class="text-center q-pb-xs">Hofstee Inc.</q-toolbar-title>
-        <q-btn flat round :dense="true" icon="whatshot" class="round-btn"/>
+    <q-header elevated class="text-warning bg-primary" height-hint="61.59">
+      <q-toolbar class="text-warning q-py-sm q-px-md">
+        <div class="row full-width items-center">
+          <q-btn @click="leftDrawerOpen = !leftDrawerOpen" flat round :dense="true" icon="menu" class="q-mr-sm round-btn"/>
+          <q-toolbar-title class="text-center">Hofstee Inc.</q-toolbar-title>
+          <q-btn :disable="mainStore.showNav" flat round :dense="true" icon="las la-exchange-alt" class="round-btn" to="/admin-portal"/>
+        </div>
       </q-toolbar>
     </q-header>
 
@@ -178,7 +174,7 @@ export default {
     const leftDrawerOpen = ref(false)
     const deviceIsReady = ref(false)
     const mainStore = useMainStore()
-    const authUser = LocalStorage.getItem('authUser')
+    const authUser = ref(null)
     const $q = useQuasar()
     // const bgPhoto = ''
     $q.addressbarColor.set('#14252C')
@@ -207,6 +203,7 @@ export default {
     }
   },
   mounted () {
+    this.authUser = LocalStorage.getItem('authUser')
     console.log('MainLayout monunter')
     this.themeStore.setCurrentTheme(17) // 1,17, 20(light), 22(light)
   },

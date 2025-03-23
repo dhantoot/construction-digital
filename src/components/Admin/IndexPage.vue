@@ -71,8 +71,8 @@ export default {
 
     return {
       mainStore,
-      username: ref(null),
-      password: ref(null),
+      username: ref('tagailo.danvincent@gmail.com'),
+      password: ref('Admin@123'),
       loadingSubmit: ref(false),
       visible,
       question,

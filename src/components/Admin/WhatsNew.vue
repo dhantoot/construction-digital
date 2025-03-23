@@ -5,9 +5,28 @@
     'q-px-sm': $q.screen.xs
   }">
     <div class="full-width">
-      <q-card class="q-ma-sm round-panel">
+      <q-card class="card q-ma-sm round-panel">
         <q-card-section>
-          Yow
+          <HofsteeAlert>
+            <template #icon>
+              <q-icon name="las la-info-circle" color="primary" size="xs"/>
+            </template>
+            <template #header>
+              <b>Comming soon...</b>
+            </template>
+            <template #body>
+              The roadmap includes all features related to payment/payroll.
+            </template>
+            <!-- <template #bottom>
+              <q-btn padding="sm xl" icon="las la-times" class="round-btn text-capitalize" label="Close" color="negative" />
+              <q-btn padding="sm xl" icon="las la-check" class="round-btn text-capitalize" label="Confirm" color="primary" >
+                <template v-slot:loading>
+                  <q-spinner-ios class="on-left"/>
+                  <small>Please wait..</small>
+                </template>
+              </q-btn>
+            </template> -->
+          </HofsteeAlert>
         </q-card-section>
         <q-inner-loading :showing="visible">
           <q-spinner-ios size="50px" color="secondary" />
@@ -18,6 +37,8 @@
 </template>
 <script>
 import { ref } from 'vue'
+import { useQuasar } from 'quasar'
+import HofsteeAlert from '../Common/Alert/HofsteeAlert.vue'
 
 // Don't forget to specify which animations
 // you are using in quasar.config file > animations.
@@ -27,19 +48,27 @@ export default {
   setup () {
     const visible = ref(false)
     const question = ref('')
+    const $q = useQuasar()
 
     return {
       visible,
       question,
+      q: $q,
       initFunction () {
         // access setup variables here w/o using 'this'
         // console.log('initFunction called', visible.value)
+        this.q.screen.setSizes({ xxs: 400 })
+
+        console.log('this.q.screen', this.q.screen)
       }
     }
   },
   props: {
     title: String,
     likes: Number
+  },
+  components: {
+    HofsteeAlert
   },
   computed: {
     test: function () {
@@ -83,3 +112,8 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+.card {
+  min-height: 807px;
+}
+</style>
