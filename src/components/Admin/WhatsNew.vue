@@ -5,22 +5,19 @@
     'q-px-sm': $q.screen.xs
   }">
     <div class="full-width">
-      <q-card class="q-ma-sm round-panel">
+      <q-card class="card q-ma-sm round-panel">
         <q-card-section>
           <HofsteeAlert>
             <template #icon>
               <q-icon name="las la-info-circle" color="primary" size="xs"/>
             </template>
             <template #header>
-              <b>Some background process is running...</b>
+              <b>Comming soon...</b>
             </template>
             <template #body>
-              Lorem ipsum dolor set emit<br>
-              [<pre>{{ q.screen }}</pre>]
-              <pre>{{ q.screen.name }} - {{ q.screen.width }}</pre>
-              <pre></pre>
+              The roadmap includes all features related to payment/payroll.
             </template>
-            <template #bottom>
+            <!-- <template #bottom>
               <q-btn padding="sm xl" icon="las la-times" class="round-btn text-capitalize" label="Close" color="negative" />
               <q-btn padding="sm xl" icon="las la-check" class="round-btn text-capitalize" label="Confirm" color="primary" >
                 <template v-slot:loading>
@@ -28,7 +25,7 @@
                   <small>Please wait..</small>
                 </template>
               </q-btn>
-            </template>
+            </template> -->
           </HofsteeAlert>
         </q-card-section>
         <q-inner-loading :showing="visible">
@@ -115,3 +112,8 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+.card {
+  min-height: 807px;
+}
+</style>

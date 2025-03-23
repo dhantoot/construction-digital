@@ -2,9 +2,9 @@
   <q-layout class="bgcover">
     <q-header elevated class="text-warning bg-primary" height-hint="61.59">
       <q-toolbar class="q-py-sm q-px-md">
-        <div class="row debug full-width items-center">
+        <div class="row full-width items-center">
           <q-btn :dense="true" flat :ripple="false" icon="lab la-jedi-order" color="warning" class="q-mr-sm round-btn" no-caps @click="this.$router.push('/admin')" />
-          <q-toolbar-title v-if="!mainStore?.adminUser?.uid" class="text-center">Hofstee Inc.</q-toolbar-title>
+          <q-toolbar-title v-if="!mainStore?.adminUser?.uid" class="text-center">Admin Portal</q-toolbar-title>
           <q-select v-if="mainStore?.adminUser?.uid" ref="search" dark :dense="true" standout use-input hide-selected
             class="GL__toolbar-select" color="primary" :stack-label="false" label="Search or jump to..." v-model="text"
             :options="filteredOptions" @filter="filter" :style="{
@@ -55,7 +55,7 @@
               accounts </a>
             <a href="javascript:void(0)" class="text-warning" @click="this.$router.push('/whats-new')"> Explore </a>
           </div>
-          <q-space/>
+          <q-space v-if="mainStore?.adminUser?.uid"/>
           <div class="q-pl-sm q-gutter-sm row items-center no-wrap">
             <q-btn v-if="$q.screen.gt.xs && mainStore?.adminUser?.uid" :dense="true" flat round size="sm"
               icon="notifications" />

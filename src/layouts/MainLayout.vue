@@ -2,10 +2,10 @@
   <q-layout view="lHh lpR fFf" class="bgcover">
     <q-header elevated class="text-warning bg-primary" height-hint="61.59">
       <q-toolbar class="text-warning q-py-sm q-px-md">
-        <div class="row debug full-width items-center">
+        <div class="row full-width items-center">
           <q-btn @click="leftDrawerOpen = !leftDrawerOpen" flat round :dense="true" icon="menu" class="q-mr-sm round-btn"/>
           <q-toolbar-title class="text-center">Hofstee Inc.</q-toolbar-title>
-          <q-btn flat round :dense="true" icon="las la-exchange-alt" class="round-btn" to="/admin-portal"/>
+          <q-btn :disable="mainStore.showNav" flat round :dense="true" icon="las la-exchange-alt" class="round-btn" to="/admin-portal"/>
         </div>
       </q-toolbar>
     </q-header>
@@ -174,7 +174,7 @@ export default {
     const leftDrawerOpen = ref(false)
     const deviceIsReady = ref(false)
     const mainStore = useMainStore()
-    const authUser = LocalStorage.getItem('authUser')
+    const authUser = ref(null)
     const $q = useQuasar()
     // const bgPhoto = ''
     $q.addressbarColor.set('#14252C')
@@ -203,6 +203,7 @@ export default {
     }
   },
   mounted () {
+    this.authUser = LocalStorage.getItem('authUser')
     console.log('MainLayout monunter')
     this.themeStore.setCurrentTheme(17) // 1,17, 20(light), 22(light)
   },

@@ -1,5 +1,5 @@
 <template>
-    <div class="content p-5" style="max-width: 600px;">
+    <div class="content p-5">
         <div class="row gap-10">
             <div class="column col-auto pt-2">
                 <slot name="icon"/>

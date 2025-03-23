@@ -229,15 +229,27 @@ export default {
         const date2 = new Date(yt, mt, dt)
         const unit = 'days'
         const diff = date.getDateDiff(date2, date1, unit)
-
+        console.log('this.mainStore?.mobileSelectedProjectTodo', this.mainStore?.mobileSelectedProjectTodo)
+        if (!this.mainStore?.mobileSelectedProjectTodo) {
+          this.confirmBtnLoader = false
+          this.$q.notify({
+            icon: 'las la-exclamation-circle',
+            color: 'negative',
+            message: 'Selected project data is missing',
+            position: 'top-right',
+            classes: 'notify-custom-css'
+          })
+          return
+        }
         const payload = {
-          ...this.mainStore?.mobileSelectedProjectTodo,
+          ...this.selectedTodoDetail,
           avatar: this.todoFiles.length > 0 && !this.$isFalsyString(this.todoFiles[0]) ? this.todoFiles[0] : [],
           assignee: this.invitee.filter(e => e.isSelected).map(f => f.id),
           timeline: this.timeline,
           duration: diff + 1,
           isLocked: false
         }
+        console.log('this.selectedTodoDetail', this.selectedTodoDetail)
         const updates = {}
         console.log({
           generatedUid,

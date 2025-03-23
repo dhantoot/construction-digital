@@ -14,7 +14,7 @@
       </q-input>
     </div>
     <div class="row full-width justify-between items-center">
-      <strong class="text-bold text-h6 text-white">Todo List</strong>
+      <strong class="text-bold text-h6 text-white">Todo List ({{ todoList.length }})</strong>
       <q-icon size="md" color="accent" name="las la-undo" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/>
     </div>
     <q-list class="scroll" style="height: 62vh;">
@@ -43,6 +43,9 @@
       </div>
 
       <q-item @click="noop(item, $event)" tag="label" v-for="item in todoList" :key="item">
+        <!-- <q-item-section>
+          <pre class="text-caption">{{item}}</pre>
+        </q-item-section> -->
         <q-item-section>
           <q-item-label class="text-primary">{{ item.todoDesc }}</q-item-label>
           <q-item-label class="text-secondary" caption>
@@ -58,7 +61,7 @@
                 {{ item.isCompleted ? 'Archive' : '' }}
               </template>
             </q-toggle>
-            <q-btn rounded dense icon="las la-edit" flat class="text-accent" @click="viewTodoDetail(item)" />
+            <q-btn rounded dense icon="las la-edit" flat :class="item.timeline ? 'text-primary' : 'text-accent'" @click="viewTodoDetail(item)" />
           </div>
         </q-item-section>
       </q-item>
@@ -212,7 +215,7 @@ export default {
         this.selectedMember = this.todoList
           .filter((e) => e.isCompleted)
           .map((x) => x.id)
-        this.getCompletedTodos()
+        // this.getCompletedTodos()
         this.loadingtodoList = false
       })
     },
@@ -234,6 +237,12 @@ export default {
 
         // names must be equal
         return 0
+      })
+      this.todoList.forEach((item) => {
+        item.todoTitle = item.sowCategory
+        item.todoDesc = item.sowDescription
+        item.isArchived = item?.isArchived || false
+        item.isCompleted = item?.isCompleted || false
       })
     },
     async changeSelected (val) {
@@ -284,6 +293,7 @@ export default {
       this.reset_ = reset
     },
     viewTodoDetail (selectedTodo) {
+      console.log('selectedTodo', selectedTodo)
       LocalStorage.set('mobileSelectedProjectTodo', selectedTodo)
       this.$router.push(`/detail/${this.mainStore?.mobileSelectedProject?.id}/todo/${selectedTodo.id}/update`)
     }
