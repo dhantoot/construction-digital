@@ -1,11 +1,7 @@
 <template>
-  <div class="text-center text-h6 text-bold text-white q-my-sm">Manage Invites here..{{ $q.screen.size }}</div>
-  <div class="row" :class="{
-    'q-px-lg': $q.screen.gt.xs,
-    'q-px-sm': $q.screen.xs
-  }">
-    <div class="full-width">
-      <q-card class="q-ma-sm round-panel">
+  <div class="row hide-scrollbar" style="height: 94.5vh;">
+    <div class="row full-width full-height q-pa-sm gap-10">
+      <q-card class="no-shadow round-panel full-width">
         <div class="row justify-start gap-20 q-pa-md">
           <div class="column justify-start gap-20">
             <div class="caption">Select Project</div>
@@ -35,11 +31,11 @@
                   'text-capitalize': true,
                   'q-ml-none full-width': $q.screen.width < 433
                 }" :disable="!model ||
-                  model.map((e) => e.email).length < 1 ||
-                  sendEmailLoader ||
-                  !selectedProject ||
-                  !userTitle
-                  " @click="sendInvitation" :loading="sendEmailLoader" label="Send" class="round-btn">
+                    model.map((e) => e.email).length < 1 ||
+                    sendEmailLoader ||
+                    !selectedProject ||
+                    !userTitle
+                    " @click="sendInvitation" :loading="sendEmailLoader" label="Send" class="round-btn">
                 <template v-slot:loading>
                   <q-spinner-ios class="on-left" />
                   <small>Sending..</small>
@@ -50,7 +46,7 @@
         </div>
       </q-card>
 
-      <q-card class="q-ma-sm round-panel adminCard">
+      <q-card class="no-shadow round-panel full-width">
         <q-card-section>
           <div class="text-h6">Invitation sent</div>
           <div class="text-subtitle2 text-right"></div>
@@ -528,7 +524,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.adminCard {
-  min-height: 685px;
+.q-item {
+    min-height: 48px;
+    padding: 8px 10px !important;
+    color: inherit;
+    transition: color 0.3s, background-color 0.3s;
 }
 </style>

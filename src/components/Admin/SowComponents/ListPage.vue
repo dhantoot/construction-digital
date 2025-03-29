@@ -1,30 +1,22 @@
 <template>
-  <q-card class="q-ma-sm adminCard round-panel">
+  <q-card class="round-panel full-width" :class="{
+      'no-shadow': $q.dark.isActive
+    }">
     <q-card-section>
-      <div class="text-h6">S-CURVE</div>
-      <q-option-group v-model="group" :options="options" color="green" type="toggle" v-if="false" />
-      <div class="row full-width justify-left q-pt-lg">
-        <div class="">
-          <q-btn :disable="!selected.length" flat label="View" icon="las la-eye" color="transparent"
-            class="text-capitalize round-btn" text-color="cancel" @click="gotoTemplateDetail(selected[0].id)">
-          </q-btn>
-        </div>
-        <div class="">
-          <q-btn :disable="!selected.length" flat label="Delete" icon="las la-trash-alt" color="transparent"
-            class="text-capitalize round-btn" text-color="negative" @click="
-              openConfirmDialog(
-                'Would you like to delete this account?',
-                'deleteAccount'
-              )
-              ">
-          </q-btn>
-        </div>
-        <div class="">
-          <q-btn @click="createTemplate" flat label="New" icon="las la-plus" color="transparent"
-            class="text-capitalize round-btn" text-color="primary">
-          </q-btn>
-        </div>
-      </div>
+      <q-btn :disable="!selected.length" flat label="View" icon="las la-eye" color="transparent"
+        class="text-capitalize round-btn" text-color="cancel" @click="gotoTemplateDetail(selected[0].id)">
+      </q-btn>
+      <q-btn :disable="!selected.length" flat label="Delete" icon="las la-trash-alt" color="transparent"
+        class="text-capitalize round-btn" text-color="negative" @click="
+          openConfirmDialog(
+            'Would you like to delete this account?',
+            'deleteAccount'
+          )
+          ">
+      </q-btn>
+      <q-btn @click="createTemplate" flat label="New" icon="las la-plus" color="transparent"
+        class="text-capitalize round-btn" text-color="green">
+      </q-btn>
     </q-card-section>
     <q-table no-data-label="I didn't find anything for you" class="q-mb-sm q-mr-sm" row-key="id" selection="single"
       v-model:selected="selected" :selection-options="selectionOptions" :rows="rows" :columns="columns"

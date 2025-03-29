@@ -53,6 +53,7 @@
             </a>
             <a href="javascript:void(0)" class="text-warning" @click="this.$router.push('/manage-accounts')"> Manage
               accounts </a>
+            <a href="javascript:void(0)" class="text-warning" @click="this.$router.push('/manage-reports')"> Reports </a>
             <a href="javascript:void(0)" class="text-warning" @click="this.$router.push('/whats-new')"> Explore </a>
           </div>
           <q-space v-if="mainStore?.adminUser?.uid"/>

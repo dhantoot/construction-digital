@@ -1,5 +1,5 @@
 <template>
-    <div class="content p-5">
+    <div class="container p-5">
         <div class="row gap-10">
             <div class="column col-auto pt-2">
                 <slot name="icon"/>
@@ -21,7 +21,7 @@ const componentName = ref('Alertbox')
 
 </script> -->
 <style lang="scss" scoped>
-.content {
+.container {
     background-color: #daf8e1;
     border-radius: 14px;
     border: 1px solid #21ba45;

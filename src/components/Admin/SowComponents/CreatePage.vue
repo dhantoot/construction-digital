@@ -1,89 +1,32 @@
 <template>
-  <div class="row full-width q-px-lg">
-    <q-card class="q-mt-lg full-width round-btn adminCard">
+  <div class="row full-width full-height">
+    <q-card class="no-shadow round-panel full-width">
       <q-card-section>
-        <div class="row items-center justify-between">
-        <div class="text-h6">Create</div>
-        <q-btn
-            dense
-            flat
-            icon="las la-arrow-left"
-            padding="sm lg"
-            label="Back"
-            class="text-capitalize round-btn"
-            @click="$router.push('/manage-sow')"
-          >
+        <div class="row justify-between q-gutter-x-sm q-gutter-y-sm q-gutter-y-sm q-mb-lg">
+          <q-input filled :dense="true" v-model="title" placeholder="Template Name"
+            :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''" />
+          <q-btn dense flat icon="las la-arrow-left" padding="sm lg" label="Back" class="text-capitalize round-btn"
+            @click="$router.push('/manage-sow')">
             <template v-slot:loading>
               <q-spinner-ios />
             </template>
-        </q-btn>
-    </div>
-        <div
-          class="row justify-between q-gutter-x-sm q-gutter-y-sm q-gutter-y-sm q-mb-lg q-mt-lg"
-        >
-          <q-input
-            filled
-            :dense="true"
-            v-model="title"
-            placeholder="Template Name"
-            :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
-          />
+          </q-btn>
         </div>
-        <div
-          class="row justify-between items-center q-gutter-x-lg q-gutter-y-lg q-mb-xl"
-        >
-          <q-input
-            filled
-            :dense="true"
-            v-model="section"
-            placeholder="Section"
-            :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
-          />
-          <q-input
-            filled
-            :dense="true"
-            v-model="sowCategory"
-            placeholder="Category"
-            :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
-          />
-          <q-input
-            filled
-            :dense="true"
-            v-model="sowDescription"
-            placeholder="Description"
-            :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
-          />
-          <q-input
-            filled
-            :dense="true"
-            v-model="contractPrice"
-            placeholder="Contract Price"
-            :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
-          />
-          <q-input
-            filled
-            :dense="true"
-            v-model="weight"
-            placeholder="Weigth"
-            :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
-          />
-          <q-input
-            filled
-            :dense="true"
-            v-model="duration"
-            placeholder="Duration in Days"
-            :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
-          />
-          <q-btn
-            icon="las la-plus"
-            padding="sm xl"
-            color="primary"
-            label="Add"
-            class="text-capitalize bg-info round-btn"
-            @click="addToList"
-            :loading="loadingSubmit"
-            :disable="
-              loadingSubmit ||
+        <div class="row justify-between items-center q-gutter-x-lg q-gutter-y-lg q-mb-xl">
+          <q-input filled :dense="true" v-model="section" placeholder="Section"
+            :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''" />
+          <q-input filled :dense="true" v-model="sowCategory" placeholder="Category"
+            :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''" />
+          <q-input filled :dense="true" v-model="sowDescription" placeholder="Description"
+            :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''" />
+          <q-input filled :dense="true" v-model="contractPrice" placeholder="Contract Price"
+            :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''" />
+          <q-input filled :dense="true" v-model="weight" placeholder="Weigth"
+            :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''" />
+          <q-input filled :dense="true" v-model="duration" placeholder="Duration in Days"
+            :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''" />
+          <q-btn icon="las la-plus" padding="sm xl" color="primary" label="Add"
+            class="text-capitalize bg-info round-btn" @click="addToList" :loading="loadingSubmit" :disable="loadingSubmit ||
               !title ||
               !section ||
               !sowCategory ||
@@ -91,20 +34,15 @@
               !contractPrice ||
               !weight ||
               !duration
-            "
-          >
+              ">
             <template v-slot:loading>
               <q-spinner-ios />
             </template>
           </q-btn>
         </div>
         <div class="q-gutter-y-sm">
-          <div
-            class="row justify-between"
-            style="height: 50px; border-radius: 8px; border: 1px dotted black"
-            v-for="item of rows"
-            :key="item"
-          >
+          <div class="row justify-between" style="height: 50px; border-radius: 8px; border: 1px dotted black"
+            v-for="item of rows" :key="item">
             <div class="col-2">
               <div class="row full-height justify-center items-center">
                 <div>{{ item.section }}</div>
@@ -137,19 +75,12 @@
             </div>
           </div>
           <div class="row justify-end">
-            <q-btn
-                v-if="rows.length > 0"
-                icon="las la-save"
-                padding="sm xl"
-                color="primary"
-                label="Save"
-                class="text-capitalize bg-info round-btn"
-                @click="saveTemplate"
-                :loading="loadingSubmit"
-                :disable="loadingSubmit || rows.length < 1">
-                <template v-slot:loading>
-                    <q-spinner-ios />
-                </template>
+            <q-btn v-if="rows.length > 0" icon="las la-save" padding="sm xl" color="primary" label="Save"
+              class="text-capitalize bg-info round-btn" @click="saveTemplate" :loading="loadingSubmit"
+              :disable="loadingSubmit || rows.length < 1">
+              <template v-slot:loading>
+                <q-spinner-ios />
+              </template>
             </q-btn>
           </div>
         </div>
@@ -162,34 +93,15 @@
   <q-dialog v-model="confirm" persistent>
     <q-card>
       <q-card-section class="row items-center">
-        <q-avatar
-          size="sm"
-          icon="las la-exclamation"
-          color="cancel"
-          text-color="white"
-        />
+        <q-avatar size="sm" icon="las la-exclamation" color="cancel" text-color="white" />
         <span class="q-ml-sm text-h6">{{ confirmMsg }}</span>
       </q-card-section>
 
       <q-card-actions align="right" class="q-pa-md">
-        <q-btn
-          padding="sm xl"
-          icon="las la-times"
-          class="round-btn text-capitalize"
-          label="Close"
-          color="negative"
-          v-close-popup
-        />
-        <q-btn
-          padding="sm xl"
-          icon="las la-check"
-          class="round-btn text-capitalize"
-          label="Confirm"
-          color="primary"
-          @click="callConfirmFn()"
-          :loading="actionAccountLoader"
-          :disable="actionAccountLoader"
-        >
+        <q-btn padding="sm xl" icon="las la-times" class="round-btn text-capitalize" label="Close" color="negative"
+          v-close-popup />
+        <q-btn padding="sm xl" icon="las la-check" class="round-btn text-capitalize" label="Confirm" color="primary"
+          @click="callConfirmFn()" :loading="actionAccountLoader" :disable="actionAccountLoader">
           <template v-slot:loading>
             <q-spinner-ios />
           </template>

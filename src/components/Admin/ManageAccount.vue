@@ -1,73 +1,41 @@
 <template>
-    <div class="text-center text-h6 text-bold text-white q-my-sm">Manage Accounts here</div>
-    <div class="row" :class="{
-      'q-px-lg': $q.screen.gt.xs,
-      'q-px-sm': $q.screen.xs
-    }">
-    <div class="full-width">
-      <q-card class="q-ma-sm adminCard round-panel">
+  <div class="row hide-scrollbar" style="height: 94.5vh;">
+    <div class="row full-width full-height q-pa-sm">
+      <q-card class="no-shadow round-panel full-width">
         <q-card-section>
-          <div class="text-h6">Account list</div>
           <div class="row full-width justify-left q-pt-lg">
             <div class="" v-if="selected[0]">
-              <q-btn
-                flat
-                :label="selected[0].isActive ? 'Deactivate' : 'Activate'"
-                icon="las la-power-off"
-                color="transparent"
-                class="text-capitalize round-btn"
-                text-color="cancel"
+              <q-btn flat :label="selected[0].isActive ? 'Deactivate' : 'Activate'" icon="las la-power-off"
+                color="transparent" class="text-capitalize round-btn" text-color="cancel"
                 @click="openConfirmDialog(`Would you like to ${selected[0].isActive ? 'Deactivate' : 'Activate'} this account?`, 'updateAccountStatus')">
               </q-btn>
             </div>
             <div class="" v-if="selected[0]">
-              <q-btn
-                flat
-                label="Delete"
-                icon="las la-trash-alt"
-                color="transparent"
-                class="text-capitalize round-btn"
+              <q-btn flat label="Delete" icon="las la-trash-alt" color="transparent" class="text-capitalize round-btn"
                 text-color="negative"
                 @click="openConfirmDialog('Would you like to delete this account?', 'deleteAccount')">
               </q-btn>
             </div>
             <div class="">
-              <q-btn
-                flat
-                label="New"
-                icon="las la-user-tie"
-                color="transparent"
-                class="text-capitalize round-btn"
-                text-color="primary">
+              <q-btn flat label="New" icon="las la-user-tie" class="text-capitalize round-btn" text-color="green">
               </q-btn>
             </div>
-        </div>
+          </div>
         </q-card-section>
-        <q-table
-          dense
-          no-data-label="I didn't find anything for you"
-          class="q-mb-sm q-mr-sm"
-          row-key="uid"
-          selection="single"
-          v-model:selected="selected"
-          :selection-options="selectionOptions"
-          :rows="rows"
-          :columns="columns"
-          :loading="rowLoading"
-          :visible-columns="visibleColumns"
-          :rows-per-page-options="[10]"
-        >
+        <q-table dense no-data-label="I didn't find anything for you" class="q-mb-sm q-mr-sm" row-key="uid"
+          selection="single" v-model:selected="selected" :selection-options="selectionOptions" :rows="rows"
+          :columns="columns" :loading="rowLoading" :visible-columns="visibleColumns" :rows-per-page-options="[10]">
           <template v-slot:body="props">
             <q-tr :props="props" :selected="props.selected">
               <q-td key="uid" :props="props">
                 {{ props.row.uid }}
               </q-td>
               <q-td auto-width>
-                  <q-checkbox v-model="props.selected" @update:model-value="setSelected"/>
-                </q-td>
+                <q-checkbox v-model="props.selected" @update:model-value="setSelected" />
+              </q-td>
               <q-td key="avatar" :props="props">
                 <q-avatar rounded>
-                  <img :src="`${props.row.avatar}`"/>
+                  <img :src="`${props.row.avatar}`" />
                 </q-avatar>
               </q-td>
               <q-td key="email" :props="props">
@@ -80,18 +48,11 @@
                 {{ props.row.lastName }}
               </q-td>
               <q-td key="isActive" :props="props">
-                <q-chip
-                  square
-                  class="q-pl-sm full-width"
-                  :class="{
-                    'full-width q-px-md': $q.screen.lt.md
-                  }"
-                >
-                  <q-avatar
-                    :icon="getStatusIcon(props.row.isActive)"
-                    :color="getStatusColor(props.row.isActive)"
-                    text-color="white"
-                  />
+                <q-chip square class="q-pl-sm full-width" :class="{
+                  'full-width q-px-md': $q.screen.lt.md
+                }">
+                  <q-avatar :icon="getStatusIcon(props.row.isActive)" :color="getStatusColor(props.row.isActive)"
+                    text-color="white" />
                   {{ props.row.isActive ? 'Active' : 'Inactive' }}
                 </q-chip>
               </q-td>
@@ -108,29 +69,32 @@
           </template>
         </q-table>
         <q-inner-loading :showing="rowLoading">
-          <q-spinner-ios size="50px" color="secondary"/>
+          <q-spinner-ios size="50px" color="secondary" />
         </q-inner-loading>
-    </q-card>
-    </div>
-    </div>
-    <q-dialog v-model="confirm" persistent>
-      <q-card>
-        <q-card-section class="row items-center">
-          <q-avatar size="sm" icon="las la-exclamation" color="cancel" text-color="white" />
-          <span class="q-ml-sm text-h6">{{ confirmMsg }}</span>
-        </q-card-section>
-
-        <q-card-actions align="right" class="q-pa-md">
-          <q-btn padding="sm xl" icon="las la-times" class="round-btn text-capitalize" label="Close" color="negative" v-close-popup/>
-          <q-btn padding="sm xl" icon="las la-check" class="round-btn text-capitalize" label="Confirm" color="primary" @click="callConfirmFn()" :loading="actionAccountLoader" :disable="actionAccountLoader">
-            <template v-slot:loading>
-              <q-spinner-ios/>
-            </template>
-          </q-btn>
-        </q-card-actions>
       </q-card>
-    </q-dialog>
-  </template>
+    </div>
+  </div>
+
+  <q-dialog v-model="confirm" persistent>
+    <q-card>
+      <q-card-section class="row items-center">
+        <q-avatar size="sm" icon="las la-exclamation" color="cancel" text-color="white" />
+        <span class="q-ml-sm text-h6">{{ confirmMsg }}</span>
+      </q-card-section>
+
+      <q-card-actions align="right" class="q-pa-md">
+        <q-btn padding="sm xl" icon="las la-times" class="round-btn text-capitalize" label="Close" color="negative"
+          v-close-popup />
+        <q-btn padding="sm xl" icon="las la-check" class="round-btn text-capitalize" label="Confirm" color="primary"
+          @click="callConfirmFn()" :loading="actionAccountLoader" :disable="actionAccountLoader">
+          <template v-slot:loading>
+            <q-spinner-ios />
+          </template>
+        </q-btn>
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
+</template>
 <script>
 import { ref } from 'vue'
 
@@ -138,7 +102,6 @@ import { ref } from 'vue'
 // you are using in quasar.config file > animations.
 // Alternatively, if using UMD, load animate.css from CDN.
 export default {
-  title: 'ProjectList',
   setup () {
     const visible = ref(false)
     const question = ref('')
