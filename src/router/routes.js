@@ -90,11 +90,12 @@ const routes = [
   },
   {
     path: '/admin',
-    component: () => import('layouts/AdminLayout.vue'),
+    component: () => import('layouts/NewDashboard.vue'),
     redirect: 'admin-portal',
     children: [
       {
         path: '/admin-portal',
+        name: 'Dashboard',
         component: () => import('src/components/Admin/IndexPage.vue')
       },
       {
@@ -103,33 +104,45 @@ const routes = [
         children: [
           {
             path: '',
+            name: 'Scope of Works',
             component: () => import('src/components/Admin/SowComponents/ListPage.vue')
           },
           {
             path: '/manage-sow/create',
+            name: 'Scope of Works - Create',
             component: () => import('src/components/Admin/SowComponents/CreatePage.vue')
           },
           {
             path: '/manage-sow/:templateId/detail',
+            name: 'Scope of Works - Detail',
             component: () => import('src/components/Admin/SowComponents/DetailPage.vue')
           }
         ]
       },
       {
         path: '/manage-projects',
+        name: 'Projects',
         component: () => import('src/components/Admin/ManageProject.vue')
       },
       {
         path: '/manage-accounts',
+        name: 'Accounts',
         component: () => import('src/components/Admin/ManageAccount.vue')
       },
       {
         path: '/manage-invites',
+        name: 'Invites',
         component: () => import('src/components/Admin/ManageInvites.vue')
       },
       {
         path: '/whats-new',
+        name: 'Trends',
         component: () => import('src/components/Admin/WhatsNew.vue')
+      },
+      {
+        path: '/manage-reports',
+        name: 'Reports',
+        component: () => import('src/components/Admin/ReportsView.vue')
       }
     ]
   },

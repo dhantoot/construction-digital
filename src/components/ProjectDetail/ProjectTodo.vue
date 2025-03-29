@@ -54,13 +54,13 @@
         </q-item-section>
         <q-item-section side>
           <div class="row items-center">
-            <q-toggle v-model="item.isArchived" :val="item.isArchived" :class="{
+            <q-toggle dense v-model="item.isArchived" :val="item.isArchived" :class="{
               'cursor-not-allowed': !item.isCompleted
             }" checked-icon="clear" unchecked-icon="check" color="negative">
               <template v-slot:label>
                 {{ item.isCompleted ? 'Archive' : '' }}
               </template>
-            </q-toggle>
+            </q-toggle>&nbsp;
             <q-btn rounded dense icon="las la-edit" flat :class="item.timeline ? 'text-primary' : 'text-accent'" @click="viewTodoDetail(item)" />
           </div>
         </q-item-section>

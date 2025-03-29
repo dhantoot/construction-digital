@@ -1,11 +1,7 @@
 <template>
-    <div class="text-center text-h6 text-bold text-white q-my-sm">Scope of Work Template</div>
-    <div class="row" :class="{
-    'q-px-lg': $q.screen.gt.xs,
-    'q-px-sm': $q.screen.xs
-    }">
-    <div class="full-width">
-      <router-view/>
+  <div class="row hide-scrollbar" style="height: 94.5vh;">
+    <div class="row full-width full-height q-pa-sm">
+      <router-view />
     </div>
   </div>
 </template>
