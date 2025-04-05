@@ -136,3 +136,7 @@ firebase projects:list
 firebase deploy --only functions:getPlaces
 ```
 
+## FullCalendar Link
+```bash
+https://fullcalendar.io/docs/vue
+```

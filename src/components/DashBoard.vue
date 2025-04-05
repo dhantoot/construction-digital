@@ -1,5 +1,5 @@
 <template>
-  <!-- <div v-if="false" class="row">
+  <div v-if="false" class="row">
     <div class="full-width">
       <q-card class="m-10">
         <q-card-section class="p-0">
@@ -12,29 +12,36 @@
         </q-card-section>
       </q-card>
     </div>
-  </div> -->
-  <div class="row">
-    <div class="full-width">
-      <q-card class="m-10">
-        <q-card-section class="p-0">
-          <apexchart
-            type="line"
-            height="350"
-            :options="projectTaskCompleted"
-            :series="projects"
-          ></apexchart>
-        </q-card-section>
-      </q-card>
-    </div>
   </div>
-  <div class="row justify-between">
+
+  <div>
+    <div v-for="item of projectListMapped.filter(e => e.groupedData)" :key="item" class="row">
+      <div class="full-width">
+        <q-card class="m-10">
+          <q-card-section>{{ item.title }}</q-card-section>
+          <q-card-section class="p-0">
+            <apexchart
+              type="line"
+              height="350"
+              :options="item.projectTaskCompleted"
+              :series="item.projectTaskCompletedValue"
+            ></apexchart>
+          </q-card-section>
+        </q-card>
+      </div>
+    </div>
+    <q-inner-loading :showing="getProjectsLoader" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em">
+      <q-spinner-ios size="50px" color="secondary"/>
+    </q-inner-loading>
+  </div>
+  <div v-if="true" class="row justify-between">
     <div class="col">
       <q-card class="m-10">
         <q-card-section>
           <div class="column">
             <div class="">
-              <div class="text-weight-bold text-red">UV</div>
-              <div>Strong</div>
+              <div class="text-weight-bold text-red">Work Due</div>
+              <div>Behind Schedule</div>
             </div>
             <div class="row justify-end">
               <!-- <apexchart type="radialBar" height="70" :options="chartOptions5" :series="series5"></apexchart> -->
@@ -61,8 +68,8 @@
         <q-card-section>
           <div class="column">
             <div class="">
-              <div class="text-weight-bold text-amber">Humidity</div>
-              <div>Weak</div>
+              <div class="text-weight-bold text-amber">Planned Works</div>
+              <div>To be done</div>
             </div>
             <div class="row justify-end">
               <q-knob
@@ -83,14 +90,14 @@
       </q-card>
     </div>
   </div>
-  <div class="row justify-between">
+  <div v-if="true" class="row justify-between">
     <div class="col">
       <q-card class="m-10">
         <q-card-section>
           <div class="column">
             <div class="">
-              <div class="text-weight-bold text-blue">Progress</div>
-              <div>Over time</div>
+              <div class="text-weight-bold text-blue">Actual Work</div>
+              <div>Timely Done</div>
             </div>
             <div class="row justify-end">
               <q-knob
@@ -115,8 +122,8 @@
         <q-card-section>
           <div class="column">
             <div class="">
-              <div class="text-weight-bold text-green">Real Feel</div>
-              <div>Temperature</div>
+              <div class="text-weight-bold text-green">Work Done</div>
+              <div>Ahead of time</div>
             </div>
             <div class="row justify-end">
               <q-knob
@@ -137,7 +144,7 @@
       </q-card>
     </div>
   </div>
-  <div class="row">
+  <div v-if="false" class="row">
     <div class="full-width">
       <q-card class="m-10">
         <q-card-section class="p-0">
@@ -156,6 +163,7 @@
 <script>
 import { ref } from 'vue'
 import moment from 'moment'
+import { date } from 'quasar'
 
 export default {
   title: 'Dashboard',
@@ -164,6 +172,11 @@ export default {
     const visible2 = ref(false)
 
     return {
+      getProjectsLoader: ref(false),
+      loadingtodoList: ref(false),
+      projectList: ref([]),
+      projectListMapped: ref([]),
+      todoList: ref([]),
       series1: [
         {
           data: [
@@ -501,20 +514,7 @@ export default {
           }
         }
       },
-      projects: [
-        {
-          name: 'Big House',
-          data: [45, 52, 38, 24, 33, 26, 21, 20, 6, 8, 15, 10]
-        },
-        {
-          name: 'Dhans Place',
-          data: [35, 41, 62, 42, 13, 18, 29, 37, 36, 51, 32, 35]
-        },
-        {
-          name: 'Cedoys Mansion',
-          data: [87, 57, 74, 99, 75, 38, 62, 47, 82, 56, 45, 47]
-        }
-      ],
+      projects: [],
       projectTaskCompleted: {
         chart: {
           height: 350,
@@ -572,34 +572,21 @@ export default {
           }
         },
         xaxis: {
-          categories: [
-            '01 Jan',
-            '02 Jan',
-            '03 Jan',
-            '04 Jan',
-            '05 Jan',
-            '06 Jan',
-            '07 Jan',
-            '08 Jan',
-            '09 Jan',
-            '10 Jan',
-            '11 Jan',
-            '12 Jan'
-          ]
+          categories: []
         },
         tooltip: {
           y: [
             {
               title: {
                 formatter: function (val) {
-                  return val + ' (mins)'
+                  return val + ' (count)'
                 }
               }
             },
             {
               title: {
                 formatter: function (val) {
-                  return val + ' per session'
+                  return val + ' (count)'
                 }
               }
             },
@@ -747,6 +734,8 @@ export default {
     // this.$emit('showHeader', true, [])
     this.showTextLoading()
     this.showTextLoading2()
+    this.getTodoList()
+    this.getProjects()
   },
   beforeUpdate () {
     // console.log('beforeUpdate')
@@ -776,6 +765,125 @@ export default {
       setTimeout(() => {
         this.visible2 = false
       }, ms)
+    },
+    async getProjects () {
+      this.getProjectsLoader = true
+      const projects = this.$fbref(this.$fbdb, 'projects')
+      this.$fbonValue(projects, (snapshot) => {
+        const data = snapshot.val()
+        if (this.$isFalsyString(data)) {
+          this.projectList = []
+          return
+        }
+        const data_ = Object.values(data)
+        this.projectList = data_
+        this.projectListMapped = data_.map(e => (
+          {
+            id: e.id,
+            title: e.title,
+            isActivated: e.isActivated
+          }
+        )).filter(e => e.isActivated)
+        this.projectListMapped.forEach(async (project) => {
+          if (!project) {
+            return false
+          }
+          this.getTodoList(project)
+        })
+        this.getProjectsLoader = false
+      })
+    },
+    async getTodoList (project) {
+      if (!project) {
+        return
+      }
+      const {
+        id: projectId
+      } = project
+      const todo = this.$fbref(this.$fbdb, `task/${projectId}`)
+      this.$fbonValue(todo, (snapshot) => {
+        const data = snapshot.val()
+        if (this.$isFalsyString(data)) {
+          return []
+        }
+        const data_ = Object.values(data)
+        this.sortList(data_, 'section')
+        const stats = this.todoList.map((E) => [
+          E.timeline?.from,
+          E.timeline?.to,
+          E.isCompleted,
+          E.todoDesc
+        ])
+        const groupedData = stats.reduce((list, item) => {
+          const dueDate = item[1]
+          if (!list[dueDate]) {
+            list[dueDate] = []
+          }
+          list[dueDate].push(item)
+          return list
+        }, {})
+        project.groupedData = groupedData || []
+        if (groupedData) {
+          const tmp = []
+          for (const key in project.groupedData) {
+            if (key !== 'undefined') {
+              tmp.push({
+                key,
+                value: project.groupedData[key]
+              })
+            }
+          }
+          const sortedGroupedData = tmp.sort((a, b) => {
+            const formattedA = date.formatDate(a.key, 'YYYY-MM-DD')
+            const formattedB = date.formatDate(b.key, 'YYYY-MM-DD')
+            return formattedA.localeCompare(formattedB)
+          })
+          const xAxisBottomLabels = sortedGroupedData.map(e => {
+            return date.formatDate(e.key, 'MMM DD, YYYY')
+          })
+          project.projectTaskCompleted = { ...this.projectTaskCompleted }
+          Object.assign(project.projectTaskCompleted.xaxis, {
+            categories: xAxisBottomLabels
+          })
+          const obj = {
+            name: 'Target Work',
+            data: []
+          }
+          const completed = {
+            name: 'Completed',
+            data: []
+          }
+          for (const item of sortedGroupedData) {
+            obj.data.push(item.value.length || 0)
+            completed.data.push(item.value.filter(e => e[2] === true).length) // TODO
+          }
+          project.projectTaskCompletedValue = [obj, completed]
+        }
+      })
+    },
+    async sortList (arr, field) {
+      if (!arr || arr.length < 1) {
+        return
+      }
+      this.todoList = arr.filter(e => !this.$isFalsyString(e.section)).sort((a, b) => {
+        const nameA = a[field].toUpperCase() // ignore upper and lowercase
+        const nameB = b[field].toUpperCase()
+        if (nameA < nameB) {
+          return -1
+        }
+        if (nameA > nameB) {
+          return 1
+        }
+
+        // names must be equal
+        return 0
+      })
+      this.todoList.forEach((item) => {
+        item.todoTitle = item.sowCategory
+        item.todoDesc = item.sowDescription
+        item.isArchived = item?.isArchived || false
+        item.isCompleted = item?.isCompleted || false
+      })
     }
   }
 }

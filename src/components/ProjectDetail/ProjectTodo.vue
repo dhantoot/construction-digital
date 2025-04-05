@@ -212,6 +212,22 @@ export default {
         this.sortList(data_, 'section')
         // this.todoList = data_
         console.log('this.todoList', this.todoList)
+        const stats = this.todoList.map((E) => [
+          E.timeline?.from,
+          E.timeline?.to,
+          E.isCompleted,
+          E.todoDesc
+        ])
+        console.log('stats', stats)
+        const groupedData = stats.reduce((list, item) => {
+          const dueDate = item[1]
+          if (!list[dueDate]) {
+            list[dueDate] = []
+          }
+          list[dueDate].push(item)
+          return list
+        }, {})
+        console.log('groupedData->', groupedData)
         this.selectedMember = this.todoList
           .filter((e) => e.isCompleted)
           .map((x) => x.id)

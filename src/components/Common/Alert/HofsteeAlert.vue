@@ -1,29 +1,80 @@
 <template>
-    <div class="container p-5">
-        <div class="row gap-10">
-            <div class="column col-auto pt-2">
+    <div class="p-5" :style="style">
+        <div class="row gap-10 items-center">
+            <div class="column col-auto justify-center">
                 <slot name="icon"/>
             </div>
-            <div class="column width-90" style="width:94%">
+            <div class="column width-80">
                 <div><slot name="header"/></div>
                 <div><slot name="body"/></div>
             </div>
         </div>
-        <div class="row full-width justify-end pr-5 gap-10 pt-10">
-            <slot name="bottom"/>
-        </div>
     </div>
 </template>
 
-<!-- <script setup>
+<script>
 import { ref } from 'vue'
-const componentName = ref('Alertbox')
+import { useQuasar } from 'quasar'
 
-</script> -->
-<style lang="scss" scoped>
-.container {
-    background-color: #daf8e1;
-    border-radius: 14px;
-    border: 1px solid #21ba45;
+const theme = {
+  cancel: '#ffa500',
+  negative: '#82401D',
+  secondary: '#273C41',
+  primary: '#14252C',
+  info: '#45575B',
+  accent: '#f0f2f5',
+  warning: '#CCD0CF',
+  positive: '#A3A39B',
+  green: '#008000',
+  red: '#ff0000'
 }
+
+export default {
+  props: {
+    backgroundColor: {
+      type: String,
+      required: false
+    },
+    borderRadius: {
+      type: String,
+      required: false
+    },
+    borderColor: {
+      type: String,
+      required: false
+    },
+    border: {
+      type: String,
+      required: false
+    },
+    height: {
+      type: String,
+      required: false
+    }
+  },
+  setup (props) {
+    const $q = useQuasar()
+    console.log($q)
+    console.log('props', props)
+    const opacityAlphaChannel = 80 // = 0.5
+    const style = ref({
+      'background-color': props.backgroundColor,
+      'border-radius': props.borderRadius,
+      border: `${props.border} ${Object.keys(theme).includes(props.borderColor) ? theme[props.borderColor] : props.borderColor}${opacityAlphaChannel}`,
+      height: props.height || '250px'
+    })
+
+    console.log('end', style)
+
+    return {
+      style
+    }
+  },
+  mounted () {
+    console.log('-->', this.progress)
+  }
+}
+</script>
+<style lang="scss" scoped>
+
 </style>
