@@ -77,22 +77,24 @@ body {
 }
 
 .q-toggle__track {
-  height: 22px;
-  border-radius: 14px;
-  margin-top: -3px;
+ height: 24px;
+ border-radius: 13px;
+ margin-top: -6px;
+ width: 37px;
 }
 
 .q-toggle__thumb {
-  height: 22px;
-  width: 22px;
+  height: 18px;
+  width: 18px;
 }
 
-.q-toggle__inner .q-toggle__inner--truthy {
-  font-size: 40px;
-  width: 40px;
-  min-width: 2em;
-  height: 1em;
-  padding: 0.35em 0.4em;
+.q-toggle--dense .q-toggle__inner--truthy .q-toggle__thumb {
+  left: 0.4em;
+}
+
+.q-toggle--dense .q-toggle__thumb {
+ top: 0;
+ left: 2.5px;
 }
 
 .q-field--filled .q-field__control {
@@ -146,7 +148,7 @@ body {
 
 /* Customize scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 5px;
   height: 10px;
 }
 
@@ -163,6 +165,14 @@ body {
 .q-drawer--mini {
   width: 60px;
 }
+
+// .fc-theme-standard td, .fc-theme-standard th {
+//   border: .1px solid rgba(255, 255, 255, 0.14)!important;
+// }
+
+// .fc-theme-standard .fc-scrollgrid {
+//   border: transparent;
+// }
 
 @for $i from 1 through 100 {
   .m-#{$i} {
@@ -237,10 +247,22 @@ $weights: 100, 200, 300, 400, 500, 600, 700, 800, 900;
     .gap-#{$i} {
         gap: #{$i}px;
     }
+
+    .height-#{$i} {
+      height: #{$i}#{'%'};
+    }
+}
+
+.dbg {
+  border: .1px dashed rgb(184, 58, 58);
 }
 
 .debug {
-    border: .1px dashed rgb(255, 127, 80, .5);
+  border: .1px dashed rgba(4, 250, 230, 0.5);
+}
+
+.debug1 {
+  border: .1px dashed rgb(255, 127, 80, .5);
 }
 
 .debugcontainer {

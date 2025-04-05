@@ -7,22 +7,28 @@
     <q-header class="text-white" :class="{
       'bg-black': $q.dark.isActive,
       'bg-white text-black': !$q.dark.isActive
-    }" height-hint="98" style="border-bottom: .2px solid #3a3a3a;">
+    }" height-hint="98" :style="{
+        'border-bottom': $q.dark.isActive ? '.1px solid #3a3a3a' : '.1px solid rgb(198 198 198 / 50%)'
+      }">
       <q-toolbar>
         <q-toolbar-title>
-          {{ routeName }}
+          {{ authUser ? routeName : 'Login' }}
         </q-toolbar-title>
-        <q-toggle dense v-model="isDark" checked-icon="check" color="grey" unchecked-icon="clear" label=""
+        <q-toggle dense v-model="isDark" checked-icon="las la-moon" color="grey" unchecked-icon="las la-sun" label=""
           @update:model-value="toggleMode" />
         <q-btn v-if="!mainStore?.adminUser?.uid" flat round :dense="true" icon="las la-exchange-alt" class="round-btn" to="/login" />
       </q-toolbar>
     </q-header>
 
     <q-drawer v-if="mainStore?.adminUser?.uid" v-model="drawer" show-if-above :mini="!drawer || miniState" @click.capture="drawerClick"
-      class="hide-scrollbar" :class="{
+      class="hide-scrollbar"
+      :class="{
         'bg-black': $q.dark.isActive,
         'bg-white': !$q.dark.isActive
-      }" style="border-right: .1px solid #3a3a3a;">
+      }"
+      :style="{
+        'border-right': $q.dark.isActive ? '.1px solid #3a3a3a' : '.1px solid rgb(198 198 198 / 50%)'
+      }">
       <template v-slot:mini>
         <div class="column justify-between full-height full-width">
           <div>

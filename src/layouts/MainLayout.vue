@@ -230,9 +230,7 @@ export default {
 <style lang="scss" scoped>
 .bgcover {
   background-image: url('/bg-1.jpeg'); /** bg-17 bg-23 */
-  // height: 500px; /* Add height to make the div visible */
   background-size: cover; /* Cover the entire div with the image */
-  // background-position: center; /* Center the image */
   background-repeat: no-repeat; /* Prevent the image from repeating */
 }
 </style>
