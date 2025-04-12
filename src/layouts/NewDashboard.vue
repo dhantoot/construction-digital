@@ -12,7 +12,7 @@
       }">
       <q-toolbar>
         <q-toolbar-title>
-          {{ authUser ? routeName : 'Login' }}
+          {{ authUser ? routeName : 'Login' }} {{ $q.screen.lt.sm }}
         </q-toolbar-title>
         <q-toggle dense v-model="isDark" checked-icon="las la-moon" color="grey" unchecked-icon="las la-sun" label=""
           @update:model-value="toggleMode" />
@@ -20,7 +20,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-if="mainStore?.adminUser?.uid" v-model="drawer" show-if-above :mini="!drawer || miniState" @click.capture="drawerClick"
+    <q-drawer :v-if="mainStore?.adminUser?.uid && $q.screen.gt.xs" v-model="drawer" :show-if-above="$q.screen.gt.xs" :mini="!drawer || miniState" @click.capture="drawerClick"
       class="hide-scrollbar"
       :class="{
         'bg-black': $q.dark.isActive,
@@ -34,23 +34,23 @@
           <div>
             <div class="row items-center justify-center pt-4">
               <div class="py-5">
-                <q-btn to="/admin-portal" square icon="las la-play" class="q-px-sm text-red"
+                <q-btn to="/admin-portal" flat icon="las la-play" class="q-px-sm text-red"
                   style="border-radius: 8px;" />
               </div>
               <div class="py-5 mt-10">
-                <q-btn to="/manage-sow" square icon="las la-tools" class="q-px-sm text-grey" style="border-radius: 8px;"
+                <q-btn to="/manage-sow" flat icon="las la-tools" class="q-px-sm text-grey" style="border-radius: 8px;"
                   :class="{
                     'text-black': !$q.dark.isActive
                   }" />
               </div>
               <div class="py-5">
-                <q-btn to="/manage-projects" square icon="las la-folder-open" class="q-px-sm text-grey"
+                <q-btn to="/manage-projects" flat icon="las la-folder-open" class="q-px-sm text-grey"
                   style="border-radius: 8px;" :class="{
                     'text-black': !$q.dark.isActive
                   }" />
               </div>
               <div class="py-5">
-                <q-btn to="/manage-invites" square icon="lab la-telegram-plane" class="q-px-sm text-grey"
+                <q-btn to="/manage-invites" flat icon="lab la-telegram-plane" class="q-px-sm text-grey"
                   style="border-radius: 8px;" :class="{
                     'text-black': !$q.dark.isActive
                   }" />
@@ -59,19 +59,19 @@
                 <q-separator style="border-bottom: .1px solid #3a3a3a;" />
               </div>
               <div class="py-5">
-                <q-btn to="/manage-accounts" square icon="las la-user-tag" class="q-px-sm text-grey"
+                <q-btn to="/manage-accounts" flat icon="las la-user-tag" class="q-px-sm text-grey"
                   style="border-radius: 8px;" :class="{
                     'text-black': !$q.dark.isActive
                   }" />
               </div>
               <div class="py-5">
-                <q-btn to="/whats-new" square icon="las la-bell" class="q-px-sm text-grey" style="border-radius: 8px;"
+                <q-btn to="/whats-new" flat icon="las la-bell" class="q-px-sm text-grey" style="border-radius: 8px;"
                   :class="{
                     'text-black': !$q.dark.isActive
                   }" />
               </div>
               <div class="py-5">
-                <q-btn square icon="las la-comments" class="q-px-sm text-grey" style="border-radius: 8px;" :class="{
+                <q-btn flat icon="las la-comments" class="q-px-sm text-grey" style="border-radius: 8px;" :class="{
                   'text-black': !$q.dark.isActive
                 }" />
               </div>
@@ -80,17 +80,17 @@
           <div>
             <div class="row items-center justify-center">
               <div class="py-5">
-              <q-btn square icon="las la-headset" class="q-px-sm text-grey" style="border-radius: 8px;" :class="{
+              <q-btn flat icon="las la-headset" class="q-px-sm text-grey" style="border-radius: 8px;" :class="{
                 'text-black': !$q.dark.isActive
               }" />
             </div>
             <div class="py-5">
-              <q-btn square icon="las la-cog" class="q-px-sm text-grey" style="border-radius: 8px;" :class="{
+              <q-btn flat icon="las la-cog" class="q-px-sm text-grey" style="border-radius: 8px;" :class="{
                 'text-black': !$q.dark.isActive
               }" />
             </div>
             <div class="py-5">
-              <q-btn square icon="las la-user-circle" class="q-px-sm text-grey" style="border-radius: 8px;" :class="{
+              <q-btn flat icon="las la-user-circle" class="q-px-sm text-grey" style="border-radius: 8px;" :class="{
                 'text-black': !$q.dark.isActive
               }" />
             </div>
@@ -123,7 +123,64 @@
       'bg-white': !$q.dark.isActive
     }">
       <router-view />
+      <!-- <q-footer dark dense bordered class="bg-white text-black" :class="{
+        'bg-dark dark': $q.dark.isActive
+      }"> -->
+    <q-footer v-if="!$q.screen.gt.sm" dense bordered :class="{
+      'bg-dark': $q.dark.isActive,
+      'bg-white text-black': !$q.dark.isActive
+    }">
+        <q-tabs
+          v-model="tab"
+          class="shadow-2"
+          no-caps
+          switch-indicator
+          indicator-color="negative"
+        >
+          <q-tab
+            :to="{ name: 'Dashboard' }"
+            alert=""
+            name="Home"
+            square icon="las la-play"
+          >
+            <q-badge color="negative" floating>7</q-badge>
+          </q-tab>
+
+          <q-tab
+            :to="{ name: 'Scope of Works' }"
+            name="SOW"
+            square icon="las la-tools"
+          ></q-tab>
+
+          <q-tab
+            :to="'/manage-projects'"
+            name="Projects"
+            square icon="las la-folder-open"
+          >
+            <q-badge color="negative" floating>2</q-badge>
+          </q-tab>
+
+          <q-tab
+            to="/manage-invites"
+            name="Invites"
+            square icon="lab la-telegram-plane"
+          >
+          </q-tab>
+
+          <q-tab
+            to="/manage-accounts"
+            name="User"
+            square icon="las la-user-tag"
+          >
+          </q-tab>
+
+        </q-tabs>
+      </q-footer>
     </q-page-container>
+
+    <!-- <footer v-if="$q.platform.is.mobile">
+       Here Footer here
+    </footer> -->
 
   </q-layout>
 

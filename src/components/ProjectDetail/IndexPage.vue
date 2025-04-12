@@ -9,13 +9,17 @@
     @click="this.$router.push('/projects')"
  /> -->
   <router-view/>
-  <q-footer bordered class="text-primary">
+  <q-footer bordered class="text-accent">
     <q-tabs
       v-model="tab"
-      class="bg-primay text-warning shadow-2 q-pb-md"
+      class="q-pb-md text-accent"
+      :class="{
+        'bg-black shadow-2': $q.dark.isActive,
+        'bg-primary shadow-2': !$q.dark.isActive
+      }"
       no-caps
       switch-indicator
-      indicator-color="negative"
+      indicator-color="accent"
       :dense="true"
     >
       <q-tab

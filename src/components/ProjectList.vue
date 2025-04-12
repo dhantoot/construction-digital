@@ -3,18 +3,22 @@
     <div class="row justify-center items-center">
       <q-input
       class="full-width"
-      dark
       standout="bg-transparent"
-      input-class="text-left text-accent"
+      :input-class="$q.dark.isActive ? 'text-accent' : 'text-primary'"
       v-model="text"
       :dense="true"
     >
       <template v-slot:prepend>
-        <q-icon name="las la-search" :class="{
-          'text-warning': text === ''
-        }"/>
+        <!-- <q-icon name="las la-search" :class="{
+          'text-accent': text === '',
+          'text-primary': text !== ''
+        }"/> -->
       </template>
       <template v-slot:append>
+        <q-icon v-if="!text" name="las la-search" :class="{
+          'text-accent': text === '',
+          'text-primary': text !== ''
+        }"/>
         <q-icon v-if="text" name="clear" class="cursor-pointer text-accent" @click="text = ''"/>
       </template>
     </q-input>
@@ -27,12 +31,18 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label class="text-bold text-primary">{{ item.title }}</q-item-label>
-            <q-item-label caption lines="2" class="text-secondary">{{ item.description }}</q-item-label>
+            <q-item-label class="text-bold" :class="{
+              'text-accent': $q.dark.isActive,
+              'text-primary': !$q.dark.isActive
+            }">{{ item.title }}</q-item-label>
+            <q-item-label caption lines="2" :class="{
+              'text-accent': $q.dark.isActive,
+              'text-primary': !$q.dark.isActive
+            }">{{ item.description }}</q-item-label>
           </q-item-section>
 
           <q-item-section side top>
-              <q-item-label caption class="text-secondary q-mb-sm">{{ item.dateCreated?.split('T')[0] || 'No Date'}}</q-item-label>
+              <q-item-label caption class="text-positive q-mb-sm">{{ item.dateCreated?.split('T')[0] || 'No Date'}}</q-item-label>
               <q-badge rounded :color="item.isActivated ? 'green' : 'red'" />
           </q-item-section>
         </q-item>

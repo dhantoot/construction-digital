@@ -5,18 +5,17 @@ import { boot } from 'quasar/wrappers'
 // more info on params: https://v2.quasar.dev/quasar-cli/boot-files
 export default boot(async (/* { app, router, ... } */) => {
   // something to do
-  setCssVar('primary', '#14252C')
-  setCssVar('secondary', '#273C41')
+  setCssVar('primary', '#25252b')
+  setCssVar('secondary', '#284239')
+  setCssVar('accent', '#c0c1c3') // old accent: f7d793
 
-  setCssVar('info', '#45575B')
-  setCssVar('positive', '#A3A39B')
+  setCssVar('dark', '#1d1d1d')
+  setCssVar('dark-page', '#121212')
 
-  // setCssVar('accent', '#EDE1D2')
-  setCssVar('accent', '#f0f2f5')
+  setCssVar('positive', '#05807c')
+  setCssVar('negative', '#ce6025')
+  setCssVar('info', '#1f3957')
+  setCssVar('warning', '#e0b269')
 
-  // setCssVar('warning', '#E6CAB3')
-  setCssVar('warning', '#CCD0CF')
-
-  setCssVar('cancel', '#ffa500')
-  setCssVar('negative', '#82401D')
+  setCssVar('light', '#dfe1de')
 })

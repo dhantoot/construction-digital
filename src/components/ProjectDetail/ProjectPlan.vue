@@ -5,9 +5,9 @@
         v-model="date"
         :events="events"
         :event-color="(date) => (date[9] % 2 === 0 ? 'teal' : 'orange')"
-        class="full-width bg-transparent text-accent"
-        :flat="true"
-        style="background-color: transparent;"
+        class="full-width bg-transparent"
+        :text-color="$q.dark.isActive ? 'accent' : 'primary'"
+        flat
      />
     </div>
     <q-inner-loading

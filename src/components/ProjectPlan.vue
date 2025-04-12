@@ -5,8 +5,8 @@
         v-model="date"
         :events="events"
         :event-color="(date) => (date[9] % 2 === 0 ? 'teal' : 'orange')"
-        class="full-width bg-transparent text-accent"
-        text-color="warning"
+        class="full-width bg-transparent"
+        :text-color="$q.dark.isActive ? 'accent' : 'primary'"
         flat
      />
     </div>
@@ -15,8 +15,10 @@
         :dense="true"
         fab
         icon="las la-calendar-plus"
-        color="transparent"
-        class="text-warning q-mb-lg"
+        class="q-mb-lg"
+        :class="{
+          'bg-accent': $q.dark.isActive
+        }"
      />
     </q-page-sticky>
     <q-inner-loading

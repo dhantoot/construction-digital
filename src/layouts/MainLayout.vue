@@ -1,11 +1,19 @@
 <template>
-  <q-layout view="lHh lpR fFf" class="bgcover">
-    <q-header elevated class="text-warning bg-primary" height-hint="61.59">
-      <q-toolbar class="text-warning q-py-sm q-px-md">
+  <q-layout view="lHh lpR fFf" :class="{
+    'bg-light': !$q.dark.isActive,
+    'bg-black': $q.dark.isActive
+  }">
+    <q-header elevated class="text-warning" :class="{
+      'bg-primary': !$q.dark.isActive,
+      'bg-black': $q.dark.isActive
+    }" height-hint="61.59">
+      <q-toolbar class="text-accent q-py-sm q-px-md">
         <div class="row full-width items-center">
           <q-btn @click="leftDrawerOpen = !leftDrawerOpen" flat round :dense="true" icon="menu" class="q-mr-sm round-btn"/>
           <q-toolbar-title class="text-center">Hofstee Inc.</q-toolbar-title>
-          <q-btn :disable="mainStore.showNav" flat round :dense="true" icon="las la-exchange-alt" class="round-btn" to="/admin-portal"/>
+          <q-btn v-if="!mainStore.showNav" flat round :dense="true" icon="las la-exchange-alt" class="round-btn" to="/admin-portal"/>
+          <q-toggle v-if="mainStore.showNav" dense v-model="isDark" checked-icon="las la-moon" color="grey" unchecked-icon="las la-sun" label=""
+          @update:model-value="toggleMode" />
         </div>
       </q-toolbar>
     </q-header>
@@ -149,12 +157,21 @@
         v-model="tab"
         no-caps
         inline-label
-        class="shadow-2 q-mb-none"
-        indicator-color="warning"
+        class="q-mb-none shadow-2"
+        :indicator-color="$q.dark.isActive ? 'accent' : 'primary'"
       >
-        <q-tab name="mails" label="Projects" class="text-accent" @click='$router.push({ path: `/projects` })'/>
-        <q-tab name="alarms" label="Dashboard" class="text-accent" @click='$router.push({ path: `/dashboard` })'/>
-        <q-tab name="movies" label="Planning" class="text-accent" @click='$router.push({ path: `/plans` })'/>
+        <q-tab name="mails" label="Projects" :class="{
+          'text-primary': !$q.dark.isActive,
+          'text-accent': $q.dark.isActive
+        }" @click='$router.push({ path: `/projects` })'/>
+        <q-tab name="alarms" label="Dashboard" :class="{
+          'text-primary': !$q.dark.isActive,
+          'text-accent': $q.dark.isActive
+        }" @click='$router.push({ path: `/dashboard` })'/>
+        <q-tab name="movies" label="Planning" :class="{
+          'text-primary': !$q.dark.isActive,
+          'text-accent': $q.dark.isActive
+        }" @click='$router.push({ path: `/plans` })'/>
       </q-tabs>
       <router-view/>
     </q-page-container>
@@ -176,6 +193,7 @@ export default {
     const mainStore = useMainStore()
     const authUser = ref(null)
     const $q = useQuasar()
+    const isDark = ref(false)
     // const bgPhoto = ''
     $q.addressbarColor.set('#14252C')
     // document.addEventListener('deviceready', () => {
@@ -187,6 +205,7 @@ export default {
     // }, false)
 
     return {
+      isDark,
       themeStore,
       authUser,
       mainStore,
@@ -208,6 +227,9 @@ export default {
     this.themeStore.setCurrentTheme(17) // 1,17, 20(light), 22(light)
   },
   methods: {
+    toggleMode (val) {
+      this.$q.dark.isActive = val
+    },
     showHeader (arg, breadcrumbs) {
       console.log('--receiving emits from login page', arg)
       this.headerState = arg
@@ -230,7 +252,8 @@ export default {
 <style lang="scss" scoped>
 .bgcover {
   background-image: url('/bg-1.jpeg'); /** bg-17 bg-23 */
-  background-size: cover; /* Cover the entire div with the image */
-  background-repeat: no-repeat; /* Prevent the image from repeating */
+  // background-size: cover; /* Cover the entire div with the image */
+  // background-repeat: no-repeat; /* Prevent the image from repeating */
+  // background-color: #dfe1de;
 }
 </style>

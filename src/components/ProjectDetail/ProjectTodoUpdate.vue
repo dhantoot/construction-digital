@@ -1,26 +1,39 @@
 <template>
   <div class="column gap-10 q-pa-sm">
     <div class="row justify-between items-center">
-      <strong class="text-h6 text-bold text-white">Update Todo</strong>
-      <q-icon size="md" color="accent" name="las la-undo"
+      <strong class="text-h6 text-bold" :class="{
+        'text-accent': $q.dark.isActive,
+        'text-primary': !$q.dark.isActive
+      }">Update Todo</strong>
+      <q-icon size="md" :color="$q.dark.isActive ? 'accent' : 'primary'" name="las la-undo"
         @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}/todo`)" />
     </div>
     <q-input class="full-width" :dense="true" filled v-model="todoTitle" placeholder="Title" input-class="text-accent" />
     <q-input class="full-width" :dense="true" placeholder="Description..." v-model="todoDesc" filled autogrow input-class="text-accent" />
-    <q-date v-model="timeline" range class="full-width" text-color="primary" flat/>
+    <q-date v-model="timeline" range class="full-width" :text-color="$q.dark.isActive ? 'accent' : 'primary'" :flat="$q.dark.isActive"/>
     <div class="column q-mt-sm">
-      <div class="caption text-accent"> Assign Members <small class="text-smallest"><i>(scroll to view more)</i></small> </div>
+      <div class="caption" :class="{
+        'text-accent': $q.dark.isActive,
+        'text-primary': !$q.dark.isActive
+      }"> Assign Members <small class="text-smallest"><i>(scroll to view more)</i></small> </div>
       <div class="scroll q-mt-sm">
       <q-list class="q-pl-none scroll" style="max-height: 33vh;">
         <q-item :clickable="false" tag="label" v-ripple class="q-pl-none" v-for="member in invitee" :key="member">
+
           <q-item-section avatar>
-            <q-checkbox v-model="member.isSelected" :val="member.id" keep-color :color="member.id ? 'primary' : 'grey'"
+            <q-checkbox
+              v-model="member.isSelected"
+              keep-color
+              :val="member.id"
+              :color="member.id ? ($q.dark.isActive ? 'accent' : 'primary') : ($q.dark.isActive ? 'grey-10' : 'grey')"
               :disable="!member.id" />
           </q-item-section>
+
           <q-item-section>
-            <q-item-label :class="member.id ? 'text-accent' : 'text-secondary'">{{ member?.fullname || member?.email
-              }}</q-item-label>
-            <q-item-label class="text-primary"><small>{{ member.userTitle }}</small></q-item-label>
+            <q-item-label
+              :class="member.id ? ($q.dark.isActive ? 'text-accent' : 'text-primary') : ($q.dark.isActive ? 'text-grey' : 'text-grey')">{{ member?.fullname || member?.email}}
+            </q-item-label>
+            <q-item-label :class="member.id ? ($q.dark.isActive ? 'text-accent' : 'text-primary') : ($q.dark.isActive ? 'text-grey' : 'text-grey')"><small>{{ member.userTitle }}</small></q-item-label>
           </q-item-section>
 
           <q-item-section avatar>
@@ -58,7 +71,7 @@
   <div class="row full-width q-px-sm q-py-sm justify-between items-start absolute fixed-bottom"
     style="margin-bottom:82px">
     <div class="">
-      <q-btn class="round-btn" color="primary" icon="las la-arrow-left"
+      <q-btn :outline="!$q.dark.isActive" class="round-btn" color="primary" icon="las la-arrow-left"
         @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}/todo`)" />
     </div>
     <div class="">

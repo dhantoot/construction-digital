@@ -117,6 +117,17 @@ module.exports = configure(function (/* ctx */) {
           lg: 1440,
           xl: 1920
           // Add a new screen spec
+        },
+        brand: {
+          primary: '#25252b',
+          secondary: '#284239',
+          accent: '#c0c1c3',
+          dark: '#1d1d1d',
+          'dark-page': '#121212',
+          positive: '#05807c',
+          negative: '#ce6025',
+          info: '#1f3957',
+          warning: '#e0b269'
         }
       },
 

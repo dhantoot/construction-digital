@@ -1,21 +1,32 @@
 <template>
   <div class="column gap-10 q-pa-sm">
     <div class="row justify-between">
-      <q-input dark standout="bg-transparent" input-class="text-right text-accent" v-model="text" :dense="dense" :style="{
-        width: '100%'
-      }">
+      <q-input
+        standout="bg-transparent"
+        :input-class="$q.dark.isActive ? 'text-accent' : 'text-primary'"
+        v-model="text"
+        :dense="dense"
+        :style="{
+          width: '100%'
+        }">
         <template v-slot:prepend>
-          <q-icon color="accent" name="las la-arrow-left" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/>
+          <!-- <q-icon color="accent" name="las la-arrow-left" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/> -->
         </template>
         <template v-slot:append>
-          <q-icon v-if="text === ''" name="las la-search" class="text-accent" />
-          <q-icon v-else name="clear" class="cursor-pointer text-black" @click="text = ''" />
+          <q-icon v-if="!text" name="las la-search" :class="{
+            'text-accent': text === '',
+            'text-primary': text !== ''
+          }"/>
+          <q-icon v-if="text" name="clear" class="cursor-pointer text-accent" @click="text = ''"/>
         </template>
       </q-input>
     </div>
     <div class="row full-width justify-between items-center">
-      <strong class="text-bold text-h6 text-white">Todo List ({{ todoList.length }})</strong>
-      <q-icon size="md" color="accent" name="las la-undo" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/>
+      <strong class="text-bold text-h6" :class="{
+        'text-accent': $q.dark.isActive,
+        'text-primary': !$q.dark.isActive
+      }">Todo List ({{ todoList.length }})</strong>
+      <q-icon size="md" :color="$q.dark.isActive ? 'accent' : 'primary'" name="las la-undo" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/>
     </div>
     <q-list class="scroll" style="height: 62vh;">
       <div class="column gap-5" v-if="loadingtodoList">
@@ -47,8 +58,14 @@
           <pre class="text-caption">{{item}}</pre>
         </q-item-section> -->
         <q-item-section>
-          <q-item-label class="text-primary">{{ item.todoDesc }}</q-item-label>
-          <q-item-label class="text-secondary" caption>
+          <q-item-label class="text-bold" :class="{
+            'text-accent': $q.dark.isActive,
+            'text-primary': !$q.dark.isActive
+          }">{{ item.todoDesc }}</q-item-label>
+          <q-item-label :class="{
+            'text-grey': $q.dark.isActive,
+            'text-primary': !$q.dark.isActive
+          }" caption>
             {{ item.todoTitle }}
           </q-item-label>
         </q-item-section>
@@ -60,8 +77,8 @@
               <template v-slot:label>
                 {{ item.isCompleted ? 'Archive' : '' }}
               </template>
-            </q-toggle>&nbsp;
-            <q-btn rounded dense icon="las la-edit" flat :class="item.timeline ? 'text-primary' : 'text-accent'" @click="viewTodoDetail(item)" />
+            </q-toggle>&nbsp;&nbsp;&nbsp;
+            <q-btn rounded dense icon="las la-edit" flat :class="item.timeline ? 'text-positive' : ($q.dark.isActive ? 'text-accent' : 'text-primary')" @click="viewTodoDetail(item)" />
           </div>
         </q-item-section>
       </q-item>

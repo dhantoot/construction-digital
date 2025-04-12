@@ -16,7 +16,10 @@
     <q-card-section flat class="q-ma-none q-pa-none">
       <div class="column full-width gap-10 q-pa-sm">
         <div class="row justify-start">
-          <strong class="text-bold text-h6 text-white">Project Member</strong>
+          <strong class="text-bold text-h6" :class="{
+            'text-accent': $q.dark.isActive,
+            'text-primary': !$q.dark.isActive
+          }">Project Member</strong>
         </div>
         <q-list class="scroll" style="height: 50vh;">
           <q-item clickable v-ripple v-for="item of invites" :key="item">
@@ -28,10 +31,13 @@
 
             <q-item-section>
               <q-item-label caption lines="2">
-                <span class="text-weight-bold text-primary">{{ item?.fullName }}</span>
+                <span class="text-weight-bold" :class="{
+                  'text-primary': !$q.dark.isActive,
+                  'text-accent': $q.dark.isActive
+                }">{{ item?.fullName }}</span>
               </q-item-label>
               <q-item-label caption lines="1">
-                <span class="text-weight-light text-secondary">{{ item?.userTitle }}</span>
+                <span class="text-weight-light">{{ item?.userTitle }}</span>
               </q-item-label>
             </q-item-section>
 
