@@ -28,7 +28,7 @@
                           height="54px"
                         >
                           <template #icon>
-                            <q-icon name="las la-pause-circle" color="cancel" size="lg"/>
+                            <q-icon name="las la-pause-circle" color="negative" size="lg"/>
                           </template>
                           <template #header>
                             Hello There
@@ -202,7 +202,7 @@
                 icon="las la-undo"
                 padding="sm xl"
                 flat
-                class="text-capitalize bg-cancel round-btn"
+                class="text-capitalize bg-negative round-btn"
                 label="Clear"
                 :disable="loadingSubmit"
                 :style="{

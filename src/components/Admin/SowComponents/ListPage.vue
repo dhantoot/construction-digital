@@ -4,7 +4,7 @@
     }">
     <q-card-section>
       <q-btn :disable="!selected.length" flat label="View" icon="las la-eye" color="transparent"
-        class="text-capitalize round-btn" text-color="cancel" @click="gotoTemplateDetail(selected[0].id)">
+        class="text-capitalize round-btn" text-color="negative" @click="gotoTemplateDetail(selected[0].id)">
       </q-btn>
       <q-btn :disable="!selected.length" flat label="Delete" icon="las la-trash-alt" color="transparent"
         class="text-capitalize round-btn" text-color="negative" @click="
@@ -43,9 +43,9 @@
     </q-inner-loading>
   </q-card>
   <q-dialog v-model="confirm" persistent>
-    <q-card>
+    <q-card class="no-shadow">
       <q-card-section class="row items-center">
-        <q-avatar size="sm" icon="las la-exclamation" color="cancel" text-color="white" />
+        <q-avatar size="sm" icon="las la-exclamation" color="negative" text-color="white" />
         <span class="q-ml-sm text-h6">{{ confirmMsg }}</span>
       </q-card-section>
 

@@ -1,17 +1,17 @@
 <template>
   <div>
-    <div class="row full-width q-px-lg q-py-sm absolute">
-      <div class="row full-width text-h5 text-accent q-pb-md">Account</div>
+    <div class="row full-width q-px-lg q-py-lg absolute">
+      <div class="row full-width text-h5 q-pb-md" :class="[$q.dark.isActive ? 'accent' : 'primary']">Account</div>
       <div class="row full-width q-py-sm justify-center">
         <q-avatar size="80px">
           <img :src="obj?.avatar?.length > 0 ? `${obj.avatar}` : `default-user.jpeg`"/>
         </q-avatar>
       </div>
       <div class="row full-width q-py-sm justify-start">
-        <div class="row full-width text-accent">First Name</div>
-        <q-input class="full-width" input-class="text-accent" v-model="obj.firstName" clearable :dense="true" filled>
+        <div class="row full-width" :class="[$q.dark.isActive ? 'accent' : 'primary']">First Name</div>
+        <q-input class="full-width" :input-class="[$q.dark.isActive ? 'accent' : 'primary']" v-model="obj.firstName" clearable :dense="true" filled>
           <template v-slot:prepend>
-            <q-icon name="las la-user" class="text-accent"/>
+            <q-icon name="las la-user" :class="[$q.dark.isActive ? 'accent' : 'primary']"/>
           </template>
 
           <!-- <template v-slot:label>
@@ -21,10 +21,10 @@
         </q-input>
       </div>
       <div class="row full-width q-py-sm justify-start">
-        <div class="row full-width text-accent">Last Name</div>
-        <q-input class="full-width" input-class="text-accent" v-model="obj.lastName" clearable :dense="true" filled>
+        <div class="row full-width" :class="[$q.dark.isActive ? 'accent' : 'primary']">Last Name</div>
+        <q-input class="full-width" :input-class="[$q.dark.isActive ? 'accent' : 'primary']"  v-model="obj.lastName" clearable :dense="true" filled>
           <template v-slot:prepend>
-            <q-icon name="las la-user" class="text-accent"/>
+            <q-icon name="las la-user" :class="[$q.dark.isActive ? 'accent' : 'primary']"/>
           </template>
 
           <!-- <template v-slot:label>
@@ -34,10 +34,10 @@
         </q-input>
       </div>
       <div class="row full-width q-py-sm justify-start">
-        <div class="row full-width text-accent">Phone Number</div>
-        <q-input class="full-width" input-class="text-accent" v-model="obj.phone_number" clearable :dense="true" filled>
+        <div class="row full-width" :class="[$q.dark.isActive ? 'accent' : 'primary']">Phone Number</div>
+        <q-input class="full-width" :input-class="[$q.dark.isActive ? 'accent' : 'primary']"  v-model="obj.phone_number" clearable :dense="true" filled>
           <template v-slot:prepend>
-            <q-icon name="las la-phone" class="text-accent"/>
+            <q-icon name="las la-phone" :class="[$q.dark.isActive ? 'accent' : 'primary']"/>
           </template>
 
           <!-- <template v-slot:label>
@@ -47,10 +47,10 @@
         </q-input>
       </div>
       <div class="row full-width q-py-sm justify-start">
-        <div class="row full-width text-accent">Email</div>
-        <q-input class="full-width" input-class="text-accent" v-model="obj.email" clearable :dense="true" filled>
+        <div class="row full-width" :class="[$q.dark.isActive ? 'accent' : 'primary']">Email</div>
+        <q-input class="full-width" :input-class="[$q.dark.isActive ? 'accent' : 'primary']"  v-model="obj.email" clearable :dense="true" filled>
           <template v-slot:prepend>
-            <q-icon name="las la-envelope" class="text-accent"/>
+            <q-icon name="las la-envelope" :class="[$q.dark.isActive ? 'accent' : 'primary']"/>
           </template>
 
           <!-- <template v-slot:label>
@@ -63,13 +63,15 @@
       <div class="row full-width q-py-sm justify-between">
         <q-tabs v-model="tab" class="bg-white-4 full-width" :dense="true" align="justify">
           <q-tab
-            class="text-orange text-capitalize"
+            class="text-capitalize"
+            :class="[$q.dark.isActive ? 'primary' : 'primary']"
             name="upload"
             icon="las la-upload"
             label="Upload"
         />
           <q-tab
-            class="text-negative text-capitalize"
+            class="text-capitalize"
+            :class="[$q.dark.isActive ? 'primary' : 'primary']"
             name="capture"
             icon="las la-camera"
             label="Capture"
@@ -83,7 +85,7 @@
             v-model="obj.file"
             label="Choose File"
             accept=".jpg, image/*"
-            bg-color="positive"
+            :bg-color="[$q.dark.isActive ? 'primary' : 'primary']"
             class="round-btn"
             :disable="loadingSubmit"
           >
@@ -98,7 +100,7 @@
             align="left"
             class="text-capitalize full-width no-shadow"
             text-color="accent"
-            color="positive"
+            :color="[$q.dark.isActive ? 'primary' : 'primary']"
             icon="las la-camera"
             label="Open camera"
             @click="captureImage"
@@ -110,12 +112,12 @@
     </div>
     <div class="row full-width q-px-lg q-py-sm justify-between items-start absolute fixed-bottom" style="margin-bottom:70px">
       <div>
-        <q-btn class="q-ml-none round-btn" color="primary" icon="las la-arrow-left" @click="this.$router.push(`/projects`)"/>
+        <q-btn label="Back" class="text-capitalize q-ml-none round-btn" color="negative" icon="las la-arrow-left" @click="this.$router.push(`/projects`)"/>
       </div>
       <div>
         <q-btn
           @click="uploadFile()"
-          color="primary"
+          color="info"
           label="Update"
           class="text-capitalize full-width text-accent round-btn"
           :loading="loadingSubmit"

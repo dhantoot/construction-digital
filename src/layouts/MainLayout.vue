@@ -19,7 +19,10 @@
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen" side="left" overlay behavior="mobile" class="q-mt-xl q-pt-lg">
-      <q-list bordered separator padding class="text-secondary text-caption">
+      <q-list :bordered="!$q.dark.isActive" separator padding class="text-caption" :class="{
+        'text-accent': $q.dark.isActive,
+        'text-primary': $q.dark.isActive
+      }">
       <q-item
         clickable
         v-ripple

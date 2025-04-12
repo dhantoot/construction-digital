@@ -21,7 +21,7 @@
         </template>
       </q-input>
     </div>
-    <div class="scroll" style="max-height: 60vh">
+    <div class="scroll" style="height: 75.5vh">
       <q-chat-message
         name="me"
         avatar="avatar3.jpg"

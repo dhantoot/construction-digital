@@ -5,7 +5,7 @@
         <q-card bordered class="shadow-15 round-btn">
           <q-card-section>
               <div class="text-overline text-orange-9">
-                <q-icon name="las la-sad-cry" size="50px" color="cancel"/>
+                <q-icon name="las la-sad-cry" size="50px" color="negative"/>
               </div>
               <div class="text-h5 q-mt-sm q-mb-xl">We regret you won't be joining us, but we wish you continued success.</div>
               <div class="text-h6 text-grey">Your decision is understood. Best regards.</div>

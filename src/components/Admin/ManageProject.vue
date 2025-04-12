@@ -68,11 +68,11 @@
           </q-card-section>
           <q-card-actions>
             <div class="row justify-between full-width q-px-sm">
-              <q-btn icon="las la-undo" padding="sm xl" flat class="text-capitalize bg-cancel round-btn" label="Reset"
+              <q-btn icon="las la-undo" padding="sm xl" flat class="text-capitalize bg-negative round-btn" label="Reset"
                 :disable="loadingSubmit" @click="formReset">
               </q-btn>
-              <q-btn icon="las la-check" padding="sm xl" @click="uploadFile" color="primary"
-                :label="selected.length ? 'Update' : 'Submit'" class="text-capitalize bg-info round-btn"
+              <q-btn icon="las la-check" padding="sm xl" @click="uploadFile" color="info"
+                :label="selected.length ? 'Update' : 'Submit'" class="text-capitalize round-btn"
                 :loading="loadingSubmit"
                 :disable="loadingSubmit || !searchKey || !text || !desc || (updateMode ? false : !file) || !budget || !dateFrom || !dateTo || !templateId">
                 <template v-slot:loading>

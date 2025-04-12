@@ -12,7 +12,7 @@
       }">
       <q-toolbar>
         <q-toolbar-title>
-          {{ authUser ? routeName : 'Login' }} {{ $q.screen.lt.sm }}
+          {{ mainStore?.adminUser && authUser ? routeName : 'Login' }}
         </q-toolbar-title>
         <q-toggle dense v-model="isDark" checked-icon="las la-moon" color="grey" unchecked-icon="las la-sun" label=""
           @update:model-value="toggleMode" />
@@ -38,70 +38,55 @@
                   style="border-radius: 8px;" />
               </div>
               <div class="py-5 mt-10">
-                <q-btn to="/manage-sow" flat icon="las la-tools" class="q-px-sm text-grey" style="border-radius: 8px;"
-                  :class="{
-                    'text-black': !$q.dark.isActive
-                  }" />
+                <q-btn to="/manage-sow" flat icon="las la-tools" class="q-px-sm" style="border-radius: 8px;"
+                :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"/>
               </div>
               <div class="py-5">
-                <q-btn to="/manage-projects" flat icon="las la-folder-open" class="q-px-sm text-grey"
-                  style="border-radius: 8px;" :class="{
-                    'text-black': !$q.dark.isActive
-                  }" />
+                <q-btn to="/manage-projects" flat icon="las la-folder-open" class="q-px-sm"
+                  style="border-radius: 8px;" :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"/>
               </div>
               <div class="py-5">
-                <q-btn to="/manage-invites" flat icon="lab la-telegram-plane" class="q-px-sm text-grey"
-                  style="border-radius: 8px;" :class="{
-                    'text-black': !$q.dark.isActive
-                  }" />
+                <q-btn to="/manage-invites" flat icon="lab la-telegram-plane" class="q-px-sm"
+                  style="border-radius: 8px;" :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"/>
               </div>
               <div class="py-5 full-width q-px-md">
                 <q-separator style="border-bottom: .1px solid #3a3a3a;" />
               </div>
               <div class="py-5">
-                <q-btn to="/manage-accounts" flat icon="las la-user-tag" class="q-px-sm text-grey"
-                  style="border-radius: 8px;" :class="{
-                    'text-black': !$q.dark.isActive
-                  }" />
+                <q-btn to="/manage-accounts" flat icon="las la-user-tag" class="q-px-sm"
+                  style="border-radius: 8px;" :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"/>
               </div>
               <div class="py-5">
-                <q-btn to="/whats-new" flat icon="las la-bell" class="q-px-sm text-grey" style="border-radius: 8px;"
-                  :class="{
-                    'text-black': !$q.dark.isActive
-                  }" />
+                <q-btn to="/whats-new" flat icon="las la-bell" class="q-px-sm" style="border-radius: 8px;"
+                  :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"/>
               </div>
               <div class="py-5">
-                <q-btn flat icon="las la-comments" class="q-px-sm text-grey" style="border-radius: 8px;" :class="{
-                  'text-black': !$q.dark.isActive
-                }" />
+                <q-btn flat icon="las la-comments" class="q-px-sm" style="border-radius: 8px;"
+                  :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"/>
               </div>
             </div>
           </div>
           <div>
             <div class="row items-center justify-center">
               <div class="py-5">
-              <q-btn flat icon="las la-headset" class="q-px-sm text-grey" style="border-radius: 8px;" :class="{
-                'text-black': !$q.dark.isActive
-              }" />
+              <q-btn flat icon="las la-headset" class="q-px-sm" style="border-radius: 8px;"
+              :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"/>
             </div>
             <div class="py-5">
-              <q-btn flat icon="las la-cog" class="q-px-sm text-grey" style="border-radius: 8px;" :class="{
-                'text-black': !$q.dark.isActive
-              }" />
+              <q-btn flat icon="las la-cog" class="q-px-sm" style="border-radius: 8px;"
+              :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"/>
             </div>
             <div class="py-5">
-              <q-btn flat icon="las la-user-circle" class="q-px-sm text-grey" style="border-radius: 8px;" :class="{
-                'text-black': !$q.dark.isActive
-              }" />
+              <q-btn flat icon="las la-user-circle" class="q-px-sm" style="border-radius: 8px;"
+              :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"/>
             </div>
             <div class="py-5 full-width q-px-md">
               <q-separator style="border-bottom: .1px solid #3a3a3a;" />
             </div>
             <div class="py-10">
               <q-btn @click="openConfirmDialog('Confirm Logout', 'logout')" square icon="las la-sign-out-alt"
-                class="q-px-sm text-grey" style="border-radius: 8px;" :class="{
-                  'text-black': !$q.dark.isActive
-                }" />
+                class="q-px-sm" style="border-radius: 8px;"
+                :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"/>
             </div>
             </div>
           </div>
@@ -189,14 +174,14 @@
       'no-shadow': $q.dark.isActive
     }">
       <q-card-section class="row items-center">
-        <q-avatar size="sm" icon="las la-exclamation" color="cancel" text-color="white" />
+        <q-avatar size="sm" icon="las la-exclamation" color="negative" text-color="white" />
         <span class="q-ml-sm text-h6">{{ confirmMsg }}</span>
       </q-card-section>
 
       <q-card-actions align="right" class="q-pa-md">
         <q-btn padding="sm xl" icon="las la-times" class="round-btn text-capitalize" label="Close" color="negative"
           v-close-popup />
-        <q-btn padding="sm xl" icon="las la-check" class="round-btn text-capitalize" label="Confirm" color="primary"
+        <q-btn padding="sm xl" icon="las la-check" class="round-btn text-capitalize" label="Confirm" color="info"
           @click="callConfirmFn()" :loading="actionAccountLoader" :disable="actionAccountLoader">
           <template v-slot:loading>
             <q-spinner-ios class="on-left" />
@@ -269,6 +254,7 @@ export default {
     }
   },
   mounted () {
+    this.mainStore.adminUser = null
     this.$q.dark.isActive = true
     this.authUser = LocalStorage.getItem('authUser')
     console.log(this.$route)

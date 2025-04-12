@@ -1,12 +1,12 @@
 <template>
   <div class="row hide-scrollbar" style="height: 94.5vh;">
     <div class="row full-width full-height q-pa-sm">
-      <q-card class="no-shadow round-panel full-width">
+      <q-card class="round-panel full-width" :class="[$q.dark.isActive ? 'no-shadow' : 'shadow']">
         <q-card-section>
           <div class="row full-width justify-left q-pt-lg">
             <div class="" v-if="selected[0]">
               <q-btn flat :label="selected[0].isActive ? 'Deactivate' : 'Activate'" icon="las la-power-off"
-                color="transparent" class="text-capitalize round-btn" text-color="cancel"
+                color="transparent" class="text-capitalize round-btn" text-color="negative"
                 @click="openConfirmDialog(`Would you like to ${selected[0].isActive ? 'Deactivate' : 'Activate'} this account?`, 'updateAccountStatus')">
               </q-btn>
             </div>
@@ -76,16 +76,16 @@
   </div>
 
   <q-dialog v-model="confirm" persistent>
-    <q-card>
+    <q-card class="no-shadow">
       <q-card-section class="row items-center">
-        <q-avatar size="sm" icon="las la-exclamation" color="cancel" text-color="white" />
+        <q-avatar size="sm" icon="las la-exclamation" color="negative" text-color="white" />
         <span class="q-ml-sm text-h6">{{ confirmMsg }}</span>
       </q-card-section>
 
       <q-card-actions align="right" class="q-pa-md">
         <q-btn padding="sm xl" icon="las la-times" class="round-btn text-capitalize" label="Close" color="negative"
           v-close-popup />
-        <q-btn padding="sm xl" icon="las la-check" class="round-btn text-capitalize" label="Confirm" color="primary"
+        <q-btn padding="sm xl" icon="las la-check" class="round-btn text-capitalize" label="Confirm" color="info"
           @click="callConfirmFn()" :loading="actionAccountLoader" :disable="actionAccountLoader">
           <template v-slot:loading>
             <q-spinner-ios />
@@ -300,7 +300,7 @@ export default {
         this.actionAccountLoader = false
         this.$q.notify({
           icon: 'check_circle',
-          color: 'cancel',
+          color: 'negative',
           message: 'Feature is not ready yet',
           position: 'top-right',
           classes: 'notify-custom-css'

@@ -28,7 +28,7 @@
       }">Todo List ({{ todoList.length }})</strong>
       <q-icon size="md" :color="$q.dark.isActive ? 'accent' : 'primary'" name="las la-undo" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/>
     </div>
-    <q-list class="scroll" style="height: 62vh;">
+    <q-list class="scroll" style="max-height: 75.5vh">
       <div class="column gap-5" v-if="loadingtodoList">
         <q-skeleton type="rect" :style="{
           height: '35px'
@@ -83,6 +83,14 @@
         </q-item-section>
       </q-item>
     </q-list>
+    <q-card v-if="!todoList.length" class="flex flex-center" :class="[$q.dark.isActive ? 'no-shadow' : 'shadow']">
+      <div class="text-center debug pt-30 p-10">
+        <q-icon name="las la-exclamation-circle" size="xl" color="negative" />
+        <h6 :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']" class="q-mt-md">No Data Available</h6>
+        <p :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']">We couldn't find any Todo list results for this Project</p>
+        <q-btn outline rounded no-caps label="Back" :color="[$q.dark.isActive ? 'accent' : 'primary']" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)" />
+      </div>
+    </q-card>
     <q-inner-loading :showing="loadingtodoList" label="Please wait..." label-class="text-teal"
       label-style="font-size: 1.1em"><q-spinner-ios :style="{
         'font-size': '40px'
@@ -94,7 +102,7 @@
       @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)" />
   </q-page-sticky> -->
   <q-dialog v-model="confirm" persistent>
-    <q-card>
+    <q-card class="no-shadow">
       <q-card-section class="row items-center">
         <q-avatar size="sm" icon="las la-exclamation" color="cancel" text-color="white" />
         <span class="q-ml-sm text-h6">{{ confirmMsg }}</span>

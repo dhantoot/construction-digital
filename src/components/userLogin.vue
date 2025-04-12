@@ -10,10 +10,10 @@
       </div>
       <div class="col-2 q-mt-xl q-mb-md">
         <!-- <hr class="q-ml-xl q-mr-xl" color="black"/> -->
-        <q-separator class="q-ml-xl q-mr-xl" color="positive" inset/>
+        <q-separator class="q-ml-xl q-mr-xl" color="primary" inset/>
       </div>
       <div class="col-6 q-mt-lg" v-if="false">
-        <p class="q-mt-xl text-positive">Choose a role to login</p>
+        <p class="q-mt-xl" :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']">Choose a role to login</p>
         <div class="q-gutter-sm">
           <q-radio
             v-model="role"
@@ -48,12 +48,12 @@
           :rules="emailRules"
           v-on:keyup.enter="login"
           color="positive"
-          input-class="text-accent"
+          input-class="text-primary"
           filled
           style="font-size: 15px;"
         >
           <template v-slot:prepend>
-            <q-icon name="perm_identity" color="positive"/>
+            <q-icon name="perm_identity" color="secondary"/>
           </template>
         </q-input>
         <q-input
@@ -67,19 +67,19 @@
           :rules="passwordRules"
           v-on:keyup.enter="login"
           color="positive"
-          input-class="text-accent"
+          input-class="text-primary"
           filled
           style="font-size: 20px;"
         >
           <template v-slot:prepend>
-            <q-icon name="lock" color="positive"/>
+            <q-icon name="lock" color="secondary"/>
           </template>
           <template v-slot:append>
             <q-icon
               :name="isPwd ? 'visibility_off' : 'visibility'"
               class="cursor-pointer"
               @click="isPwd = !isPwd"
-              color="accent"
+              color="secondary"
           />
           </template>
         </q-input>
@@ -87,7 +87,7 @@
           @click="reset"
           label="Clear"
           type="reset"
-          color="accent"
+          color="secondary"
           flat
           class="text-capitalize pull-right text-weight-light round-btn"
           style="float: left"
@@ -95,7 +95,7 @@
         <q-btn
           @click="register"
           label="Register"
-          color="accent"
+          color="secondary"
           flat
           class="text-capitalize pull-right text-weight-light round-btn"
           style="float: right"
@@ -235,7 +235,7 @@ export default {
       // console.log({ email, password })
       if (this.$isFalsyString(email) || this.$isFalsyString(password)) {
         this.$q.notify({
-          icon: 'cancel',
+          icon: 'negative',
           color: 'warning',
           message: 'Please input username or password',
           position: 'top-right',

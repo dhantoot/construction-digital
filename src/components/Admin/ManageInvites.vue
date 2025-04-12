@@ -1,7 +1,7 @@
 <template>
   <div class="row hide-scrollbar" style="height: 94.5vh;">
     <div class="row full-width full-height q-pa-sm gap-10">
-      <q-card class="no-shadow round-panel full-width">
+      <q-card class="round-panel full-width" :class="[$q.dark.isActive ? 'no-shadow' : 'shadow']">
         <div class="row justify-start gap-20 q-pa-md">
           <div class="column justify-start gap-20">
             <div class="caption">Select Project</div>
@@ -26,7 +26,7 @@
                 option-label="email" :class="{
                   'q-pb-sm full-width': $q.screen.width < 433
                 }" />
-              <q-btn padding="xs lg" color="secondary" icon="las la-paper-plane" style="height: 40px; width: 150px"
+              <q-btn padding="xs lg" color="primary" icon="las la-paper-plane" style="height: 40px; width: 150px"
                 :class="{
                   'text-capitalize': true,
                   'q-ml-none full-width': $q.screen.width < 433
@@ -46,7 +46,7 @@
         </div>
       </q-card>
 
-      <q-card class="no-shadow round-panel full-width">
+      <q-card class="round-panel full-width" :class="[$q.dark.isActive ? 'no-shadow' : 'shadow']">
         <q-card-section>
           <div class="text-h6">Invitation sent</div>
           <div class="text-subtitle2 text-right"></div>
@@ -89,7 +89,7 @@
               </q-td>
               <q-td key="resend" :props="props">
                 <q-btn icon="las la-share" padding="xs md" v-if="props.row.status === 'Pending'"
-                  class="text-capitalize text-secondary round-btn shadow-5" text-color="primary" color="cancel"
+                  class="text-capitalize text-secondary round-btn shadow" text-color="primary" color="warning"
                   label="Resend invite" @click="resendInvite(props.row, props.rowIndex)" :dense="true"
                   :loading="resendInviteLoader[props.rowIndex]" :disable="resendInviteLoader[props.rowIndex]">
                   <template v-slot:loading>
@@ -331,7 +331,7 @@ export default {
       if (!isEmailSent) {
         this.$q.notify({
           icon: 'cancel',
-          color: 'cancel',
+          color: 'negative',
           message: 'Email not sent',
           position: 'top-right',
           classes: 'notify-custom-css'
@@ -352,7 +352,7 @@ export default {
       } else {
         this.$q.notify({
           icon: 'cancel',
-          color: 'cancel',
+          color: 'negative',
           message: 'Email not sent',
           position: 'top-right',
           classes: 'notify-custom-css'
@@ -360,7 +360,7 @@ export default {
       }
     },
     getStatusColor (rowVal) {
-      if (rowVal === 'Pending') return 'cancel'
+      if (rowVal === 'Pending') return 'warning'
       if (rowVal === 'Confirmed') return 'info'
       if (rowVal === 'Rejected') return 'negative'
     },
@@ -452,7 +452,7 @@ export default {
         } else {
           this.$q.notify({
             icon: 'cancel',
-            color: 'cancel',
+            color: 'negative',
             message: 'Email not sent',
             position: 'top-right',
             classes: 'notify-custom-css'

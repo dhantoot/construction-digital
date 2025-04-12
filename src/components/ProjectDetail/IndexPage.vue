@@ -12,7 +12,7 @@
   <q-footer bordered class="text-accent">
     <q-tabs
       v-model="tab"
-      class="q-pb-md text-accent"
+      class="text-accent"
       :class="{
         'bg-black shadow-2': $q.dark.isActive,
         'bg-primary shadow-2': !$q.dark.isActive

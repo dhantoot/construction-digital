@@ -26,7 +26,7 @@
           <q-input filled :dense="true" v-model="duration" placeholder="Duration in Days"
             :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''" />
           <q-btn icon="las la-plus" padding="sm xl" color="primary" label="Add"
-            class="text-capitalize bg-info round-btn" @click="addToList" :loading="loadingSubmit" :disable="loadingSubmit ||
+            class="text-capitalize bg-primary round-btn" @click="addToList" :loading="loadingSubmit" :disable="loadingSubmit ||
               !title ||
               !section ||
               !sowCategory ||
@@ -77,7 +77,7 @@
         </div>
         <div class="row justify-end mt-7">
           <q-btn v-if="rows.length > 0" icon="las la-edit" padding="sm xl" color="primary" label="Update"
-            class="text-capitalize bg-info round-btn" @click="updateTemplate" :loading="loadingSubmit"
+            class="text-capitalize bg-primary round-btn" @click="updateTemplate" :loading="loadingSubmit"
             :disable="loadingSubmit || rows.length < 1">
             <template v-slot:loading>
               <q-spinner-ios />
@@ -91,9 +91,9 @@
     </q-card>
   </div>
   <q-dialog v-model="confirm" persistent>
-    <q-card>
+    <q-card class="no-shadow">
       <q-card-section class="row items-center">
-        <q-avatar size="sm" icon="las la-exclamation" color="cancel" text-color="white" />
+        <q-avatar size="sm" icon="las la-exclamation" color="negative" text-color="white" />
         <span class="q-ml-sm text-h6">{{ confirmMsg }}</span>
       </q-card-section>
 

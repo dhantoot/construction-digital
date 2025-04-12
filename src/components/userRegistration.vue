@@ -9,10 +9,10 @@
         <p class="text-h2 q-mb-xl text-primary">Register</p>
       </div>
       <div class="col-2 q-mt-md q-mb-sm">
-        <q-separator class="q-ml-xl q-mr-xl" color="positive" inset/>
+        <q-separator class="q-ml-xl q-mr-xl" color="primary" inset/>
       </div>
       <div class="col-6">
-        <p class="q-mt-xs text-accent">Choose a role to register</p>
+        <p class="q-mt-xs" :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']">Choose role to register</p>
         <div class="row justify-center">
           <div class="column justify-center items-start q-px-md">
             <q-radio
@@ -21,7 +21,7 @@
                 unchecked-icon="panorama_fish_eye"
                 val="constructor"
                 label="Constructor"
-                class="text-accent"
+                :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
                 color="primary"
                 keep-color
             />
@@ -31,7 +31,7 @@
                 unchecked-icon="panorama_fish_eye"
                 val="client"
                 label="Home Owner"
-                class="text-accent"
+                :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
                 color="primary"
                 keep-color
             />
@@ -43,7 +43,7 @@
                 unchecked-icon="panorama_fish_eye"
                 val="agent"
                 label="Agent"
-                class="text-accent"
+                :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
                 color="primary"
                 keep-color
             />
@@ -54,7 +54,7 @@
                 unchecked-icon="panorama_fish_eye"
                 val="admin"
                 label="Admin"
-                class="text-accent"
+                :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
                 color="primary"
                 keep-color
             />
@@ -72,11 +72,10 @@
           v-model="regemail"
           placeholder="Email"
           :rules="regemailRules"
-          input-class="text-accent"
-          color="positive"
+          :input-class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
         >
           <template v-slot:prepend>
-            <q-icon name="email" color="positive"/>
+            <q-icon name="email" :color="[$q.dark.isActive ? 'text-accent' : 'text-primary']"/>
           </template>
         </q-input>
         <q-input
@@ -90,18 +89,17 @@
           v-model="regpassword"
           placeholder="Password"
           :rules="regpasswordRules"
-          input-class="text-accent"
-          color="positive"
+          :input-class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
         >
           <template v-slot:prepend>
-            <q-icon name="lock" color="positive"/>
+            <q-icon name="lock" :color="[$q.dark.isActive ? 'text-accent' : 'text-primary']"/>
           </template>
           <template v-slot:append>
             <q-icon
               :name="isPwd1 ? 'visibility_off' : 'visibility'"
               class="cursor-pointer"
               @click="isPwd1 = !isPwd1"
-              color="positive"
+              :color="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
            />
           </template>
         </q-input>
@@ -116,18 +114,17 @@
           placeholder="Confirm Password"
           :rules="regverifiedpassRules"
           v-on:keyup.enter="register"
-          input-class="text-accent"
-          color="positive"
+          :input-class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
         >
           <template v-slot:prepend>
-            <q-icon name="lock" color="positive"/>
+            <q-icon name="lock" :color="[$q.dark.isActive ? 'text-accent' : 'text-primary']"/>
           </template>
           <template v-slot:append>
             <q-icon
               :name="isPwd2 ? 'visibility_off' : 'visibility'"
               class="cursor-pointer"
               @click="isPwd2 = !isPwd2"
-              color="positive"
+              :color="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
            />
           </template>
         </q-input>
@@ -135,7 +132,7 @@
           @click="reset"
           label="Clear"
           type="reset"
-          color="accent"
+          :color="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
           flat
           class="text-capitalize pull-right text-weight-light round-btn"
           style="float: left"
@@ -143,7 +140,7 @@
         <q-btn
           @click="$router.push('/login')"
           label="Back to Login"
-          color="accent"
+          :color="[$q.dark.isActive ? 'accent' : 'primary']"
           flat
           class="text-capitalize pull-right text-weight-light round-btn"
           style="float: right"
@@ -152,7 +149,7 @@
       <div class="col-2 q-py-xs q-px-xl q-mt-xs">
         <q-btn
           size="lg"
-          color="primary"
+          :color="[$q.dark.isActive ? 'accent' : 'primary']"
           label="Register"
           class="text-capitalize full-width round-btn"
           @click="register"
