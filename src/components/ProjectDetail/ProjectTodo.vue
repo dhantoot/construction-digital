@@ -28,7 +28,7 @@
       }">Todo List ({{ todoList.length }})</strong>
       <q-icon size="md" :color="$q.dark.isActive ? 'accent' : 'primary'" name="las la-undo" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/>
     </div>
-    <q-list class="scroll" style="max-height: 75.5vh">
+    <q-list class="scroll" style="max-height: 74vh">
       <div class="column gap-5" v-if="loadingtodoList">
         <q-skeleton type="rect" :style="{
           height: '35px'
@@ -341,3 +341,11 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.q-item {
+    min-height: 48px;
+    padding: 8px 0px!important;
+    color: inherit;
+    transition: color 0.3s, background-color 0.3s;
+}
+</style>

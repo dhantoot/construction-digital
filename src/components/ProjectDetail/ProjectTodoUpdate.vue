@@ -10,66 +10,75 @@
     </div>
     <q-input class="full-width" :dense="true" filled v-model="todoTitle" placeholder="Title" input-class="text-accent" />
     <q-input class="full-width" :dense="true" placeholder="Description..." v-model="todoDesc" filled autogrow input-class="text-accent" />
-    <q-date v-model="timeline" range class="full-width" :text-color="$q.dark.isActive ? 'accent' : 'primary'" :flat="$q.dark.isActive"/>
-    <div class="column q-mt-sm">
-      <div class="caption" :class="{
-        'text-accent': $q.dark.isActive,
-        'text-primary': !$q.dark.isActive
-      }"> Assign Members <small class="text-smallest"><i>(scroll to view more)</i></small> </div>
-      <div class="scroll q-mt-sm">
-      <q-list class="q-pl-none scroll" style="max-height: 33vh;">
-        <q-item :clickable="false" tag="label" v-ripple class="q-pl-none" v-for="member in invitee" :key="member">
+    <div class="scroll" style="height:62vh">
+      <q-date v-model="timeline" range class="full-width no-shadow" :text-color="$q.dark.isActive ? 'accent' : 'primary'" :flat="$q.dark.isActive"/>
+      <div class="column q-mt-sm">
+        <div class="caption" :class="{
+          'text-accent': $q.dark.isActive,
+          'text-primary': !$q.dark.isActive
+        }"> Assign Members <small class="text-smallest"><i>(scroll to view more)</i></small> </div>
+        <div class="q-mt-sm">
+        <q-list class="q-pl-none">
+          <q-item :clickable="false" tag="label" v-ripple class="q-pl-none" v-for="member in invitee" :key="member">
 
-          <q-item-section avatar>
-            <q-checkbox
-              v-model="member.isSelected"
-              keep-color
-              :val="member.id"
-              :color="member.id ? ($q.dark.isActive ? 'accent' : 'primary') : ($q.dark.isActive ? 'grey-10' : 'grey')"
-              :disable="!member.id" />
-          </q-item-section>
-
-          <q-item-section>
-            <q-item-label
-              :class="member.id ? ($q.dark.isActive ? 'text-accent' : 'text-primary') : ($q.dark.isActive ? 'text-grey' : 'text-grey')">{{ member?.fullname || member?.email}}
-            </q-item-label>
-            <q-item-label :class="member.id ? ($q.dark.isActive ? 'text-accent' : 'text-primary') : ($q.dark.isActive ? 'text-grey' : 'text-grey')"><small>{{ member.userTitle }}</small></q-item-label>
-          </q-item-section>
-
-          <q-item-section avatar>
-            <q-avatar rounded>
-              <img :src="`${member?.avatar || 'default-user.jpeg'}`" />
-            </q-avatar>
-          </q-item-section>
-
-        </q-item>
-      </q-list>
-      <q-inner-loading :showing="fetchInviteeLoader" label="Please wait..." label-class="text-teal"
-        label-style="font-size: 1.1em" class="q-mx-md">
-        <q-spinner-ios size="50px" color="secondary" />
-      </q-inner-loading>
-    </div>
-    </div>
-    <q-uploader :factory="factoryFn" :uploadProgressLabel="uploadProgressLabel" label="Upload Files"
-      accept=".jpg, image/*" class="full-width q-mb-xl" multiple auto-upload flat>
-      <template v-slot:list="">
-        <div class="" v-for="item of todoFiles" :key="item">
-          <q-img :src="item || 'broken-img.png'"
-            style="max-height: 200px;border-bottom-right-radius: 4px; border-bottom-left-radius: 4px;"
-            class="full-width" />
-        </div>
-        <!-- <q-list dense>
-          <q-item dense v-for="item of todoFiles" :key="item">
-            <q-item-section class="">
-              <q-img :src="item || 'broken-img.png'" style="max-height: 200px;" class="full-width" />
+            <q-item-section avatar>
+              <q-checkbox
+                v-model="member.isSelected"
+                keep-color
+                :val="member.id"
+                :color="member.id ? ($q.dark.isActive ? 'accent' : 'primary') : ($q.dark.isActive ? 'grey-10' : 'grey')"
+                :disable="!member.id" />
             </q-item-section>
+
+            <q-item-section>
+              <q-item-label
+                :class="member.id ? ($q.dark.isActive ? 'text-accent' : 'text-primary') : ($q.dark.isActive ? 'text-grey' : 'text-grey')">{{ member?.fullname || member?.email}}
+              </q-item-label>
+              <q-item-label :class="member.id ? ($q.dark.isActive ? 'text-accent' : 'text-primary') : ($q.dark.isActive ? 'text-grey' : 'text-grey')"><small>{{ member.userTitle }}</small></q-item-label>
+            </q-item-section>
+
+            <q-item-section avatar>
+              <q-avatar rounded>
+                <img :src="`${member?.avatar || 'default-user.jpeg'}`" />
+              </q-avatar>
+            </q-item-section>
+
           </q-item>
-        </q-list> -->
-      </template>
-    </q-uploader>
+        </q-list>
+        <q-inner-loading :showing="fetchInviteeLoader" label="Please wait..." label-class="text-teal"
+          label-style="font-size: 1.1em" class="q-mx-md">
+          <q-spinner-ios size="50px" color="secondary" />
+        </q-inner-loading>
+      </div>
+      </div>
+      <q-uploader :factory="factoryFn" :uploadProgressLabel="uploadProgressLabel" label="Upload Files"
+        accept=".jpg, image/*" class="full-width q-mb-xs" multiple auto-upload flat>
+        <template v-slot:list="">
+          <div class="" v-for="item of todoFiles" :key="item">
+            <q-img
+              :src="item || 'broken-img.png'"
+              style="max-height: 200px;border-bottom-right-radius: 4px; border-bottom-left-radius: 4px;"
+              class="full-width">
+              <template v-slot:error>
+                <div class="absolute-full flex flex-center bg-negative text-white">
+                  No photo available
+                </div>
+              </template>
+          </q-img>
+          </div>
+          <!-- <q-list dense>
+            <q-item dense v-for="item of todoFiles" :key="item">
+              <q-item-section class="">
+                <q-img :src="item || 'broken-img.png'" style="max-height: 200px;" class="full-width" />
+              </q-item-section>
+            </q-item>
+          </q-list> -->
+        </template>
+      </q-uploader>
+    </div>
   </div>
   <div class="row full-width q-px-sm q-py-sm justify-between items-start absolute fixed-bottom"
-    style="margin-bottom:82px">
+    style="margin-bottom:64px">
     <div class="">
       <q-btn :outline="!$q.dark.isActive" class="round-btn" color="primary" icon="las la-arrow-left"
         @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}/todo`)" />
@@ -481,13 +490,11 @@ export default {
   box-shadow: none !important;
 }
 
-// already placed in app.scss
-// .q-uploader__list {
-//     position: relative;
-//     border-bottom-left-radius: inherit;
-//     border-bottom-right-radius: inherit;
-//     padding: 0px;
-//     min-height: 60px;
-//     flex: 1 1 auto;
+.q-item {
+    min-height: 48px;
+    padding: 8px 0px!important;
+    color: inherit;
+    transition: color 0.3s, background-color 0.3s;
+}
 
 </style>

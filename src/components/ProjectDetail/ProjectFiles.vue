@@ -33,6 +33,13 @@
         </template>
       </q-input>
     </div>
+    <div class="row full-width justify-between items-center">
+      <strong class="text-bold text-h6" :class="{
+        'text-accent': $q.dark.isActive,
+        'text-primary': !$q.dark.isActive
+      }">Files</strong>
+      <q-icon size="md" :color="$q.dark.isActive ? 'accent' : 'primary'" name="las la-undo" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/>
+    </div>
     <div class="scroll" style="height: 75.5vh">
       <div class="q-gutter-md row justify-between">
         <q-img v-for="item in arr" :key="item" :src="`${item.url}`" spinner-color="white"

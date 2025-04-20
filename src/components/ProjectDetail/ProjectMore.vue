@@ -1,6 +1,6 @@
 <template>
   <div class="column gap-10 q-pa-sm">
-    <div class="row">
+    <div class="row" v-if="false">
       <q-input
         standout="bg-transparent"
         :input-class="$q.dark.isActive ? 'text-accent' : 'text-primary'"
@@ -28,7 +28,7 @@
       }">User Controls</strong>
       <q-icon size="md" color="accent" name="las la-undo" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/>
     </div>
-    <div class="scroll" style="max-height: 60vh;">
+    <div class="scroll" style="max-height: 89vh;">
       <q-list padding class="text-accent">
         <q-item clickable v-ripple>
           <q-item-section>
@@ -259,3 +259,11 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.q-item {
+    min-height: 48px;
+    padding: 8px 0px!important;
+    color: inherit;
+    transition: color 0.3s, background-color 0.3s;
+}
+</style>

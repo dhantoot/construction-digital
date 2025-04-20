@@ -879,7 +879,10 @@ export default {
       // This is not real time. need reload to append data to list
       const projectsQuery = await this.$fbget(projectsTable)
       const results = projectsQuery.val()
-      if (!results) return
+      if (!results) {
+        this.rowLoading = false
+        return
+      }
       // console.log('results', results)
       this.rows = Object.values(results)
       this.rows.forEach((element, index) => {

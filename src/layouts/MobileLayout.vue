@@ -1,8 +1,8 @@
 <template>
-  <q-layout view="lHh lpR fFf" :class="{
+  <q-layout v-no-scroll view="lHh lpR fFf" :class="{
     'bg-light': !$q.dark.isActive,
     'bg-black': $q.dark.isActive
-  }">
+  }" style="max-height: 100vh;overflow-y: hidden;">
     <q-header elevated class="text-warning" :class="{
       'bg-primary': !$q.dark.isActive,
       'bg-black': $q.dark.isActive
@@ -12,13 +12,16 @@
           <q-btn @click="leftDrawerOpen = !leftDrawerOpen" flat round :dense="true" icon="menu" class="q-mr-sm round-btn"/>
           <q-toolbar-title class="text-center">Hofstee Inc.</q-toolbar-title>
           <q-btn v-if="!mainStore.showNav" flat round :dense="true" icon="las la-exchange-alt" class="round-btn" to="/admin-portal"/>
-          <q-toggle v-if="mainStore.showNav" dense v-model="isDark" checked-icon="las la-moon" color="grey" unchecked-icon="las la-sun" label=""
+          <q-toggle v-if="mainStore.showNav || routeName === 'MyProfile'" dense v-model="isDark" checked-icon="las la-moon" color="grey" unchecked-icon="las la-sun" label=""
           @update:model-value="toggleMode" />
         </div>
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" side="left" overlay behavior="mobile" class="q-mt-xl q-pt-lg">
+    <q-drawer v-model="leftDrawerOpen" side="left" overlay behavior="mobile" class="q-mt-xl q-pt-lg" :class="{
+    'bg-light': !$q.dark.isActive,
+    'bg-black': $q.dark.isActive
+  }" >
       <q-list :bordered="!$q.dark.isActive" separator padding class="text-caption" :class="{
         'text-accent': $q.dark.isActive,
         'text-primary': $q.dark.isActive
@@ -156,7 +159,8 @@
 
     <q-page-container>
       <q-tabs
-        v-if="mainStore.showNav"
+        no-scroll
+        v-if="mainStore.showNav && !routeName?.includes('project.details')"
         v-model="tab"
         no-caps
         inline-label
@@ -198,7 +202,7 @@ export default {
     const $q = useQuasar()
     const isDark = ref(false)
     // const bgPhoto = ''
-    $q.addressbarColor.set('#14252C')
+    $q.addressbarColor.set('#25252b')
     // document.addEventListener('deviceready', () => {
     //   deviceIsReady.value = true
     //   // eslint-disable-next-line no-undef
@@ -232,6 +236,11 @@ export default {
   methods: {
     toggleMode (val) {
       this.$q.dark.isActive = val
+      if (val) {
+        this.$q.addressbarColor.set('#000000')
+      } else {
+        this.$q.addressbarColor.set('#25252b')
+      }
     },
     showHeader (arg, breadcrumbs) {
       console.log('--receiving emits from login page', arg)
@@ -248,6 +257,11 @@ export default {
       this.mainStore.mobileSelectedProject = null
       this.mainStore.showNav = false
       this.$router.push('/login')
+    }
+  },
+  computed: {
+    routeName: function () {
+      return this.$route.name
     }
   }
 }

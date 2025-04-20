@@ -140,13 +140,16 @@
 <script>
 import { ref } from 'vue'
 import { LocalStorage } from 'quasar'
+import { useMainStore } from 'stores/main'
 export default {
   // name: 'ComponentName',
   setup () {
     const authUser = LocalStorage.getItem('authUser')
     const deviceIsReady = ref(false)
+    const mainStore = useMainStore()
 
     return {
+      mainStore,
       obj: ref({}),
       deviceIsReady,
       authUser,
@@ -160,7 +163,7 @@ export default {
     await this.fetchUserProfile()
   },
   mounted () {
-
+    // this.mainStore.showNav = true
   },
   methods: {
     uploadFile () {

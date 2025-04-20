@@ -52,7 +52,7 @@
   <q-inner-loading :showing="visible" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em">
     <q-spinner-ios size="50px" color="secondary"/>
   </q-inner-loading>
-  <q-page-sticky position="bottom-right" :offset="[18, 18]">
+  <q-page-sticky v-if="false" position="bottom-right" :offset="[18, 18]">
     <q-btn fab icon="add" color="grey-1" text-color="primary" class="bg-transparent" @click="this.$router.push({ path: '/new-project' })"/>
   </q-page-sticky>
 </template>
@@ -68,6 +68,8 @@ export default {
     const mainStore = useMainStore()
 
     return {
+      getInvitesLoader: ref(false),
+      projectIds: ref([]),
       visible,
       initFunction () {
         // access setup variables here w/o using 'this'
@@ -108,6 +110,7 @@ export default {
     // this.$emit('showHeader', true, [])
     this.showTextLoading()
     this.initFunction()
+    await this.getProjectByUser()
     await this.getProjects()
   },
   beforeUpdate () {
@@ -146,7 +149,6 @@ export default {
     },
     showTextLoading () {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
-      // console.log('loaded in ', ms, ' ms')
       this.visible = true
       setTimeout(() => {
         this.visible = false
@@ -154,6 +156,10 @@ export default {
     },
     async getProjects () {
       this.getProjectsLoader = true
+      const userDetails = LocalStorage.getItem('currentUser')
+      const {
+        role, email
+      } = userDetails
       const projects = this.$fbref(this.$fbdb, 'projects')
       this.$fbonValue(projects, (snapshot) => {
         const data = snapshot.val()
@@ -161,13 +167,60 @@ export default {
           this.projects = []
           return
         }
+        // all data
         const data_ = Object.values(data)
-        this.projects = data_
+
+        // If admin role, then return all data
+        if (role === 'admin') {
+          this.projects = data_
+          this.getProjectsLoader = false
+          return
+        }
+
+        // if client role, then fetch from project details
+        if (role === 'client') {
+          this.projects = data_.filter(e => e.client?.map(f => f.email).includes(email))
+          this.getProjectsLoader = false
+          return
+        }
+
+        // if agent role, then fetch from project details
+        if (role === 'agent') {
+          this.projects = data_.filter(e => e.agent?.map(f => f.email).includes(email))
+          this.getProjectsLoader = false
+          return
+        }
+
+        // If contructors, filter projects by invitation
+        if (role === 'constructor') {
+          this.projects = data_.filter(project => this.projectIds.includes(project.id))
+          this.getProjectsLoader = false
+          return
+        }
+
         this.getProjectsLoader = false
       })
     },
+    // This will get constructors project records
+    async getProjectByUser () {
+      this.getInvitesLoader = true
+      const userDetails = LocalStorage.getItem('currentUser')
+      const {
+        email
+      } = userDetails
+      const invites = this.$fbref(this.$fbdb, 'invites')
+      this.$fbonValue(invites, (snapshot) => {
+        const data = snapshot.val()
+        if (this.$isFalsyString(data)) {
+          this.invites = []
+          return
+        }
+        const data_ = Object.values(data)
+        this.projectIds = data_.filter((e) => e.invitee === email).map(e => e.projectId)
+        this.getInvitesLoader = false
+      })
+    },
     gotoDetail (project) {
-      console.log('project', project)
       LocalStorage.set('mobileSelectedProject', project)
       this.mainStore.setSelectedProject(project)
       this.$router.push({ path: `/detail/${project.id}` })

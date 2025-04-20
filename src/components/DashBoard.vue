@@ -13,6 +13,7 @@
       </q-card>
     </div>
   </div>
+  <div class="scroll" style="height: 88vh;">
 
   <div>
     <div v-for="item of projectListMapped.filter(e => e.groupedData)" :key="item" class="row">
@@ -30,9 +31,6 @@
         </q-card>
       </div>
     </div>
-    <q-inner-loading :showing="getProjectsLoader" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em">
-      <q-spinner-ios size="50px" color="secondary"/>
-    </q-inner-loading>
   </div>
   <div v-if="true" class="row justify-between">
     <div class="col">
@@ -159,11 +157,18 @@
       </q-card>
     </div>
   </div>
+
+  </div>
+
+  <q-inner-loading :showing="getProjectsLoader" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em">
+    <q-spinner-ios size="50px" color="secondary"/>
+  </q-inner-loading>
+
 </template>
 <script>
 import { ref } from 'vue'
 import moment from 'moment'
-import { date } from 'quasar'
+import { date, LocalStorage } from 'quasar'
 
 export default {
   title: 'Dashboard',
@@ -172,6 +177,7 @@ export default {
     const visible2 = ref(false)
 
     return {
+      projectIds: ref([]),
       getProjectsLoader: ref(false),
       loadingtodoList: ref(false),
       projectList: ref([]),
@@ -730,12 +736,12 @@ export default {
   beforeMount () {
     // console.log('beforeMount')
   },
-  mounted () {
+  async mounted () {
     // this.$emit('showHeader', true, [])
-    this.showTextLoading()
-    this.showTextLoading2()
-    this.getTodoList()
-    this.getProjects()
+    this.getProjectsLoader = true
+    await this.getProjectByUser()
+    await this.getTodoList()
+    await this.getProjects()
   },
   beforeUpdate () {
     // console.log('beforeUpdate')
@@ -750,6 +756,25 @@ export default {
     // console.log('unmounted')
   },
   methods: {
+    async getProjectByUser () {
+      console.log('getProjectByUser..')
+      const userDetails = LocalStorage.getItem('currentUser')
+      const {
+        email
+      } = userDetails
+      console.log({ email })
+      const invites = this.$fbref(this.$fbdb, 'invites')
+      this.$fbonValue(invites, (snapshot) => {
+        const data = snapshot.val()
+        if (this.$isFalsyString(data)) {
+          return
+        }
+        const data_ = Object.values(data)
+        console.log('data_ from invites', data_)
+        this.projectIds = data_.filter((e) => e.invitee === email).map(e => e.projectId)
+        console.log('this.projectIds', this.projectIds)
+      })
+    },
     showTextLoading () {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
       // console.log('loaded in ', ms, ' ms')
@@ -767,7 +792,6 @@ export default {
       }, ms)
     },
     async getProjects () {
-      this.getProjectsLoader = true
       const projects = this.$fbref(this.$fbdb, 'projects')
       this.$fbonValue(projects, (snapshot) => {
         const data = snapshot.val()
@@ -775,8 +799,33 @@ export default {
           this.projectList = []
           return
         }
-        const data_ = Object.values(data)
+        let data_ = Object.values(data)
         this.projectList = data_
+
+        // map projects by user role
+        const userDetails = LocalStorage.getItem('currentUser')
+        const {
+          role, email
+        } = userDetails
+        console.log({
+          role
+        })
+
+        if (role === 'client') {
+          data_ = data_.filter(e => e.client?.map(f => f.email).includes(email))
+          console.log('filtered data_', data_)
+        }
+
+        if (role === 'agent') {
+          data_ = data_.filter(e => e.agent?.map(f => f.email).includes(email))
+          console.log('filtered data_', data_)
+        }
+
+        if (role === 'constructor') {
+          data_ = data_.filter(project => this.projectIds.includes(project.id))
+          console.log('filtered data_', data_)
+        }
+
         this.projectListMapped = data_.map(e => (
           {
             id: e.id,

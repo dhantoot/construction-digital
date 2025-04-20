@@ -1,16 +1,35 @@
 <template>
   <div class="row hide-scrollbar" style="height: 94.5vh;">
-    <div class="row full-width full-height q-pa-sm gap-10">
-      <q-card class="round-panel full-width" :class="[$q.dark.isActive ? 'no-shadow' : 'shadow']">
+    <div class="column full-width full-height q-pa-sm gap-20">
+      <q-card class="round-panel full-width" :class="[$q.dark.isActive ? 'no-shadow' : 'shadow']" :style="[$q.screen.gt.sm ? 'max-height: 12vh;' : '']">
         <div class="row justify-start gap-20 q-pa-md">
           <div class="column justify-start gap-20">
             <div class="caption">Select Project</div>
-            <q-select use-input use-chips dense filled v-model="selectedProject" :options="filterOptions2"
-              @filter="filterProject" />
+            <q-select
+              use-input
+              use-chips
+              dense
+              filled
+              v-model="selectedProject"
+              :options="filterOptions2"
+              @filter="filterProject"
+              @update:model-value="onUpdateSelectedProject"
+            >
+            <template #option="scope">
+              <div class="">
+                <q-item v-bind="scope.itemProps">
+                  <q-item-section>
+                    <q-item-label>{{ scope.opt.label }}</q-item-label>
+                    <q-item-label caption>{{ scope.opt.description }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+              </div>
+            </template>
+            </q-select>
           </div>
           <div class="column justify-start gap-20">
             <div class="caption">Constructor label</div>
-            <div class="row gap-10 items-center">
+            <div class="row gap-10 items-center mt-8">
               <q-radio dense v-model="userTitle" val="Architect" label="Architect" color="teal" />
               <q-radio dense v-model="userTitle" val="Engineer" label="Engineer" color="orange" />
               <q-radio dense v-model="userTitle" val="Foreman" label="Foreman" color="red" />
@@ -21,11 +40,33 @@
           <div class="column justify-start gap-20">
             <div class="caption">Select email to send invitation</div>
             <div class="row gap-10">
-              <q-select :dense="true" filled v-model="model" use-input use-chips multiple input-debounce="0"
-                @new-value="createValue" :options="filterOptions" @filter="filterFn" option-value="email"
-                option-label="email" :class="{
+              <q-select
+                :dense="true"
+                filled
+                v-model="model"
+                use-input
+                use-chips
+                multiple
+                input-debounce="0"
+                @new-value="createValue"
+                :options="filterOptions"
+                @filter="filterFn"
+                option-value="email"
+                option-label="email"
+                behavior="menu"
+                :class="{
                   'q-pb-sm full-width': $q.screen.width < 433
-                }" />
+                }">
+                <template #option="scope">
+                  <div class="">
+                    <q-item v-bind="scope.itemProps">
+                      <q-item-section>
+                        <q-item-label>{{ scope.opt.email }}</q-item-label>
+                      </q-item-section>
+                    </q-item>
+                  </div>
+                </template>
+              </q-select>
               <q-btn padding="xs lg" color="primary" icon="las la-paper-plane" style="height: 40px; width: 150px"
                 :class="{
                   'text-capitalize': true,
@@ -46,12 +87,12 @@
         </div>
       </q-card>
 
-      <q-card class="round-panel full-width" :class="[$q.dark.isActive ? 'no-shadow' : 'shadow']">
+      <q-card class="round-panel full-width" :class="[$q.dark.isActive ? 'no-shadow' : 'shadow']" style="max-height: 81vh;">
         <q-card-section>
           <div class="text-h6">Invitation sent</div>
           <div class="text-subtitle2 text-right"></div>
         </q-card-section>
-        <q-table dense no-data-label="I didn't find anything for you" class="q-mb-sm q-mr-sm" row-key="id" :rows="rows"
+        <q-table no-data-label="I didn't find anything for you" class="q-mb-sm q-mr-sm" row-key="id" :rows="rows"
           :columns="columns" :loading="rowLoading" :visible-columns="visibleColumns" :rows-per-page-options="[12]">
           <template v-slot:loading>
             <q-inner-loading :showing="visible">
@@ -301,6 +342,15 @@ export default {
     // console.log('unmounted')
   },
   methods: {
+    async onUpdateSelectedProject (val) {
+      console.log('val', val)
+      if (val) {
+        this.rows = this.rows.filter(e => e.projectId === this.selectedProject.id)
+        return
+      }
+      await this.fetchInvites()
+      await this.getProjects()
+    },
     filterProject (val, update) {
       update(() => {
         if (val === '') {
@@ -382,6 +432,7 @@ export default {
       this.$fbonValue(invites, (snapshot) => {
         const data = snapshot.val()
         if (this.$isFalsyString(data)) {
+          this.visible = false
           this.rows = []
           return
         }
@@ -503,6 +554,7 @@ export default {
         })
     },
     async getProjects () {
+      console.log('getProjects fired..')
       this.getProjectsLoader = true
       const projects = this.$fbref(this.$fbdb, 'projects')
       this.$fbonValue(projects, (snapshot) => {
@@ -524,10 +576,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.q-item {
-    min-height: 48px;
-    padding: 8px 10px !important;
-    color: inherit;
-    transition: color 0.3s, background-color 0.3s;
-}
+// .q-item {
+//     min-height: 48px;
+//     padding: 8px 10px !important;
+//     color: inherit;
+//     transition: color 0.3s, background-color 0.3s;
+// }
 </style>

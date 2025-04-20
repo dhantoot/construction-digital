@@ -1,6 +1,13 @@
 <template>
   <div class="q-ma-none">
-    <div class="q-pa-xs">
+    <div class="q-pa-sm">
+      <div class="row full-width justify-between items-center">
+        <strong class="text-bold text-h6" :class="{
+          'text-accent': $q.dark.isActive,
+          'text-primary': !$q.dark.isActive
+        }">Planning</strong>
+        <q-icon size="md" :color="$q.dark.isActive ? 'accent' : 'primary'" name="las la-undo" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/>
+      </div>
       <q-date
         v-if="false"
         v-model="date"
@@ -48,6 +55,7 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import { useQuasar } from 'quasar'
+import HofsteeDialog from '../Common/Dialog/HofsteeDialog.vue'
 
 // Don't forget to specify which animations
 // you are using in quasar.config file > animations.
@@ -77,12 +85,28 @@ export default {
       $q.dialog({
         title: 'Please enter a new title for your event',
         message: '',
+        ok: {
+          color: 'primary',
+          class: 'text-capitalize no-caps',
+          style: 'border-radius:8px'
+        },
+        cancel: {
+          color: 'negative',
+          class: 'text-capitalize',
+          style: 'border-radius:8px'
+        },
         prompt: {
           model: '',
           type: 'text' // or 'textarea', 'password', etc.
         },
-        cancel: true
+        // component: HofsteeDialog,
+        // componentProps: {
+        //   text: 'something',
+        //   persistent: true
+        // },
+        persistent: true
       }).onOk(data => {
+        console.log('data', data)
         const calendarApi = selectInfo.view.calendar
 
         calendarApi.unselect() // clear date selection
@@ -107,6 +131,7 @@ export default {
     })
 
     return {
+      HofsteeDialog,
       handleDateSelect,
       calendarOptions,
       visible,

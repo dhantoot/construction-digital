@@ -8,7 +8,7 @@
         </div>
         <div class="text-h6" v-ellipsis="20">{{ mainStore?.mobileSelectedProject?.title }}</div>
         <div>
-          <q-btn color="primary" rounded v-if="this.$route.path === `/detail/${mainStore?.mobileSelectedProject?.id}`"
+          <q-btn disabled color="primary" rounded v-if="this.$route.path === `/detail/${mainStore?.mobileSelectedProject?.id}`"
             icon="las la-user-plus" class="text-accent round-btn" @click="this.$router.push({ path: '/new-member' })" />
         </div>
       </div>
@@ -21,7 +21,7 @@
             'text-primary': !$q.dark.isActive
           }">Project Member</strong>
         </div>
-        <q-list class="scroll" style="height: 50vh;">
+        <q-list class="scroll" style="height: 75vh;">
           <q-item clickable v-ripple v-for="item of invites" :key="item">
             <q-item-section avatar>
               <q-avatar>
@@ -79,16 +79,15 @@ export default {
     }
   },
   async mounted () {
-    // this.selectedProject = this.mainStore
-    await this.fetchAllUsers()
-    await this.fetchAllInvites()
+    this.visible = true
+    await this.fetchAllUsers() // fetchAllInvites was called in the last part of fetchAllUsers()
   },
   methods: {
     getColor (item) {
       if (item.role === 'admin') {
         return 'primary'
       } else if (item.role === 'client') {
-        return 'cancel'
+        return 'positive'
       } else if (item.role === 'agent') {
         return 'pink'
       } else {
@@ -113,19 +112,23 @@ export default {
       }
     },
     async fetchAllUsers () {
+      console.log('fetching users..')
       this.getUsersLoader = true
       const users = this.$fbref(this.$fbdb, 'users')
-      this.$fbonValue(users, (snapshot) => {
+      this.$fbonValue(users, async (snapshot) => {
         const data = snapshot.val()
         if (this.$isFalsyString(data)) {
           this.users = []
           return
         }
-        this.users = Object.values(data)
+        const data_ = Object.values(data)
+        this.users = data_
+        await this.fetchAllInvites()
         this.getUsersLoader = false
       })
     },
     async fetchAllInvites () {
+      console.log('fetching invites..')
       this.getInvitesLoader = true
       const invites = this.$fbref(this.$fbdb, 'invites')
       this.$fbonValue(invites, (snapshot) => {
@@ -152,6 +155,16 @@ export default {
           }
         })
 
+        // get admin details
+        const resp = this.users.find((e) => e.uid === this.mainStore?.mobileSelectedProject?.createdBy)
+        this.invites.unshift({
+          role: resp?.role,
+          userTitle: resp?.role,
+          fullName: (resp?.firstName || resp?.lastName) ? `${resp?.firstName} ${resp?.lastName}` : resp?.email,
+          avatar: resp?.avatar,
+          uid: resp?.uid
+        })
+
         // get agent details
         for (const item of this.mainStore?.mobileSelectedProject?.agent) {
           const agent = this.users.find((e) => e.email === item.email)
@@ -163,16 +176,6 @@ export default {
             uid: agent?.uid
           })
         }
-
-        // get admin details
-        const resp = this.users.find((e) => e.uid === this.mainStore?.mobileSelectedProject?.createdBy)
-        this.invites.unshift({
-          role: resp?.role,
-          userTitle: resp?.role,
-          fullName: (resp?.firstName || resp?.lastName) ? `${resp?.firstName} ${resp?.lastName}` : resp?.email,
-          avatar: resp?.avatar,
-          uid: resp?.uid
-        })
 
         // get client details
         for (const client of this.mainStore?.mobileSelectedProject?.client) {
@@ -187,6 +190,7 @@ export default {
         }
 
         this.getInvitesLoader = false
+        this.visible = false
       })
     }
   }
@@ -198,5 +202,11 @@ export default {
 }
 .hmm {
   height: calc(100vh - 81px);
+}
+.q-item {
+    min-height: 48px;
+    padding: 8px 0px!important;
+    color: inherit;
+    transition: color 0.3s, background-color 0.3s;
 }
 </style>

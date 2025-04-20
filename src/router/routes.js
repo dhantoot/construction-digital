@@ -1,62 +1,88 @@
 const routes = [
   {
     path: '/',
-    component: () => import('layouts/MainLayout.vue'),
+    name: 'mobile.login',
+    component: () => import('src/layouts/MobileLayout.vue'),
     redirect: 'login',
     children: [
       {
         path: '/projects',
+        name: 'mobile.projects',
         component: () => import('components/ProjectList.vue')
       },
       {
         path: '/dashboard',
+        name: 'mobile.dashboard',
         component: () => import('components/DashBoard.vue')
       },
       {
         path: '/plans',
+        name: 'mobile.plans',
         component: () => import('components/ProjectPlan.vue')
       },
       {
         path: '/detail/:projectId',
+        name: 'project.details',
         component: () => import('components/ProjectDetail/IndexPage.vue'),
         children: [
           {
             path: '',
+            name: 'project.details.default',
             component: () =>
               import('components/ProjectDetail/ProjectDetailDefault.vue')
           },
           {
             path: '/detail/:projectId/todo',
+            name: 'project.details.todo',
             component: () => import('components/ProjectDetail/ProjectTodo.vue')
           },
           {
             path: '/detail/:projectId/files',
+            name: 'project.details.files',
             component: () => import('components/ProjectDetail/ProjectFiles.vue')
           },
           {
             path: '/detail/:projectId/chat',
-            component: () => import('components/ProjectDetail/ProjectChat.vue')
+            name: 'project.details.chat',
+            component: () => import('components/ProjectDetail/ProjectChat/IndexComponent.vue'),
+            children: [
+              {
+                path: '',
+                name: 'project.details.chat.default',
+                component: () => import('components/ProjectDetail/ProjectChat/ProjectChat.vue')
+              },
+              {
+                path: '/detail/:projectId/chat/:chatId',
+                name: 'project.details.chat.detail',
+                component: () => import('components/ProjectDetail/ProjectChat/ProjectChatDetails.vue')
+              }
+            ]
           },
           {
             path: '/detail/:projectId/planning',
+            name: 'project.details.planning',
             component: () => import('components/ProjectDetail/ProjectPlan.vue')
           },
           {
             path: '/detail/:projectId/more',
+            name: 'project.details.more',
             component: () => import('components/ProjectDetail/ProjectMore.vue')
           },
           {
             path: '/detail/:projectId/agreement',
+            name: 'project.details.agreement',
             component: () =>
               import('components/ProjectDetail/ProjectAgreement.vue')
           },
           {
             path: '/detail/:projectId/todo/create',
+            name: 'project.details.todo.create',
             component: () =>
               import('src/components/ProjectDetail/ProjectTodoCreate.vue')
           },
           {
             path: '/detail/:projectId/todo/:todoId/update',
+            name: 'project.details.todo.update',
             component: () =>
               import('src/components/ProjectDetail/ProjectTodoUpdate.vue')
           }
@@ -64,33 +90,39 @@ const routes = [
       },
       {
         path: '/new-project',
+        name: 'mobile.new.project',
         component: () => import('components/NewProject.vue')
       },
       {
         path: '/new-member',
+        name: 'mobile.new-member',
         component: () => import('components/AddMember.vue')
       },
       {
         path: '/send-invite',
+        name: 'mobile.send-invite',
         component: () => import('components/SendInvite.vue')
       },
       {
         path: '/login-register',
+        name: 'mobile.login-register',
         component: () => import('src/components/userRegistration.vue')
       },
       {
         path: '/login',
+        name: 'mobile.userlogin',
         component: () => import('src/components/userLogin.vue')
       },
       {
         path: '/profile/:uid',
+        name: 'mobile.my-profile',
         component: () => import('components/User/MyProfile.vue')
       }
     ]
   },
   {
     path: '/admin',
-    component: () => import('layouts/NewDashboard.vue'),
+    component: () => import('src/layouts/AdminPortalLayout.vue'),
     redirect: 'admin-portal',
     children: [
       {
