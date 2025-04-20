@@ -63,6 +63,7 @@
 <script>
 import { ref } from 'vue'
 import { useMainStore } from 'stores/main'
+import { LocalStorage } from 'quasar'
 
 // Don't forget to specify which animations
 // you are using in quasar.config file > animations.
@@ -116,9 +117,7 @@ export default {
   async mounted () {
     this.visible = true
     await this.fetchAllUsers()
-    console.log('done fetchAllUsers')
     await this.fetchAllInvites()
-    console.log('done fetchAllInvites')
 
     // loadchats() was triggered inside the last part of fetchAllInvites()
   },
@@ -138,7 +137,16 @@ export default {
     setChatMode (arg = 1, chatDetails = null) {
       this.chatMode = arg
       this.chatDetails = chatDetails
-      this.$router.push(`/detail/${this.mainStore?.mobileSelectedProject?.id}/chat/1`)
+      const {
+        uid: recipientUID,
+        name
+      } = chatDetails
+      this.$router.push({
+        path: `/detail/${this.mainStore?.mobileSelectedProject?.id}/chat/${recipientUID}`,
+        query: {
+          name
+        }
+      })
     },
     showTextLoading () {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
@@ -149,7 +157,11 @@ export default {
       }, ms)
     },
     async loadChats () {
-      const resp = this.invites.map((e, index) => {
+      const userDetails = LocalStorage.getItem('currentUser')
+      const {
+        uid
+      } = userDetails
+      const resp = this.invites.filter(e => e.uid !== uid).map((e, index) => {
         return {
           avatar: e.avatar,
           name: e.fullName,
@@ -159,7 +171,6 @@ export default {
           unread: index % 2
         }
       })
-      console.log('data_:loadChats', resp)
       this.chats = resp
     },
     async fetchAllUsers () {
@@ -172,7 +183,6 @@ export default {
           return
         }
         this.users = Object.values(data)
-        console.log('data_:fetchAllUsers', this.users)
         this.getUsersLoader = false
       })
     },
@@ -187,7 +197,6 @@ export default {
         }
         const data_ = Object.values(data)
         this.invites = data_.filter((e) => e.projectId === this.$route.params.projectId)
-        console.log('data_:fetchAllInvites', this.invites)
 
         // get invitees
         this.invites.forEach((item) => {

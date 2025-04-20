@@ -375,7 +375,6 @@ export default {
           return
         }
         this.users = Object.values(data)
-        console.log('this.users', this.users)
         this.fetchUsersLoader = false
       })
     },
@@ -397,7 +396,6 @@ export default {
           if (item.projectId === this.$route.params.projectId && item.status !== 'Rejected') {
             const userDetail = this.users.find((user) => user.email === item.invitee)
             item.id = userDetail?.uid || undefined
-            console.log({ userDetail })
             item.fullname = userDetail?.firstName && userDetail?.lastName
               ? `${userDetail?.firstName} ${userDetail?.lastName}`
               : item.invitee
@@ -407,7 +405,6 @@ export default {
           }
           continue
         }
-        console.log('this.invitee', this.invitee)
         this.fetchInviteeLoader = false
       })
     }

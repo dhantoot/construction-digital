@@ -112,7 +112,6 @@ export default {
       }
     },
     async fetchAllUsers () {
-      console.log('fetching users..')
       this.getUsersLoader = true
       const users = this.$fbref(this.$fbdb, 'users')
       this.$fbonValue(users, async (snapshot) => {
@@ -128,7 +127,6 @@ export default {
       })
     },
     async fetchAllInvites () {
-      console.log('fetching invites..')
       this.getInvitesLoader = true
       const invites = this.$fbref(this.$fbdb, 'invites')
       this.$fbonValue(invites, (snapshot) => {

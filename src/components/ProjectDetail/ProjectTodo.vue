@@ -214,7 +214,6 @@ export default {
     },
     showTextLoading () {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
-      // console.log('loaded in ', ms, ' ms')
       this.visible = true
       setTimeout(() => {
         this.visible = false
@@ -222,7 +221,6 @@ export default {
     },
     async getTodoList () {
       this.loadingtodoList = true
-      console.log('this.$route', this.$route.params.projectId)
       // const todo = this.$fbref(this.$fbdb, 'todo')
       const todo = this.$fbref(this.$fbdb, `task/${this.$route.params.projectId}`)
       this.$fbonValue(todo, (snapshot) => {
@@ -233,17 +231,14 @@ export default {
           return
         }
         const data_ = Object.values(data)
-        console.log(data_)
         this.sortList(data_, 'section')
         // this.todoList = data_
-        console.log('this.todoList', this.todoList)
         const stats = this.todoList.map((E) => [
           E.timeline?.from,
           E.timeline?.to,
           E.isCompleted,
           E.todoDesc
         ])
-        console.log('stats', stats)
         const groupedData = stats.reduce((list, item) => {
           const dueDate = item[1]
           if (!list[dueDate]) {
@@ -261,8 +256,6 @@ export default {
       })
     },
     async sortList (arr, field) {
-      console.log('arr', arr)
-      console.log('field', field)
       if (!arr || arr.length < 1) {
         return
       }
@@ -287,14 +280,12 @@ export default {
       })
     },
     async changeSelected (val) {
-      // console.log(val)
       if (val.length < 1) {
         this.completedTodos = []
         return
       }
       const completed = this.todoList.filter((e) => val.includes(e.id))
       this.completedTodos = completed
-      // console.log('->', this.completedTodos)
     },
     getCompletedTodos () {
       const completed = this.todoList.filter((e) => e.isCompleted === true)
@@ -324,17 +315,14 @@ export default {
     onLeft ({ reset }) {
       // $q.notify('Left action triggered. Resetting in 1 second.')
       // finalize(reset)
-      console.log('on left')
       this.reset_ = reset
     },
     onRight ({ reset }) {
       // $q.notify('Right action triggered. Resetting in 1 second.')
       // finalize(reset)
-      console.log('on right')
       this.reset_ = reset
     },
     viewTodoDetail (selectedTodo) {
-      console.log('selectedTodo', selectedTodo)
       LocalStorage.set('mobileSelectedProjectTodo', selectedTodo)
       this.$router.push(`/detail/${this.mainStore?.mobileSelectedProject?.id}/todo/${selectedTodo.id}/update`)
     }

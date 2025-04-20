@@ -25,99 +25,18 @@
         <strong class="text-bold text-h6" :class="{
           'text-accent': $q.dark.isActive,
           'text-primary': !$q.dark.isActive
-        }">John Doe</strong>
+        }">{{ $route.query.name }}</strong>
         <q-icon size="md" :color="$q.dark.isActive ? 'accent' : 'primary'" name="las la-undo" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}/chat`)"/>
       </div>
       <div class="scroll" style="height: 65.8vh">
-        <q-chat-message
-          name="me"
-          avatar="avatar3.jpg"
-          :text="['hey, how are you?']"
-          stamp="7 minutes ago"
-          sent
-          bg-color="amber-7"
-       />
-        <q-chat-message
-          name="Jane"
-          avatar="avatar5.jpg"
-          :text="[
-            'doing fine, how r you?',
-            'I just feel like typing a really, really, REALLY long message to annoy you...'
-          ]"
-          size="6"
-          stamp="4 minutes ago"
-          text-color="white"
-          bg-color="primary"
-       />
-        <q-chat-message
-          name="Jane"
-          avatar="avatar5.jpg"
-          :text="['Did it work?']"
-          stamp="1 minutes ago"
-          size="8"
-          text-color="white"
-          bg-color="primary"
-       />
-        <q-chat-message
-          name="me"
-          avatar="avatar3.jpg"
-          :text="['Yes it worked']"
-          stamp="7 minutes ago"
-          sent
-          bg-color="amber-7"
-       />
-        <q-chat-message
-          name="me"
-          avatar="avatar3.jpg"
-          :text="['By the way thank you very much', 'I missed you']"
-          stamp="7 minutes ago"
-          sent
-          bg-color="amber-7"
-       />
-        <q-chat-message
-          name="me"
-          avatar="avatar3.jpg"
-          :text="['hey, how are you?']"
-          stamp="7 minutes ago"
-          sent
-          bg-color="amber-7"
-       />
-        <q-chat-message
-          name="Jane"
-          avatar="avatar5.jpg"
-          :text="[
-            'doing fine, how r you?',
-            'I just feel like typing a really, really, REALLY long message to annoy you...'
-          ]"
-          size="6"
-          stamp="4 minutes ago"
-          text-color="white"
-          bg-color="primary"
-       />
-        <q-chat-message
-          name="Jane"
-          avatar="avatar5.jpg"
-          :text="['Did it work?']"
-          stamp="1 minutes ago"
-          size="8"
-          text-color="white"
-          bg-color="primary"
-       />
-        <q-chat-message
-          name="me"
-          avatar="avatar3.jpg"
-          :text="['Yes it worked']"
-          stamp="7 minutes ago"
-          sent
-          bg-color="amber-7"
-       />
-        <q-chat-message
-          name="me"
-          avatar="avatar3.jpg"
-          :text="['By the way thank you very much', 'I missed you']"
-          stamp="7 minutes ago"
-          sent
-          bg-color="amber-7"
+        <q-chat-message v-for="(chat, index) in chats" :key="index"
+          :name="chat.name"
+          :avatar="chat.avatar"
+          :text="chat.text"
+          :stamp="chat.stamp"
+          :bg-color="chat.bgColor"
+          :text-color="chat.textColor"
+          :sent="chat.name === 'me'"
        />
       </div>
       <div class="messenger-input">
@@ -131,7 +50,7 @@
           placeholder="Type a message..."
           class="input-field"
         />
-        <q-btn round flat icon="send" class="send-btn" @click="sendMessage" :color="[q.dark.isActive ? 'accent' : 'primary']"/>
+        <q-btn round flat icon="send" class="send-btn" @click="sendMessage" :color="q.dark.isActive ? 'accent' : 'primary'"/>
       </div>
     </div>
     <q-inner-loading
@@ -146,7 +65,7 @@
 <script>
 import { ref } from 'vue'
 import { useMainStore } from 'stores/main'
-import { useQuasar } from 'quasar'
+import { useQuasar, LocalStorage, uid, date } from 'quasar'
 
 // Don't forget to specify which animations
 // you are using in quasar.config file > animations.
@@ -158,8 +77,13 @@ export default {
     const question = ref('')
     const mainStore = useMainStore()
     const $q = useQuasar()
+    const authUser = ref(null)
 
     return {
+      authUser,
+      chats: ref([]),
+      sendMessageLoader: ref(false),
+      getChatsLoader: ref(false),
       q: $q,
       mainStore,
       visible,
@@ -171,7 +95,9 @@ export default {
       text: ref(''),
       ph: ref(''),
       dense: ref(true),
-      message: ref('')
+      message: ref(''),
+      obj: ref({}),
+      senderObj: ref({})
     }
   },
   props: {
@@ -194,6 +120,10 @@ export default {
   },
   async mounted () {
     this.showTextLoading()
+    this.authUser = LocalStorage.getItem('authUser')
+    this.fetchUserProfile()
+    this.fetchSendersProfile()
+    this.getChats()
   },
   beforeUpdate () {
     // console.log('beforeUpdate')
@@ -216,10 +146,127 @@ export default {
         this.visible = false
       }, ms)
     },
+    fetchUserProfile () {
+      const users = this.$fbref(this.$fbdb, `users/${this.authUser.uid}`)
+      this.$fbonValue(users, (snapshot) => {
+        const data = snapshot.val()
+        this.obj = data
+      })
+    },
+    fetchSendersProfile () {
+      const recipientUID = this.$route.params.recipientUID
+      const users = this.$fbref(this.$fbdb, `users/${recipientUID}`)
+      this.$fbonValue(users, (snapshot) => {
+        const data = snapshot.val()
+        this.senderObj = data
+      })
+    },
     sendMessage () {
+      const userDetails = LocalStorage.getItem('currentUser')
+      const {
+        uid: senderUID
+      } = userDetails
+      const projectId = this.$route.params.projectId
+      const recipientUID = this.$route.params.recipientUID
       // Your logic to send the message
-      console.log(this.message)
-      this.message = ''
+      const updates = {}
+      updates[`chats/${projectId}/${uid()}/`] = {
+        from: senderUID,
+        to: recipientUID,
+        projectId,
+        _ts: this.$serverTimestamp,
+        text: [this.message],
+        isDeleted: false,
+        isSeen: false
+      }
+      this.$fbupdate(this.$fbref(this.$fbdb), updates)
+        .then(() => {
+          this.sendMessageLoader = false
+          this.message = ''
+        })
+        .catch((error) => {
+          console.log(error)
+          this.sendMessageLoader = false
+          this.message = ''
+        })
+    },
+    timeAgo (timestamp) {
+      const diffSeconds = Math.abs(Math.floor(Date.now() / 1000) - timestamp)
+
+      if (diffSeconds < 60) {
+        return `${diffSeconds} seconds ago`
+      } else if (diffSeconds < 3600) {
+        return `${Math.floor(diffSeconds / 60)} minutes ago`
+      } else if (diffSeconds < 86400) {
+        return `${Math.floor(diffSeconds / 3600)} hours ago`
+      } else {
+        return `${Math.floor(diffSeconds / 86400)} days ago`
+      }
+    },
+    getChats () {
+      this.getChatsLoader = true
+      const userDetails = LocalStorage.getItem('currentUser')
+      const {
+        uid: senderUID
+      } = userDetails
+      const chats = this.$fbref(this.$fbdb, `chats/${this.$route.params.projectId}`)
+      this.$fbonValue(chats, async (snapshot) => {
+        const data = snapshot.val()
+        if (this.$isFalsyString(data)) {
+          this.chats = []
+          return
+        }
+        this.chats = Object.values(data)
+        this.chats = this.chats.filter(e => e.from === senderUID || e.to === senderUID)?.sort((a, b) => a._ts - b._ts)
+        this.chats.forEach(e => {
+          const dateLogged = date.formatDate(e._ts, 'MMM DD, YYYY HH:mm A')
+          const dateNow = date.formatDate(Date.now(), 'MMM DD, YYYY HH:mm A')
+
+          // const diffDays = date.getDateDiff(dateNow, dateLogged, 'days')
+          const diffHours = date.getDateDiff(dateNow, dateLogged, 'hours')
+          const diffMinutes = date.getDateDiff(dateNow, dateLogged, 'minutes')
+
+          let stamp = ''
+          if (diffHours === 0) {
+            if (diffMinutes === 0) {
+              stamp = 'Just now'
+            } else {
+              if (diffMinutes === 1) {
+                stamp = 'a minute ago'
+              } else {
+                stamp = `${diffMinutes}min`
+              }
+            }
+          } else {
+            if (diffHours === 1 && diffMinutes === 0) {
+              stamp = 'an hour ago'
+            } else {
+              if (diffHours === 1) {
+                stamp = `${diffHours}hr, ${diffMinutes}min`
+              } else {
+                stamp = `${diffHours}hrs, ${diffMinutes}min`
+              }
+            }
+          }
+
+          // receiver is me
+          if (e.to === senderUID) {
+            e.name = this.$route.query.name
+            e.avatar = this.senderObj?.avatar?.length > 0 ? `${this.senderObj.avatar}` : 'default-user.jpeg'
+            e.size = '8'
+            e.stamp = stamp
+            e.textColor = 'white'
+            e.bgColor = 'primary'
+          } else {
+            e.name = 'me'
+            e.avatar = this.obj?.avatar?.length > 0 ? `${this.obj.avatar}` : 'default-user.jpeg'
+            e.size = '8'
+            e.stamp = stamp
+            e.bgColor = 'amber-7'
+          }
+        })
+        this.getChatsLoader = false
+      })
     }
   }
 }

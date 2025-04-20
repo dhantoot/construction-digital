@@ -83,7 +83,6 @@ export default {
     }
   },
   mounted () {
-    // console.log(this.$route.path)
     // this.$emit('showHeader', false, [
     //   {
     //     label: 'Back',

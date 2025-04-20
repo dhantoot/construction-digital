@@ -11,9 +11,49 @@
         <div class="row full-width items-center">
           <q-btn @click="leftDrawerOpen = !leftDrawerOpen" flat round :dense="true" icon="menu" class="q-mr-sm round-btn"/>
           <q-toolbar-title class="text-center">Hofstee Inc.</q-toolbar-title>
-          <q-btn v-if="!mainStore.showNav" flat round :dense="true" icon="las la-exchange-alt" class="round-btn" to="/admin-portal"/>
-          <q-toggle v-if="mainStore.showNav || routeName === 'MyProfile'" dense v-model="isDark" checked-icon="las la-moon" color="grey" unchecked-icon="las la-sun" label=""
-          @update:model-value="toggleMode" />
+          <q-btn v-if="!mainStore.showNav && !routeName === 'mobile.my-profile'" flat round :dense="true" icon="las la-exchange-alt" class="round-btn" to="/admin-portal"/>
+          <div v-if="mainStore.showNav || routeName === 'mobile.my-profile'">
+            <q-avatar>
+              <img :src="obj?.avatar?.length > 0 ? `${obj.avatar}` : `default-user.jpeg`"/>
+            </q-avatar>
+              <q-menu
+                style="border-radius: 10px;"
+                :class="[$q.dark.isActive ? 'no-shadow bg-dark' : 'bg-primary text-accent']"
+                :offset="[13, 16]">
+                <template v-slot:activator="{ on }">
+                  <q-btn flat dense icon="more_vert" v-on="on" />
+                </template>
+                <q-list style="min-width: 200px">
+                  <q-item>
+                    <q-item-section>Dark Mode</q-item-section>
+                    <q-item-section side>
+                      <q-toggle
+                        v-if="mainStore.showNav || routeName === 'MyProfile'"
+                        dense
+                        v-model="isDark"
+                        checked-icon="las la-moon"
+                        color="grey"
+                        unchecked-icon="las la-sun"
+                        label=""
+                        @update:model-value="toggleMode"
+                      />
+                    </q-item-section>
+                  </q-item>
+                  <q-item clickable v-ripple :to="`/profile/${authUser.uid}`">
+                    <q-item-section>My Profile</q-item-section>
+                    <q-item-section side>
+                      <q-icon name="las la-user"/>
+                    </q-item-section>
+                  </q-item>
+                  <q-item clickable v-ripple @click="signOut">
+                    <q-item-section>Logout</q-item-section>
+                    <q-item-section side>
+                      <q-icon name="las la-sign-out-alt"/>
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+              </q-menu>
+          </div>
         </div>
       </q-toolbar>
     </q-header>
@@ -30,7 +70,7 @@
         clickable
         v-ripple
         :active="link === 'back'"
-        @click="leftDrawerOpen=false"
+        @click="leftDrawerOpen=false; this.$router.push(`/projects`)"
         active-class="my-menu-link"
       >
         <q-item-section avatar>
@@ -225,15 +265,25 @@ export default {
         leftDrawerOpen.value = !leftDrawerOpen.value
       },
       tab: ref('mails'),
-      lorem: 'Lorem ipsum dolor'
+      lorem: 'Lorem ipsum dolor',
+      obj: ref({})
     }
   },
   mounted () {
     this.authUser = LocalStorage.getItem('authUser')
     console.log('MainLayout monunter')
     this.themeStore.setCurrentTheme(17) // 1,17, 20(light), 22(light)
+    this.fetchUserProfile()
   },
   methods: {
+    async fetchUserProfile () {
+      console.log('this.authUser', this.authUser.uid)
+      const users = this.$fbref(this.$fbdb, `users/${this.authUser.uid}`)
+      this.$fbonValue(users, (snapshot) => {
+        const data = snapshot.val()
+        this.obj = data
+      })
+    },
     toggleMode (val) {
       this.$q.dark.isActive = val
       if (val) {

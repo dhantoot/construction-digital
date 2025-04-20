@@ -112,6 +112,7 @@ export default {
     this.initFunction()
     await this.getProjectByUser()
     await this.getProjects()
+    this.mainStore.showNav = true
   },
   beforeUpdate () {
     // console.log('beforeUpdate')

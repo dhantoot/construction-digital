@@ -52,7 +52,7 @@ const routes = [
                 component: () => import('components/ProjectDetail/ProjectChat/ProjectChat.vue')
               },
               {
-                path: '/detail/:projectId/chat/:chatId',
+                path: '/detail/:projectId/chat/:recipientUID',
                 name: 'project.details.chat.detail',
                 component: () => import('components/ProjectDetail/ProjectChat/ProjectChatDetails.vue')
               }

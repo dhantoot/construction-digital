@@ -251,7 +251,6 @@ export default {
         const date2 = new Date(yt, mt, dt)
         const unit = 'days'
         const diff = date.getDateDiff(date2, date1, unit)
-        console.log('this.mainStore?.mobileSelectedProjectTodo', this.mainStore?.mobileSelectedProjectTodo)
         if (!this.mainStore?.mobileSelectedProjectTodo) {
           this.confirmBtnLoader = false
           this.$q.notify({
@@ -271,7 +270,6 @@ export default {
           duration: diff + 1,
           isLocked: false
         }
-        console.log('this.selectedTodoDetail', this.selectedTodoDetail)
         const updates = {}
         console.log({
           generatedUid,
@@ -469,7 +467,6 @@ export default {
     },
     setUpdateValues () {
       this.selectedTodoDetail = LocalStorage.getItem('mobileSelectedProjectTodo')
-      console.log('this.selectedTodoDetail', this.selectedTodoDetail)
       this.todoTitle = this.selectedTodoDetail.todoTitle
       this.todoDesc = this.selectedTodoDetail.todoDesc
       this.todoFiles = [this.selectedTodoDetail?.avatar] || ['broken-img.png']

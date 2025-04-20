@@ -106,7 +106,6 @@ export default {
         // },
         persistent: true
       }).onOk(data => {
-        console.log('data', data)
         const calendarApi = selectInfo.view.calendar
 
         calendarApi.unselect() // clear date selection
