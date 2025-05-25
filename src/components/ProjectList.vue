@@ -84,6 +84,7 @@ export default {
       searchIconHidden: ref(false)
     }
   },
+  emits: ['emitFromChild'],
   props: {
     title: String,
     likes: Number
@@ -113,6 +114,10 @@ export default {
     await this.getProjectByUser()
     await this.getProjects()
     this.mainStore.showNav = true
+    console.log('at project list')
+    // Tell the Layout, that this child component is mounted.
+    // so that it will retrigger the fetching of avatar.
+    this.$emit('emitFromChild')
   },
   beforeUpdate () {
     // console.log('beforeUpdate')

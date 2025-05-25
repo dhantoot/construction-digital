@@ -173,7 +173,9 @@ export default {
     // this.$emit('showHeader', true, [])
     this.showTextLoading()
     this.authUser = LocalStorage.getItem('authUser')
-    this.uid = this.authUser.uid
+    if (this.authUser && this.authUser.uid) {
+      this.uid = this.authUser.uid
+    }
   },
   beforeUpdate () {
     // console.log('beforeUpdate')

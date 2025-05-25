@@ -44,8 +44,14 @@
                 style="height: 40px;" />
             </div>
             <div class="q-py-sm">
-              <q-toggle dense v-model="isActivated" checked-icon="check" color="green" unchecked-icon="clear"
-              label="Set as activated upon submit" />
+              <q-toggle
+                dense
+                v-model="isActivated"
+                checked-icon="check"
+                color="positive"
+                unchecked-icon="clear"
+                label="&nbsp;&nbsp;Set as activated upon submit"
+              />
             </div>
             <q-input :dense="true" prefix="$" filled v-model="budget" label="Budget" placeholder="0.00"
               input-class="text-right" />
@@ -96,21 +102,35 @@
             <div class="text-h6">List of Projects</div>
             <div class="text-subtitle2 text-right">
               <q-chip class="q-ml-none">
-                <q-avatar size="25px" color="info" text-color="white">{{rows.filter(f => f.isActivated == true).length
-                  }}</q-avatar>
+                <q-avatar
+                  size="25px"
+                  color="positive"
+                  text-color="white">{{rows.filter(f => f.isActivated == true).length}}
+                </q-avatar>
                 active
               </q-chip>
               <q-chip class="q-ml-none">
-                <q-avatar size="25px" color="negative" text-color="white">{{rows.filter(f => f.isActivated ==
-                  false).length
-                  }}</q-avatar>
+                <q-avatar
+                  size="25px"
+                  color="negative"
+                  text-color="white">{{rows.filter(f => f.isActivated == false).length}}
+                </q-avatar>
                 inactive
               </q-chip>
             </div>
           </q-card-section>
-          <q-table no-data-label="I didn't find anything for you" class="q-mb-sm q-mr-sm" row-key="title"
-            selection="single" v-model:selected="selected" :selection-options="selectionOptions" :rows="rows"
-            :columns="columns" :loading="rowLoading" :visible-columns="visibleColumns" :rows-per-page-options="[10]">
+          <q-table
+            no-data-label="I didn't find anything for you"
+            class="q-mb-sm q-mr-sm"
+            row-key="title"
+            selection="single"
+            v-model:selected="selected"
+            :selection-options="selectionOptions"
+            :rows="rows"
+            :columns="columns"
+            :loading="rowLoading"
+            :visible-columns="visibleColumns"
+            :rows-per-page-options="[10]">
             <template v-slot:body="props">
               <q-tr :props="props" :selected="props.selected">
                 <q-td key="id" :props="props">
@@ -128,8 +148,7 @@
                   {{ props.row.title }}
                 </q-td>
                 <q-td key="description" :props="props" v-ellipsis="30">
-                  {{ props.row.description.length > maxLength ? props.row.descriptionShortened : props.row.description
-                  }}
+                  {{ props.row.description.length > maxLength ? props.row.descriptionShortened : props.row.description }}
                 </q-td>
                 <q-td key="budget" :props="props">
                   {{ props.row.budget }}
@@ -147,8 +166,14 @@
                   {{ props.row.dateCreated }}
                 </q-td>
                 <q-td key="isActive" :props="props">
-                  <q-toggle dense name="djan" checked-icon="check" unchecked-icon="clear" color="secondary"
-                    unchecked-color="negative" @update:model-value="updateStatus(props.row)"
+                  <q-toggle
+                    dense
+                    name="djan"
+                    checked-icon="check"
+                    unchecked-icon="clear"
+                    color="positive"
+                    unchecked-color="negative"
+                    @update:model-value="updateStatus(props.row)"
                     v-model="activatedList[props.row.id]" />
                 </q-td>
               </q-tr>

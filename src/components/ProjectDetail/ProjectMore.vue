@@ -1,5 +1,5 @@
 <template>
-  <div class="column gap-10 q-pa-sm">
+  <div class="column gap-10 q-pa-sm scroll full-width">
     <div class="row" v-if="false">
       <q-input
         standout="bg-transparent"
@@ -26,11 +26,11 @@
         'text-primary': !$q.dark.isActive,
         'text-accent': $q.dark.isActive
       }">User Controls</strong>
-      <q-icon size="md" color="accent" name="las la-undo" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/>
+      <q-icon size="md" :color="$q.dark.isActive ? 'accent' : 'primary'" name="las la-undo" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/>
     </div>
-    <div class="scroll" style="max-height: 89vh;">
-      <q-list padding class="text-accent">
-        <q-item clickable v-ripple>
+    <div class="scroll full-width" style="max-height: 78.5vh;">
+      <q-list padding class="text-accent full-width">
+        <q-item clickable v-ripple class="">
           <q-item-section>
             <q-item-label :class="{
               'text-primary': !$q.dark.isActive,
@@ -45,7 +45,7 @@
             </q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable v-ripple>
+        <q-item clickable v-ripple class="">
           <q-item-section>
             <q-item-label class="text-bold" :class="{
               'text-primary': !$q.dark.isActive,
@@ -64,7 +64,7 @@
               'text-primary': !$q.dark.isActive,
               'text-accent': $q.dark.isActive
             }">General</q-item-label>
-        <q-item tag="label" v-ripple>
+        <q-item tag="label" v-ripple class="">
           <q-item-section side top>
             <q-checkbox dense keep-color color="positive" v-model="check1" />
           </q-item-section>
@@ -104,16 +104,19 @@
           </q-item-section>
         </q-item>
         <q-separator spaced />
+
         <q-item-label class="text-white text-bold">Notifications</q-item-label>
-        <q-item tag="label" v-ripple>
+        <q-item tag="label" v-ripple class="full-width px-20">
           <q-item-section>
             <q-item-label>Battery too low</q-item-label>
           </q-item-section>
           <q-item-section side>
-            <q-toggle dense color="blue" v-model="notif1" val="battery" />
+            <div class="row px-10">
+              <q-toggle dense color="blue" v-model="notif1" val="battery" />
+            </div>
           </q-item-section>
         </q-item>
-        <q-item tag="label" v-ripple>
+        <q-item tag="label" v-ripple class="">
           <q-item-section>
             <q-item-label>Friend request</q-item-label>
             <q-item-label caption :class="{
@@ -121,11 +124,13 @@
               'text-accent': $q.dark.isActive
             }">Allow notification</q-item-label>
           </q-item-section>
-          <q-item-section side top>
-            <q-toggle dense color="green" v-model="notif2" val="friend" />
+          <q-item-section side>
+            <div class="row px-10">
+              <q-toggle dense color="green" v-model="notif2" val="friend" />
+            </div>
           </q-item-section>
         </q-item>
-        <q-item tag="label" v-ripple>
+        <q-item tag="label" v-ripple class="">
           <q-item-section>
             <q-item-label>Picture uploaded</q-item-label>
             <q-item-label caption :class="{
@@ -134,7 +139,9 @@
             }">Allow notification when uploading images</q-item-label>
           </q-item-section>
           <q-item-section side top>
-            <q-toggle dense color="red" v-model="notif3" val="picture" />
+            <div class="row px-10">
+              <q-toggle dense color="red" v-model="notif3" val="picture" />
+            </div>
           </q-item-section>
         </q-item>
         <q-separator spaced />

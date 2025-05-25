@@ -11,10 +11,11 @@
         <div class="row full-width items-center">
           <q-btn @click="leftDrawerOpen = !leftDrawerOpen" flat round :dense="true" icon="menu" class="q-mr-sm round-btn"/>
           <q-toolbar-title class="text-center">Hofstee Inc.</q-toolbar-title>
-          <q-btn v-if="!mainStore.showNav && !routeName === 'mobile.my-profile'" flat round :dense="true" icon="las la-exchange-alt" class="round-btn" to="/admin-portal"/>
+          <q-btn v-if="!mainStore.showNav && routeName !== 'mobile.my-profile'" flat round :dense="true" icon="las la-exchange-alt" class="round-btn" to="/admin-portal"/>
           <div v-if="mainStore.showNav || routeName === 'mobile.my-profile'">
             <q-avatar>
               <img :src="obj?.avatar?.length > 0 ? `${obj.avatar}` : `default-user.jpeg`"/>
+              <HofsteeAvatar :src="obj?.avatar?.length > 0 ? `${obj.avatar}` : `default-user.jpeg`" size="30px"/>
             </q-avatar>
               <q-menu
                 style="border-radius: 10px;"
@@ -220,7 +221,7 @@
           'text-accent': $q.dark.isActive
         }" @click='$router.push({ path: `/plans` })'/>
       </q-tabs>
-      <router-view/>
+      <router-view @emitFromChild="emitFromChild"/>
     </q-page-container>
 
   </q-layout>
@@ -269,15 +270,19 @@ export default {
       obj: ref({})
     }
   },
-  mounted () {
+  async mounted () {
     this.authUser = LocalStorage.getItem('authUser')
     console.log('MainLayout monunter')
     this.themeStore.setCurrentTheme(17) // 1,17, 20(light), 22(light)
-    this.fetchUserProfile()
+    await this.fetchUserProfile()
   },
   methods: {
+    emitFromChild () {
+      console.log('emitFromChild..')
+      this.fetchUserProfile()
+    },
     async fetchUserProfile () {
-      console.log('this.authUser', this.authUser.uid)
+      this.authUser = LocalStorage.getItem('authUser')
       const users = this.$fbref(this.$fbdb, `users/${this.authUser.uid}`)
       this.$fbonValue(users, (snapshot) => {
         const data = snapshot.val()
@@ -312,6 +317,9 @@ export default {
   computed: {
     routeName: function () {
       return this.$route.name
+    },
+    avatar: function () {
+      return this.obj?.avatar || null
     }
   }
 }

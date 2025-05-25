@@ -1,5 +1,5 @@
 <template>
-    <div class="debug column p-10">
+    <div class="column p-10">
       <q-input v-model="name" label="Name" />
       <q-input v-model="email" label="Email" />
       <q-btn @click="onOK">OK</q-btn>

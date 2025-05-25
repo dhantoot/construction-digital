@@ -37,7 +37,7 @@
         />
         </div>
       </div>
-      <div class="col-2 q-mt-sm q-pa-xl q-gutter-y-md">
+      <div class="row col-2 q-mt-sm q-px-xl q-gutter-y-md">
         <q-input
           outline
           :dense="true"
@@ -51,6 +51,7 @@
           input-class="text-primary"
           filled
           style="font-size: 15px;"
+          class="full-width"
         >
           <template v-slot:prepend>
             <q-icon name="perm_identity" color="secondary"/>
@@ -70,6 +71,7 @@
           input-class="text-primary"
           filled
           style="font-size: 20px;"
+          class="full-width"
         >
           <template v-slot:prepend>
             <q-icon name="lock" color="secondary"/>
@@ -83,32 +85,40 @@
           />
           </template>
         </q-input>
+      </div>
+      <div class="row items-center justify-between q-px-xl">
         <q-btn
           @click="reset"
           label="Clear"
           type="reset"
           color="secondary"
           flat
-          class="text-capitalize pull-right text-weight-light round-btn"
+          no-caps
+          class="pull-right text-weight-light round-btn text-grey"
           style="float: left"
-      />
+        />
+        <div class="text-subtitle2">
+          <a class="clickable text-grey" @click="$router.push('/admin-portal')">Swith to admin</a>
+        </div>
         <q-btn
           @click="register"
           label="Register"
           color="secondary"
           flat
-          class="text-capitalize pull-right text-weight-light round-btn"
+          no-caps
+          class="pull-right text-weight-light round-btn text-grey"
           style="float: right"
-      />
+        />
       </div>
-      <div class="col-2 q-mt-sm q-px-xl">
+      <div class="row col-2 q-mt-sm q-px-xl">
         <q-btn
           :disable="$isFalsyString(email) || $isFalsyString(password) || loading"
           :loading="loading"
           size="lg"
           color="primary"
           label="Login"
-          class="text-capitalize full-width round-btn"
+          class="full-width round-btn"
+          no-caps
           @click="login"
         >
           <template v-slot:loading>

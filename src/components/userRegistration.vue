@@ -117,14 +117,14 @@
           :input-class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
         >
           <template v-slot:prepend>
-            <q-icon name="lock" :color="[$q.dark.isActive ? 'text-accent' : 'text-primary']"/>
+            <q-icon name="lock" :color="[$q.dark.isActive ? 'accent' : 'primary']"/>
           </template>
           <template v-slot:append>
             <q-icon
               :name="isPwd2 ? 'visibility_off' : 'visibility'"
               class="cursor-pointer"
               @click="isPwd2 = !isPwd2"
-              :color="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
+              :color="[$q.dark.isActive ? 'accent' : 'primary']"
            />
           </template>
         </q-input>
@@ -132,17 +132,18 @@
           @click="reset"
           label="Clear"
           type="reset"
-          :color="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
+          :color="[$q.dark.isActive ? 'accent' : 'grey']"
           flat
           class="text-capitalize pull-right text-weight-light round-btn"
           style="float: left"
        />
         <q-btn
           @click="$router.push('/login')"
-          label="Back to Login"
-          :color="[$q.dark.isActive ? 'accent' : 'primary']"
+          label="Back to login"
+          :color="[$q.dark.isActive ? 'accent' : 'grey']"
           flat
-          class="text-capitalize pull-right text-weight-light round-btn"
+          no-caps
+          class="pull-right text-weight-light round-btn"
           style="float: right"
        />
       </div>

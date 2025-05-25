@@ -18,7 +18,7 @@ const routes = [
       {
         path: '/plans',
         name: 'mobile.plans',
-        component: () => import('components/ProjectPlan.vue')
+        component: () => import('src/components/AllProjectPlan.vue')
       },
       {
         path: '/detail/:projectId',

@@ -1,5 +1,12 @@
 <template>
   <div class="column gap-10 q-pa-sm">
+    <div class="row full-width justify-between items-center">
+      <strong class="text-bold text-h6" :class="{
+        'text-accent': $q.dark.isActive,
+        'text-primary': !$q.dark.isActive
+      }">Files</strong>
+      <q-icon size="md" :color="$q.dark.isActive ? 'accent' : 'primary'" name="las la-undo" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/>
+    </div>
     <div class="row">
       <!-- <q-input dark standout="bg-transparent" input-class="text-right text-accent" v-model="text" :dense="dense" :style="{
         width: '100%'
@@ -32,13 +39,6 @@
           <q-icon v-if="text" name="clear" class="cursor-pointer text-accent" @click="text = ''"/>
         </template>
       </q-input>
-    </div>
-    <div class="row full-width justify-between items-center">
-      <strong class="text-bold text-h6" :class="{
-        'text-accent': $q.dark.isActive,
-        'text-primary': !$q.dark.isActive
-      }">Files</strong>
-      <q-icon size="md" :color="$q.dark.isActive ? 'accent' : 'primary'" name="las la-undo" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/>
     </div>
     <div class="scroll" style="height: 75.5vh">
       <div class="q-gutter-md row justify-between">

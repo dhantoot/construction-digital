@@ -1,5 +1,12 @@
 <template>
   <div class="column gap-10 q-pa-sm">
+    <div class="row full-width justify-between items-center">
+      <strong class="text-bold text-h6" :class="{
+        'text-accent': $q.dark.isActive,
+        'text-primary': !$q.dark.isActive
+      }">Chat</strong>
+      <q-icon size="md" :color="$q.dark.isActive ? 'accent' : 'primary'" name="las la-undo" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/>
+    </div>
     <div class="row justify-between">
       <q-input
         standout="bg-transparent"
@@ -21,13 +28,6 @@
         </template>
       </q-input>
     </div>
-    <div class="row full-width justify-between items-center">
-      <strong class="text-bold text-h6" :class="{
-        'text-accent': $q.dark.isActive,
-        'text-primary': !$q.dark.isActive
-      }">Chat</strong>
-      <q-icon size="md" :color="$q.dark.isActive ? 'accent' : 'primary'" name="las la-undo" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/>
-    </div>
     <q-list class="scroll" style="height: 74vh">
       <q-item v-for="(chat, index) in chats" :key="index" clickable v-ripple @click="setChatMode(2, chat)">
         <q-item-section avatar>
@@ -43,7 +43,7 @@
 
         <q-item-section side>
           <q-item-label caption>{{ chat.time }}</q-item-label>
-          <div v-if="false" class="debug full-height full-width">
+          <div v-if="false" class="full-height full-width">
             <q-badge color="primary" floating>{{ chat.unread }}</q-badge>
           </div>
         </q-item-section>
@@ -63,7 +63,7 @@
 <script>
 import { ref } from 'vue'
 import { useMainStore } from 'stores/main'
-import { LocalStorage } from 'quasar'
+import { LocalStorage, date } from 'quasar'
 
 // Don't forget to specify which animations
 // you are using in quasar.config file > animations.
@@ -76,6 +76,8 @@ export default {
     const mainStore = useMainStore()
 
     return {
+      getChatsLoader: ref(false),
+      chatMessages: ref([]),
       chatMode: ref(1),
       chatDetails: ref({}),
       invites: ref([]),
@@ -134,6 +136,71 @@ export default {
     // console.log('unmounted')
   },
   methods: {
+    getChats () {
+      this.getChatsLoader = true
+      const userDetails = LocalStorage.getItem('currentUser')
+      const {
+        uid: senderUID
+      } = userDetails
+      const chats = this.$fbref(this.$fbdb, `chats/${this.$route.params.projectId}`)
+      this.$fbonValue(chats, async (snapshot) => {
+        const data = snapshot.val()
+        if (this.$isFalsyString(data)) {
+          this.chatMessages = []
+          return
+        }
+        this.chatMessages = Object.values(data)
+        this.chatMessages = this.chatMessages.filter(e => (e.from === senderUID || e.to === senderUID))?.sort((a, b) => a._ts - b._ts)
+        this.chatMessages.forEach(e => {
+          const dateLogged = date.formatDate(e._ts, 'MMM DD, YYYY HH:mm A')
+          const dateNow = date.formatDate(Date.now(), 'MMM DD, YYYY HH:mm A')
+
+          // const diffDays = date.getDateDiff(dateNow, dateLogged, 'days')
+          const diffHours = date.getDateDiff(dateNow, dateLogged, 'hours')
+          const diffMinutes = date.getDateDiff(dateNow, dateLogged, 'minutes')
+
+          let stamp = ''
+          if (diffHours === 0) {
+            if (diffMinutes === 0) {
+              stamp = 'Just now'
+            } else {
+              if (diffMinutes === 1) {
+                stamp = 'a minute ago'
+              } else {
+                stamp = `${diffMinutes}min`
+              }
+            }
+          } else {
+            if (diffHours === 1 && diffMinutes === 0) {
+              stamp = 'an hour ago'
+            } else {
+              if (diffHours === 1) {
+                stamp = `${diffHours}hr, ${diffMinutes}min`
+              } else {
+                stamp = `${diffHours}hrs, ${diffMinutes}min`
+              }
+            }
+          }
+
+          // receiver is me
+          if (e.to === senderUID) {
+            e.name = this.$route.query.name
+            e.avatar = this.senderObj?.avatar?.length > 0 ? `${this.senderObj.avatar}` : 'default-user.jpeg'
+            e.size = '8'
+            e.stamp = stamp
+            e.textColor = 'white'
+            e.bgColor = 'primary'
+          } else {
+            e.name = 'me'
+            e.avatar = this.obj?.avatar?.length > 0 ? `${this.obj.avatar}` : 'default-user.jpeg'
+            e.size = '8'
+            e.stamp = stamp
+            e.bgColor = 'amber-7'
+          }
+        })
+        this.getChatsLoader = false
+      })
+    },
     setChatMode (arg = 1, chatDetails = null) {
       this.chatMode = arg
       this.chatDetails = chatDetails
@@ -162,13 +229,13 @@ export default {
         uid
       } = userDetails
       const resp = this.invites.filter(e => e.uid !== uid).map((e, index) => {
+        const lastMsg = this.chatMessages.filter(f => (f.from === uid || f.to === uid) && (f.from === e.uid || f.to === e.uid))[0]?.text[0]
         return {
           avatar: e.avatar,
           name: e.fullName,
           uid: e.uid,
-          lastMessage: 'Hello, how are you?',
-          time: '12:30 PM',
-          unread: index % 2
+          lastMessage: lastMsg || 'Say Hi',
+          unread: lastMsg?.length > 0 ? !this.chatMessages.filter(f => (f.from === uid || f.to === uid) && (f.from === e.uid || f.to === e.uid))[0]?.isSeen : false
         }
       })
       this.chats = resp
@@ -246,6 +313,8 @@ export default {
             uid: owner?.uid
           })
         }
+
+        this.getChats()
 
         // populate chats
         await this.loadChats()

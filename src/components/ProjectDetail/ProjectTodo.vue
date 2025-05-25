@@ -1,5 +1,12 @@
 <template>
   <div class="column gap-10 q-pa-sm">
+    <div class="row full-width justify-between items-center">
+      <strong class="text-bold text-h6" :class="{
+        'text-accent': $q.dark.isActive,
+        'text-primary': !$q.dark.isActive
+      }">Todo List ({{ todoList.length }})</strong>
+      <q-icon size="md" :color="$q.dark.isActive ? 'accent' : 'primary'" name="las la-undo" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/>
+    </div>
     <div class="row justify-between">
       <q-input
         standout="bg-transparent"
@@ -20,13 +27,6 @@
           <q-icon v-if="text" name="clear" class="cursor-pointer text-accent" @click="text = ''"/>
         </template>
       </q-input>
-    </div>
-    <div class="row full-width justify-between items-center">
-      <strong class="text-bold text-h6" :class="{
-        'text-accent': $q.dark.isActive,
-        'text-primary': !$q.dark.isActive
-      }">Todo List ({{ todoList.length }})</strong>
-      <q-icon size="md" :color="$q.dark.isActive ? 'accent' : 'primary'" name="las la-undo" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/>
     </div>
     <q-list class="scroll" style="max-height: 74vh">
       <div class="column gap-5" v-if="loadingtodoList">
@@ -71,20 +71,36 @@
         </q-item-section>
         <q-item-section side>
           <div class="row items-center">
-            <q-toggle dense v-model="item.isArchived" :val="item.isArchived" :class="{
-              'cursor-not-allowed': !item.isCompleted
-            }" checked-icon="clear" unchecked-icon="check" color="negative">
+            <q-toggle
+              class="mt-4"
+              dense
+              v-model="item.isArchived"
+              :val="item.isArchived"
+              :class="{
+                'cursor-not-allowed': !item.isCompleted
+              }"
+              checked-icon="clear"
+              unchecked-icon="check"
+              color="negative">
               <template v-slot:label>
                 {{ item.isCompleted ? 'Archive' : '' }}
               </template>
-            </q-toggle>&nbsp;&nbsp;&nbsp;
-            <q-btn rounded dense icon="las la-edit" flat :class="item.timeline ? 'text-positive' : ($q.dark.isActive ? 'text-accent' : 'text-primary')" @click="viewTodoDetail(item)" />
+            </q-toggle>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <q-btn
+              class=""
+              size="15px"
+              dense
+              flat
+              icon="las la-edit"
+              :class="item.timeline ? 'text-positive' : ($q.dark.isActive ? 'text-accent' : 'text-primary')"
+              @click="viewTodoDetail(item)"
+            />
           </div>
         </q-item-section>
       </q-item>
     </q-list>
     <q-card v-if="!todoList.length" class="flex flex-center" :class="[$q.dark.isActive ? 'no-shadow' : 'shadow']">
-      <div class="text-center debug pt-30 p-10">
+      <div class="text-center pt-30 p-10">
         <q-icon name="las la-exclamation-circle" size="xl" color="negative" />
         <h6 :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']" class="q-mt-md">No Data Available</h6>
         <p :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']">We couldn't find any Todo list results for this Project</p>

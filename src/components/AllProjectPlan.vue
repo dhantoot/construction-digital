@@ -1,28 +1,19 @@
 <template>
-  <div class="q-ma-none">
-    <div class="q-pa-sm">
-      <div class="row full-width justify-between items-center">
-        <strong class="text-bold text-h6" :class="{
-          'text-accent': $q.dark.isActive,
-          'text-primary': !$q.dark.isActive
-        }">Planning</strong>
-        <q-icon size="md" :color="$q.dark.isActive ? 'accent' : 'primary'" name="las la-undo" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/>
-      </div>
-      <div class="cal" :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']">
-          <FullCalendar
-            dark
-            :options="calendarOptions"
-            class="text"
-            style="min-height: 480px;">
-            <template #eventContent>
-              <div class="column bg-dark p-5 eventContentOverride mx-5">
-                <div class="row full-width items-center">
-                  <q-badge rounded color="yellow"/>
-                </div>
-              </div>
-            </template>
-          </FullCalendar>
-        </div>
+  <div class="dbg px-10">
+    <div class="cal dbg" :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']">
+      <FullCalendar
+        dark
+        :options="calendarOptions"
+        class="text"
+        style="min-height: 480px;">
+        <template #eventContent>
+          <div class="column bg-dark p-5 eventContentOverride mx-5">
+            <div class="row full-width items-center">
+              <q-badge rounded color="yellow"/>
+            </div>
+          </div>
+        </template>
+      </FullCalendar>
     </div>
     <q-inner-loading
       :showing="visible"
@@ -90,8 +81,8 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import { uid, date } from 'quasar'
-import HofsteeDialog from '../Common/Dialog/HofsteeDialog.vue'
-import HofsteeEventDialog from '../Common/Dialog/HofsteeEventDialog.vue'
+import HofsteeDialog from './Common/Dialog/HofsteeDialog.vue'
+import HofsteeEventDialog from './Common/Dialog/HofsteeEventDialog.vue'
 
 // Don't forget to specify which animations
 // you are using in quasar.config file > animations.

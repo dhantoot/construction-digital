@@ -12,23 +12,68 @@
       }">
       <q-toolbar>
         <q-toolbar-title>
-          {{ mainStore?.adminUser && authUser ? routeName : 'Login' }}
+          {{ routeName }}
         </q-toolbar-title>
-        <q-toggle dense v-model="isDark" checked-icon="las la-moon" color="grey" unchecked-icon="las la-sun" label=""
-          @update:model-value="toggleMode" />
-        <q-btn v-if="!mainStore?.adminUser?.uid" flat round :dense="true" icon="las la-exchange-alt" class="round-btn" to="/login" />
+        <!-- <q-btn v-if="!mainStore?.adminUser?.uid" flat round :dense="true" icon="las la-exchange-alt" class="round-btn" to="/login" /> -->
+        <div class="row gap-10">
+          <q-btn flat size="12px" round color="primary" icon="las la-bell" />
+          <div v-if="mainStore?.adminUser && authUser" class="clickable">
+            <HofsteeAvatar :src="obj?.avatar?.length > 0 ? `${obj.avatar}` : `default-user.jpeg`" size="32px"/>
+            <q-menu
+              style="border-radius: 10px;"
+              :class="[$q.dark.isActive ? 'no-shadow bg-dark text-accent' : 'bg-primary text-accent']"
+              :offset="[5, 15]">
+              <template v-slot:activator="{ on }">
+                <q-btn flat dense icon="more_vert" v-on="on" />
+              </template>
+              <q-list class="text-accent bg-contrast" style="min-width: 200px;">
+                <q-item>
+                  <q-item-section>Dark Mode</q-item-section>
+                  <q-item-section side>
+                    <q-toggle
+                      dense
+                      v-model="isDark"
+                      checked-icon="las la-moon"
+                      color="text-accent"
+                      unchecked-icon="las la-sun"
+                      label=""
+                      @update:model-value="toggleMode"
+                    />
+                  </q-item-section>
+                </q-item>
+                <q-item clickable v-ripple>
+                  <q-item-section>My Profile</q-item-section>
+                  <q-item-section side>
+                    <q-icon name="las la-user" class="text-accent"/>
+                  </q-item-section>
+                </q-item>
+                <q-item clickable v-ripple @click="openConfirmDialog('Confirm Logout', 'logout')">
+                  <q-item-section>Logout</q-item-section>
+                  <q-item-section side>
+                    <q-icon name="las la-sign-out-alt" class="text-accent"/>
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </q-menu>
+          </div>
+        </div>
       </q-toolbar>
     </q-header>
 
-    <q-drawer :v-if="mainStore?.adminUser?.uid && $q.screen.gt.xs" v-model="drawer" :show-if-above="$q.screen.gt.xs" :mini="!drawer || miniState" @click.capture="drawerClick"
+    <q-drawer
+      v-model="drawer"
       class="hide-scrollbar"
+      :show-if-above="$q.screen.gt.xs"
+      v-if="authUser !== null && mainStore?.adminUser !== null"
+      :mini="!drawer || miniState"
       :class="{
         'bg-black': $q.dark.isActive,
         'bg-white': !$q.dark.isActive
       }"
       :style="{
         'border-right': $q.dark.isActive ? '.1px solid #3a3a3a' : '.1px solid rgb(198 198 198 / 50%)'
-      }">
+      }"
+      @click.capture="drawerClick">
       <template v-slot:mini>
         <div class="column justify-between full-height full-width">
           <div>
@@ -160,7 +205,7 @@
           </q-tab>
 
         </q-tabs>
-      </q-footer>
+    </q-footer>
     </q-page-container>
 
     <!-- <footer v-if="$q.platform.is.mobile">
@@ -197,11 +242,15 @@
 import { ref } from 'vue'
 import { useMainStore } from 'stores/main'
 import { LocalStorage } from 'quasar'
+import HofsteeAvatar from 'src/components/Common/Badge/HofsteeAvatar.vue'
 
 export default {
+  components: {
+    HofsteeAvatar
+  },
   setup () {
     const miniState = ref(true)
-    const isDark = ref(true)
+    const isDark = ref(false)
     const mainStore = useMainStore()
 
     return {
@@ -225,10 +274,22 @@ export default {
         //   // intended for switching drawer to "normal" mode only
         //   e.stopPropagation()
         // }
-      }
+      },
+      obj: ref({})
     }
   },
   methods: {
+    async fetchUserProfile () {
+      console.log('this.authUser', this.authUser)
+      if (!this.authUser) {
+        return
+      }
+      const users = this.$fbref(this.$fbdb, `users/${this.authUser.uid}`)
+      this.$fbonValue(users, (snapshot) => {
+        const data = snapshot.val()
+        this.obj = data
+      })
+    },
     toggleMode (val) {
       this.$q.dark.isActive = val
     },
@@ -246,6 +307,11 @@ export default {
       setTimeout(() => {
         LocalStorage.removeItem('adminUser')
         LocalStorage.removeItem('authUser')
+        LocalStorage.removeItem('currentUser')
+        LocalStorage.removeItem('mobileSelectedProject')
+        LocalStorage.removeItem('mobileSelectedProjectTodo')
+        LocalStorage.removeItem('showNav')
+
         this.mainStore.adminUser = null
         this.actionAccountLoader = false
         this.confirm = false
@@ -254,14 +320,16 @@ export default {
     }
   },
   mounted () {
-    this.mainStore.adminUser = null
+    // this.mainStore.adminUser = null
+    // this.mainStore.authUser = null
     this.$q.dark.isActive = true
     this.authUser = LocalStorage.getItem('authUser')
+    this.fetchUserProfile()
     console.log(this.$route)
   },
   computed: {
     routeName: function () {
-      return this.$route.name
+      return this.mainStore?.adminUser && this.authUser ? this.$route.name : 'Login'
     }
   }
 }

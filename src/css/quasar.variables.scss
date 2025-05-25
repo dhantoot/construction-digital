@@ -23,3 +23,17 @@ $positive  : #05807c;
 $negative  : #ce6025;
 $info      : #1f3957;
 $warning   : #e0b269;
+
+$contrast  : #353535; // not working
+
+$colors: (
+  'primary': $primary,
+  'secondary': $secondary,
+  'accent': $accent,
+  'dark': $dark,
+  'positive': $positive,
+  'negative': $negative,
+  'info': $info,
+  'warning': $warning,
+  'contrast': $contrast, // not working
+);

@@ -18,4 +18,5 @@ export default boot(async (/* { app, router, ... } */) => {
   setCssVar('warning', '#e0b269')
 
   setCssVar('light', '#dfe1de')
+  setCssVar('contrast', '#353535') // not working
 })

@@ -145,6 +145,9 @@ body {
   width: 60px;
 }
 
+.clickable {
+  cursor: pointer;
+}
 // .fc-theme-standard td, .fc-theme-standard th {
 //   border: .1px solid rgba(255, 255, 255, 0.14)!important;
 // }
@@ -246,4 +249,17 @@ $weights: 100, 200, 300, 400, 500, 600, 700, 800, 900;
 
 .debugcontainer {
   border: .1px dashed rgba(162, 255, 80, 0.5);
+}
+
+.bg-contrast {
+  background: $contrast;
+}
+
+.text-contrast {
+  color: $contrast;
+}
+
+.fc-event {
+  border: none;
+  background: transparent;
 }

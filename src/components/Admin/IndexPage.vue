@@ -137,10 +137,23 @@
               </div>
               <div class="row pa-20 p-10 gap-10 text-grey-6">
                 <div class="full-width">
-                  <FullCalendar dark :options="calendarOptions" class="text" style="max-height: 599px;">
+                  <FullCalendar
+                    dark
+                    :options="calendarOptions"
+                    style="max-height: 599px;"
+                    :eventClassNames="getEventClass">
                     <template #eventContent="arg">
-                      <div class="q-pa-xs">
-                        {{ arg.event.title }}
+                      <div class="column bg-dark p-5 eventContentOverride mx-5">
+                        <div class="row full-width items-center">
+                          <q-badge rounded color="yellow"/>
+                          <span class="pl-5 text-yellow">Medium</span>
+                        </div>
+                        <div class="row full-width">
+                          <b>{{ arg.event.title }}</b>
+                        </div>
+                        <div class="row full-width">
+                          Today is my sons birthday. everyone should attend
+                        </div>
                       </div>
                     </template>
                   </FullCalendar>
@@ -177,8 +190,8 @@
                   </div>
                 </div>
               </div>
-              <div class="debug text-white">middle</div>
-              <div class="debug text-white">bottom</div>
+              <div class="text-white">middle</div>
+              <div class="text-white">bottom</div>
             </div>
           </div>
         </div>
@@ -187,15 +200,20 @@
       <div v-if="!mainStore?.adminUser?.uid" class="row full-width full-height justify-center items-center">
         <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
           <q-card class="q-ma-sm shadow-12" style="max-width: 450px;">
-            <q-card-section>
+            <q-card-section class="">
               <div class="text-h6">Admin Login</div>
               <div class="text-subtitle2 row justify-between">
                 <div>Login required to use the portal</div>
               </div>
             </q-card-section>
-            <q-card-section class="q-gutter-sm">
+            <q-card-section class="column gap-10">
               <q-input :dense="true" filled v-model="username" placeholder="Username" @keydown.enter.prevent="login" style="font-size: 18px;"/>
               <q-input :dense="true" filled v-model="password" placeholder="Password" type="password" @keydown.enter.prevent="login" style="font-size: 20px;"/>
+            </q-card-section>
+            <q-card-section>
+              <div class="text-subtitle2 row justify-center">
+                <a class="clickable" @click="$router.push('/login')">Swith to mobile</a>
+              </div>
             </q-card-section>
             <q-card-actions align="center">
               <q-btn
@@ -404,6 +422,14 @@ export default {
             classes: 'notify-custom-css'
           })
         })
+    },
+    handleEventMount (info) {
+      info.el.style.backgroundColor = 'transparent'
+      info.el.style.border = 'none'
+      info.el.style.color = 'black'
+    },
+    getEventClass (arg) {
+      return ['my-custom-event']
     }
   }
 }
@@ -411,5 +437,11 @@ export default {
 <style lang="scss" scoped>
 .fc-theme-standard td, .fc-theme-standard th {
   border: .1px solid rgba(255, 255, 255, 0.14)!important;
+}
+.eventContentOverride {
+  white-space: normal !important;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  border-radius: 5px;
 }
 </style>

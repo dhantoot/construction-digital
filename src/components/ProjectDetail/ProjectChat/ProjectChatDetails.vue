@@ -1,5 +1,12 @@
 <template>
     <div class="column gap-10 q-pa-sm">
+      <div class="row full-width justify-between items-center">
+        <strong class="text-bold text-h6" :class="{
+          'text-accent': $q.dark.isActive,
+          'text-primary': !$q.dark.isActive
+        }">{{ $route.query.name }}</strong>
+        <q-icon size="md" :color="$q.dark.isActive ? 'accent' : 'primary'" name="las la-undo" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}/chat`)"/>
+      </div>
       <div class="row justify-between">
         <q-input
           standout="bg-transparent"
@@ -20,13 +27,6 @@
             <q-icon v-if="text" name="clear" class="cursor-pointer text-accent" @click="text = ''"/>
           </template>
         </q-input>
-      </div>
-      <div class="row full-width justify-between items-center">
-        <strong class="text-bold text-h6" :class="{
-          'text-accent': $q.dark.isActive,
-          'text-primary': !$q.dark.isActive
-        }">{{ $route.query.name }}</strong>
-        <q-icon size="md" :color="$q.dark.isActive ? 'accent' : 'primary'" name="las la-undo" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}/chat`)"/>
       </div>
       <div class="scroll" style="height: 65.8vh">
         <q-chat-message v-for="(chat, index) in chats" :key="index"
@@ -216,8 +216,9 @@ export default {
           this.chats = []
           return
         }
+        const recipientUID = this.$route.params.recipientUID
         this.chats = Object.values(data)
-        this.chats = this.chats.filter(e => e.from === senderUID || e.to === senderUID)?.sort((a, b) => a._ts - b._ts)
+        this.chats = this.chats.filter(e => (e.from === senderUID || e.to === senderUID) && (e.from === recipientUID || e.to === recipientUID))?.sort((a, b) => a._ts - b._ts)
         this.chats.forEach(e => {
           const dateLogged = date.formatDate(e._ts, 'MMM DD, YYYY HH:mm A')
           const dateNow = date.formatDate(Date.now(), 'MMM DD, YYYY HH:mm A')

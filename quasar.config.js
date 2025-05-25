@@ -127,7 +127,8 @@ module.exports = configure(function (/* ctx */) {
           positive: '#05807c',
           negative: '#ce6025',
           info: '#1f3957',
-          warning: '#e0b269'
+          warning: '#e0b269',
+          contrast: '#353535'
         }
       },
 
