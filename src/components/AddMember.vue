@@ -17,6 +17,8 @@
         placeholder="Last Name"
       />
       <q-select
+        behavior="menu"
+        popup-content-class="popupSelectContent"
         v-model="role"
         :dense="true"
         filled

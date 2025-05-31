@@ -4,6 +4,8 @@
   </div>
   <div class="q-pa-md q-gutter-md bg-grey-2 q-mt-xl">
     <q-select
+      behavior="menu"
+      popup-content-class="popupSelectContent"
       :dense="true"
       filled
       v-model="searchKey"

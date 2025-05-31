@@ -119,7 +119,6 @@ export default boot(async ({ app } /* { app, router, ... } */) => {
   const storageRef = _ref(storage, fileRootDir)
 
   const functions = getFunctions()
-  console.log({ functions })
   app.config.globalProperties.$firebase = firebaseApp
   app.config.globalProperties.$fbdb = db
   app.config.globalProperties.$fbref = fireRef

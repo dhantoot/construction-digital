@@ -5,7 +5,8 @@
         <div class="row full-width items-center">
           <q-btn :dense="true" flat :ripple="false" icon="lab la-jedi-order" color="warning" class="q-mr-sm round-btn" no-caps @click="this.$router.push('/admin')" />
           <q-toolbar-title v-if="!mainStore?.adminUser?.uid" class="text-center">Admin Portal</q-toolbar-title>
-          <q-select v-if="mainStore?.adminUser?.uid" ref="search" dark :dense="true" standout use-input hide-selected
+          <q-select behavior="menu"
+          popup-content-class="popupSelectContent" v-if="mainStore?.adminUser?.uid" ref="search" dark :dense="true" standout use-input hide-selected
             class="GL__toolbar-select" color="primary" :stack-label="false" label="Search or jump to..." v-model="text"
             :options="filteredOptions" @filter="filter" :style="{
               'max-width': $q.screen.gt.sm ? '300px' : '30vw'

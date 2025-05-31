@@ -123,8 +123,13 @@ const routes = [
   {
     path: '/admin',
     component: () => import('src/layouts/AdminPortalLayout.vue'),
-    redirect: 'admin-portal',
+    redirect: 'admin-login',
     children: [
+      {
+        path: '/admin-login',
+        name: 'Admin Login',
+        component: () => import('src/components/Admin/AdminLogin.vue')
+      },
       {
         path: '/admin-portal',
         name: 'Dashboard',

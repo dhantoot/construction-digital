@@ -1,23 +1,36 @@
 <template>
-  <q-layout view="lHh lpR lFf" :class="{
-    'bg-black': $q.dark.isActive,
-    'bg-white': !$q.dark.isActive
-  }" class="full-height">
+  <q-layout
+    view="lHh lpR lFf"
+    class="full-height"
+    :style="{
+        'background': $q.dark.isActive ? 'black' : '#f2f4f7'
+    }">
 
-    <q-header class="text-white" :class="{
-      'bg-black': $q.dark.isActive,
-      'bg-white text-black': !$q.dark.isActive
-    }" height-hint="98" :style="{
-        'border-bottom': $q.dark.isActive ? '.1px solid #3a3a3a' : '.1px solid rgb(198 198 198 / 50%)'
+    <q-header
+      v-if="$route.name !== 'Admin Login'"
+      :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
+      height-hint="98"
+      :style="{
+        'border-bottom': $q.dark.isActive ? '.1px solid #3a3a3a' : '.1px solid rgb(198 198 198 / 50%)',
+        'background': $q.dark.isActive ? 'black' : '#f2f4f7',
       }">
       <q-toolbar>
         <q-toolbar-title>
           {{ routeName }}
         </q-toolbar-title>
-        <!-- <q-btn v-if="!mainStore?.adminUser?.uid" flat round :dense="true" icon="las la-exchange-alt" class="round-btn" to="/login" /> -->
+
         <div class="row gap-10">
-          <q-btn flat size="12px" round color="primary" icon="las la-bell" />
-          <div v-if="mainStore?.adminUser && authUser" class="clickable">
+          <q-toggle
+            dense
+            v-model="isDark"
+            checked-icon="las la-moon"
+            color="accent"
+            unchecked-icon="las la-sun"
+            label=""
+            @update:model-value="toggleMode"
+          />
+          <q-btn v-if="mainStore?.adminUser && authUser && $route.name !== 'Admin Login'" size="12px" flat round color="accent" icon="las la-bell" />
+          <div v-if="mainStore?.adminUser && authUser && $route.name !== 'Admin Login'" class="clickable">
             <HofsteeAvatar :src="obj?.avatar?.length > 0 ? `${obj.avatar}` : `default-user.jpeg`" size="32px"/>
             <q-menu
               style="border-radius: 10px;"
@@ -26,7 +39,7 @@
               <template v-slot:activator="{ on }">
                 <q-btn flat dense icon="more_vert" v-on="on" />
               </template>
-              <q-list class="text-accent bg-contrast" style="min-width: 200px;">
+              <q-list class="text-accent bg-idk" style="min-width: 200px;">
                 <q-item>
                   <q-item-section>Dark Mode</q-item-section>
                   <q-item-section side>
@@ -61,17 +74,14 @@
     </q-header>
 
     <q-drawer
+      v-if="routeName !== 'Admin Login'"
       v-model="drawer"
+      show-if-above
       class="hide-scrollbar"
-      :show-if-above="$q.screen.gt.xs"
-      v-if="authUser !== null && mainStore?.adminUser !== null"
-      :mini="!drawer || miniState"
-      :class="{
-        'bg-black': $q.dark.isActive,
-        'bg-white': !$q.dark.isActive
-      }"
+      :mini="drawer"
       :style="{
-        'border-right': $q.dark.isActive ? '.1px solid #3a3a3a' : '.1px solid rgb(198 198 198 / 50%)'
+        'border-right': $q.dark.isActive ? '.1px solid #3a3a3a' : '.1px solid rgb(198 198 198 / 50%)',
+        'background': $q.dark.isActive ? 'black' : '#f2f4f7'
       }"
       @click.capture="drawerClick">
       <template v-slot:mini>
@@ -148,70 +158,69 @@
       </div>
     </q-drawer>
 
-    <q-page-container class="hide-scrollbar full-height" :class="{
-      'bg-black': $q.dark.isActive,
-      'bg-white': !$q.dark.isActive
+    <q-page-container
+    class="hide-scrollbar"
+    :style="{
+      'background: black': $q.dark.isActive,
+      'background: #f2f4f7': !$q.dark.isActive,
+      'height: auto': $q.screen.lt.md,
+      'height: 94.5vh': !$q.screen.lt.md
     }">
-      <router-view />
-      <!-- <q-footer dark dense bordered class="bg-white text-black" :class="{
-        'bg-dark dark': $q.dark.isActive
-      }"> -->
-    <q-footer v-if="!$q.screen.gt.sm" dense bordered :class="{
-      'bg-dark': $q.dark.isActive,
-      'bg-white text-black': !$q.dark.isActive
-    }">
-        <q-tabs
-          v-model="tab"
-          class="shadow-2"
-          no-caps
-          switch-indicator
-          indicator-color="negative"
-        >
-          <q-tab
-            :to="{ name: 'Dashboard' }"
-            alert=""
-            name="Home"
-            square icon="las la-play"
+
+      <router-view @emitFromChild="emitFromChild"/>
+
+      <q-footer v-if="$route.name !== 'Admin Login' && !$q.screen.gt.xs" dense bordered :class="{
+        'bg-dark': $q.dark.isActive,
+        'bg-white text-black': !$q.dark.isActive
+      }">
+          <q-tabs
+            v-model="tab"
+            class="shadow-2"
+            no-caps
+            switch-indicator
+            indicator-color="primary"
           >
-            <q-badge color="negative" floating>7</q-badge>
-          </q-tab>
+            <q-tab
+              @click="$router.push('/admin-portal')"
+              alert=""
+              name="Home"
+              square icon="las la-play"
+            >
+              <q-badge color="negative" floating>7</q-badge>
+            </q-tab>
 
-          <q-tab
-            :to="{ name: 'Scope of Works' }"
-            name="SOW"
-            square icon="las la-tools"
-          ></q-tab>
+            <q-tab
+              @click="$router.push('/manage-sow')"
+              name="SOW"
+              square icon="las la-tools"
+            ></q-tab>
 
-          <q-tab
-            :to="'/manage-projects'"
-            name="Projects"
-            square icon="las la-folder-open"
-          >
-            <q-badge color="negative" floating>2</q-badge>
-          </q-tab>
+            <q-tab
+              @click="$router.push('/manage-projects')"
+              name="Projects"
+              square icon="las la-folder-open"
+            >
+              <q-badge color="negative" floating>2</q-badge>
+            </q-tab>
 
-          <q-tab
-            to="/manage-invites"
-            name="Invites"
-            square icon="lab la-telegram-plane"
-          >
-          </q-tab>
+            <q-tab
+              @click="$router.push('/manage-invites')"
+              name="Invites"
+              square icon="lab la-telegram-plane"
+            >
+            </q-tab>
 
-          <q-tab
-            to="/manage-accounts"
-            name="User"
-            square icon="las la-user-tag"
-          >
-          </q-tab>
+            <q-tab
+              @click="$router.push('/manage-accounts')"
+              name="User"
+              square icon="las la-user-tag"
+            >
+            </q-tab>
 
-        </q-tabs>
-    </q-footer>
+          </q-tabs>
+      </q-footer>
+
     </q-page-container>
-
-    <!-- <footer v-if="$q.platform.is.mobile">
-       Here Footer here
-    </footer> -->
-
   </q-layout>
 
   <q-dialog v-model="confirm" persistent>
@@ -249,7 +258,7 @@ export default {
     HofsteeAvatar
   },
   setup () {
-    const miniState = ref(true)
+    const miniState = ref(false)
     const isDark = ref(false)
     const mainStore = useMainStore()
 
@@ -259,7 +268,7 @@ export default {
       confirmCallbackFn: '',
       actionAccountLoader: ref(false),
       authUser: ref(null),
-      drawer: ref(true),
+      drawer: ref(false),
       mainStore,
       miniState,
       isDark,
@@ -279,8 +288,12 @@ export default {
     }
   },
   methods: {
+    emitFromChild () {
+      this.fetchUserProfile()
+    },
     async fetchUserProfile () {
-      console.log('this.authUser', this.authUser)
+      console.log('fetchUserProfile..')
+      this.authUser = LocalStorage.getItem('authUser')
       if (!this.authUser) {
         return
       }
@@ -315,37 +328,23 @@ export default {
         this.mainStore.adminUser = null
         this.actionAccountLoader = false
         this.confirm = false
-        this.$router.push('/admin-portal')
+        this.$router.push('/admin-login')
       }, 2000)
     }
   },
   mounted () {
     // this.mainStore.adminUser = null
     // this.mainStore.authUser = null
-    this.$q.dark.isActive = true
+    this.$q.dark.isActive = false
     this.authUser = LocalStorage.getItem('authUser')
-    this.fetchUserProfile()
-    console.log(this.$route)
+    // this.fetchUserProfile()
   },
   computed: {
     routeName: function () {
-      return this.mainStore?.adminUser && this.authUser ? this.$route.name : 'Login'
+      return this.$route.name
     }
   }
 }
 </script>
-<style lang="sass" scoped>
-.mini-slot
-  transition: background-color .28s
-  &:hover
-    background-color: rgba(0, 0, 0, .04)
-
-.mini-icon
-  font-size: 1.718em
-  padding: 2px 16px
-
-  & + &
-    margin-top: 18px
-</style>
 <style lang="scss" scoped>
 </style>

@@ -92,6 +92,7 @@ import interactionPlugin from '@fullcalendar/interaction'
 import { uid, date } from 'quasar'
 import HofsteeDialog from '../Common/Dialog/HofsteeDialog.vue'
 import HofsteeEventDialog from '../Common/Dialog/HofsteeEventDialog.vue'
+import { useMainStore } from 'stores/main'
 
 // Don't forget to specify which animations
 // you are using in quasar.config file > animations.
@@ -130,6 +131,7 @@ export default {
       selectable: true
     })
     const actionMode = ref(1)
+    const mainStore = useMainStore()
 
     // add event
     const handleDateSelect = (selectInfo_) => {
@@ -157,6 +159,7 @@ export default {
     })
 
     return {
+      mainStore,
       todaysDate,
       actionMode,
       eventName,
@@ -170,6 +173,7 @@ export default {
       calendarOptions,
       visible,
       question,
+      loadingAddEventSubmit: ref(false),
       initFunction () {
         // access setup variables here w/o using 'this'
         // console.log('initFunction called', visible.value)
@@ -208,20 +212,10 @@ export default {
     // console.log('unmounted')
   },
   methods: {
-    init () {
+    async init () {
       this.clickInfo = null
       // Load from datasource
-      this.calendarOptions.events = [{
-        title: 'Sample',
-        description: 'The Description',
-        start: this.todaysDate,
-        id: uid()
-      }, {
-        title: '2 Sample',
-        description: 'Charm T',
-        start: this.todaysDate,
-        id: uid()
-      }]
+      await this.getEvents()
     },
     showTextLoading () {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
@@ -242,27 +236,20 @@ export default {
     handleEvents (events) {
       this.currentEvents = events
     },
-    upsertEvent () {
-      console.info('selectInfo', this.selectInfo)
-      console.log(this.clickInfo)
+    async upsertEvent () {
       if (this.actionMode === 1) { // save
-        this.calendarOptions.events.push({
-          title: this.eventName,
-          description: this.eventDescription,
-          start: this.selectInfo.dateStr,
-          id: uid()
-        })
+        await this.saveEvent()
         this.eventDialog = false
         this.eventName = ''
         this.eventDescription = ''
       } else {
-        console.log('updating..')
         const found = this.calendarOptions.events.find(e => e.id === this.clickInfo.id)
-        // found.title = this.eventName
-        console.log('found', found)
-        found.extendedProps.description = this.eventDescription
-        found.title = this.eventName
-        console.log('this.calendarOptions.events', this.calendarOptions.events)
+        await this.updateEvent({
+          id: found?.id,
+          start: found?.start,
+          title: this.eventName,
+          description: this.eventDescription
+        })
         this.eventDialog = false
         this.eventName = ''
         this.eventDescription = ''
@@ -273,6 +260,78 @@ export default {
       this.eventDialog = false
       this.eventName = ''
       this.eventDescription = ''
+    },
+    async getEvents () {
+      this.fetchingEvents = true
+      // const todo = this.$fbref(this.$fbdb, 'todo')
+      const events = this.$fbref(this.$fbdb, `events/${this.$route.params.projectId}`)
+      this.$fbonValue(events, (snapshot) => {
+        const data = snapshot.val()
+        if (this.$isFalsyString(data)) {
+          this.calendarOptions.events = []
+          this.fetchingEvents = false
+          return
+        }
+        const data_ = Object.values(data)
+        this.calendarOptions.events = data_
+        this.fetchingEvents = false
+      })
+    },
+    async saveEvent () {
+      this.loadingAddEventSubmit = true
+      const generatedUid = uid()
+      const payload = {
+        id: generatedUid,
+        title: this.eventName,
+        description: this.eventDescription,
+        start: this.selectInfo.dateStr
+      }
+      const updates = {}
+      updates[`events/${this.$route.params.projectId}/${generatedUid}/`] = payload
+      this.$fbupdate(this.$fbref(this.$fbdb), updates)
+        .then(() => {
+          this.loadingAddEventSubmit = false
+          this.$q.notify({
+            icon: 'check_circle',
+            color: 'green',
+            message: 'Sucessfully Created',
+            position: 'top-right',
+            classes: 'notify-custom-css'
+          })
+        })
+        .catch((error) => {
+          this.loadingAddEventSubmit = false
+          this.$q.notify({
+            icon: 'las la-exclamation-circle',
+            color: 'negative',
+            message: 'Error found\n' + error,
+            position: 'top-right',
+            classes: 'notify-custom-css'
+          })
+        })
+    },
+    async updateEvent (val) {
+      const updates = {}
+      updates[`events/${this.$route.params.projectId}/${val.id}/`] = val
+      await this.$fbupdate(this.$fbref(this.$fbdb), updates)
+        .then(() => {
+          this.$q.notify({
+            icon: 'check_circle',
+            color: 'green',
+            message: 'Sucessfully Updated',
+            position: 'top-right',
+            classes: 'notify-custom-css'
+          })
+        })
+        .catch(() => {
+          this.$q.notify({
+            icon: 'las la-exclamation-circle',
+            color: 'negative',
+            message: 'Error found',
+            position: 'top-right',
+            classes: 'notify-custom-css'
+          })
+        })
     }
   }
 }

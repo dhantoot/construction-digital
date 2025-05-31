@@ -1,11 +1,14 @@
 <template>
   <div class="row hide-scrollbar" style="height: 94.5vh;">
-    <div class="column full-width full-height q-pa-sm gap-20">
-      <q-card class="round-panel full-width" :class="[$q.dark.isActive ? 'no-shadow' : 'shadow']" :style="[$q.screen.gt.sm ? 'max-height: 12vh;' : '']">
-        <div class="row justify-start gap-20 q-pa-md">
-          <div class="column justify-start gap-20">
-            <div class="caption">Select Project</div>
+    <div class="column full-width full-height q-pa-sm gap-10">
+
+      <q-card class="round-panel full-width no-shadow px-10">
+        <div class="row justify-start gap-20 q-py-md">
+          <div class="column justify-start gap-20" :class="[$q.screen.lt.sm ? 'full-width' : '']">
+            <div class="caption text-bold">Select Project</div>
             <q-select
+              behavior="menu"
+              popup-content-class="popupSelectContent"
               use-input
               use-chips
               dense
@@ -28,7 +31,7 @@
             </q-select>
           </div>
           <div class="column justify-start gap-20">
-            <div class="caption">Constructor label</div>
+            <div class="caption text-bold">Constructor label</div>
             <div class="row gap-10 items-center mt-8">
               <q-radio dense v-model="userTitle" val="Architect" label="Architect" color="teal" />
               <q-radio dense v-model="userTitle" val="Engineer" label="Engineer" color="orange" />
@@ -37,11 +40,13 @@
               <q-radio dense v-model="userTitle" val="Worker" label="Worker" color="secondary" />
             </div>
           </div>
-          <div class="column justify-start gap-20">
-            <div class="caption">Select email to send invitation</div>
+          <div class="column justify-start gap-20" :class="[$q.screen.lt.sm ? 'full-width' : '']">
+            <div class="caption text-bold">Select email to send invitation</div>
             <div class="row gap-10">
               <q-select
-                :dense="true"
+                behavior="menu"
+                popup-content-class="popupSelectContent"
+                dense
                 filled
                 v-model="model"
                 use-input
@@ -53,7 +58,6 @@
                 @filter="filterFn"
                 option-value="email"
                 option-label="email"
-                behavior="menu"
                 :class="{
                   'q-pb-sm full-width': $q.screen.width < 433
                 }">
@@ -77,7 +81,7 @@
                     !selectedProject ||
                     !userTitle
                     " @click="sendInvitation" :loading="sendEmailLoader" label="Send" class="round-btn">
-                <template v-slot:loading>
+                <template #loading>
                   <q-spinner-ios class="on-left" />
                   <small>Sending..</small>
                 </template>
@@ -85,21 +89,146 @@
             </div>
           </div>
         </div>
+        <div class="row full-width">
+          <q-table
+            no-data-label="I didn't find anything for you"
+            class="q-mb-sm full-width no-shadow"
+            row-key="projectName"
+            :grid="$q.screen.lt.sm"
+            :rows="rows"
+            :columns="columns"
+            :loading="rowLoading"
+            :visible-columns="visibleColumns"
+            :rows-per-page-options="[12]">
+
+            <!-- loading slot -->
+            <template #loading>
+              <q-inner-loading :showing="visible">
+                <q-spinner-ios size="50px" color="secondary" />
+              </q-inner-loading>
+            </template>
+
+            <!-- Default Body slot-->
+            <template #body="props">
+              <q-tr :props="props">
+                <q-td key="id" :props="props">
+                  {{ props.row.id }}
+                </q-td>
+                <q-td key="projectName" :props="props">
+                  {{ props.row.projectName }}
+                </q-td>
+                <q-td key="dateSent" :props="props">
+                  {{ props.row.dateSent }}
+                </q-td>
+                <q-td key="dateResponded" :props="props">
+                  {{ props.row.dateResponded }}
+                </q-td>
+                <q-td key="status" :props="props">
+                  <q-chip square class="q-pl-sm full-width" :class="{
+                    'full-width q-px-md': q.screen.lt.md
+                  }">
+                    <q-avatar :icon="getStatusIcon(props.row.status)" :color="getStatusColor(props.row.status)"
+                      text-color="white" />
+                    {{ props.row.status }}
+                  </q-chip>
+                </q-td>
+                <q-td key="invitee" :props="props">
+                  {{ props.row.invitee }}
+                </q-td>
+                <q-td key="userTitle" :props="props">
+                  {{ props.row.userTitle }}
+                </q-td>
+                <q-td key="resend" :props="props">
+                  <q-btn icon="las la-share" padding="xs md" v-if="props.row.status === 'Pending'"
+                    class="text-capitalize text-secondary round-btn shadow" text-color="primary" color="warning"
+                    label="Resend invite" @click="resendInvite(props.row, props.rowIndex)" :dense="true"
+                    :loading="resendInviteLoader[props.rowIndex]" :disable="resendInviteLoader[props.rowIndex]">
+                    <template #loading>
+                      <q-spinner-ios class="on-left" />
+                      <small>Sending..</small>
+                    </template>
+                  </q-btn>
+                </q-td>
+              </q-tr>
+            </template>
+
+            <!-- Mobile item slot -->
+            <template #item="props">
+              <q-card class="q-ma-sm full-width no-shadow" :style="style">
+                <q-card-section>
+                  <div class="text-h6">{{ props.row.projectName }}</div>
+                  <div class="text-caption text-bold">{{ props.row.invitee }}
+                    <q-chip
+                      size="sm"
+                      :icon="getStatusIcon(props.row.status)"
+                      :color="getStatusColor(props.row.status)"
+                      text-color="white">
+                        {{ props.row.status }}
+                    </q-chip>
+                  </div>
+                </q-card-section>
+
+                <q-separator />
+
+                <q-card-section class="q-pt-sm">
+                  <div><strong>Date Sent:</strong> {{ props.row.dateSent }}</div>
+                  <div><strong>Date Responded:</strong> {{ props.row.dateResponded }}</div>
+                  <div><strong>Invitee:</strong> {{ props.row.invitee }}</div>
+                  <div><strong>User Title:</strong> {{ props.row.userTitle }}</div>
+                </q-card-section>
+
+                <q-card-actions align="right">
+                  <q-btn
+                    icon="las la-share"
+                    padding="xs md"
+                    v-if="props.row.status === 'Pending'"
+                    class="text-capitalize text-secondary round-btn shadow"
+                    text-color="primary"
+                    color="warning"
+                    label="Resend invite"
+                    @click="resendInvite(props.row, props.rowIndex)"
+                    :dense="true"
+                    :loading="resendInviteLoader[props.rowIndex]"
+                    :disable="resendInviteLoader[props.rowIndex]"
+                  >
+                    <template v-slot:loading>
+                      <q-spinner-ios class="on-left" />
+                      <small>Sending..</small>
+                    </template>
+                  </q-btn>
+                </q-card-actions>
+              </q-card>
+            </template>
+          </q-table>
+        </div>
       </q-card>
 
-      <q-card class="round-panel full-width" :class="[$q.dark.isActive ? 'no-shadow' : 'shadow']" style="max-height: 81vh;">
+      <q-card v-if="false" class=" round-panel full-width full-height no-shadow" :style="$q.screen.gt.sm ? 'height: 78vh;' : ''">
         <q-card-section>
           <div class="text-h6">Invitation sent</div>
           <div class="text-subtitle2 text-right"></div>
         </q-card-section>
-        <q-table no-data-label="I didn't find anything for you" class="q-mb-sm q-mr-sm" row-key="id" :rows="rows"
-          :columns="columns" :loading="rowLoading" :visible-columns="visibleColumns" :rows-per-page-options="[12]">
-          <template v-slot:loading>
+
+        <q-table
+          no-data-label="I didn't find anything for you"
+          class="q-mb-sm"
+          row-key="projectName"
+          :grid="$q.screen.lt.sm"
+          :rows="rows"
+          :columns="columns"
+          :loading="rowLoading"
+          :visible-columns="visibleColumns"
+          :rows-per-page-options="[12]">
+
+          <!-- loading slot -->
+          <template #loading>
             <q-inner-loading :showing="visible">
               <q-spinner-ios size="50px" color="secondary" />
             </q-inner-loading>
           </template>
-          <template v-slot:body="props">
+
+          <!-- Default Body slot-->
+          <template #body="props">
             <q-tr :props="props">
               <q-td key="id" :props="props">
                 {{ props.row.id }}
@@ -133,7 +262,7 @@
                   class="text-capitalize text-secondary round-btn shadow" text-color="primary" color="warning"
                   label="Resend invite" @click="resendInvite(props.row, props.rowIndex)" :dense="true"
                   :loading="resendInviteLoader[props.rowIndex]" :disable="resendInviteLoader[props.rowIndex]">
-                  <template v-slot:loading>
+                  <template #loading>
                     <q-spinner-ios class="on-left" />
                     <small>Sending..</small>
                   </template>
@@ -141,13 +270,60 @@
               </q-td>
             </q-tr>
           </template>
+
+          <!-- Mobile item slot -->
+          <template #item="props">
+            <q-card class="q-ma-sm" bordered>
+              <q-card-section>
+                <div class="text-h6">{{ props.row.projectName }}</div>
+                <div class="text-caption text-grey">ID: --</div>
+              </q-card-section>
+
+              <q-separator />
+
+              <q-card-section class="q-pt-sm">
+                <div><strong>Date Sent:</strong> {{ props.row.dateSent }}</div>
+                <div><strong>Date Responded:</strong> {{ props.row.dateResponded }}</div>
+                <div><strong>Invitee:</strong> {{ props.row.invitee }}</div>
+                <div><strong>User Title:</strong> {{ props.row.userTitle }}</div>
+
+                <div class="q-mt-sm">
+                  <q-chip square class="q-pl-sm full-width q-px-md">
+                    <q-avatar :icon="getStatusIcon(props.row.status)" :color="getStatusColor(props.row.status)" text-color="white" />
+                    {{ props.row.status }}
+                  </q-chip>
+                </div>
+              </q-card-section>
+
+              <q-card-actions align="right">
+                <q-btn
+                  icon="las la-share"
+                  padding="xs md"
+                  v-if="props.row.status === 'Pending'"
+                  class="text-capitalize text-secondary round-btn shadow"
+                  text-color="primary"
+                  color="warning"
+                  label="Resend invite"
+                  @click="resendInvite(props.row, props.rowIndex)"
+                  :dense="true"
+                  :loading="resendInviteLoader[props.rowIndex]"
+                  :disable="resendInviteLoader[props.rowIndex]"
+                >
+                  <template v-slot:loading>
+                    <q-spinner-ios class="on-left" />
+                    <small>Sending..</small>
+                  </template>
+                </q-btn>
+              </q-card-actions>
+            </q-card>
+          </template>
         </q-table>
       </q-card>
     </div>
   </div>
 </template>
 <script>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { uid, useQuasar, date, patterns } from 'quasar'
 import CryptoJS from 'crypto-js'
 // import formatdate from 'src/directives/formatdate'
@@ -218,6 +394,11 @@ export default {
     const q = useQuasar()
 
     return {
+      style: ref({
+        'background-color': computed(() => q.dark.isActive ? 'rgba(255, 255, 255, 0.1)' : '#f0f4f7'),
+        'border-radius': '8px',
+        border: '.1px solid rgb(198 198 198, 0.5)'
+      }),
       rowLoading: ref(false),
       stringOptions2,
       selectedProject: ref(null),
@@ -576,12 +757,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-// .q-item {
-//     min-height: 48px;
-//     padding: 8px 10px !important;
-//     color: inherit;
-//     transition: color 0.3s, background-color 0.3s;
-// }
+:deep(.q-separator--horizontal) {
+    display: block;
+    height: .1px;
+}
 .q-menu {
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;

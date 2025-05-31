@@ -1,7 +1,171 @@
 <template>
   <div class="row full-width full-height">
-    <q-card class="no-shadow round-panel full-width">
-      <q-card-section>
+    <q-card class="no-shadow round-panel full-width px-10" :class="[$q.screen.lt.sm ? 'pb-60' : 'full-height']">
+      <q-table
+        title="Templates"
+        class="q-mb-xl full-height"
+        v-model:selected="selected"
+        :grid="$q.screen.lt.sm"
+        :rows="rows"
+        :columns="columns"
+        :hide-pagination="$q.screen.lt.sm"
+        :rows-per-page-options="[0]"
+      >
+        <!-- 1. Header Slot with Form Fields -->
+        <template #top>
+          <div class="row justify-between full-width q-mb-lg">
+            <q-input
+              filled
+              v-model="title"
+              placeholder="Template Name"
+              :dense="true"
+              :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''" />
+            <q-btn
+              dense
+              flat
+              icon="las la-arrow-left"
+              padding="sm lg"
+              label="Back"
+              class="text-capitalize round-btn"
+              @click="$router.push('/manage-sow')">
+              <template v-slot:loading>
+                <q-spinner-ios />
+              </template>
+            </q-btn>
+          </div>
+
+          <div class="row justify-between full-width items-center q-mb-xl gap-10">
+            <q-input
+              filled
+              :dense="true"
+              v-model="section"
+              placeholder="Section"
+              :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
+              :class="[$q.screen.lt.sm ? 'full-width' : '']"/>
+            <q-input
+              filled
+              :dense="true"
+              v-model="sowCategory"
+              placeholder="Category"
+              :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
+              :class="[$q.screen.lt.sm ? 'full-width' : '']"/>
+            <q-input
+              filled
+              :dense="true"
+              v-model="sowDescription"
+              placeholder="Description"
+              :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
+              :class="[$q.screen.lt.sm ? 'full-width' : '']"/>
+            <q-input
+              filled
+              :dense="true"
+              v-model="contractPrice"
+              placeholder="Contract Price"
+              :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
+              :class="[$q.screen.lt.sm ? 'full-width' : '']"/>
+            <q-input
+              filled
+              :dense="true"
+              v-model="weight"
+              placeholder="Weigth"
+              :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
+              :class="[$q.screen.lt.sm ? 'full-width' : '']"/>
+            <q-input
+              filled
+              :dense="true"
+              v-model="duration"
+              placeholder="Duration in Days"
+              :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
+              :class="[$q.screen.lt.sm ? 'full-width' : '']"/>
+            <q-btn
+              icon="las la-plus"
+              padding="sm xl"
+              color="primary"
+              label="Add"
+              class="text-capitalize bg-primary round-btn"
+              :class="[$q.screen.lt.sm ? 'mt-20 full-width' : '']"
+              @click="addToList"
+              :loading="loadingSubmit"
+              :disable="loadingSubmit ||
+                !title ||
+                !section ||
+                !sowCategory ||
+                !sowDescription ||
+                !contractPrice ||
+                !weight ||
+                !duration
+                ">
+              <template v-slot:loading>
+                <q-spinner-ios />
+              </template>
+            </q-btn>
+          </div>
+
+          <!-- Filters -->
+          <!-- <div class="q-pa-md q-gutter-md row items-center">
+            <q-input dense filled v-model="filters.templateName" label="Template Name" />
+            <q-input dense filled v-model="filters.section" label="Section" />
+            <q-input dense filled v-model="filters.sowCategory" label="Category" />
+            <q-input dense filled v-model="filters.sowDescription" label="Description" />
+            <q-input dense filled v-model="filters.contractPrice" label="Contract Price" type="number" />
+            <q-input dense filled v-model="filters.weight" label="Weight" type="number" />
+            <q-input dense filled v-model="filters.duration" label="Duration (days)" type="number" />
+          </div> -->
+        </template>
+
+        <!-- 2. Table Body Slot for Desktop View -->
+        <template #body="props">
+          <q-tr :props="props">
+            <q-td key="section">{{ props.row.section }}</q-td>
+            <q-td key="sowCategory">{{ props.row.sowCategory }}</q-td>
+            <q-td key="sowDescription">{{ props.row.sowDescription }}</q-td>
+            <q-td key="contractPrice">${{ props.row.contractPrice }}</q-td>
+            <q-td key="weight">{{ props.row.weight }}</q-td>
+            <q-td key="duration">{{ props.row.duration }} days</q-td>
+          </q-tr>
+        </template>
+
+        <!-- 3. Mobile View Slot (Card Format) -->
+        <template #item="props">
+          <q-card class="q-ma-sm full-width no-shadow" :style="style">
+            <q-card-section>
+              <div class="text-h6">{{ props.row.sowDescription }}</div>
+              <div class="text-subtitle2 text-grey">{{ props.row.sowCategory }}</div>
+            </q-card-section>
+
+            <q-card-section>
+              <div><strong>Section:</strong> {{ props.row.section }}</div>
+              <div><strong>Contract Price:</strong> {{ props.row.contractPrice }}</div>
+              <div><strong>Weight:</strong> {{ props.row.weight }}</div>
+              <div><strong>Duration:</strong> {{ props.row.duration }} days</div>
+            </q-card-section>
+          </q-card>
+        </template>
+
+        <!-- 4. Footer Slot -->
+        <template #bottom>
+          <div class="q-py-md row items-center justify-between full-width">
+            <div class="text-subtitle2">
+              Total Rows: {{ rows.length }}
+            </div>
+            <q-btn
+              v-if="rows.length > 0"
+              icon="las la-edit"
+              padding="sm xl"
+              color="primary"
+              label="Update"
+              class="text-capitalize bg-primary round-btn"
+              @click="updateTemplate"
+              :loading="loadingSubmit"
+              :disable="loadingSubmit || rows.length < 1">
+              <template v-slot:loading>
+                <q-spinner-ios />
+              </template>
+            </q-btn>
+          </div>
+        </template>
+      </q-table>
+      <!-- <q-card-section>
         <div class="row justify-between q-gutter-x-sm q-gutter-y-sm q-gutter-y-sm q-mb-lg">
           <q-input filled :dense="true" v-model="title" placeholder="Template Name"
             :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''" />
@@ -84,7 +248,7 @@
             </template>
           </q-btn>
         </div>
-      </q-card-section>
+      </q-card-section> -->
       <q-inner-loading :showing="loadingSubmit">
         <q-spinner-ios size="50px" color="secondary" />
       </q-inner-loading>
@@ -111,10 +275,10 @@
   </q-dialog>
 </template>
 <script>
-import { ref } from 'vue'
-import { uid, date } from 'quasar'
+import { ref, computed } from 'vue'
+import { uid, date, useQuasar } from 'quasar'
 
-// Don't forget to specify which animations
+/// Don't forget to specify which animations
 // you are using in quasar.config file > animations.
 // Alternatively, if using UMD, load animate.css from CDN.
 export default {
@@ -122,8 +286,37 @@ export default {
   setup () {
     const loadingSubmit = ref(false)
     const question = ref('')
+    const selected = ref([])
+    const $q = useQuasar()
+
+    const filters = ref({
+      templateName: '',
+      section: '',
+      sowCategory: '',
+      sowDescription: '',
+      contractPrice: '',
+      weight: '',
+      duration: ''
+    })
+
+    const columns = [
+      { name: 'section', label: 'Section', field: 'section', align: 'left' },
+      { name: 'sowCategory', label: 'Category', field: 'sowCategory', align: 'left' },
+      { name: 'sowDescription', label: 'Description', field: 'sowDescription', align: 'left' },
+      { name: 'contractPrice', label: 'Contract Price', field: 'contractPrice', align: 'left', format: val => `${val}` },
+      { name: 'weight', label: 'Weight', field: 'weight', align: 'left' },
+      { name: 'duration', label: 'Duration (days)', field: 'duration', align: 'left' }
+    ]
 
     return {
+      style: ref({
+        'background-color': computed(() => $q.dark.isActive ? 'rgba(255, 255, 255, 0.1)' : '#f0f4f7'),
+        'border-radius': '8px',
+        border: '.1px solid rgb(198 198 198, 0.5)'
+      }),
+      columns,
+      selected,
+      filters,
       templateFullDetail: ref({}),
       rows: ref([]),
       title: ref(''),
@@ -270,5 +463,17 @@ export default {
 .q-field--filled .q-field__control:focus {
   border-bottom: none;
   box-shadow: none;
+}
+:deep(.q-table__top) {
+    padding: 12px 0px;
+}
+:deep(.q-table__bottom) {
+    min-height: 50px;
+    padding: 4px 0px 4px 0px;
+    font-size: 12px;
+}
+:deep(.q-separator--horizontal) {
+    display: block;
+    height: .1px;
 }
 </style>

@@ -14,7 +14,6 @@
 
 <script>
 import { ref } from 'vue'
-import { useQuasar } from 'quasar'
 
 const theme = {
   cancel: '#ffa500',
@@ -53,9 +52,6 @@ export default {
     }
   },
   setup (props) {
-    const $q = useQuasar()
-    console.log($q)
-    console.log('props', props)
     const opacityAlphaChannel = 80 // = 0.5
     const style = ref({
       'background-color': props.backgroundColor,
@@ -64,15 +60,11 @@ export default {
       height: props.height || '250px'
     })
 
-    console.log('end', style)
-
     return {
       style
     }
   },
-  mounted () {
-    console.log('-->', this.progress)
-  }
+  mounted () {}
 }
 </script>
 <style lang="scss" scoped>

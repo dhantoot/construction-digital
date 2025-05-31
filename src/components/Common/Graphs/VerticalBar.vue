@@ -39,9 +39,7 @@ export default {
       style
     }
   },
-  mounted () {
-    console.log('-->', this.progress)
-  }
+  mounted () {}
 }
 </script>
 <style lang="scss" scoped></style>

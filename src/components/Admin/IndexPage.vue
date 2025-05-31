@@ -2,9 +2,8 @@
   <div class="row hide-scrollbar" :style="`height: ${$q.screen.lt.md ? 'auto': '94.5vh'};`">
     <div class="row full-width full-height">
       <!-- Dashboard -->
-      <div v-if="mainStore?.adminUser?.uid" class="full-height full-width">
-        <div class="row full-height">
-          <div class="row col-9" :class="{
+        <div class="row full-height full-width">
+          <div class="row col-9 full-height" :class="{
             'col-12': $q.screen.lt.md
           }">
             <div class="column full-width justify-start">
@@ -12,10 +11,11 @@
                 <div class="col" :class="{
                   'col-12': $q.screen.lt.md
                 }">
-                  <HofsteeCard height="250px">
+                  <HofsteeCard height="250px" no-border>
                     <template #header>
                       Reminders
                     </template>
+
                     <template #body>
                       <div class="column gap-10">
                         <HofsteeAlert
@@ -57,6 +57,7 @@
                             Lorem ipsum dolor set ewmit
                           </template>
                         </HofsteeAlert>
+
                         <HofsteeAlert
                           :backgroundColor="{
                             '#292727': $q.dark.isActive
@@ -78,12 +79,18 @@
                         </HofsteeAlert>
                       </div>
                     </template>
+
+                    <template #body-loader>
+                      <q-inner-loading :showing="loading1">
+                        <q-spinner-ios size="50px" :color="$q.dark.isActive ? 'accent' : 'primary'" />
+                      </q-inner-loading>
+                    </template>
                   </HofsteeCard>
                 </div>
                 <div class="col" :class="{
                   'col-12': $q.screen.lt.md
                 }">
-                  <HofsteeCard height="250px">
+                  <HofsteeCard height="250px" no-border>
                     <template #header>
                       Todays Task
                     </template>
@@ -91,90 +98,96 @@
                       <div class="column gap-10 justify-evenly height-90">
                         <div class="row full-width gap-10">
                           <div class="col">
-                            <HofsteeCard height="100%">
-                              <template #body>
-                                sad
-                              </template>
-                            </HofsteeCard>
+                            Box 1
                           </div>
                           <div class="col">
-                            <HofsteeCard height="100%">
-                              <template #body>
-                                sad
-                              </template>
-                            </HofsteeCard>
+                            Box 2
                           </div>
                         </div>
                         <div class="row full-width gap-10">
                           <div class="col">
-                            <HofsteeCard height="100%">
-                              <template #body>
-                                sad
-                              </template>
-                            </HofsteeCard>
+                            Box 3
                           </div>
                           <div class="col">
-                            <HofsteeCard height="100%">
-                              <template #body>
-                                sad
-                              </template>
-                            </HofsteeCard>
+                            Box 4
                           </div>
                         </div>
                       </div>
+                    </template>
+                    <template #body-loader>
+                      <q-inner-loading :showing="loading2">
+                        <q-spinner-ios size="50px" :color="$q.dark.isActive ? 'accent' : 'primary'" />
+                      </q-inner-loading>
                     </template>
                   </HofsteeCard>
                 </div>
                 <div class="col" :class="{
                   'col-12': $q.screen.lt.md
                 }">
-                  <HofsteeCard height="250px">
+                  <HofsteeCard height="250px" no-border>
                     <template #header>
                       Todays Meeting {{ selectedDate }}
+                    </template>
+                    <template #body-loader>
+                      <q-inner-loading :showing="loading3">
+                        <q-spinner-ios size="50px" :color="$q.dark.isActive ? 'accent' : 'primary'"/>
+                      </q-inner-loading>
                     </template>
                   </HofsteeCard>
                 </div>
               </div>
-              <div class="row pa-20 p-10 gap-10 text-grey-6">
-                <div class="full-width">
-                  <FullCalendar
-                    dark
-                    :options="calendarOptions"
-                    style="max-height: 599px;"
-                    :eventClassNames="getEventClass">
-                    <template #eventContent="arg">
-                      <div class="column bg-dark p-5 eventContentOverride mx-5">
-                        <div class="row full-width items-center">
-                          <q-badge rounded color="yellow"/>
-                          <span class="pl-5 text-yellow">Medium</span>
-                        </div>
-                        <div class="row full-width">
-                          <b>{{ arg.event.title }}</b>
-                        </div>
-                        <div class="row full-width">
-                          Today is my sons birthday. everyone should attend
-                        </div>
-                      </div>
+              <div class="row px-10 text-grey-6">
+                  <HofsteeCard class="full-width full-height" no-border>
+                    <template #body>
+                      <FullCalendar
+                        :options="calendarOptions"
+                        style="max-height: 61.5vh;"
+                        :eventClassNames="getEventClass">
+                        <template #eventContent="arg">
+                          <div v-if="!$q.screen.lt.sm" class="column p-5 mx-5" :class="[$q.dark.isActive ? 'eventContentOverrideDarkMode' : 'eventContentOverride']">
+                            <div class="row full-width items-center">
+                              <q-badge rounded :color="$q.dark.isActive ? 'warning' : 'primary'"/>
+                              <span class="pl-5" :class="[$q.dark.isActive ? 'text-warning' : 'text-primary']">Medium</span>
+                            </div>
+                            <div class="row full-width">
+                              <b>{{ arg.event.title }}</b>
+                            </div>
+                            <div class="row full-width">
+                              Today is my sons birthday. everyone should attend
+                            </div>
+                          </div>
+
+                          <div v-if="$q.screen.lt.sm" class="column p-5 mx-5" :class="[$q.dark.isActive ? 'eventContentOverrideDarkMode' : 'eventContentOverride']">
+                            <div class="row full-width items-center">
+                              <q-badge rounded :color="$q.dark.isActive ? 'warning' : 'primary'"/>
+                              <div v-if="false">{{ arg }}</div>
+                            </div>
+                          </div>
+                        </template>
+                      </FullCalendar>
                     </template>
-                  </FullCalendar>
-                </div>
+                    <template #body-loader>
+                      <q-inner-loading :showing="loading4">
+                        <q-spinner-ios size="50px" color="primary" />
+                      </q-inner-loading>
+                    </template>
+                  </HofsteeCard>
               </div>
             </div>
           </div>
-          <div v-if="$q.screen.gt.sm"
-          class="col-3 full-height p-10"
-          :style="{
-            'border-left': $q.dark.isActive ? '.1px solid #3a3a3a' : '.1px solid rgb(198 198 198 / 50%)'
-          }">
+          <div class="col-3 full-height py-10"
+            :style="{
+              'border-left': $q.dark.isActive ? '.1px solid #3a3a3a' : '.1px solid rgb(198 198 198 / 50%)',
+            }">
             <div class="column full-height justify-between">
-              <div class="text-white">
-                <div class="column gap-10">
+              <div class="height-33 pl-10" :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']">
+                <div class="row gap-10">
                   <div class="row justify-between items-center">
                     <div class="row justify-start gap-10">
                       <div>Activity</div>
                       <div>+12%</div>
                     </div>
-                    <div>:</div>
+                    <div class="text-grey">:</div>
                   </div>
                   <div class="row justify-start items-center">
                     <div class="text-bold text-h6">83%</div>
@@ -190,66 +203,17 @@
                   </div>
                 </div>
               </div>
-              <div class="text-white">middle</div>
-              <div class="text-white">bottom</div>
+              <q-separator/>
+              <div class="height-33 p-10" :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']">
+                middle
+              </div>
+              <q-separator/>
+              <div class="height-33 p-10" :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']">
+                bottom
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <!-- Admin Login -->
-      <div v-if="!mainStore?.adminUser?.uid" class="row full-width full-height justify-center items-center">
-        <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
-          <q-card class="q-ma-sm shadow-12" style="max-width: 450px;">
-            <q-card-section class="">
-              <div class="text-h6">Admin Login</div>
-              <div class="text-subtitle2 row justify-between">
-                <div>Login required to use the portal</div>
-              </div>
-            </q-card-section>
-            <q-card-section class="column gap-10">
-              <q-input :dense="true" filled v-model="username" placeholder="Username" @keydown.enter.prevent="login" style="font-size: 18px;"/>
-              <q-input :dense="true" filled v-model="password" placeholder="Password" type="password" @keydown.enter.prevent="login" style="font-size: 20px;"/>
-            </q-card-section>
-            <q-card-section>
-              <div class="text-subtitle2 row justify-center">
-                <a class="clickable" @click="$router.push('/login')">Swith to mobile</a>
-              </div>
-            </q-card-section>
-            <q-card-actions align="center">
-              <q-btn
-                icon="las la-undo"
-                padding="sm xl"
-                flat
-                class="text-capitalize bg-negative round-btn"
-                label="Clear"
-                :disable="loadingSubmit"
-                :style="{
-                  'width': '47%'
-                }"
-              >
-              </q-btn>
-              <q-btn
-                icon="las la-check"
-                padding="sm xl"
-                @click="login"
-                color="primary"
-                label="Sign in"
-                class="text-capitalize bg-info round-btn"
-                :loading="loadingSubmit"
-                :disable="loadingSubmit || !username || !password "
-                :style="{
-                  'width': '47%'
-                }"
-              >
-                <template v-slot:loading>
-                  <q-spinner-ios class="on-left"/>
-                  <small>Logging in..</small>
-                </template>
-              </q-btn>
-            </q-card-actions>
-          </q-card>
-        </div>
-      </div>
     </div>
   </div>
   <!-- <h5 class="text-center" v-if="mainStore?.adminUser?.uid">Welcome to the admin portal</h5> -->
@@ -262,15 +226,14 @@ import {
   signInWithEmailAndPassword,
   getAuth
 } from 'firebase/auth'
-import HofsteeCard from '../Common/Card/HofsteeCard.vue'
 const auth = getAuth()
-// import { QCalendar } from '@quasar/quasar-ui-qcalendar'
 import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import VerticalBar from '../Common/Graphs/VerticalBar.vue'
 import HofsteeAlert from '../Common/Alert/HofsteeAlert.vue'
+import HofsteeCard from '../Common/Card/HofsteeCard.vue'
 // Don't forget to specify which animations
 // you are using in quasar.config file > animations.
 // Alternatively, if using UMD, load animate.css from CDN.
@@ -278,6 +241,7 @@ import HofsteeAlert from '../Common/Alert/HofsteeAlert.vue'
 // https://fullcalendar.io/docs/vue
 export default {
   title: 'ProjectList',
+  emits: ['emitFromChild'],
   components: {
     HofsteeCard,
     FullCalendar,
@@ -290,10 +254,13 @@ export default {
     const question = ref('')
     const timeStamp = Date.now()
     const selectedDate = dateFormatter.formatDate(timeStamp, 'YYYY-MM-DD')
-    console.log(selectedDate)
 
     // height: 50px; width: 40px;border-bottom-left-radius: 6px;border-bottom-right-radius: 6px;
     return {
+      loading1: ref(false),
+      loading2: ref(false),
+      loading3: ref(false),
+      loading4: ref(false),
       style: {
         height: '50px',
         width: '40px',
@@ -350,8 +317,11 @@ export default {
     // console.log('beforeMount')
   },
   mounted () {
-    // this.$emit('showHeader', true, [])
-    this.showTextLoading()
+    this.showTextLoading('loading1')
+    this.showTextLoading('loading2')
+    this.showTextLoading('loading3')
+    this.showTextLoading('loading4')
+    this.$emit('emitFromChild')
   },
   beforeUpdate () {
     // console.log('beforeUpdate')
@@ -366,11 +336,11 @@ export default {
     // console.log('unmounted')
   },
   methods: {
-    showTextLoading () {
-      const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
-      this.visible = true
+    showTextLoading (loadingModel) {
+      const ms = Math.floor(Math.random() * (4000 - 500 + 100) + 100)
+      this[loadingModel] = true
       setTimeout(() => {
-        this.visible = false
+        this[loadingModel] = false
       }, ms)
     },
     login () {
@@ -431,17 +401,43 @@ export default {
     getEventClass (arg) {
       return ['my-custom-event']
     }
+  },
+  watch: {
+    mainStore (newVal, oldVal) {
+      console.log('Username changed from', oldVal, 'to', newVal)
+    }
   }
 }
 </script>
 <style lang="scss" scoped>
-.fc-theme-standard td, .fc-theme-standard th {
-  border: .1px solid rgba(255, 255, 255, 0.14)!important;
+.eventContentOverrideDarkMode {
+  white-space: normal !important;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  border-radius: 5px;
+  background: #171c2a;
 }
 .eventContentOverride {
   white-space: normal !important;
   overflow-wrap: break-word;
   word-break: break-word;
   border-radius: 5px;
+  background: rgb(242 244 247);
+  color: #424242;
+}
+:deep(.fc-theme-standard td),
+:deep(.fc-theme-standard th) {
+  border: .1px solid rgb(198 198 198 / 50%)
+}
+:deep(.fc .fc-scrollgrid) {
+    border-bottom-width: 0px;
+    border-collapse: separate;
+    border-right-width: 0px;
+    border-left-width: 0px;
+    border-top-width: 0px;
+}
+:deep(.q-separator--horizontal) {
+    display: block;
+    height: .1px;
 }
 </style>

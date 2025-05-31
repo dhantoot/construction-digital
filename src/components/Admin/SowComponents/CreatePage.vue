@@ -277,4 +277,8 @@ export default {
   border-bottom: none;
   box-shadow: none;
 }
+:deep(.q-separator--horizontal) {
+    display: block;
+    height: .1px;
+}
 </style>

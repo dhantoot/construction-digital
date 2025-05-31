@@ -1,6 +1,6 @@
 <template>
-  <div class="dbg px-10">
-    <div class="cal dbg" :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']">
+  <div class="px-10">
+    <div class="cal" :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']">
       <FullCalendar
         dark
         :options="calendarOptions"

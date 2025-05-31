@@ -1,7 +1,9 @@
 <template>
   <div class="row q-gutter-sm">
     <div class="col-6">
-      <q-select
+      <q-
+         behavior="menu"
+         popup-content-class="popupSelectContent"
         :dense="true"
         filled
         input-debounce="0"

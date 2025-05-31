@@ -1,12 +1,10 @@
 <template>
   <div class="row hide-scrollbar" style="height: 94.5vh;">
     <div class="row full-width full-height q-pa-sm">
-      <div class="col-3 pr-10" :class="{
+      <div v-if="$q.screen.gt.sm" class="col-3 pr-10" :class="{
         'col-12': $q.screen.lt.md
       }">
-        <q-card class="round-panel full-height" :class="{
-          'no-shadow': $q.dark.isActive
-        }">
+        <q-card class="round-panel full-height no-shadow">
           <q-card-section>
             <div class="text-h6">{{ selected.length ? 'Update' : 'New' }} Project</div>
             <div class="text-subtitle2 row justify-between">
@@ -15,7 +13,8 @@
             </div>
           </q-card-section>
           <q-card-section class="q-gutter-sm">
-            <q-select filled clearable v-model="searchKey" use-input input-debounce="0"
+            <q-select behavior="menu"
+            popup-content-class="popupSelectContent" filled clearable v-model="searchKey" use-input input-debounce="0"
               label="Location. (trigger search after 10 charaters)" class="q-mt-md" :dense="true" :options="options"
               :loading="searchingPlaceLoader" @filter="filterFn">
               <template v-slot:no-option>
@@ -57,13 +56,16 @@
               input-class="text-right" />
             <q-input :dense="true" v-model="dateFrom" filled type="date" label="Date from" />
             <q-input :dense="true" v-model="dateTo" filled type="date" label="Date to" />
-            <q-select :placeholder="agent.length ? '' : 'Agent'" :dense="true" filled v-model="agent" use-input
+            <q-select behavior="menu"
+            popup-content-class="popupSelectContent" :placeholder="agent.length ? '' : 'Agent'" :dense="true" filled v-model="agent" use-input
               use-chips multiple input-debounce="0" @new-value="createAgentValue" :options="filterAgentOptions"
               @filter="filterAgentFn" option-value="email" option-label="email" />
-            <q-select :placeholder="client.length ? '' : 'Client'" :dense="true" filled v-model="client" use-input
+            <q-select behavior="menu"
+            popup-content-class="popupSelectContent" :placeholder="client.length ? '' : 'Client'" :dense="true" filled v-model="client" use-input
               use-chips multiple input-debounce="0" @new-value="createClientValue" :options="filterClientOptions"
               @filter="filterClientFn" option-value="email" option-label="email" />
-            <q-select :label="'SOW Template'" :dense="true" filled v-model="templateId" input-debounce="0"
+            <q-select behavior="menu"
+            popup-content-class="popupSelectContent" :label="'SOW Template'" :dense="true" filled v-model="templateId" input-debounce="0"
               :options="sowTemplates" :loading="sowTemplateLoader || loadingTodoSubmit">
               <template v-slot:loading>
                 <div class="row justify-center">
@@ -95,43 +97,37 @@
       <div class="col-9" :class="{
         'col-12': $q.screen.lt.md
       }">
-        <q-card class="round-panel full-height" :class="{
-          'no-shadow': $q.dark.isActive
-        }">
-          <q-card-section>
-            <div class="text-h6">List of Projects</div>
-            <div class="text-subtitle2 text-right">
-              <q-chip class="q-ml-none">
-                <q-avatar
-                  size="25px"
-                  color="positive"
-                  text-color="white">{{rows.filter(f => f.isActivated == true).length}}
-                </q-avatar>
-                active
-              </q-chip>
-              <q-chip class="q-ml-none">
-                <q-avatar
-                  size="25px"
-                  color="negative"
-                  text-color="white">{{rows.filter(f => f.isActivated == false).length}}
-                </q-avatar>
-                inactive
-              </q-chip>
-            </div>
-          </q-card-section>
+        <q-card
+          class="round-panel full-height no-shadow px-10 pt-10"
+          :class="[$q.screen.gt.sm ? 'pt-15' : 'pt-0']">
+
+          <div class="row justify-between full-width items-center">
+              <div class="text-h6">{{ $q.screen.gt.sm ? 'List of Projects' : '' }}</div>
+              <div class="text-subtitle2 text-right">
+                <q-chip size="sm" icon="check" color="positive" text-color="white">
+                  {{rows.filter(f => f.isActivated == true).length}}
+                </q-chip>
+                <q-chip size="sm" icon="close" color="negative" text-color="white">
+                  {{rows.filter(f => f.isActivated == false).length}}
+                </q-chip>
+              </div>
+          </div>
+
           <q-table
             no-data-label="I didn't find anything for you"
-            class="q-mb-sm q-mr-sm"
+            class="q-mb-sm"
             row-key="title"
             selection="single"
             v-model:selected="selected"
+            :hide-pagination="$q.screen.lt.sm"
+            :grid="$q.screen.lt.sm"
             :selection-options="selectionOptions"
             :rows="rows"
             :columns="columns"
             :loading="rowLoading"
             :visible-columns="visibleColumns"
             :rows-per-page-options="[10]">
-            <template v-slot:body="props">
+            <template #body="props">
               <q-tr :props="props" :selected="props.selected">
                 <q-td key="id" :props="props">
                   {{ props.row.id }}
@@ -178,6 +174,53 @@
                 </q-td>
               </q-tr>
             </template>
+
+            <template #item="props">
+              <q-card class="q-ma-sm full-width no-shadow" :style="style">
+                <q-item>
+                  <q-item-section avatar>
+                    <q-avatar rounded>
+                      <img :src="props.row.avatarFullPath" />
+                    </q-avatar>
+                  </q-item-section>
+
+                  <q-item-section>
+                    <q-item-label class="text-h6">{{ props.row.title }}</q-item-label>
+                    <q-item-label caption>
+                      {{ props.row.description.length > maxLength ? props.row.descriptionShortened : props.row.description }}
+                    </q-item-label>
+                  </q-item-section>
+
+                  <q-item-section side>
+                    <q-checkbox dense v-model="props.selected" @update:model-value="setSelected" />
+                  </q-item-section>
+                </q-item>
+
+                <q-separator />
+
+                <q-card-section>
+                  <div class="text-subtitle2">Budget: {{ props.row.budget }}</div>
+                  <div>From: {{ props.row.dateFrom }}</div>
+                  <div>To: {{ props.row.dateTo }}</div>
+                  <!-- <div>Created by: {{ props.row.createdBy }}</div> -->
+                  <div>Date Created: {{ props.row.dateCreated }}</div>
+                </q-card-section>
+
+                <q-card-actions align="right">
+                  <q-toggle
+                    class="mr-5"
+                    dense
+                    name="djan"
+                    checked-icon="check"
+                    unchecked-icon="clear"
+                    color="positive"
+                    unchecked-color="negative"
+                    @update:model-value="updateStatus(props.row)"
+                    v-model="activatedList[props.row.id]"
+                  />
+                </q-card-actions>
+              </q-card>
+            </template>
           </q-table>
           <q-inner-loading :showing="rowLoading">
             <q-spinner-ios size="50px" color="secondary" />
@@ -188,7 +231,7 @@
   </div>
 </template>
 <script>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useQuasar, LocalStorage, uid, date } from 'quasar'
 import ellipsis from 'src/directives/ellipsis'
 import formatdate from 'src/directives/formatdate'
@@ -200,6 +243,7 @@ const stringOptions = []
 // Alternatively, if using UMD, load animate.css from CDN.
 export default {
   title: 'ProjectList',
+  emits: ['emitFromChild'],
   components: {
   },
   directives: { ellipsis, formatdate },
@@ -388,6 +432,11 @@ export default {
     }
 
     return {
+      style: ref({
+        'background-color': computed(() => $q.dark.isActive ? 'rgba(255, 255, 255, 0.1)' : '#f0f4f7'),
+        'border-radius': '8px',
+        border: '.1px solid rgb(198 198 198, 0.5)'
+      }),
       filterClientOptions,
       clientStringOptions,
       client,
@@ -505,6 +554,9 @@ export default {
   computed: {
     test: function () {
       return "I'm computed hook"
+    },
+    bgColor: function () {
+      return this.$q.dark.isActive ? 'rgba(255, 255, 255, 0.1)' : '#f0f4f7'
     }
   },
   beforeCreate () {
@@ -557,6 +609,8 @@ export default {
     ]
     await this.getSowTemplate()
     this.autoMapTodoList()
+
+    this.$emit('emitFromChild')
   },
   beforeUpdate () {
     // console.log('beforeUpdate')
@@ -1027,5 +1081,9 @@ export default {
     padding: 8px 10px !important;
     color: inherit;
     transition: color 0.3s, background-color 0.3s;
+}
+:deep(.q-separator--horizontal) {
+    display: block;
+    height: .1px;
 }
 </style>

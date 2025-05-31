@@ -1,42 +1,95 @@
 <template>
-  <q-card class="round-panel full-width" :class="{
-      'no-shadow': $q.dark.isActive
-    }">
-    <q-card-section>
-      <q-btn :disable="!selected.length" flat label="View" icon="las la-eye" color="transparent"
+  <q-card class="round-panel full-width no-shadow px-10 pt-10">
+    <div class="row full-width" :class="[$q.screen.lt.sm ? 'justify-between' : 'justify-left']">
+      <q-btn
+        :disable="!selected.length"
+        flat
+        label="View"
+        icon="las la-eye"
+        color="transparent"
         class="text-capitalize round-btn" text-color="negative" @click="gotoTemplateDetail(selected[0].id)">
       </q-btn>
-      <q-btn :disable="!selected.length" flat label="Delete" icon="las la-trash-alt" color="transparent"
-        class="text-capitalize round-btn" text-color="negative" @click="
-          openConfirmDialog(
-            'Would you like to delete this account?',
-            'deleteAccount'
-          )
-          ">
+      <q-btn
+        :disable="!selected.length"
+        flat label="Delete"
+        icon="las la-trash-alt"
+        color="transparent"
+        class="text-capitalize round-btn"
+        text-color="negative"
+        @click="
+            openConfirmDialog(
+              'Would you like to delete this account?',
+              'deleteAccount'
+            )
+        ">
       </q-btn>
-      <q-btn @click="createTemplate" flat label="New" icon="las la-plus" color="transparent"
-        class="text-capitalize round-btn" text-color="green">
+      <q-btn
+        @click="createTemplate"
+        flat
+        label="New"
+        icon="las la-plus"
+        color="transparent"
+        class="text-capitalize round-btn"
+        text-color="green">
       </q-btn>
-    </q-card-section>
-    <q-table no-data-label="I didn't find anything for you" class="q-mb-sm q-mr-sm" row-key="id" selection="single"
-      v-model:selected="selected" :selection-options="selectionOptions" :rows="rows" :columns="columns"
-      :loading="rowLoading" :visible-columns="visibleColumns" :rows-per-page-options="[10]">
-      <template v-slot:body="props">
-        <q-tr :props="props" :selected="props.selected">
-          <q-td auto-width>
-            <q-checkbox v-model="props.selected" @update:model-value="setSelected" />
-          </q-td>
-          <q-td key="name" :props="props">
-            {{ props.row.name }}
-          </q-td>
-          <q-td key="description" :props="props">
-            {{ props.row.description }}
-          </q-td>
-          <q-td v-formatdate key="dateCreated" :props="props">
-            {{ props.row.dateCreated }}
-          </q-td>
-        </q-tr>
-      </template>
+    </div>
+    <q-table
+      no-data-label="I didn't find anything for you"
+      class="q-mb-sm"
+      row-key="id"
+      selection="single"
+      v-model:selected="selected"
+      :grid="$q.screen.lt.sm"
+      :selection-options="selectionOptions"
+      :rows="rows"
+      :columns="columns"
+      :loading="rowLoading"
+      :visible-columns="visibleColumns"
+      :rows-per-page-options="[10]"
+      :hide-pagination="$q.screen.lt.sm">
+        <template #body="props">
+          <q-tr :props="props" :selected="props.selected">
+            <q-td auto-width>
+              <q-checkbox v-model="props.selected" @update:model-value="setSelected" />
+            </q-td>
+            <q-td key="name" :props="props">
+              {{ props.row.name }}
+            </q-td>
+            <q-td key="description" :props="props">
+              {{ props.row.description }}
+            </q-td>
+            <q-td v-formatdate key="dateCreated" :props="props">
+              {{ props.row.dateCreated }}
+            </q-td>
+          </q-tr>
+        </template>
+
+        <template #item="props">
+          <div class="column full-width my-5">
+            <HofsteeCard class="full-width full-height" :background-color="bgColor">
+              <template #body>
+                <q-item class="row items-start">
+                  <q-item-section side>
+                    <q-checkbox dense v-model="props.selected" @update:model-value="setSelected" />
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label><strong>{{ props.row.name }}</strong></q-item-label>
+                    <q-item-label caption>{{ props.row.description }}</q-item-label>
+                    <q-item-label caption>
+                      <span class="text-grey">Created:</span>
+                      {{ props.row.dateCreated }}
+                    </q-item-label>
+                  </q-item-section>
+                </q-item>
+              </template>
+              <template #body-loader>
+                <q-inner-loading :showing="loading1">
+                  <q-spinner-ios size="50px" color="primary" />
+                </q-inner-loading>
+              </template>
+            </HofsteeCard>
+          </div>
+        </template>
     </q-table>
     <q-inner-loading :showing="rowLoading">
       <q-spinner-ios size="50px" color="secondary" />
@@ -68,12 +121,21 @@ import { LocalStorage, uid, date } from 'quasar'
 
 import ellipsis from 'src/directives/ellipsis'
 import formatdate from 'src/directives/formatdate'
+import HofsteeCard from '../../Common/Card/HofsteeCard.vue'
 
 // Don't forget to specify which animations
 // you are using in quasar.config file > animations.
 // Alternatively, if using UMD, load animate.css from CDN.
 export default {
   title: 'SowTemplate',
+  emits: [],
+  components: {
+    HofsteeCard
+  },
+  props: {
+    title: String,
+    likes: Number
+  },
   setup () {
     const visible = ref(false)
     const question = ref('')
@@ -105,6 +167,7 @@ export default {
     const visibleColumns = ['name', 'description', 'dateCreated']
 
     return {
+      loading1: ref(false),
       group: ref(['op1']),
       options: [
         {
@@ -147,15 +210,13 @@ export default {
       }
     }
   },
-  components: {},
   directives: { ellipsis, formatdate },
-  props: {
-    title: String,
-    likes: Number
-  },
   computed: {
     test: function () {
       return "I'm computed hook"
+    },
+    bgColor: function () {
+      return this.$q.dark.isActive ? 'rgba(255, 255, 255, 0.1)' : '#f0f4f7'
     }
   },
   beforeCreate () {
@@ -171,7 +232,7 @@ export default {
   },
   mounted () {
     // this.$emit('showHeader', true, [])
-    this.showTextLoading()
+    this.showTextLoading('loading1')
     this.authUser = LocalStorage.getItem('authUser')
     if (this.authUser && this.authUser.uid) {
       this.uid = this.authUser.uid
@@ -254,12 +315,11 @@ export default {
       console.log(value, this.selected[0])
       this.updateMode = value
     },
-    showTextLoading () {
-      const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
-      // console.log('loaded in ', ms, ' ms')
-      this.visible = true
+    showTextLoading (loadingModel) {
+      const ms = Math.floor(Math.random() * (3000 - 500 + 100) + 100)
+      this[loadingModel] = true
       setTimeout(() => {
-        this.visible = false
+        this[loadingModel] = false
       }, ms)
     },
     async search () {
@@ -702,5 +762,9 @@ export default {
 <style lang="scss" scoped>
 .adminCard {
   min-height: 807px;
+}
+:deep(.q-separator--horizontal) {
+    display: block;
+    height: .1px;
 }
 </style>

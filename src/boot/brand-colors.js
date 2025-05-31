@@ -9,7 +9,9 @@ export default boot(async (/* { app, router, ... } */) => {
   setCssVar('secondary', '#284239')
   setCssVar('accent', '#c0c1c3') // old accent: f7d793
 
-  setCssVar('dark', '#1d1d1d')
+  // setCssVar('dark', '#1d1d1d')
+  setCssVar('dark', '#101010')
+
   setCssVar('dark-page', '#121212')
 
   setCssVar('positive', '#05807c')

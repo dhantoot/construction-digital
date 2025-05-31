@@ -11,7 +11,7 @@
         <div class="row full-width items-center">
           <q-btn @click="leftDrawerOpen = !leftDrawerOpen" flat round :dense="true" icon="menu" class="q-mr-sm round-btn"/>
           <q-toolbar-title class="text-center">Hofstee Inc.</q-toolbar-title>
-          <q-btn v-if="!mainStore.showNav && routeName !== 'mobile.my-profile'" flat round :dense="true" icon="las la-exchange-alt" class="round-btn" to="/admin-portal"/>
+          <q-btn v-if="false" flat round :dense="true" icon="las la-exchange-alt" class="round-btn" to="/admin-portal"/>
           <div v-if="mainStore.showNav || routeName === 'mobile.my-profile'">
             <q-avatar>
               <img :src="obj?.avatar?.length > 0 ? `${obj.avatar}` : `default-user.jpeg`"/>
