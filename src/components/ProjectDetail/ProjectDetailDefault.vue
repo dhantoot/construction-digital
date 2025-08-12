@@ -3,13 +3,28 @@
     <q-img :src="`${mainStore?.mobileSelectedProject?.avatarFullPath}`" height="160px">
       <div class="absolute-bottom q-mt-none row justify-between items-center">
         <div>
-          <q-btn color="primary" rounded v-if="this.$route.path === `/detail/${mainStore?.mobileSelectedProject?.id}`"
-            icon="las la-arrow-left" class="text-accent round-btn" @click="this.$router.push('/projects')" />
+          <q-btn
+            color="primary"
+            rounded v-if="this.$route.path === `/detail/${mainStore?.mobileSelectedProject?.id}`"
+            class="text-accent round-btn"
+            @click="this.$router.push('/projects')">
+            <template #default>
+              <ArrowLeftIcon size="18"/>
+            </template>
+          </q-btn>
         </div>
         <div class="text-h6" v-ellipsis="20">{{ mainStore?.mobileSelectedProject?.title }}</div>
         <div>
-          <q-btn disabled color="primary" rounded v-if="this.$route.path === `/detail/${mainStore?.mobileSelectedProject?.id}`"
-            icon="las la-user-plus" class="text-accent round-btn" @click="this.$router.push({ path: '/new-member' })" />
+          <q-btn
+            disabled
+            color="primary"
+            rounded v-if="this.$route.path === `/detail/${mainStore?.mobileSelectedProject?.id}`"
+            class="text-accent round-btn"
+            @click="this.$router.push({ path: '/new-member' })">
+            <template #default>
+              <UserPlusIcon size="18"/>
+            </template>
+          </q-btn>
         </div>
       </div>
     </q-img>
@@ -21,7 +36,7 @@
             'text-primary': !$q.dark.isActive
           }">Project Member</strong>
         </div>
-        <q-list class="scroll" style="height: 75vh;">
+        <q-list class="scroll pb-10" style="">
           <q-item clickable v-ripple v-for="item of invites" :key="item">
             <q-item-section avatar>
               <q-avatar>

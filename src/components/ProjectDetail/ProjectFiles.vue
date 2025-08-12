@@ -5,7 +5,13 @@
         'text-accent': $q.dark.isActive,
         'text-primary': !$q.dark.isActive
       }">Files</strong>
-      <q-icon size="md" :color="$q.dark.isActive ? 'accent' : 'primary'" name="las la-undo" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/>
+      <!-- <q-icon size="md" :color="$q.dark.isActive ? 'accent' : 'primary'" name="las la-undo" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/> -->
+      <q-icon
+        size="sm"
+        :color="$q.dark.isActive ? 'accent' : 'primary'"
+        @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)">
+        <Undo2Icon/>
+      </q-icon>
     </div>
     <div class="row">
       <!-- <q-input dark standout="bg-transparent" input-class="text-right text-accent" v-model="text" :dense="dense" :style="{
@@ -32,15 +38,17 @@
           <!-- <q-icon color="accent" name="las la-arrow-left" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/> -->
         </template>
         <template v-slot:append>
-          <q-icon v-if="!text" name="las la-search" :class="{
+          <q-icon v-if="!text" :class="{
             'text-accent': text === '',
             'text-primary': text !== ''
-          }"/>
+          }">
+            <SearchIcon/>
+          </q-icon>
           <q-icon v-if="text" name="clear" class="cursor-pointer text-accent" @click="text = ''"/>
         </template>
       </q-input>
     </div>
-    <div class="scroll" style="height: 75.5vh">
+    <div>
       <div class="q-gutter-md row justify-between">
         <q-img v-for="item in arr" :key="item" :src="`${item.url}`" spinner-color="white"
           style="height: 100px; max-width: 100px" class="rounded-borders q-mb-xs">

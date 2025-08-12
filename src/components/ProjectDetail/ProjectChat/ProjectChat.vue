@@ -5,7 +5,13 @@
         'text-accent': $q.dark.isActive,
         'text-primary': !$q.dark.isActive
       }">Chat</strong>
-      <q-icon size="md" :color="$q.dark.isActive ? 'accent' : 'primary'" name="las la-undo" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/>
+      <!-- <q-icon size="md" :color="$q.dark.isActive ? 'accent' : 'primary'" name="las la-undo" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/> -->
+      <q-icon
+        size="sm"
+        :color="$q.dark.isActive ? 'accent' : 'primary'"
+        @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)">
+        <Undo2Icon/>
+      </q-icon>
     </div>
     <div class="row justify-between">
       <q-input
@@ -20,15 +26,17 @@
           <!-- <q-icon color="accent" name="las la-arrow-left" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/> -->
         </template>
         <template v-slot:append>
-          <q-icon v-if="!text" name="las la-search" :class="{
+          <q-icon v-if="!text" :class="{
             'text-accent': text === '',
             'text-primary': text !== ''
-          }"/>
+          }">
+            <SearchIcon/>
+          </q-icon>
           <q-icon v-if="text" name="clear" class="cursor-pointer text-accent" @click="text = ''"/>
         </template>
       </q-input>
     </div>
-    <q-list class="scroll" style="height: 74vh">
+    <q-list>
       <q-item v-for="(chat, index) in chats" :key="index" clickable v-ripple @click="setChatMode(2, chat)">
         <q-item-section avatar>
           <q-avatar>

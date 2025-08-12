@@ -1,7 +1,7 @@
 <template>
   <div class="row full-width full-height">
     <q-card class="no-shadow round-panel full-width">
-      <q-card-section>
+      <q-card-section v-if="false">
         <div class="row justify-between q-gutter-x-sm q-gutter-y-sm q-gutter-y-sm q-mb-lg">
           <q-input filled :dense="true" v-model="title" placeholder="Template Name"
             :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''" />
@@ -85,6 +85,56 @@
           </div>
         </div>
       </q-card-section>
+
+      <q-card-section v-if="true">
+        <div class="row full-width justify-between">
+          <q-btn
+            rounded
+            size="sm"
+            flat
+            label="Back"
+            icon="las la-arrow-left"
+            no-caps
+            @click="$router.push('/manage-sow')">
+          </q-btn>
+          <span class="text-h6">Create a New Template</span>
+          <span></span>
+        </div>
+        <div class="mt-20 column gap-10 full-width">
+          <q-input filled :dense="true" v-model="title" placeholder="Template Name" :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''" />
+          <q-input filled :dense="true" v-model="section" placeholder="Section" :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''" />
+          <q-input filled :dense="true" v-model="sowCategory" placeholder="Category" :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''" />
+          <q-input filled :dense="true" v-model="sowDescription" placeholder="Description" :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''" />
+          <q-input filled :dense="true" v-model="contractPrice" placeholder="Contract Price" :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''" />
+          <q-input filled :dense="true" v-model="weight" placeholder="Weigth" :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''" />
+          <q-input filled :dense="true" v-model="duration" placeholder="Duration in Days" :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''" />
+        </div>
+      </q-card-section>
+
+      <q-card-actions v-if="true">
+        <div class="row px-10 full-width justify-start gap-20">
+          <!-- <q-btn rounded flat size="sm" dense icon="las la-arrow-left" padding="sm lg" label="Back" class="text-capitalize"
+            @click="$router.push('/manage-sow')">
+            <template v-slot:loading>
+              <q-spinner-ios />
+            </template>
+          </q-btn> -->
+          <q-btn rounded size="sm" icon="las la-plus" padding="sm xl" color="info" label="Add"
+            class="text-capitalize bg-primary" @click="addToList" :loading="loadingSubmit" :disable="loadingSubmit ||
+              !title ||
+              !section ||
+              !sowCategory ||
+              !sowDescription ||
+              !contractPrice ||
+              !weight ||
+              !duration
+              ">
+            <template v-slot:loading>
+              <q-spinner-ios />
+            </template>
+          </q-btn>
+        </div>
+      </q-card-actions>
       <q-inner-loading :showing="visible">
         <q-spinner-ios size="50px" color="secondary" />
       </q-inner-loading>
@@ -98,9 +148,9 @@
       </q-card-section>
 
       <q-card-actions align="right" class="q-pa-md">
-        <q-btn padding="sm xl" icon="las la-times" class="round-btn text-capitalize" label="Close" color="negative"
+        <q-btn rounded size="sm" padding="sm xl" icon="las la-times" class="text-capitalize" label="Close" color="negative"
           v-close-popup />
-        <q-btn padding="sm xl" icon="las la-check" class="round-btn text-capitalize" label="Confirm" color="primary"
+        <q-btn rounded size="sm" padding="sm xl" icon="las la-check" class="text-capitalize" label="Confirm" color="primary"
           @click="callConfirmFn()" :loading="actionAccountLoader" :disable="actionAccountLoader">
           <template v-slot:loading>
             <q-spinner-ios />
@@ -280,5 +330,8 @@ export default {
 :deep(.q-separator--horizontal) {
     display: block;
     height: .1px;
+}
+:deep(.q-field__control:after) {
+  display: none !important;
 }
 </style>

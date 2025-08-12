@@ -1,15 +1,8 @@
 <template>
-  <!-- <q-btn
-    color="primary"
-    rounded
-    v-if="this.$route.path === `/detail/${mainStore?.mobileSelectedProject?.id}`"
-    style="position: absolute; z-index: 1"
-    icon="las la-arrow-left"
-    class="text-primary q-ma-xs"
-    @click="this.$router.push('/projects')"
- /> -->
-  <router-view/>
-  <q-footer bordered class="text-accent">
+  <div class="full-height">
+    <router-view/>
+  </div>
+   <!-- <q-footer bordered class="text-accent">
     <q-tabs
       v-model="tab"
       class="text-accent"
@@ -68,7 +61,40 @@
         class="q-pt-sm"
      />
     </q-tabs>
-  </q-footer>
+  </q-footer> -->
+
+  <div v-if="bottomNavPaths.includes(routeName)" class="bottom-nav-container">
+      <q-bottom-navigation
+        class="modern-bottom-nav shadow-4"
+        active-color="white"
+        glossy
+        :class="{
+          'bg-light': !$q.dark.isActive,
+          'bg-primary text-accent': $q.dark.isActive
+        }"
+      >
+        <q-btn round flat @click="$router.push({ path: `/detail/${mainStore?.mobileSelectedProject?.id}/todo` }); activeTab = 'todo'" :class="{ 'text-purple': activeTab === 'todo' }">
+          <CheckSquareIcon size="24" />
+        </q-btn>
+        <q-btn round flat @click="$router.push({ path: `/detail/${mainStore?.mobileSelectedProject?.id}/files` }); activeTab = 'files'" :class="{ 'text-purple': activeTab === 'files' }">
+          <FolderIcon size="24" />
+        </q-btn>
+        <q-btn round flat @click="$router.push({ path: `/detail/${mainStore?.mobileSelectedProject?.id}/chat` }); activeTab = 'chat'" :class="{ 'text-purple': activeTab === 'chat' }">
+          <MessageCircleIcon size="24" />
+        </q-btn>
+        <q-btn round flat @click="$router.push({ path: `/detail/${mainStore?.mobileSelectedProject?.id}/planning` }); activeTab = 'planning'" :class="{ 'text-purple': activeTab === 'planning' }">
+          <ClipboardListIcon size="24" />
+        </q-btn>
+        <q-btn round flat @click="$router.push({ path: `/detail/${mainStore?.mobileSelectedProject?.id}/more` }); activeTab = 'more'" :class="{ 'text-purple': activeTab === 'more' }">
+          <SettingsIcon size="24" />
+        </q-btn>
+      </q-bottom-navigation>
+
+      <!-- Center Label -->
+      <div v-if="tab === 'analytics'" class="center-label text-white">
+        Analytics
+      </div>
+    </div>
 </template>
 <script>
 import { ref } from 'vue'
@@ -78,18 +104,30 @@ export default {
   setup () {
     const mainStore = useMainStore()
     return {
-      tab: ref('mails'),
-      mainStore
+      activeTab: ref('details'),
+      mainStore,
+      bottomNavPaths: [
+        'project.details.todo',
+        'project.details.files',
+        'project.details.planning',
+        'project.details.chat.default',
+        'project.details.more',
+        'project.details.default'
+      ]
     }
   },
-  mounted () {
-    // this.$emit('showHeader', false, [
-    //   {
-    //     label: 'Back',
-    //     icon: 'las la-chevron-left',
-    //     route: '/projects'
-    //   }
-    // ])
+  mounted () {},
+  computed: {
+    routeName: function () {
+      return this.$route.name
+    }
+  },
+  watch: {
+    '$route.name' (newVal) {
+      if (this.$route.name === 'project.details.default') {
+        this.activeTab = 'details'
+      }
+    }
   }
 }
 </script>

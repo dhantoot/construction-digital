@@ -1,49 +1,56 @@
 <template>
-  <div class="row hide-scrollbar" style="height: 94.5vh;">
-    <div class="row full-width full-height q-pa-sm">
-      <q-card class="no-shadow round-panel full-width px-10 pt-10">
-        <div class="row full-width" :class="[$q.screen.lt.sm ? 'justify-between' : 'justify-left']">
-          <div class="" v-if="selected[0]">
+  <div class="full-height row hide-scrollbar" :style="{height: $q.screen.lt.sm ? 'auto' : ''}">
+    <div class="full-height row full-width full-height q-pa-sm" :style="[$q.screen.lt.sm ? 'padding-bottom: 90px;': '']">
+      <q-card class="full-height no-shadow round-panel full-width px-10 pt-10">
+
+        <div class="row full-width" :class="[$q.screen.lt.sm ? 'justify-between' : 'justify-left gap-10 mb-10']">
+
+          <div class="row gap-10">
             <q-btn
-              :size="$q.screen.lt.sm ? 'md' : 'md'"
-              flat
+              v-if="selected[0]"
+              rounded
+              color="positive"
+              size="sm"
+              :disable="!selected.length"
               :label="selected[0].isActive ? 'Deactivate' : 'Activate'"
               icon="las la-power-off"
-              color="transparent"
-              class="text-capitalize round-btn"
-              text-color="accent"
+              no-caps
               @click="openConfirmDialog(`Would you like to ${selected[0].isActive ? 'Deactivate' : 'Activate'} this account?`, 'updateAccountStatus')">
             </q-btn>
-          </div>
-          <div class="" v-if="selected[0]">
+
             <q-btn
-              :size="$q.screen.lt.sm ? 'md' : 'md'"
-              flat
+              v-if="selected[0]"
+              rounded
+              color="negative"
+              size="sm"
+              :disable="!selected.length"
               label="Delete"
               icon="las la-trash-alt"
-              color="transparent"
-              class="text-capitalize round-btn"
-              text-color="negative"
+              no-caps
               @click="openConfirmDialog('Would you like to delete this account?', 'deleteAccount')">
             </q-btn>
+
           </div>
-          <div class="">
-            <q-btn
-              :size="$q.screen.lt.sm ? 'md' : 'md'"
-              flat
-              label="New"
-              icon="las la-user-tie"
-              class="text-capitalize round-btn"
-              text-color="green">
-            </q-btn>
-          </div>
+
+          <q-btn
+            no-caps
+            rounded
+            color="info"
+            size="sm"
+            @click="createTemplate"
+            label="New"
+            icon="las la-user-tie">
+          </q-btn>
+
         </div>
+
         <q-table
           dense
           no-data-label="I didn't find anything for you"
           class="q-mb-sm" row-key="uid"
           selection="single"
           v-model:selected="selected"
+          wrap-cells
           :grid="$q.screen.lt.sm"
           :selection-options="selectionOptions"
           :rows="rows"
@@ -76,7 +83,8 @@
               </q-td>
               <q-td key="isActive" :props="props">
                 <q-chip square class="q-pl-sm full-width" :class="{
-                  'full-width q-px-md': $q.screen.lt.md
+                  'full-width q-px-md': $q.screen.lt.md,
+                  'bg-contrast': $q.dark.isActive
                 }">
                   <q-avatar :icon="getStatusIcon(props.row.isActive)" :color="getStatusColor(props.row.isActive)"
                     text-color="white" />
@@ -145,9 +153,9 @@
       </q-card-section>
 
       <q-card-actions align="right" class="q-pa-md">
-        <q-btn padding="sm xl" icon="las la-times" class="round-btn text-capitalize" label="Close" color="negative"
+        <q-btn rounded size="sm" padding="sm xl" icon="las la-times" class="text-capitalize" label="Close" color="negative"
           v-close-popup />
-        <q-btn padding="sm xl" icon="las la-check" class="round-btn text-capitalize" label="Confirm" color="info"
+        <q-btn rounded size="sm" padding="sm xl" icon="las la-check" class="text-capitalize" label="Confirm" color="info"
           @click="callConfirmFn()" :loading="actionAccountLoader" :disable="actionAccountLoader">
           <template #loading>
             <q-spinner-ios />

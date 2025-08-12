@@ -13,25 +13,7 @@
       </q-card>
     </div>
   </div>
-  <div class="scroll" style="height: 88vh;">
 
-  <div>
-    <div v-for="item of projectListMapped.filter(e => e.groupedData)" :key="item" class="row">
-      <div class="full-width">
-        <q-card class="m-10" :flat="$q.dark.isActive">
-          <q-card-section>{{ item.title }}</q-card-section>
-          <q-card-section class="p-0">
-            <apexchart
-              type="line"
-              height="350"
-              :options="item.projectTaskCompleted"
-              :series="item.projectTaskCompletedValue"
-            ></apexchart>
-          </q-card-section>
-        </q-card>
-      </div>
-    </div>
-  </div>
   <div v-if="true" class="row justify-between">
     <div class="col">
       <q-card :flat="$q.dark.isActive" class="m-10">
@@ -88,6 +70,7 @@
       </q-card>
     </div>
   </div>
+
   <div v-if="true" class="row justify-between">
     <div class="col">
       <q-card :flat="$q.dark.isActive" class="m-10">
@@ -142,6 +125,26 @@
       </q-card>
     </div>
   </div>
+
+  <div>
+  <div>
+    <div v-for="item of projectListMapped.filter(e => e.groupedData)" :key="item" class="row">
+      <div class="full-width">
+        <q-card class="m-10" :flat="$q.dark.isActive">
+          <q-card-section>{{ item.title }}</q-card-section>
+          <q-card-section class="p-0">
+            <apexchart
+              type="line"
+              height="350"
+              :options="item.projectTaskCompleted"
+              :series="item.projectTaskCompletedValue"
+            ></apexchart>
+          </q-card-section>
+        </q-card>
+      </div>
+    </div>
+  </div>
+
   <div v-if="false" class="row">
     <div class="full-width">
       <q-card :flat="$q.dark.isActive" class="m-10">

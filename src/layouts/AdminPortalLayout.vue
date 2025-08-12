@@ -1,9 +1,9 @@
 <template>
   <q-layout
     view="lHh lpR lFf"
-    class="full-height"
+    class="full-height no-scroll"
     :style="{
-        'background': $q.dark.isActive ? 'black' : '#f2f4f7'
+      'background': $q.dark.isActive ? 'black' : '#f2f4f7',
     }">
 
     <q-header
@@ -34,12 +34,12 @@
             <HofsteeAvatar :src="obj?.avatar?.length > 0 ? `${obj.avatar}` : `default-user.jpeg`" size="32px"/>
             <q-menu
               style="border-radius: 10px;"
-              :class="[$q.dark.isActive ? 'no-shadow bg-dark text-accent' : 'bg-primary text-accent']"
+              :class="[$q.dark.isActive ? 'bg-contrast text-accent no-shadow' : 'bg-light text-primary']"
               :offset="[5, 15]">
               <template v-slot:activator="{ on }">
                 <q-btn flat dense icon="more_vert" v-on="on" />
               </template>
-              <q-list class="text-accent bg-idk" style="min-width: 200px;">
+              <q-list style="min-width: 200px;">
                 <q-item>
                   <q-item-section>Dark Mode</q-item-section>
                   <q-item-section side>
@@ -89,51 +89,126 @@
           <div>
             <div class="row items-center justify-center pt-4">
               <div class="py-5">
-                <q-btn to="/admin-portal" flat icon="las la-play" class="q-px-sm text-red"
-                  style="border-radius: 8px;" />
+                <q-btn
+                  to="/admin-portal"
+                  @click="activeBtn = 0"
+                  flat
+                  icon="las la-play"
+                  class="q-px-sm text-red"
+                  style="border-radius: 8px;"
+                  :style="{'background': activeBtn == 0 ? $q.dark.isActive ? '#1e1f1f' : '#e0e2e5' : ''}"
+                />
               </div>
               <div class="py-5 mt-10">
-                <q-btn to="/manage-sow" flat icon="las la-tools" class="q-px-sm" style="border-radius: 8px;"
-                :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"/>
+                <q-btn
+                  to="/manage-sow"
+                  @click="activeBtn = 1"
+                  flat
+                  icon="las la-tools"
+                  class="q-px-sm"
+                  style="border-radius: 8px;"
+                  :style="{'background': activeBtn == 1 ? $q.dark.isActive ? '#1e1f1f' : '#e0e2e5' : ''}"
+                  :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
+                />
               </div>
               <div class="py-5">
-                <q-btn to="/manage-projects" flat icon="las la-folder-open" class="q-px-sm"
-                  style="border-radius: 8px;" :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"/>
+                <q-btn
+                  to="/manage-projects"
+                  @click="activeBtn = 2"
+                  flat
+                  icon="las la-folder-open"
+                  class="q-px-sm"
+                  style="border-radius: 8px;"
+                  :style="{'background': activeBtn == 2 ? $q.dark.isActive ? '#1e1f1f' : '#e0e2e5' : ''}"
+                  :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
+                />
               </div>
               <div class="py-5">
-                <q-btn to="/manage-invites" flat icon="lab la-telegram-plane" class="q-px-sm"
-                  style="border-radius: 8px;" :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"/>
+                <q-btn
+                  to="/manage-invites"
+                  @click="activeBtn = 3"
+                  flat
+                  icon="lab la-telegram-plane"
+                  class="q-px-sm"
+                  style="border-radius: 8px;"
+                  :style="{'background': activeBtn == 3 ? $q.dark.isActive ? '#1e1f1f' : '#e0e2e5' : ''}"
+                  :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
+                />
               </div>
               <div class="py-5 full-width q-px-md">
                 <q-separator style="border-bottom: .1px solid #3a3a3a;" />
               </div>
               <div class="py-5">
-                <q-btn to="/manage-accounts" flat icon="las la-user-tag" class="q-px-sm"
-                  style="border-radius: 8px;" :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"/>
+                <q-btn
+                  to="/manage-accounts"
+                  @click="activeBtn = 4"
+                  flat
+                  icon="las la-user-tag"
+                  class="q-px-sm"
+                  style="border-radius: 8px;"
+                  :style="{'background': activeBtn == 4 ? $q.dark.isActive ? '#1e1f1f' : '#e0e2e5' : ''}"
+                  :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
+                />
               </div>
               <div class="py-5">
-                <q-btn to="/whats-new" flat icon="las la-bell" class="q-px-sm" style="border-radius: 8px;"
-                  :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"/>
+                <q-btn
+                  to="/whats-new"
+                  @click="activeBtn = 5"
+                  flat
+                  icon="las la-bell"
+                  class="q-px-sm"
+                  style="border-radius: 8px;"
+                  :style="{'background': activeBtn == 5 ? $q.dark.isActive ? '#1e1f1f' : '#e0e2e5' : ''}"
+                  :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
+                />
               </div>
               <div class="py-5">
-                <q-btn flat icon="las la-comments" class="q-px-sm" style="border-radius: 8px;"
-                  :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"/>
+                <q-btn
+                  flat
+                  @click="activeBtn = 6"
+                  icon="las la-comments"
+                  class="q-px-sm"
+                  style="border-radius: 8px;"
+                  :style="{'background': activeBtn == 6 ? $q.dark.isActive ? '#1e1f1f' : '#e0e2e5' : ''}"
+                  :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
+                />
               </div>
             </div>
           </div>
           <div>
             <div class="row items-center justify-center">
               <div class="py-5">
-              <q-btn flat icon="las la-headset" class="q-px-sm" style="border-radius: 8px;"
-              :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"/>
+              <q-btn
+                flat
+                @click="activeBtn = 7"
+                icon="las la-headset"
+                class="q-px-sm"
+                style="border-radius: 8px;"
+                :style="{'background': activeBtn == 7 ? $q.dark.isActive ? '#1e1f1f' : '#e0e2e5' : ''}"
+                :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
+              />
             </div>
             <div class="py-5">
-              <q-btn flat icon="las la-cog" class="q-px-sm" style="border-radius: 8px;"
-              :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"/>
+              <q-btn
+                flat
+                @click="activeBtn = 8"
+                icon="las la-cog"
+                class="q-px-sm"
+                style="border-radius: 8px;"
+                :style="{'background': activeBtn == 8 ? $q.dark.isActive ? '#1e1f1f' : '#e0e2e5' : ''}"
+                :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
+              />
             </div>
             <div class="py-5">
-              <q-btn flat icon="las la-user-circle" class="q-px-sm" style="border-radius: 8px;"
-              :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"/>
+              <q-btn
+                flat
+                @click="activeBtn = 9"
+                icon="las la-user-circle"
+                class="q-px-sm"
+                style="border-radius: 8px;"
+                :style="{'background': activeBtn == 9 ? $q.dark.isActive ? '#1e1f1f' : '#e0e2e5' : ''}"
+                :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
+              />
             </div>
             <div class="py-5 full-width q-px-md">
               <q-separator style="border-bottom: .1px solid #3a3a3a;" />
@@ -159,17 +234,16 @@
     </q-drawer>
 
     <q-page-container
-    class="hide-scrollbar"
+    class=""
     :style="{
       'background: black': $q.dark.isActive,
       'background: #f2f4f7': !$q.dark.isActive,
-      'height: auto': $q.screen.lt.md,
-      'height: 94.5vh': !$q.screen.lt.md
+      'height: 100vh': $q.screen.gt.sm,
+      'padding-bottom: 70px': !$q.screen.gt.sm
     }">
-
       <router-view @emitFromChild="emitFromChild"/>
 
-      <q-footer v-if="$route.name !== 'Admin Login' && !$q.screen.gt.xs" dense bordered :class="{
+      <!-- <q-footer v-if="$route.name !== 'Admin Login' && !$q.screen.gt.xs" dense bordered :class="{
         'bg-dark': $q.dark.isActive,
         'bg-white text-black': !$q.dark.isActive
       }">
@@ -218,9 +292,42 @@
             </q-tab>
 
           </q-tabs>
-      </q-footer>
+      </q-footer> -->
 
     </q-page-container>
+
+    <div v-if="$route.name !== 'Admin Login' && !$q.screen.gt.xs" class="bottom-nav-container">
+      <q-bottom-navigation class="modern-bottom-nav shadow-4" active-color="white" glossy :class="{
+          'bg-light': !$q.dark.isActive,
+          'bg-primary text-accent': $q.dark.isActive
+        }">
+        <q-btn round flat @click="$router.push({ path: `/admin-portal` }); activeTab='dashboard';" :class="{ 'text-purple': activeTab === 'dashboard' }">
+          <div class="column justify-start items-center">
+            <PlayIcon size="24" />
+          </div>
+        </q-btn>
+        <q-btn round flat @click="$router.push({ path: `/manage-sow` }); activeTab='sow';" :class="{ 'text-purple': activeTab === 'sow' }">
+          <div class="column justify-start items-center">
+            <WrenchIcon size="24" />
+          </div>
+        </q-btn>
+        <q-btn round flat @click="$router.push(`/manage-projects`); activeTab='projects';" :class="{ 'text-purple': activeTab === 'projects' }">
+          <div class="column justify-start items-center">
+            <FolderKanbanIcon size="24" />
+          </div>
+        </q-btn>
+        <q-btn round flat @click="$router.push({ path: `/manage-invites` }); activeTab='invites';" :class="{ 'text-purple': activeTab === 'invites' }">
+          <div class="column justify-start items-center">
+            <SendIcon size="24" />
+          </div>
+        </q-btn>
+        <q-btn round flat @click="$router.push(`/manage-accounts`); activeTab='accounts';" :class="{ 'text-purple': activeTab === 'accounts' }">
+          <div class="column justify-start items-center">
+            <UserSearchIcon size="24" />
+          </div>
+        </q-btn>
+      </q-bottom-navigation>
+    </div>
   </q-layout>
 
   <q-dialog v-model="confirm" persistent>
@@ -261,8 +368,10 @@ export default {
     const miniState = ref(false)
     const isDark = ref(false)
     const mainStore = useMainStore()
+    const activeBtn = ref(0)
 
     return {
+      activeBtn,
       confirm: ref(false),
       confirmMsg: '',
       confirmCallbackFn: '',
@@ -347,4 +456,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.hovered:active {
+  background: #e0e2e5;
+}
 </style>

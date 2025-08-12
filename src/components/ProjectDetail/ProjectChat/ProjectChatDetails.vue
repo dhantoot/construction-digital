@@ -5,7 +5,13 @@
           'text-accent': $q.dark.isActive,
           'text-primary': !$q.dark.isActive
         }">{{ $route.query.name }}</strong>
-        <q-icon size="md" :color="$q.dark.isActive ? 'accent' : 'primary'" name="las la-undo" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}/chat`)"/>
+        <!-- <q-icon size="md" :color="$q.dark.isActive ? 'accent' : 'primary'" name="las la-undo" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}/chat`)"/> -->
+        <q-icon
+        size="sm"
+        :color="$q.dark.isActive ? 'accent' : 'primary'"
+        @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}/chat`)">
+        <Undo2Icon/>
+      </q-icon>
       </div>
       <div class="row justify-between">
         <q-input
@@ -28,7 +34,7 @@
           </template>
         </q-input>
       </div>
-      <div class="scroll" style="height: 65.8vh">
+      <div>
         <q-chat-message v-for="(chat, index) in chats" :key="index"
           :name="chat.name"
           :avatar="chat.avatar"
@@ -39,7 +45,7 @@
           :sent="chat.name === 'me'"
        />
       </div>
-      <div class="messenger-input">
+      <!-- <div class="messenger-input">
         <q-input
           standout="bg-transparent"
           :input-class="$q.dark.isActive ? 'text-accent' : 'text-primary'"
@@ -51,8 +57,79 @@
           class="input-field"
         />
         <q-btn round flat icon="send" class="send-btn" @click="sendMessage" :color="q.dark.isActive ? 'accent' : 'primary'"/>
-      </div>
+      </div> -->
+      <!-- <q-footer>
+        <div class="row items-center no-wrap q-pa-sm messenger-input">
+          <q-input
+            standout="bg-transparent"
+            v-model="message"
+            dense
+            filled
+            rounded
+            class="col-grow q-mr-sm"
+            placeholder="Type a message..."
+            @keyup.enter="sendMessage"
+            :input-class="colorClass"
+          />
+          <q-btn round flat icon="send" :color="colorMode" @click="sendMessage" />
+        </div>
+      </q-footer> -->
     </div>
+    <!-- <div class="bottom-nav-container">
+      <q-bottom-navigation
+        v-model="tab"
+        class="modern-bottom-nav shadow-4"
+        active-color="white"
+        glossy
+        :class="{
+          'bg-light': !$q.dark.isActive,
+          'bg-dark text-white': $q.dark.isActive
+        }"
+      >
+      <div class="row items-center justify-between no-wrap q-pa-sm">
+          <q-input
+            standout="bg-transparent"
+            v-model="message"
+            dense
+            filled
+            rounded
+            class="col-grow q-mr-sm"
+            placeholder="Type a message..."
+            @keyup.enter="sendMessage"
+            :input-class="colorClass"
+          />
+          <q-btn round flat icon="send" :color="colorMode" @click="sendMessage" />
+        </div>
+    </q-bottom-navigation>
+    </div> -->
+
+    <q-footer
+      class="shadow-4 q-pa-sm"
+      reveal
+      elevated
+      :class="{
+        'bg-white text-primary': !$q.dark.isActive,
+        'bg-primary text-accent': $q.dark.isActive
+      }"
+    >
+      <div class="full-width row items-center justify-between no-wrap">
+        <q-input
+          borderless
+          dense
+          filled
+          hide-bottom-space
+          v-ripple="false"
+          v-model="message"
+          placeholder="Type a message..."
+          @keyup.enter="sendMessage"
+          class="col-grow q-mr-sm"
+        />
+        <q-btn round flat @click="sendMessage" :color="$q.dark.isActive ? 'accent' : 'primary'">
+          <SendHorizontalIcon size="20" />
+        </q-btn>
+      </div>
+    </q-footer>
+
     <q-inner-loading
       :showing="visible"
       label="Please wait..."
@@ -273,6 +350,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.q-input .q-field__underline {
+  display: none;
+}
+
 .messenger-input {
   display: flex;
   align-items: center;
@@ -287,5 +368,14 @@ export default {
 
 .send-btn {
   margin-left: 8px;
+}
+
+.messenger-input {
+  backdrop-filter: blur(6px);
+  border-radius: 16px;
+}
+
+:deep(.q-field__control:after) {
+  display: none !important;
 }
 </style>

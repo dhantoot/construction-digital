@@ -1,37 +1,47 @@
 <template>
-  <q-card class="round-panel full-width no-shadow px-10 pt-10">
-    <div class="row full-width" :class="[$q.screen.lt.sm ? 'justify-between' : 'justify-left']">
+  <q-card class="round-panel full-height full-width no-shadow px-10 pt-10">
+    <div class="row full-width" :class="[$q.screen.lt.sm ? 'justify-between' : 'justify-left gap-10 mb-10']">
+
+      <div class="row gap-10">
+        <q-btn
+          rounded
+          color="positive"
+          size="sm"
+          :disable="!selected.length"
+          label="View"
+          icon="las la-eye"
+          no-caps
+          @click="gotoTemplateDetail(selected[0].id)">
+        </q-btn>
+
+        <q-btn
+          rounded
+          color="negative"
+          size="sm"
+          :disable="!selected.length"
+          label="Delete"
+          icon="las la-trash-alt"
+          no-caps
+          @click="
+              openConfirmDialog(
+                'Would you like to delete this account?',
+                'deleteAccount'
+              )
+          ">
+        </q-btn>
+
+      </div>
+
       <q-btn
-        :disable="!selected.length"
-        flat
-        label="View"
-        icon="las la-eye"
-        color="transparent"
-        class="text-capitalize round-btn" text-color="negative" @click="gotoTemplateDetail(selected[0].id)">
-      </q-btn>
-      <q-btn
-        :disable="!selected.length"
-        flat label="Delete"
-        icon="las la-trash-alt"
-        color="transparent"
-        class="text-capitalize round-btn"
-        text-color="negative"
-        @click="
-            openConfirmDialog(
-              'Would you like to delete this account?',
-              'deleteAccount'
-            )
-        ">
-      </q-btn>
-      <q-btn
+        rounded
+        color="info"
+        size="sm"
         @click="createTemplate"
-        flat
         label="New"
-        icon="las la-plus"
-        color="transparent"
-        class="text-capitalize round-btn"
-        text-color="green">
+        no-caps
+        icon="las la-plus">
       </q-btn>
+
     </div>
     <q-table
       no-data-label="I didn't find anything for you"
@@ -39,6 +49,7 @@
       row-key="id"
       selection="single"
       v-model:selected="selected"
+      wrap-cells
       :grid="$q.screen.lt.sm"
       :selection-options="selectionOptions"
       :rows="rows"
@@ -103,9 +114,9 @@
       </q-card-section>
 
       <q-card-actions align="right" class="q-pa-md">
-        <q-btn padding="sm xl" icon="las la-times" class="round-btn text-capitalize" label="Close" color="negative"
+        <q-btn rounded size="sm" padding="sm xl" icon="las la-times" class="text-capitalize" label="Close" color="negative"
           v-close-popup />
-        <q-btn padding="sm xl" icon="las la-check" class="round-btn text-capitalize" label="Confirm" color="primary"
+        <q-btn rounded size="sm" padding="sm xl" icon="las la-check" class="text-capitalize" label="Confirm" color="primary"
           @click="callConfirmFn()" :loading="actionAccountLoader" :disable="actionAccountLoader">
           <template v-slot:loading>
             <q-spinner-ios />
@@ -227,11 +238,11 @@ export default {
   },
   async beforeMount () {
     // console.log('beforeMount')
+  },
+  async mounted () {
+    // this.$emit('showHeader', true, [])
     await this.fetchUsers()
     await this.getAllTemplate()
-  },
-  mounted () {
-    // this.$emit('showHeader', true, [])
     this.showTextLoading('loading1')
     this.authUser = LocalStorage.getItem('authUser')
     if (this.authUser && this.authUser.uid) {
@@ -761,7 +772,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .adminCard {
-  min-height: 807px;
+  min-height: 100%;
 }
 :deep(.q-separator--horizontal) {
     display: block;

@@ -5,12 +5,33 @@
         'text-accent': $q.dark.isActive,
         'text-primary': !$q.dark.isActive
       }">Update Todo</strong>
-      <q-icon size="md" :color="$q.dark.isActive ? 'accent' : 'primary'" name="las la-undo"
-        @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}/todo`)" />
+      <q-icon
+        size="sm"
+        :color="$q.dark.isActive ? 'accent' : 'primary'"
+        @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}/todo`)">
+        <Undo2Icon/>
+      </q-icon>
+      <!-- <q-icon size="md" :color="$q.dark.isActive ? 'accent' : 'primary'" name="las la-undo"
+        @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}/todo`)" /> -->
     </div>
-    <q-input class="full-width" :dense="true" filled v-model="todoTitle" placeholder="Title" input-class="text-accent" />
-    <q-input class="full-width" :dense="true" placeholder="Description..." v-model="todoDesc" filled autogrow input-class="text-accent" />
-    <div class="scroll" style="height:62vh">
+    <q-input
+      class="full-width"
+      :dense="true"
+      filled
+      v-model="todoTitle"
+      placeholder="Title"
+      input-class="text-accent"
+    />
+    <q-input
+      class="full-width"
+      :dense="true"
+      placeholder="Description..."
+      v-model="todoDesc"
+      filled
+      autogrow
+      input-class="text-accent"
+    />
+    <div>
       <q-date v-model="timeline" range class="full-width no-shadow" :text-color="$q.dark.isActive ? 'accent' : 'primary'" :flat="$q.dark.isActive"/>
       <div class="column q-mt-sm">
         <div class="caption" :class="{
@@ -77,7 +98,40 @@
       </q-uploader>
     </div>
   </div>
-  <div class="row full-width q-px-sm q-py-sm justify-between items-start absolute fixed-bottom"
+
+  <div v-if="routeName == 'project.details.todo.update'" class="bottom-nav-container">
+      <q-bottom-navigation
+        v-model="tab"
+        class="modern-bottom-nav shadow-4"
+        active-color="white"
+        glossy
+        :class="{
+          'bg-light': !$q.dark.isActive,
+          'bg-dark text-white': $q.dark.isActive
+        }"
+      >
+      <div class="row full-width justify-between">
+        <q-btn
+          flat
+          @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}/todo`)">
+          <template #default>
+            <ArrowLeftIcon size="18" class="q-mr-sm" />
+            <span class="text-bold text-capitalize">Back</span>
+          </template>
+        </q-btn>
+        <q-btn
+          flat
+          @click="openConfirmDialog('Save changes?', 'updateTodo')" :disable="!todoTitle || !todoDesc || confirmBtnLoader || !timeline?.from || !timeline?.to">
+          <template #default>
+            <SquarePenIcon size="18" class="q-mr-sm" />
+            <span class="text-bold text-capitalize">Update</span>
+          </template>
+        </q-btn>
+      </div>
+      </q-bottom-navigation>
+  </div>
+
+  <!-- <div class="row full-width q-px-sm q-py-sm justify-between items-start absolute fixed-bottom"
     style="margin-bottom:64px">
     <div class="">
       <q-btn :outline="!$q.dark.isActive" class="round-btn" color="primary" icon="las la-arrow-left"
@@ -87,10 +141,8 @@
       <q-btn @click="openConfirmDialog('Save changes?', 'updateTodo')" rounded color="primary" label="Update"
         class="text-capitalize round-btn" :disable="!todoTitle || !todoDesc || confirmBtnLoader || !timeline?.from || !timeline?.to" icon="las la-edit" />
     </div>
-    <!-- <div class="">
-      <q-btn @click="addTodo()" rounded color="primary" label="Add" class="text-capitalize round-btn"/>
-    </div> -->
-  </div>
+  </div> -->
+
   <q-dialog v-model="confirm" persistent>
     <q-card class="no-shadow">
       <q-card-section class="row items-center">
@@ -179,6 +231,9 @@ export default {
   computed: {
     test: function () {
       return "I'm computed hook"
+    },
+    routeName: function () {
+      return this.$route.name
     }
   },
   beforeCreate () {
@@ -492,6 +547,10 @@ export default {
     padding: 8px 0px!important;
     color: inherit;
     transition: color 0.3s, background-color 0.3s;
+}
+
+:deep(.q-field__control:after) {
+  display: none !important;
 }
 
 </style>

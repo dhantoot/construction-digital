@@ -26,9 +26,15 @@
         'text-primary': !$q.dark.isActive,
         'text-accent': $q.dark.isActive
       }">User Controls</strong>
-      <q-icon size="md" :color="$q.dark.isActive ? 'accent' : 'primary'" name="las la-undo" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/>
+      <!-- <q-icon size="md" :color="$q.dark.isActive ? 'accent' : 'primary'" name="las la-undo" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/> -->
+      <q-icon
+        size="sm"
+        :color="$q.dark.isActive ? 'accent' : 'primary'"
+        @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)">
+        <Undo2Icon/>
+      </q-icon>
     </div>
-    <div class="scroll full-width" style="max-height: 78.5vh;">
+    <div class="full-width">
       <q-list padding class="text-accent full-width">
         <q-item clickable v-ripple class="">
           <q-item-section>
@@ -80,7 +86,19 @@
         </q-item>
         <q-item tag="label" v-ripple>
           <q-item-section side top>
-            <q-checkbox dense keep-color color="positive" v-model="check2" />
+            <q-checkbox
+              dense
+              keep-color
+              color="positive"
+              v-model="check2"
+              >
+              <template #checked-icon>
+                <CheckSquareIcon size="20" />
+              </template>
+              <template #unchecked-icon>
+                <SquareIcon size="20" />
+              </template>
+            </q-checkbox>
           </q-item-section>
           <q-item-section>
             <q-item-label>Sound</q-item-label>
@@ -272,5 +290,8 @@ export default {
     padding: 8px 0px!important;
     color: inherit;
     transition: color 0.3s, background-color 0.3s;
+}
+:deep(.q-field__control:after) {
+  display: none !important;
 }
 </style>

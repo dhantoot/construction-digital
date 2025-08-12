@@ -1,7 +1,7 @@
 <template>
-  <div class="row hide-scrollbar" style="height: 94.5vh;">
+  <div class="row hide-scrollbar" :style="{height: $q.screen.lt.sm ? 'auto' : '94.5vh;'}">
     <div class="row full-width full-height q-pa-sm">
-      <q-card class="full-width round-panel">
+      <q-card class="full-width round-panel no-shadow">
         <q-card-section>
           <HofsteeAlert>
             <template #icon>

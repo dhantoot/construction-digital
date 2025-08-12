@@ -35,7 +35,8 @@ module.exports = configure(function (/* ctx */) {
       'utils',
       'brand-colors',
       'addressbar-color',
-      'apexcharts'
+      'apexcharts',
+      'lucide'
     ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css

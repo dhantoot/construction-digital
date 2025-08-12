@@ -1,7 +1,7 @@
 <template>
   <!-- Admin Login -->
   <div class="row hide-scrollbar items-center justify-center" :style="`height: 100vh; background: #f2f4f7`">
-    <q-card class="q-ma-sm shadow-12" :class="[$q.screen > xs ? 'max-width-px-400' : 'width-px-400']">
+    <q-card flat class="q-ma-sm no-shadow" :class="[$q.screen.gt.xs ? 'width-px-500' : 'width-px-400 bg-transparent']">
       <q-card-section class="">
         <div class="text-h6">Admin Login</div>
         <div class="text-subtitle2 row justify-between">
@@ -9,9 +9,47 @@
         </div>
       </q-card-section>
       <q-card-section class="column gap-10">
-        <q-input :dense="true" filled v-model="username" placeholder="Username" @keydown.enter.prevent="login" style="font-size: 18px;" />
-        <q-input :dense="true" filled v-model="password" placeholder="Password" @keydown.enter.prevent="login" type="password"
-          style="font-size: 20px;" />
+        <!-- <q-input :dense="true" filled v-model="username" placeholder="Username" @keydown.enter.prevent="login" style="font-size: 18px;" />
+        <q-input :dense="true" filled v-model="password" placeholder="Password" @keydown.enter.prevent="login" type="password" style="font-size: 20px;" /> -->
+
+        <q-input
+          outline
+          :dense="true"
+          v-model="username"
+          placeholder="Username"
+          @keydown.enter.prevent="login"
+          color="positive"
+          input-class="text-primary"
+          filled
+          class="full-width"
+        >
+          <template v-slot:prepend>
+            <UserIcon size="16" />
+          </template>
+        </q-input>
+
+        <q-input
+          :type="isPwd ? 'password' : 'text'"
+          :dense="true"
+          outline
+          v-model="password"
+          placeholder="Password"
+          :rules="passwordRules"
+          v-on:keyup.enter="login"
+          color="positive"
+          input-class="text-primary"
+          filled
+          class="full-width"
+        >
+          <template v-slot:prepend>
+            <LockIcon size="16" />
+          </template>
+          <template v-slot:append>
+            <EyeIcon v-if="!isPwd" size="16" @click="isPwd = !isPwd"/>
+            <EyeClosed v-if="isPwd" size="16" @click="isPwd = !isPwd"/>
+          </template>
+        </q-input>
+
       </q-card-section>
       <q-card-section>
         <div class="text-subtitle2 row justify-center">
@@ -19,16 +57,33 @@
         </div>
       </q-card-section>
       <q-card-actions align="center">
-        <q-btn icon="las la-undo" padding="sm xl" flat class="text-capitalize bg-negative round-btn" label="Clear"
-          :disable="loadingSubmit" :style="{
+        <q-btn
+          padding="sm xl"
+          flat
+          class="text-capitalize bg-negative round-btn"
+          :disable="loadingSubmit"
+          :style="{
             'width': '47%'
           }">
+          <template #default>
+            <XIcon class="q-mr-sm"/>
+            <span class="text-capitalize">Clear</span>
+          </template>
         </q-btn>
-        <q-btn icon="las la-check" padding="sm xl" @click="login" color="primary" label="Sign in"
-          class="text-capitalize bg-info round-btn" :loading="loadingSubmit"
-          :disable="loadingSubmit || !username || !password" :style="{
+        <q-btn
+          padding="sm xl"
+          @click="login"
+          color="primary"
+          class="text-capitalize bg-info round-btn"
+          :loading="loadingSubmit"
+          :disable="loadingSubmit || !username || !password"
+          :style="{
             'width': '47%'
           }">
+          <template #default>
+            <CheckIcon class="q-mr-sm"/>
+            <span class="text-capitalize">Sign In</span>
+          </template>
           <template v-slot:loading>
             <q-spinner-ios class="on-left" />
             <small>Logging in..</small>
@@ -70,7 +125,8 @@ export default {
       },
       username: ref('tagailo.danvincent@gmail.com'),
       password: ref('Admin@123'),
-      loadingSubmit: ref(false)
+      loadingSubmit: ref(false),
+      isPwd: ref(true)
     }
   },
   props: {
@@ -177,3 +233,8 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+:deep(.q-field__control:after) {
+  display: none !important;
+}
+</style>

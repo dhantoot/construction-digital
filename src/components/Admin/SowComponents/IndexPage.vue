@@ -1,5 +1,8 @@
 <template>
-  <div class="row hide-scrollbar" style="height: 94.5vh;">
+  <div class="row hide-scrollbar full-height"
+    :style="{
+      height: $q.screen.lt.sm ? 'auto' : ''
+    }">
     <div class="row full-width full-height q-pa-sm">
       <router-view />
     </div>

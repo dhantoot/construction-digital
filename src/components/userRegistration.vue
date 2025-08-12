@@ -65,7 +65,6 @@
         <q-input
           :dense="true"
           filled
-          clearable
           class="col-12"
           ref="regemailRef"
           outline
@@ -75,14 +74,13 @@
           :input-class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
         >
           <template v-slot:prepend>
-            <q-icon name="email" :color="[$q.dark.isActive ? 'text-accent' : 'text-primary']"/>
+            <MailIcon size="16"/>
           </template>
         </q-input>
         <q-input
           :autocomplete="false"
           :type="isPwd1 ? 'password' : 'text'"
           :dense="true"
-          clearable
           filled
           ref="regpasswordRef"
           outline
@@ -92,15 +90,11 @@
           :input-class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
         >
           <template v-slot:prepend>
-            <q-icon name="lock" :color="[$q.dark.isActive ? 'text-accent' : 'text-primary']"/>
+            <LockIcon size="16"/>
           </template>
           <template v-slot:append>
-            <q-icon
-              :name="isPwd1 ? 'visibility_off' : 'visibility'"
-              class="cursor-pointer"
-              @click="isPwd1 = !isPwd1"
-              :color="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
-           />
+           <EyeIcon v-if="!isPwd1" size="16" @click="isPwd1 = !isPwd1"/>
+           <EyeClosed v-if="isPwd1" size="16" @click="isPwd1 = !isPwd1"/>
           </template>
         </q-input>
         <q-input
@@ -117,15 +111,11 @@
           :input-class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
         >
           <template v-slot:prepend>
-            <q-icon name="lock" :color="[$q.dark.isActive ? 'accent' : 'primary']"/>
+            <LockKeyholeIcon size="16" />
           </template>
           <template v-slot:append>
-            <q-icon
-              :name="isPwd2 ? 'visibility_off' : 'visibility'"
-              class="cursor-pointer"
-              @click="isPwd2 = !isPwd2"
-              :color="[$q.dark.isActive ? 'accent' : 'primary']"
-           />
+           <EyeIcon v-if="!isPwd2" size="16" @click="isPwd2 = !isPwd2"/>
+           <EyeClosed v-if="isPwd2" size="16" @click="isPwd2 = !isPwd2"/>
           </template>
         </q-input>
         <q-btn
@@ -358,3 +348,8 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+:deep(.q-field__control:after) {
+  display: none !important;
+}
+</style>

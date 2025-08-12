@@ -15,16 +15,18 @@
         }"/> -->
       </template>
       <template v-slot:append>
-        <q-icon v-if="!text" name="las la-search" :class="{
-          'text-accent': text === '',
-          'text-primary': text !== ''
-        }"/>
+        <q-icon v-if="!text" :class="{
+            'text-accent': text === '',
+            'text-primary': text !== ''
+          }">
+            <SearchIcon/>
+        </q-icon>
         <q-icon v-if="text" name="clear" class="cursor-pointer text-accent" @click="text = ''"/>
       </template>
     </q-input>
     </div>
     <div class="">
-      <q-list separator class="scroll bg-transparent" style="height: 100vh;">
+      <q-list separator class="bg-transparent" style="height: 100vh;">
         <q-item clickable v-ripple @click='gotoDetail(item)' v-for="item in projects.filter(e => e.title.toLowerCase().includes(text.toLowerCase()))" :key="item">
           <q-item-section thumbnail>
             <img class="q-ml-sm rounded-borders" :src="`${item.avatarFullPath}`">
@@ -178,7 +180,7 @@ export default {
 
         // If admin role, then return all data
         if (role === 'admin') {
-          this.projects = data_
+          this.projects = [...data_, ...data_, ...data_, ...data_]
           this.getProjectsLoader = false
           return
         }

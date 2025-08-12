@@ -41,7 +41,6 @@
         <q-input
           outline
           :dense="true"
-          clearable
           ref="emailRef"
           v-model="email"
           placeholder="Email"
@@ -50,17 +49,15 @@
           color="positive"
           input-class="text-primary"
           filled
-          style="font-size: 15px;"
           class="full-width"
         >
           <template v-slot:prepend>
-            <q-icon name="perm_identity" color="secondary"/>
+            <UserIcon size="16" />
           </template>
         </q-input>
         <q-input
           :type="isPwd ? 'password' : 'text'"
           :dense="true"
-          clearable
           ref="passwordRef"
           outline
           v-model="password"
@@ -70,19 +67,14 @@
           color="positive"
           input-class="text-primary"
           filled
-          style="font-size: 20px;"
           class="full-width"
         >
           <template v-slot:prepend>
-            <q-icon name="lock" color="secondary"/>
+            <LockIcon size="16" />
           </template>
           <template v-slot:append>
-            <q-icon
-              :name="isPwd ? 'visibility_off' : 'visibility'"
-              class="cursor-pointer"
-              @click="isPwd = !isPwd"
-              color="secondary"
-          />
+          <EyeIcon v-if="!isPwd" size="16" @click="isPwd = !isPwd"/>
+          <EyeClosed v-if="isPwd" size="16" @click="isPwd = !isPwd"/>
           </template>
         </q-input>
       </div>
@@ -316,3 +308,8 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+:deep(.q-field__control:after) {
+  display: none !important;
+}
+</style>

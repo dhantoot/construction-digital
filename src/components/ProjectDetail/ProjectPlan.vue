@@ -6,7 +6,13 @@
           'text-accent': $q.dark.isActive,
           'text-primary': !$q.dark.isActive
         }">Planning</strong>
-        <q-icon size="md" :color="$q.dark.isActive ? 'accent' : 'primary'" name="las la-undo" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/>
+        <!-- <q-icon size="md" :color="$q.dark.isActive ? 'accent' : 'primary'" name="las la-undo" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/> -->
+        <q-icon
+          size="sm"
+          :color="$q.dark.isActive ? 'accent' : 'primary'"
+          @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)">
+          <Undo2Icon/>
+        </q-icon>
       </div>
       <div class="cal" :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']">
           <FullCalendar
@@ -350,5 +356,8 @@ export default {
   overflow-wrap: break-word;
   word-break: break-word;
   border-radius: 5px;
+}
+:deep(.q-field__control:after) {
+  display: none !important;
 }
 </style>

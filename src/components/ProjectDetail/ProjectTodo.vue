@@ -5,7 +5,12 @@
         'text-accent': $q.dark.isActive,
         'text-primary': !$q.dark.isActive
       }">Todo List ({{ todoList.length }})</strong>
-      <q-icon size="md" :color="$q.dark.isActive ? 'accent' : 'primary'" name="las la-undo" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/>
+      <q-icon
+        size="sm"
+        :color="$q.dark.isActive ? 'accent' : 'primary'"
+        @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)">
+        <Undo2Icon/>
+      </q-icon>
     </div>
     <div class="row justify-between">
       <q-input
@@ -20,15 +25,17 @@
           <!-- <q-icon color="accent" name="las la-arrow-left" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/> -->
         </template>
         <template v-slot:append>
-          <q-icon v-if="!text" name="las la-search" :class="{
+          <q-icon v-if="!text" :class="{
             'text-accent': text === '',
             'text-primary': text !== ''
-          }"/>
+          }">
+            <SearchIcon/>
+          </q-icon>
           <q-icon v-if="text" name="clear" class="cursor-pointer text-accent" @click="text = ''"/>
         </template>
       </q-input>
     </div>
-    <q-list class="scroll" style="max-height: 74vh">
+    <q-list class="scroll">
       <div class="column gap-5" v-if="loadingtodoList">
         <q-skeleton type="rect" :style="{
           height: '35px'
@@ -88,13 +95,15 @@
             </q-toggle>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <q-btn
               class=""
-              size="15px"
               dense
               flat
-              icon="las la-edit"
               :class="item.timeline ? 'text-positive' : ($q.dark.isActive ? 'text-accent' : 'text-primary')"
               @click="viewTodoDetail(item)"
-            />
+            >
+              <template #default>
+                <SquarePenIcon size="24" class="q-mr-sm" />
+              </template>
+            </q-btn>
           </div>
         </q-item-section>
       </q-item>

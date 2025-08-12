@@ -1,5 +1,5 @@
 <template>
-  <div class="row hide-scrollbar" :style="`height: ${$q.screen.lt.md ? 'auto': '94.5vh'};`">
+  <div class="row hide-scrollbar" :style="{height: $q.screen.lt.sm ? 'auto' : '94.5vh;'}">
     <div class="row full-width full-height">
       <!-- Dashboard -->
         <div class="row full-height full-width">
@@ -175,9 +175,11 @@
               </div>
             </div>
           </div>
-          <div class="col-3 full-height py-10"
+          <div
+            class="col-3 full-height py-10"
             :style="{
               'border-left': $q.dark.isActive ? '.1px solid #3a3a3a' : '.1px solid rgb(198 198 198 / 50%)',
+              'height': '94.5vh !important'
             }">
             <div class="column full-height justify-between">
               <div class="height-33 pl-10" :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']">

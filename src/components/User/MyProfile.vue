@@ -11,7 +11,8 @@
         <div class="row full-width" :class="[$q.dark.isActive ? 'accent' : 'primary']">First Name</div>
         <q-input class="full-width" :input-class="[$q.dark.isActive ? 'accent' : 'primary']" v-model="obj.firstName" clearable :dense="true" filled>
           <template v-slot:prepend>
-            <q-icon name="las la-user" :class="[$q.dark.isActive ? 'accent' : 'primary']"/>
+            <!-- <q-icon name="las la-user" :class="[$q.dark.isActive ? 'accent' : 'primary']"/> -->
+            <UserIcon/>
           </template>
 
           <!-- <template v-slot:label>
@@ -24,7 +25,8 @@
         <div class="row full-width" :class="[$q.dark.isActive ? 'accent' : 'primary']">Last Name</div>
         <q-input class="full-width" :input-class="[$q.dark.isActive ? 'accent' : 'primary']"  v-model="obj.lastName" clearable :dense="true" filled>
           <template v-slot:prepend>
-            <q-icon name="las la-user" :class="[$q.dark.isActive ? 'accent' : 'primary']"/>
+            <!-- <q-icon name="las la-user" :class="[$q.dark.isActive ? 'accent' : 'primary']"/> -->
+            <UserIcon/>
           </template>
 
           <!-- <template v-slot:label>
@@ -110,7 +112,7 @@
         </div>
       </div>
     </div>
-    <div class="row full-width q-px-lg q-py-sm justify-between items-start absolute fixed-bottom" style="margin-bottom:70px">
+    <!-- <div class="row full-width q-px-lg q-py-sm justify-between items-start absolute fixed-bottom" style="margin-bottom:70px">
       <div>
         <q-btn label="Back" class="text-capitalize q-ml-none round-btn" color="negative" icon="las la-arrow-left" @click="this.$router.push(`/projects`)"/>
       </div>
@@ -130,7 +132,42 @@
           </template>
         </q-btn>
       </div>
-    </div>
+    </div> -->
+
+    <div v-if="routeName == 'mobile.my-profile'" class="bottom-nav-container">
+      <q-bottom-navigation
+        v-model="tab"
+        class="modern-bottom-nav shadow-4"
+        active-color="white"
+        glossy
+        :class="{
+          'bg-light': !$q.dark.isActive,
+          'bg-primary text-accent': $q.dark.isActive
+        }"
+      >
+      <div class="row full-width justify-between">
+        <q-btn
+          flat
+          @click="this.$router.push(`/projects`)">
+          <template #default>
+            <ArrowLeftIcon size="18" class="q-mr-sm" />
+            <span class="text-bold text-capitalize">Back</span>
+          </template>
+        </q-btn>
+        <q-btn
+          flat
+          :loading="loadingSubmit"
+          :disable="loadingSubmit"
+          @click="uploadFile()">
+          <template #default>
+            <SquarePenIcon size="18" class="q-mr-sm" />
+            <span class="text-bold text-capitalize">Update</span>
+          </template>
+        </q-btn>
+      </div>
+      </q-bottom-navigation>
+  </div>
+
     <q-inner-loading :showing="fetchUserProfileLoader">
       <q-spinner-ios size="50px" color="secondary"/>
     </q-inner-loading>
@@ -272,6 +309,16 @@ export default {
     captureImage () {
       console.log('captureImage..')
     }
+  },
+  computed: {
+    routeName: function () {
+      return this.$route.name
+    }
   }
 }
 </script>
+<style lang="scss" scoped>
+:deep(.q-field__control:after) {
+  display: none !important;
+}
+</style>
