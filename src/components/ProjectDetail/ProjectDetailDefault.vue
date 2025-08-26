@@ -48,7 +48,8 @@
               <q-item-label caption lines="2">
                 <span class="text-weight-bold" :class="{
                   'text-primary': !$q.dark.isActive,
-                  'text-accent': $q.dark.isActive
+                  'text-accent': $q.dark.isActive,
+                  'text-capitalize': !item?.noSignUpYet
                 }">{{ item?.fullName }}</span>
               </q-item-label>
               <q-item-label caption lines="1">
@@ -165,6 +166,7 @@ export default {
           } else {
             item.fullName = item.invitee
             item.avatar = undefined
+            item.noSignUpYet = true
           }
         })
 

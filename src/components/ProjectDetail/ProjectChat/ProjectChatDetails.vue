@@ -295,14 +295,24 @@ export default {
         }
         const recipientUID = this.$route.params.recipientUID
         this.chats = Object.values(data)
-        this.chats = this.chats.filter(e => (e.from === senderUID || e.to === senderUID) && (e.from === recipientUID || e.to === recipientUID))?.sort((a, b) => a._ts - b._ts)
-        this.chats.forEach(e => {
-          const dateLogged = date.formatDate(e._ts, 'MMM DD, YYYY HH:mm A')
-          const dateNow = date.formatDate(Date.now(), 'MMM DD, YYYY HH:mm A')
+        this.chats = this.chats
+          .filter(e => (e.from === senderUID || e.to === senderUID) && (e.from === recipientUID || e.to === recipientUID))
+          ?.sort((a, b) => a._ts - b._ts)
 
-          // const diffDays = date.getDateDiff(dateNow, dateLogged, 'days')
-          const diffHours = date.getDateDiff(dateNow, dateLogged, 'hours')
-          const diffMinutes = date.getDateDiff(dateNow, dateLogged, 'minutes')
+        this.chats.forEach(e => {
+          const tsLogged = e._ts // assuming this is already a timestamp
+          const tsNow = Date.now()
+
+          // Calculate differences
+          const diffDays = date.getDateDiff(tsNow, tsLogged, 'days')
+          const diffHours = date.getDateDiff(tsNow, tsLogged, 'hours')
+          const diffMinutes = date.getDateDiff(tsNow, tsLogged, 'minutes')
+
+          // Format for display
+          const dateLogged = date.formatDate(tsLogged, 'MMM DD, YYYY hh:mm A')
+          const dateNow = date.formatDate(tsNow, 'MMM DD, YYYY hh:mm A')
+
+          console.log({ diffHours, diffMinutes, dateLogged, dateNow })
 
           let stamp = ''
           if (diffHours === 0) {
@@ -321,8 +331,17 @@ export default {
             } else {
               if (diffHours === 1) {
                 stamp = `${diffHours}hr, ${diffMinutes}min`
-              } else {
+              } else if (diffHours > 1 && diffHours < 24) {
                 stamp = `${diffHours}hrs, ${diffMinutes}min`
+              } else {
+                stamp = `${diffDays} day(s) ago`
+                if (diffDays === 1) {
+                  stamp = 'Yesterday'
+                } else if (diffDays === 30 || diffDays === 31) {
+                  stamp = '1 Month ago'
+                } else {
+                  stamp = `${diffDays} days ago`
+                }
               }
             }
           }

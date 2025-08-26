@@ -53,7 +53,7 @@
       </q-card-section>
       <q-card-section>
         <div class="text-subtitle2 row justify-center">
-          <a class="clickable" @click="$router.push('/login')">Swith to mobile</a>
+          <a class="clickable" @click="$router.push('/login')">Switch to mobile</a>
         </div>
       </q-card-section>
       <q-card-actions align="center">

@@ -90,7 +90,7 @@
           style="float: left"
         />
         <div class="text-subtitle2">
-          <a class="clickable text-grey" @click="$router.push('/admin-portal')">Swith to admin</a>
+          <a class="clickable text-grey" @click="$router.push('/admin-portal')">Switch to admin</a>
         </div>
         <q-btn
           @click="register"

@@ -16,7 +16,7 @@
 
   <div v-if="true" class="row justify-between">
     <div class="col">
-      <q-card :flat="$q.dark.isActive" class="m-10">
+      <q-card :flat="$q.dark.isActive" class="m-10" :class="$q.dark.isActive ? 'bg-grey-10' : ''">
         <q-card-section>
           <div class="column">
             <div class="">
@@ -44,7 +44,7 @@
       </q-card>
     </div>
     <div class="col">
-      <q-card :flat="$q.dark.isActive" class="m-10">
+      <q-card :flat="$q.dark.isActive" class="m-10" :class="$q.dark.isActive ? 'bg-grey-10' : ''">
         <q-card-section>
           <div class="column">
             <div class="">
@@ -73,7 +73,7 @@
 
   <div v-if="true" class="row justify-between">
     <div class="col">
-      <q-card :flat="$q.dark.isActive" class="m-10">
+      <q-card :flat="$q.dark.isActive" class="m-10" :class="$q.dark.isActive ? 'bg-grey-10' : ''">
         <q-card-section>
           <div class="column">
             <div class="">
@@ -99,7 +99,7 @@
       </q-card>
     </div>
     <div class="col">
-      <q-card :flat="$q.dark.isActive" class="m-10">
+      <q-card :flat="$q.dark.isActive" class="m-10" :class="$q.dark.isActive ? 'bg-grey-10' : ''">
         <q-card-section>
           <div class="column">
             <div class="">
@@ -130,7 +130,7 @@
   <div>
     <div v-for="item of projectListMapped.filter(e => e.groupedData)" :key="item" class="row">
       <div class="full-width">
-        <q-card class="m-10" :flat="$q.dark.isActive">
+        <q-card class="m-10" :class="$q.dark.isActive ? 'bg-grey-10' : ''" :flat="$q.dark.isActive">
           <q-card-section>{{ item.title }}</q-card-section>
           <q-card-section class="p-0">
             <apexchart
