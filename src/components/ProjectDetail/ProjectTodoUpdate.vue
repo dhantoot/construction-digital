@@ -5,79 +5,64 @@
         'text-accent': $q.dark.isActive,
         'text-primary': !$q.dark.isActive
       }">Update Todo</strong>
-      <q-icon
-        size="sm"
-        :color="$q.dark.isActive ? 'accent' : 'primary'"
+      <q-icon size="sm" :color="$q.dark.isActive ? 'accent' : 'primary'"
         @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}/todo`)">
-        <Undo2Icon/>
+        <Undo2Icon />
       </q-icon>
       <!-- <q-icon size="md" :color="$q.dark.isActive ? 'accent' : 'primary'" name="las la-undo"
         @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}/todo`)" /> -->
     </div>
-    <q-input
-      class="full-width"
-      :dense="true"
-      filled
-      v-model="todoTitle"
-      placeholder="Title"
-      input-class="text-accent"
-    />
-    <q-input
-      class="full-width"
-      :dense="true"
-      placeholder="Description..."
-      v-model="todoDesc"
-      filled
-      autogrow
-      input-class="text-accent"
-    />
+    <q-input class="full-width" :dense="true" filled v-model="todoTitle" placeholder="Title"
+      :input-class="[$q.dark.isActive ? 'text-accent' : 'text-primary']" />
+    <q-input class="full-width" :dense="true" placeholder="Description..." v-model="todoDesc" filled autogrow
+      :input-class="[$q.dark.isActive ? 'text-accent' : 'text-primary']" />
     <div>
-      <q-date v-model="timeline" range class="full-width no-shadow" :text-color="$q.dark.isActive ? 'accent' : 'primary'" :flat="$q.dark.isActive"/>
+      <q-date v-model="timeline" range class="full-width" :text-color="$q.dark.isActive ? 'accent' : 'primary'"
+        :flat="$q.dark.isActive" />
       <div class="column q-mt-sm">
         <div class="caption" :class="{
           'text-accent': $q.dark.isActive,
           'text-primary': !$q.dark.isActive
         }"> Assign Members <small class="text-smallest"><i>(scroll to view more)</i></small> </div>
         <div class="q-mt-sm">
-        <q-list class="q-pl-none">
-          <q-item :clickable="false" tag="label" v-ripple class="q-pl-none" v-for="member in invitee" :key="member">
+          <q-list class="q-pl-none">
+            <q-item :clickable="false" tag="label" v-ripple class="q-pl-none" v-for="member in invitee" :key="member">
 
-            <q-item-section avatar>
-              <q-checkbox
-                v-model="member.isSelected"
-                keep-color
-                :val="member.id"
-                :color="member.id ? ($q.dark.isActive ? 'accent' : 'primary') : ($q.dark.isActive ? 'grey-10' : 'grey')"
-                :disable="!member.id" />
-            </q-item-section>
+              <q-item-section avatar>
+                <q-checkbox v-model="member.isSelected" keep-color :val="member.id"
+                  :color="member.id ? ($q.dark.isActive ? 'accent' : 'primary') : ($q.dark.isActive ? 'grey-10' : 'grey')"
+                  :disable="!member.id" />
+              </q-item-section>
 
-            <q-item-section>
-              <q-item-label
-                :class="member.id ? ($q.dark.isActive ? 'text-accent' : 'text-primary') : ($q.dark.isActive ? 'text-grey' : 'text-grey')">{{ member?.fullname || member?.email}}
-              </q-item-label>
-              <q-item-label :class="member.id ? ($q.dark.isActive ? 'text-accent' : 'text-primary') : ($q.dark.isActive ? 'text-grey' : 'text-grey')"><small>{{ member.userTitle }}</small></q-item-label>
-            </q-item-section>
+              <q-item-section>
+                <q-item-label
+                  :class="member.id ? ($q.dark.isActive ? 'text-accent' : 'text-primary') : ($q.dark.isActive ? 'text-grey' : 'text-grey')">{{
+                  member?.fullname || member?.email}}
+                </q-item-label>
+                <q-item-label
+                  :class="member.id ? ($q.dark.isActive ? 'text-accent' : 'text-primary') : ($q.dark.isActive ? 'text-grey' : 'text-grey')"><small>{{
+                    member.userTitle }}</small></q-item-label>
+              </q-item-section>
 
-            <q-item-section avatar>
-              <q-avatar rounded>
-                <img :src="`${member?.avatar || 'default-user.jpeg'}`" />
-              </q-avatar>
-            </q-item-section>
+              <q-item-section avatar>
+                <q-avatar rounded>
+                  <img :src="`${member?.avatar || 'default-user.jpeg'}`" />
+                </q-avatar>
+              </q-item-section>
 
-          </q-item>
-        </q-list>
-        <q-inner-loading :showing="fetchInviteeLoader" label="Please wait..." label-class="text-teal"
-          label-style="font-size: 1.1em" class="q-mx-md">
-          <q-spinner-ios size="50px" color="secondary" />
-        </q-inner-loading>
-      </div>
+            </q-item>
+          </q-list>
+          <q-inner-loading :showing="fetchInviteeLoader" label="Please wait..." label-class="text-teal"
+            label-style="font-size: 1.1em" class="q-mx-md">
+            <q-spinner-ios size="50px" color="secondary" />
+          </q-inner-loading>
+        </div>
       </div>
       <q-uploader :factory="factoryFn" :uploadProgressLabel="uploadProgressLabel" label="Upload Files"
         accept=".jpg, image/*" class="full-width q-mb-xs" multiple auto-upload flat>
         <template v-slot:list="">
           <div class="" v-for="item of todoFiles" :key="item">
-            <q-img
-              :src="item || 'broken-img.png'"
+            <q-img :src="item || 'broken-img.png'"
               style="max-height: 200px;border-bottom-right-radius: 4px; border-bottom-left-radius: 4px;"
               class="full-width">
               <template v-slot:error>
@@ -85,7 +70,7 @@
                   No photo available
                 </div>
               </template>
-          </q-img>
+            </q-img>
           </div>
           <!-- <q-list dense>
             <q-item dense v-for="item of todoFiles" :key="item">
@@ -100,35 +85,26 @@
   </div>
 
   <div v-if="routeName == 'project.details.todo.update'" class="bottom-nav-container">
-      <q-bottom-navigation
-        v-model="tab"
-        class="modern-bottom-nav shadow-4"
-        active-color="white"
-        glossy
-        :class="{
+    <q-bottom-navigation v-model="tab" class="modern-bottom-nav shadow-4" active-color="white" glossy :class="{
           'bg-light': !$q.dark.isActive,
           'bg-dark text-white': $q.dark.isActive
-        }"
-      >
+        }">
       <div class="row full-width justify-between">
-        <q-btn
-          flat
-          @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}/todo`)">
+        <q-btn flat @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}/todo`)">
           <template #default>
             <ArrowLeftIcon size="18" class="q-mr-sm" />
             <span class="text-bold text-capitalize">Back</span>
           </template>
         </q-btn>
-        <q-btn
-          flat
-          @click="openConfirmDialog('Save changes?', 'updateTodo')" :disable="!todoTitle || !todoDesc || confirmBtnLoader || !timeline?.from || !timeline?.to">
+        <q-btn flat @click="openConfirmDialog('Save changes?', 'updateTodo')"
+          :disable="!todoTitle || !todoDesc || confirmBtnLoader || !timeline?.from || !timeline?.to">
           <template #default>
             <SquarePenIcon size="18" class="q-mr-sm" />
             <span class="text-bold text-capitalize">Update</span>
           </template>
         </q-btn>
       </div>
-      </q-bottom-navigation>
+    </q-bottom-navigation>
   </div>
 
   <!-- <div class="row full-width q-px-sm q-py-sm justify-between items-start absolute fixed-bottom"
@@ -150,15 +126,38 @@
         <span class="q-ml-sm text-h6">{{ confirmMsg }}</span>
       </q-card-section>
 
-      <q-card-actions align="right" class="q-pa-md">
-        <q-btn padding="sm xl" icon="las la-times" class="round-btn text-capitalize" label="Close" color="negative"
-          v-close-popup />
-        <q-btn padding="sm xl" icon="las la-check" class="round-btn text-capitalize" label="Confirm" color="primary"
-          @click="callConfirmFn()" :loading="confirmBtnLoader" :disable="confirmBtnLoader">
+      <q-card-actions align="center" class="q-pa-md">
+        <q-btn
+          padding="sm lg"
+          class="round-btn text-capitalize"
+          color="negative"
+          v-close-popup
+        >
+          <div class="row full-width gap-5 items-center">
+            <XIcon size="20" />
+            Cancel
+          </div>
+
+        </q-btn>
+
+        <q-btn
+          padding="sm lg"
+          class="round-btn text-capitalize"
+          color="primary"
+          @click="callConfirmFn()"
+          :loading="confirmBtnLoader"
+          :disable="confirmBtnLoader"
+        >
           <template v-slot:loading>
             <q-spinner-ios />
           </template>
+
+          <div class="row full-width gap-5 items-center">
+            <CheckIcon size="20" />
+            Confirm
+          </div>
         </q-btn>
+
       </q-card-actions>
     </q-card>
   </q-dialog>
