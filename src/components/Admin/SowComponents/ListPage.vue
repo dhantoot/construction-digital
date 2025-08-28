@@ -1,7 +1,11 @@
 <template>
   <q-card class="round-panel full-height full-width no-shadow px-10 pt-10">
-    <div class="row full-width" :class="[$q.screen.lt.sm ? 'justify-between' : 'justify-left gap-10 mb-10']">
-
+    <div
+      class="row full-width"
+      :class="[
+        $q.screen.lt.sm ? 'justify-between' : 'justify-left gap-10 mb-10'
+      ]"
+    >
       <div class="row gap-10">
         <q-btn
           rounded
@@ -11,8 +15,8 @@
           label="View"
           icon="las la-eye"
           no-caps
-          @click="gotoTemplateDetail(selected[0].id)">
-        </q-btn>
+          @click="gotoTemplateDetail(selected[0].id)"
+        ></q-btn>
 
         <q-btn
           rounded
@@ -23,32 +27,30 @@
           icon="las la-trash-alt"
           no-caps
           @click="
-              openConfirmDialog(
-                'Would you like to delete this account?',
-                'deleteAccount'
-              )
-          ">
-        </q-btn>
-
+            openConfirmDialog(
+              'Would you like to delete this account?',
+              'deleteAccount'
+            )
+          "
+        ></q-btn>
       </div>
 
       <q-btn
         rounded
         color="info"
         size="sm"
-        @click="createTemplate"
         label="New"
         no-caps
-        icon="las la-plus">
-      </q-btn>
-
+        icon="las la-plus"
+        @click="createTemplate"
+      ></q-btn>
     </div>
     <q-table
+      v-model:selected="selected"
       no-data-label="I didn't find anything for you"
       class="q-mb-sm"
       row-key="id"
       selection="single"
-      v-model:selected="selected"
       wrap-cells
       :grid="$q.screen.lt.sm"
       :selection-options="selectionOptions"
@@ -57,50 +59,65 @@
       :loading="rowLoading"
       :visible-columns="visibleColumns"
       :rows-per-page-options="[10]"
-      :hide-pagination="$q.screen.lt.sm">
-        <template #body="props">
-          <q-tr :props="props" :selected="props.selected">
-            <q-td auto-width>
-              <q-checkbox v-model="props.selected" @update:model-value="setSelected" />
-            </q-td>
-            <q-td key="name" :props="props">
-              {{ props.row.name }}
-            </q-td>
-            <q-td key="description" :props="props">
-              {{ props.row.description }}
-            </q-td>
-            <q-td v-formatdate key="dateCreated" :props="props">
-              {{ props.row.dateCreated }}
-            </q-td>
-          </q-tr>
-        </template>
+      :hide-pagination="$q.screen.lt.sm"
+    >
+      <template #body="props">
+        <q-tr :props="props" :selected="props.selected">
+          <q-td auto-width>
+            <q-checkbox
+              v-model="props.selected"
+              @update:model-value="setSelected"
+            />
+          </q-td>
+          <q-td key="name" :props="props">
+            {{ props.row.name }}
+          </q-td>
+          <q-td key="description" :props="props">
+            {{ props.row.description }}
+          </q-td>
+          <q-td key="dateCreated" v-formatdate :props="props">
+            {{ props.row.dateCreated }}
+          </q-td>
+        </q-tr>
+      </template>
 
-        <template #item="props">
-          <div class="column full-width my-5">
-            <HofsteeCard class="full-width full-height" :background-color="bgColor">
-              <template #body>
-                <q-item class="row items-start">
-                  <q-item-section side>
-                    <q-checkbox dense v-model="props.selected" @update:model-value="setSelected" />
-                  </q-item-section>
-                  <q-item-section>
-                    <q-item-label><strong>{{ props.row.name }}</strong></q-item-label>
-                    <q-item-label caption>{{ props.row.description }}</q-item-label>
-                    <q-item-label caption>
-                      <span class="text-grey">Created:</span>
-                      {{ props.row.dateCreated }}
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-              </template>
-              <template #body-loader>
-                <q-inner-loading :showing="loading1">
-                  <q-spinner-ios size="50px" color="primary" />
-                </q-inner-loading>
-              </template>
-            </HofsteeCard>
-          </div>
-        </template>
+      <template #item="props">
+        <div class="column full-width my-5">
+          <HofsteeCard
+            class="full-width full-height"
+            :background-color="bgColor"
+          >
+            <template #body>
+              <q-item class="row items-start">
+                <q-item-section side>
+                  <q-checkbox
+                    v-model="props.selected"
+                    dense
+                    @update:model-value="setSelected"
+                  />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>
+                    <strong>{{ props.row.name }}</strong>
+                  </q-item-label>
+                  <q-item-label caption>
+                    {{ props.row.description }}
+                  </q-item-label>
+                  <q-item-label caption>
+                    <span class="text-grey">Created:</span>
+                    {{ props.row.dateCreated }}
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+            </template>
+            <template #body-loader>
+              <q-inner-loading :showing="loading1">
+                <q-spinner-ios size="50px" color="primary" />
+              </q-inner-loading>
+            </template>
+          </HofsteeCard>
+        </div>
+      </template>
     </q-table>
     <q-inner-loading :showing="rowLoading">
       <q-spinner-ios size="50px" color="secondary" />
@@ -109,16 +126,39 @@
   <q-dialog v-model="confirm" persistent>
     <q-card class="no-shadow">
       <q-card-section class="row items-center">
-        <q-avatar size="sm" icon="las la-exclamation" color="negative" text-color="white" />
+        <q-avatar
+          size="sm"
+          icon="las la-exclamation"
+          color="negative"
+          text-color="white"
+        />
         <span class="q-ml-sm text-h6">{{ confirmMsg }}</span>
       </q-card-section>
 
       <q-card-actions align="right" class="q-pa-md">
-        <q-btn rounded size="sm" padding="sm xl" icon="las la-times" class="text-capitalize" label="Close" color="negative"
-          v-close-popup />
-        <q-btn rounded size="sm" padding="sm xl" icon="las la-check" class="text-capitalize" label="Confirm" color="primary"
-          @click="callConfirmFn()" :loading="actionAccountLoader" :disable="actionAccountLoader">
-          <template v-slot:loading>
+        <q-btn
+          v-close-popup
+          rounded
+          size="sm"
+          padding="sm xl"
+          icon="las la-times"
+          class="text-capitalize"
+          label="Close"
+          color="negative"
+        />
+        <q-btn
+          rounded
+          size="sm"
+          padding="sm xl"
+          icon="las la-check"
+          class="text-capitalize"
+          label="Confirm"
+          color="primary"
+          :loading="actionAccountLoader"
+          :disable="actionAccountLoader"
+          @click="callConfirmFn()"
+        >
+          <template #loading>
             <q-spinner-ios />
           </template>
         </q-btn>
@@ -139,15 +179,16 @@ import HofsteeCard from '../../Common/Card/HofsteeCard.vue'
 // Alternatively, if using UMD, load animate.css from CDN.
 export default {
   title: 'SowTemplate',
-  emits: [],
   components: {
     HofsteeCard
   },
+  directives: { ellipsis, formatdate },
   props: {
     title: String,
     likes: Number
   },
-  setup () {
+  emits: [],
+  setup() {
     const visible = ref(false)
     const question = ref('')
     const rows = ref([])
@@ -215,13 +256,12 @@ export default {
       searchKey: ref(''),
       visible,
       question,
-      initFunction () {
+      initFunction() {
         // access setup variables here w/o using 'this'
         // console.log('initFunction called', visible.value)
       }
     }
   },
-  directives: { ellipsis, formatdate },
   computed: {
     test: function () {
       return "I'm computed hook"
@@ -230,16 +270,16 @@ export default {
       return this.$q.dark.isActive ? 'rgba(255, 255, 255, 0.1)' : '#f0f4f7'
     }
   },
-  beforeCreate () {
+  beforeCreate() {
     // console.log('beforeCreate')
   },
-  created () {
+  created() {
     // console.log('created')
   },
-  async beforeMount () {
+  async beforeMount() {
     // console.log('beforeMount')
   },
-  async mounted () {
+  async mounted() {
     // this.$emit('showHeader', true, [])
     await this.fetchUsers()
     await this.getAllTemplate()
@@ -249,31 +289,31 @@ export default {
       this.uid = this.authUser.uid
     }
   },
-  beforeUpdate () {
+  beforeUpdate() {
     // console.log('beforeUpdate')
   },
-  updated () {
+  updated() {
     // console.log('updated')
   },
-  beforeUnmount () {
+  beforeUnmount() {
     // console.log('beforeUnmount')
   },
-  unmounted () {
+  unmounted() {
     // console.log('unmounted')
   },
   methods: {
     // -- Confirm Dialog Start --
-    openConfirmDialog (confirmMsg, confirmCallbackFn) {
+    openConfirmDialog(confirmMsg, confirmCallbackFn) {
       this.confirmMsg = confirmMsg
       this.confirmCallbackFn = confirmCallbackFn
       this.confirm = true
     },
-    callConfirmFn () {
+    callConfirmFn() {
       const fn = this.confirmCallbackFn
       this[fn]()
     },
     // -- Confirm Dialog End --
-    async updateAccountStatus () {
+    async updateAccountStatus() {
       this.actionAccountLoader = true
       console.log('updating account status..')
       const uid = this.selected[0].uid
@@ -306,7 +346,7 @@ export default {
           this.confirm = false
         })
     },
-    async deleteAccount () {
+    async deleteAccount() {
       console.log('deleting account..')
       this.actionAccountLoader = true
       setTimeout(() => {
@@ -322,18 +362,18 @@ export default {
         this.confirm = false
       }, 3000)
     },
-    setSelected (value, evt) {
+    setSelected(value, evt) {
       console.log(value, this.selected[0])
       this.updateMode = value
     },
-    showTextLoading (loadingModel) {
+    showTextLoading(loadingModel) {
       const ms = Math.floor(Math.random() * (3000 - 500 + 100) + 100)
       this[loadingModel] = true
       setTimeout(() => {
         this[loadingModel] = false
       }, ms)
     },
-    async search () {
+    async search() {
       const type = 'address'
       const input = this.searchKey
       const resp = await this.$findPlace(type, input)
@@ -346,10 +386,10 @@ export default {
         classes: 'notify-custom-css'
       })
     },
-    async fetchUsers () {
+    async fetchUsers() {
       this.rowLoading = true
       const users = await this.$fbref(this.$fbdb, 'users')
-      this.$fbonValue(users, (snapshot) => {
+      this.$fbonValue(users, snapshot => {
         const data = snapshot.val()
         if (this.$isFalsyString(data)) {
           this.rows = []
@@ -359,15 +399,15 @@ export default {
         this.rowLoading = false
       })
     },
-    getStatusColor (rowVal) {
+    getStatusColor(rowVal) {
       if (rowVal) return 'info'
       else return 'negative'
     },
-    getStatusIcon (rowVal) {
+    getStatusIcon(rowVal) {
       if (rowVal) return 'las la-check'
       else return 'las la-times'
     },
-    async addDefaultTemplate () {
+    async addDefaultTemplate() {
       const timeStamp = Date.now()
       const payload = {
         createdBy: this.uid,
@@ -392,7 +432,7 @@ export default {
           })
           await this.populateSOW(payload.id)
         })
-        .catch(async (err) => {
+        .catch(async err => {
           console.log(err)
           this.$q.notify({
             icon: 'las la-exclamation-circle',
@@ -404,7 +444,7 @@ export default {
           // this.loadingSubmit = false
         })
     },
-    async populateSOW (templateId) {
+    async populateSOW(templateId) {
       const sow = [
         {
           sectionGroup: 'A',
@@ -724,7 +764,7 @@ export default {
             classes: 'notify-custom-css'
           })
         })
-        .catch(async (err) => {
+        .catch(async err => {
           console.log(err)
           this.$q.notify({
             icon: 'las la-exclamation-circle',
@@ -737,11 +777,11 @@ export default {
           console.log('hello world')
         })
     },
-    async updateTemplate () {},
-    async getAllTemplate () {
+    async updateTemplate() {},
+    async getAllTemplate() {
       this.sowTemplateLoader = true
       const sowTemplates = this.$fbref(this.$fbdb, 'sowTemplates')
-      this.$fbonValue(sowTemplates, (snapshot) => {
+      this.$fbonValue(sowTemplates, snapshot => {
         const data = snapshot.val()
         if (this.$isFalsyString(data)) {
           this.rows = []
@@ -749,7 +789,7 @@ export default {
         }
         const data_ = Object.values(data)
         this.rows = data_
-        this.rows.forEach((item) => {
+        this.rows.forEach(item => {
           item.dateCreated = date.formatDate(
             item.dateCreated,
             'MMM DD, YYYY HH:mm A'
@@ -759,10 +799,10 @@ export default {
         this.sowTemplateLoader = false
       })
     },
-    async createTemplate () {
+    async createTemplate() {
       this.$router.push('/manage-sow/create')
     },
-    async gotoTemplateDetail (templateId) {
+    async gotoTemplateDetail(templateId) {
       console.log('templateId', templateId)
       console.log('this.$route.url', this.$route.url)
       this.$router.push({ path: `/manage-sow/${templateId}/detail` })
@@ -775,7 +815,7 @@ export default {
   min-height: 100%;
 }
 :deep(.q-separator--horizontal) {
-    display: block;
-    height: .1px;
+  display: block;
+  height: 0.1px;
 }
 </style>

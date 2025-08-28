@@ -1,6 +1,12 @@
 <template>
-  <div class="row full-width full-height" :class="[$q.screen.lt.sm ? 'scroll' : '']">
-    <q-card class="no-shadow round-panel full-width px-10" :class="[$q.screen.lt.sm ? 'pb-60' : 'full-height']">
+  <div
+    class="row full-width full-height"
+    :class="[$q.screen.lt.sm ? 'scroll' : '']"
+  >
+    <q-card
+      class="no-shadow round-panel full-width px-10"
+      :class="[$q.screen.lt.sm ? 'pb-60' : 'full-height']"
+    >
       <!-- <div class="bg-orange row full-width py-10 gap-15" :class="[$q.screen.lt.sm ? 'justify-between' : 'justify-between']">
         <q-btn
           size="sm"
@@ -40,9 +46,9 @@
         </div>
       </div> -->
       <q-table
+        v-model:selected="selected"
         title="Templates"
         :style="[$q.screen.lt.sm ? '' : 'height: 94.5vh;']"
-        v-model:selected="selected"
         wrap-cells
         class="q-pb-sm"
         :grid="$q.screen.lt.sm"
@@ -55,11 +61,12 @@
         <template #top>
           <div v-if="false" class="row justify-between full-width q-mb-lg">
             <q-input
-              filled
               v-model="title"
+              filled
               placeholder="Template Name"
               :dense="true"
-              :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''" />
+              :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
+            />
             <q-btn
               dense
               flat
@@ -67,56 +74,66 @@
               padding="sm lg"
               label="Back"
               class="text-capitalize round-btn"
-              @click="$router.push('/manage-sow')">
-              <template v-slot:loading>
+              @click="$router.push('/manage-sow')"
+            >
+              <template #loading>
                 <q-spinner-ios />
               </template>
             </q-btn>
           </div>
 
-          <div v-if="false" class="row justify-between full-width items-center q-mb-xl gap-10">
+          <div
+            v-if="false"
+            class="row justify-between full-width items-center q-mb-xl gap-10"
+          >
             <q-input
+              v-model="section"
               filled
               :dense="true"
-              v-model="section"
               placeholder="Section"
               :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
-              :class="[$q.screen.lt.sm ? 'full-width' : '']"/>
+              :class="[$q.screen.lt.sm ? 'full-width' : '']"
+            />
             <q-input
+              v-model="sowCategory"
               filled
               :dense="true"
-              v-model="sowCategory"
               placeholder="Category"
               :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
-              :class="[$q.screen.lt.sm ? 'full-width' : '']"/>
+              :class="[$q.screen.lt.sm ? 'full-width' : '']"
+            />
             <q-input
+              v-model="sowDescription"
               filled
               :dense="true"
-              v-model="sowDescription"
               placeholder="Description"
               :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
-              :class="[$q.screen.lt.sm ? 'full-width' : '']"/>
+              :class="[$q.screen.lt.sm ? 'full-width' : '']"
+            />
             <q-input
+              v-model="contractPrice"
               filled
               :dense="true"
-              v-model="contractPrice"
               placeholder="Contract Price"
               :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
-              :class="[$q.screen.lt.sm ? 'full-width' : '']"/>
+              :class="[$q.screen.lt.sm ? 'full-width' : '']"
+            />
             <q-input
+              v-model="weight"
               filled
               :dense="true"
-              v-model="weight"
               placeholder="Weigth"
               :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
-              :class="[$q.screen.lt.sm ? 'full-width' : '']"/>
+              :class="[$q.screen.lt.sm ? 'full-width' : '']"
+            />
             <q-input
+              v-model="duration"
               filled
               :dense="true"
-              v-model="duration"
               placeholder="Duration in Days"
               :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
-              :class="[$q.screen.lt.sm ? 'full-width' : '']"/>
+              :class="[$q.screen.lt.sm ? 'full-width' : '']"
+            />
             <q-btn
               icon="las la-plus"
               padding="sm xl"
@@ -124,9 +141,9 @@
               label="Add"
               class="text-capitalize bg-primary round-btn"
               :class="[$q.screen.lt.sm ? 'mt-20 full-width' : '']"
-              @click="addToList"
               :loading="loadingSubmit"
-              :disable="loadingSubmit ||
+              :disable="
+                loadingSubmit ||
                 !title ||
                 !section ||
                 !sowCategory ||
@@ -134,14 +151,19 @@
                 !contractPrice ||
                 !weight ||
                 !duration
-                ">
-              <template v-slot:loading>
+              "
+              @click="addToList"
+            >
+              <template #loading>
                 <q-spinner-ios />
               </template>
             </q-btn>
           </div>
 
-          <div class="row full-width gap-15" :class="[$q.screen.lt.sm ? 'justify-between' : 'justify-between']">
+          <div
+            class="row full-width gap-15"
+            :class="[$q.screen.lt.sm ? 'justify-between' : 'justify-between']"
+          >
             <q-btn
               size="sm"
               flat
@@ -149,8 +171,8 @@
               icon="las la-arrow-left"
               no-caps
               class="round-btn"
-              @click="$router.push('/manage-sow')">
-            </q-btn>
+              @click="$router.push('/manage-sow')"
+            ></q-btn>
             <div class="row gap-10">
               <q-btn
                 size="sm"
@@ -160,21 +182,22 @@
                 color="info"
                 no-caps
                 class="round-btn"
-                @click="openAddTemplateDialog">
-              </q-btn>
+                @click="openAddTemplateDialog"
+              ></q-btn>
               <q-btn
+                v-if="rows.length > 0"
                 size="sm"
                 rounded
-                v-if="rows.length > 0"
                 icon="las la-edit"
                 color="positive"
                 label="Update"
                 class="text-capitalize bg-primary round-btn"
-                @click="updateTemplate"
                 :loading="loadingSubmit"
-                :disable="loadingSubmit || rows.length < 1">
-                <template v-slot:loading>
-                  <q-spinner-ios/>
+                :disable="loadingSubmit || rows.length < 1"
+                @click="updateTemplate"
+              >
+                <template #loading>
+                  <q-spinner-ios />
                 </template>
               </q-btn>
             </div>
@@ -209,14 +232,28 @@
           <q-card class="q-ma-sm full-width no-shadow" :style="style">
             <q-card-section>
               <div class="text-h6">{{ props.row.sowDescription }}</div>
-              <div class="text-subtitle2 text-grey">{{ props.row.sowCategory }}</div>
+              <div class="text-subtitle2 text-grey">
+                {{ props.row.sowCategory }}
+              </div>
             </q-card-section>
 
             <q-card-section>
-              <div><strong>Section:</strong> {{ props.row.section }}</div>
-              <div><strong>Contract Price:</strong> {{ props.row.contractPrice }}</div>
-              <div><strong>Weight:</strong> {{ props.row.weight }}</div>
-              <div><strong>Duration:</strong> {{ props.row.duration }} days</div>
+              <div>
+                <strong>Section:</strong>
+                {{ props.row.section }}
+              </div>
+              <div>
+                <strong>Contract Price:</strong>
+                {{ props.row.contractPrice }}
+              </div>
+              <div>
+                <strong>Weight:</strong>
+                {{ props.row.weight }}
+              </div>
+              <div>
+                <strong>Duration:</strong>
+                {{ props.row.duration }} days
+              </div>
             </q-card-section>
           </q-card>
         </template>
@@ -224,9 +261,7 @@
         <!-- 4. Footer Slot -->
         <template #bottom>
           <div class="row items-center justify-between full-width">
-            <div class="text-subtitle2">
-              Total Rows: {{ rows.length }}
-            </div>
+            <div class="text-subtitle2">Total Rows: {{ rows.length }}</div>
             <q-btn
               v-if="rows.length > 0"
               icon="las la-edit"
@@ -234,10 +269,11 @@
               color="positive"
               label="Update"
               class="text-capitalize bg-primary round-btn"
-              @click="updateTemplate"
               :loading="loadingSubmit"
-              :disable="loadingSubmit || rows.length < 1">
-              <template v-slot:loading>
+              :disable="loadingSubmit || rows.length < 1"
+              @click="updateTemplate"
+            >
+              <template #loading>
                 <q-spinner-ios />
               </template>
             </q-btn>
@@ -252,93 +288,114 @@
   <q-dialog v-model="addTemplateDialog" persistent>
     <q-card class="no-shadow">
       <q-card-section class="row items-center">
-        <q-avatar size="sm" icon="las la-plus" color="negative" text-color="white" />
+        <q-avatar
+          size="sm"
+          icon="las la-plus"
+          color="negative"
+          text-color="white"
+        />
         <span class="q-ml-sm text-h6">Add Task</span>
       </q-card-section>
 
       <q-card-section>
         <div class="row justify-between full-width items-center gap-10">
-            <q-input
-              filled
-              v-model="title"
-              placeholder="Template Name"
-              :dense="true"
-              :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
-              class="full-width"/>
-            <q-input
-              filled
-              :dense="true"
-              v-model="section"
-              placeholder="Section"
-              :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
-              class="full-width"/>
-            <q-input
-              filled
-              :dense="true"
-              v-model="sowCategory"
-              placeholder="Category"
-              :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
-              class="full-width"/>
-            <q-input
-              filled
-              :dense="true"
-              v-model="sowDescription"
-              placeholder="Description"
-              :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
-              class="full-width"/>
-            <q-input
-              filled
-              :dense="true"
-              v-model="contractPrice"
-              placeholder="Contract Price"
-              :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
-              class="full-width"/>
-            <q-input
-              filled
-              :dense="true"
-              v-model="weight"
-              placeholder="Weigth"
-              :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
-              class="full-width"/>
-            <q-input
-              filled
-              :dense="true"
-              v-model="duration"
-              placeholder="Duration in Days"
-              :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
-              class="full-width"/>
-          </div>
+          <q-input
+            v-model="title"
+            filled
+            placeholder="Template Name"
+            :dense="true"
+            :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
+            class="full-width"
+          />
+          <q-input
+            v-model="section"
+            filled
+            :dense="true"
+            placeholder="Section"
+            :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
+            class="full-width"
+          />
+          <q-input
+            v-model="sowCategory"
+            filled
+            :dense="true"
+            placeholder="Category"
+            :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
+            class="full-width"
+          />
+          <q-input
+            v-model="sowDescription"
+            filled
+            :dense="true"
+            placeholder="Description"
+            :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
+            class="full-width"
+          />
+          <q-input
+            v-model="contractPrice"
+            filled
+            :dense="true"
+            placeholder="Contract Price"
+            :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
+            class="full-width"
+          />
+          <q-input
+            v-model="weight"
+            filled
+            :dense="true"
+            placeholder="Weigth"
+            :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
+            class="full-width"
+          />
+          <q-input
+            v-model="duration"
+            filled
+            :dense="true"
+            placeholder="Duration in Days"
+            :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
+            class="full-width"
+          />
+        </div>
       </q-card-section>
 
-      <q-card-actions class="row q-pa-md full-width" :class="[$q.screen.lt.sm ? 'justify-between' : 'justify-end']">
+      <q-card-actions
+        class="row q-pa-md full-width"
+        :class="[$q.screen.lt.sm ? 'justify-between' : 'justify-end']"
+      >
         <q-btn
-          rounded size="sm"
+          v-close-popup
+          rounded
+          size="sm"
           padding="sm xl"
           icon="las la-times"
           class="text-capitalize"
           label="Close"
           color="negative"
-          v-close-popup />
+        />
         <q-btn
-          rounded size="sm"
+          rounded
+          size="sm"
           padding="sm xl"
           icon="las la-check"
           class="text-capitalize"
           label="Confirm"
           color="primary"
-          @click="addToList"
           :loading="loadingSubmit"
-          :disable="loadingSubmit ||
+          :disable="
+            loadingSubmit ||
             !title ||
             !section ||
             !sowCategory ||
             !sowDescription ||
             !contractPrice ||
             !weight ||
-            !duration">
-            <template v-slot:loading>
-              <q-spinner-ios />
-            </template>
+            !duration
+          "
+          @click="addToList"
+        >
+          <template #loading>
+            <q-spinner-ios />
+          </template>
         </q-btn>
       </q-card-actions>
     </q-card>
@@ -353,7 +410,8 @@ import { uid, date, useQuasar } from 'quasar'
 // Alternatively, if using UMD, load animate.css from CDN.
 export default {
   title: 'ProjectList',
-  setup () {
+  props: {},
+  setup() {
     const loadingSubmit = ref(false)
     const question = ref('')
     const selected = ref([])
@@ -371,16 +429,39 @@ export default {
 
     const columns = [
       { name: 'section', label: 'Section', field: 'section', align: 'left' },
-      { name: 'sowCategory', label: 'Category', field: 'sowCategory', align: 'left' },
-      { name: 'sowDescription', label: 'Description', field: 'sowDescription', align: 'left' },
-      { name: 'contractPrice', label: 'Contract Price', field: 'contractPrice', align: 'left', format: val => `${val}` },
+      {
+        name: 'sowCategory',
+        label: 'Category',
+        field: 'sowCategory',
+        align: 'left'
+      },
+      {
+        name: 'sowDescription',
+        label: 'Description',
+        field: 'sowDescription',
+        align: 'left'
+      },
+      {
+        name: 'contractPrice',
+        label: 'Contract Price',
+        field: 'contractPrice',
+        align: 'left',
+        format: val => `${val}`
+      },
       { name: 'weight', label: 'Weight', field: 'weight', align: 'left' },
-      { name: 'duration', label: 'Duration (days)', field: 'duration', align: 'left' }
+      {
+        name: 'duration',
+        label: 'Duration (days)',
+        field: 'duration',
+        align: 'left'
+      }
     ]
 
     return {
       style: ref({
-        'background-color': computed(() => $q.dark.isActive ? 'rgba(255, 255, 255, 0.1)' : '#f0f4f7'),
+        'background-color': computed(() =>
+          $q.dark.isActive ? 'rgba(255, 255, 255, 0.1)' : '#f0f4f7'
+        ),
         'border-radius': '8px',
         border: '.1px solid rgb(198 198 198, 0.5)'
       }),
@@ -399,50 +480,52 @@ export default {
       addTemplateDialog: ref(false),
       loadingSubmit,
       question,
-      initFunction () {
+      initFunction() {
         // access setup variables here w/o using 'this'
         // console.log('initFunction called', visible.value)
       }
     }
   },
-  props: {},
   computed: {
     test: function () {
       return "I'm computed hook"
     }
   },
-  beforeCreate () {
+  beforeCreate() {
     // console.log('beforeCreate')
   },
-  created () {
+  created() {
     // console.log('created')
   },
-  beforeMount () {
+  beforeMount() {
     // console.log('beforeMount')
   },
-  mounted () {
+  mounted() {
     // this.$emit('showHeader', true, [])
     this.getTemplateDetail()
   },
-  beforeUpdate () {
+  beforeUpdate() {
     // console.log('beforeUpdate')
   },
-  updated () {
+  updated() {
     // console.log('updated')
   },
-  beforeUnmount () {
+  beforeUnmount() {
     // console.log('beforeUnmount')
   },
-  unmounted () {
+  unmounted() {
     // console.log('unmounted')
   },
   methods: {
-    openAddTemplateDialog () {
+    openAddTemplateDialog() {
       this.addTemplateDialog = true
     },
-    getTemplateDetail () {
-      const templateDetail = this.$fbref(this.$fbdb, `sowTemplates/${this.$route.params.templateId}`)
-      this.$fbonValue(templateDetail, (snapshot) => {
+    getTemplateDetail() {
+      const templateDetail = this.$fbref(
+        this.$fbdb,
+        `sowTemplates/${this.$route.params.templateId}`
+      )
+      this.$fbonValue(templateDetail, snapshot => {
         const data = snapshot.val()
         const sow_ = Object.values(data.sow)
         console.log(sow_)
@@ -452,7 +535,7 @@ export default {
         this.sortList(sow_, 'section')
       })
     },
-    async sortList (arr, field) {
+    async sortList(arr, field) {
       this.rows = arr?.sort((a, b) => {
         const nameA = a[field].toUpperCase() // ignore upper and lowercase
         const nameB = b[field].toUpperCase()
@@ -467,7 +550,7 @@ export default {
         return 0
       })
     },
-    clearFields () {
+    clearFields() {
       this.section = ''
       this.sowCategory = ''
       this.sowDescription = ''
@@ -475,7 +558,7 @@ export default {
       this.weight = ''
       this.duration = ''
     },
-    addToList () {
+    addToList() {
       const newId = uid()
       const timeStamp = Date.now()
       const toAdd = {
@@ -494,11 +577,12 @@ export default {
       this.rows.push(toAdd)
       this.clearFields()
     },
-    updateTemplate () {
+    updateTemplate() {
       console.log('updateTemplate', this.templateFullDetail)
       this.loadingSubmit = true
       const updates = {}
-      updates[`sowTemplates/${this.templateFullDetail.id}/`] = this.templateFullDetail
+      updates[`sowTemplates/${this.templateFullDetail.id}/`] =
+        this.templateFullDetail
       console.log(updates)
       this.$fbupdate(this.$fbref(this.$fbdb), updates)
         .then(async () => {
@@ -511,7 +595,7 @@ export default {
           })
           this.loadingSubmit = false
         })
-        .catch(async (err) => {
+        .catch(async err => {
           console.log(err)
           this.$q.notify({
             icon: 'las la-exclamation-circle',
@@ -538,16 +622,16 @@ export default {
   box-shadow: none;
 }
 :deep(.q-table__top) {
-    padding: 12px 0px;
+  padding: 12px 0px;
 }
 :deep(.q-table__bottom) {
-    min-height: 50px;
-    padding: 4px 0px 4px 0px;
-    font-size: 12px;
+  min-height: 50px;
+  padding: 4px 0px 4px 0px;
+  font-size: 12px;
 }
 :deep(.q-separator--horizontal) {
-    display: block;
-    height: .1px;
+  display: block;
+  height: 0.1px;
 }
 :deep(.q-field__control:after) {
   display: none !important;

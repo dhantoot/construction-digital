@@ -4,29 +4,35 @@
   </div>
   <div class="q-pa-md q-gutter-md bg-grey-2 q-mt-xl">
     <q-select
+      v-model="searchKey"
       behavior="menu"
       popup-content-class="popupSelectContent"
       :dense="true"
       filled
-      v-model="searchKey"
       use-input
       input-debounce="0"
       :options="options"
-      @filter="filterFn"
       clearable
       :placeholder="!searchKey ? 'Address' : ''"
       :loading="searchingPlaceLoader"
-    >
-    </q-select>
-    <q-input filled v-model="text" placeholder="Name" class="bg-grey-2" :dense="true" input-class="text-accent"/>
+      @filter="filterFn"
+    ></q-select>
+    <q-input
+      v-model="text"
+      filled
+      placeholder="Name"
+      class="bg-grey-2"
+      :dense="true"
+      input-class="text-accent"
+    />
     <div class="q-pa-none" style="max-width: 98%">
       <q-input
-        placeholder="Description..."
         v-model="desc"
+        placeholder="Description..."
         filled
         type="textarea"
         input-class="text-accent"
-     />
+      />
     </div>
 
     <q-tabs v-model="tab" class="bg-white-4" dense align="justify">
@@ -35,71 +41,77 @@
         name="upload"
         icon="las la-upload"
         label="Upload"
-     />
+      />
       <q-tab
         class="text-yellow text-capitalize"
         name="capture"
         icon="las la-camera"
         label="Capture"
-     />
+      />
     </q-tabs>
-    <div class="col-24" v-if="tab === 'upload'">
+    <div v-if="tab === 'upload'" class="col-24">
       <q-file
+        v-model="file"
         :dense="true"
         label-color="orange"
         filled
-        v-model="file"
         label="Choose File"
         multiple
         accept=".jpg, image/*"
       >
-        <template v-slot:prepend>
-          <q-icon name="cloud_upload" color="orange"/>
+        <template #prepend>
+          <q-icon name="cloud_upload" color="orange" />
         </template>
       </q-file>
     </div>
 
-    <div class="col-24" v-if="tab === 'capture'">
-     <q-btn
-      dense
-      align="left"
-      class="text-capitalize full-width no-shadow round-btn"
-      text-color="yellow"
-      color="transparent"
-      icon="las la-camera"
-      label="Open camera"
-      @click="captureImage"
-      :disable="deviceIsReady"
-      style="height: 40px;"
-     />
+    <div v-if="tab === 'capture'" class="col-24">
+      <q-btn
+        dense
+        align="left"
+        class="text-capitalize full-width no-shadow round-btn"
+        text-color="yellow"
+        color="transparent"
+        icon="las la-camera"
+        label="Open camera"
+        :disable="deviceIsReady"
+        style="height: 40px"
+        @click="captureImage"
+      />
     </div>
 
     <div class="col-12">
       <q-img
-        class="q-pr-lg"
         v-show="!btnToggle"
+        class="q-pr-lg"
         fit="cover"
         src="imageSrc"
         :ratio="16 / 9"
-     />
+      />
       <!-- <div class="caption" v-show="!btnToggle">imageSrc: {{ imageSrc }}</div>
       <div class="caption" v-show="!btnToggle">data: {{ data }}</div> -->
     </div>
     <div class="row justify-between q-mt-lg">
       <div>
-        <q-btn class="round-btn" rounded color="primary" icon="las la-arrow-left" @click="this.$router.push('/projects')"/>
+        <q-btn
+          class="round-btn"
+          rounded
+          color="primary"
+          icon="las la-arrow-left"
+          @click="$router.push('/projects')"
+        />
       </div>
       <div>
         <q-btn
-          @click="createProject"
           color="primary"
           label="Create"
           class="text-capitalize text-accent round-btn"
           icon="las la-plus"
           :disable="!searchKey || !text || !desc || !file"
+          @click="createProject"
         >
-          <template v-slot:loading>
-            <q-spinner-ios class="on-left"/>
+          <template #loading>
+            <q-spinner-ios class="on-left" />
             Saving...
           </template>
         </q-btn>
@@ -117,7 +129,11 @@ const stringOptions = []
 // Alternatively, if using UMD, load animate.css from CDN.
 export default {
   title: 'ProjectList',
-  setup () {
+  props: {
+    title: String,
+    likes: Number
+  },
+  setup() {
     const timeStamp = Date.now()
     const formattedTimestamp = date.formatDate(
       timeStamp,
@@ -144,9 +160,9 @@ export default {
     //   StatusBar.backgroundColorByHexString('#C10015')
     // }, false)
 
-    function captureImage () {
+    function captureImage() {
       navigator.camera.getPicture(
-        (data) => {
+        data => {
           // on success
           $q.notify(data)
           camData.value = data
@@ -162,7 +178,7 @@ export default {
       )
     }
 
-    function printNavigator () {
+    function printNavigator() {
       // console.log('printing out navigator', navigator)
       // console.log('typeof navigator is ', typeof navigator)
 
@@ -179,7 +195,7 @@ export default {
       // }
     }
 
-    function saveLocally (f) {
+    function saveLocally(f) {
       try {
         this.logs.push('> saveLocally: at try')
         window.resolveLocalFileSystemURL(
@@ -208,7 +224,7 @@ export default {
               classes: 'notify-custom-css'
             })
           },
-          (err) => {
+          err => {
             // console.log(err)
             this.logs.push('> Error at inner catch: ' + err)
             this.$q.notify({
@@ -232,7 +248,7 @@ export default {
       }
     }
 
-    function saveLocally2 (f) {
+    function saveLocally2(f) {
       try {
         this.logs.push('> saveLocally2: at try')
         // eslint-disable-next-line no-undef
@@ -256,7 +272,7 @@ export default {
                 this.logs.push('> after writeFile')
                 // eslint-disable-next-line no-undef
               },
-              (err) => {
+              err => {
                 this.logs.push(
                   '> requestFileSystem:OnErrorCreateFile callback error' + err
                 )
@@ -264,7 +280,7 @@ export default {
             )
             // eslint-disable-next-line no-undef
           },
-          (err) => {
+          err => {
             this.logs.push(
               '> requestFileSystem:OnErrorLoadFs callback error' + err
             )
@@ -314,11 +330,11 @@ export default {
       desc,
       options,
       visible,
-      initFunction () {
+      initFunction() {
         // access setup variables here w/o using 'this'
         // console.log('initFunction called', visible.value)
       },
-      createValue (val, done) {
+      createValue(val, done) {
         // Calling done(var) when new-value-mode is not set or is "add", or done(var, "add") adds "var" content to the model
         // and it resets the input textbox to empty string
         // ----
@@ -337,9 +353,9 @@ export default {
 
           val
             .split(/[,;|]+/)
-            .map((v) => v.trim())
-            .filter((v) => v.length > 0)
-            .forEach((v) => {
+            .map(v => v.trim())
+            .filter(v => v.length > 0)
+            .forEach(v => {
               if (stringOptions.value.includes(v) === false) {
                 stringOptions.value.push(v)
               }
@@ -354,25 +370,21 @@ export default {
       }
     }
   },
-  props: {
-    title: String,
-    likes: Number
-  },
   computed: {
     test: function () {
       return "I'm computed hook"
     }
   },
-  beforeCreate () {
+  beforeCreate() {
     // console.log('beforeCreate')
   },
-  created () {
+  created() {
     // console.log('created')
   },
-  beforeMount () {
+  beforeMount() {
     // console.log('beforeMount')
   },
-  mounted () {
+  mounted() {
     // this.$emit('showHeader', false, [
     //   {
     //     label: 'Back',
@@ -386,40 +398,46 @@ export default {
     this.authUser = LocalStorage.getItem('authUser')
     // console.log('this.authUser', this.authUser)
     this.uid = this.authUser.uid
-    this.stringOptions = [{
-      id: 1,
-      address: '673 Kohler River, Port Yong, MD 89762-8419'
-    }, {
-      id: 1,
-      address: 'Suite 607 80014 Fritsch Port, Takakostad, AZ 59116'
-    }, {
-      id: 1,
-      address: '1867 John Union, Haneberg, MS 39752-7807'
-    }, {
-      id: 1,
-      address: 'Suite 107 150 Moen Dale, Walshstad, WY 17862-6698'
-    }, {
-      id: 1,
-      address: '260 Ashli Wells, East Humbertoside, DE 34616-5862'
-    }]
+    this.stringOptions = [
+      {
+        id: 1,
+        address: '673 Kohler River, Port Yong, MD 89762-8419'
+      },
+      {
+        id: 1,
+        address: 'Suite 607 80014 Fritsch Port, Takakostad, AZ 59116'
+      },
+      {
+        id: 1,
+        address: '1867 John Union, Haneberg, MS 39752-7807'
+      },
+      {
+        id: 1,
+        address: 'Suite 107 150 Moen Dale, Walshstad, WY 17862-6698'
+      },
+      {
+        id: 1,
+        address: '260 Ashli Wells, East Humbertoside, DE 34616-5862'
+      }
+    ]
   },
-  beforeUpdate () {
+  beforeUpdate() {
     // console.log('beforeUpdate')
   },
-  updated () {
+  updated() {
     // console.log('updated')
   },
-  beforeUnmount () {
+  beforeUnmount() {
     // console.log('beforeUnmount')
   },
-  unmounted () {
+  unmounted() {
     // console.log('unmounted')
   },
   methods: {
-    setModel (val) {
+    setModel(val) {
       this.searchKey = val
     },
-    filterFn (val, update, abort) {
+    filterFn(val, update, abort) {
       if (val === '') {
         update(() => {
           this.options = stringOptions
@@ -435,7 +453,7 @@ export default {
       update(async () => {
         const needle = val.toLowerCase()
         const resp = await this.$findPlace('address', needle)
-        this.options = resp?.data?.predictions.map((e) => {
+        this.options = resp?.data?.predictions.map(e => {
           return {
             label: e.description,
             value: e.description
@@ -444,7 +462,7 @@ export default {
         this.searchingPlaceLoader = false
       })
     },
-    async createProject () {
+    async createProject() {
       // console.log('> file', this.file)
       this.logs.push('>' + JSON.stringify(this.file))
       for (const item in this.file[0]) {
@@ -459,7 +477,7 @@ export default {
       // this.logs.push('>' + JSON.stringify(this.file[0]))
       // this.saveLocally(this.file[0])
     },
-    async startProject2 () {
+    async startProject2() {
       // console.log('> file', this.file)
       this.logs.push('>' + JSON.stringify(this.file))
       // for (const item in this.file[0]) {
@@ -474,7 +492,7 @@ export default {
       this.logs.push('>' + JSON.stringify(this.file[0]))
       this.saveLocally2(this.file[0])
     },
-    uploadFile () {
+    uploadFile() {
       // console.log('file', this.file)
       const files = this.file
       // console.log({ files })
@@ -493,7 +511,7 @@ export default {
       )
       uploadTask.on(
         'state_changed',
-        (snapshot) => {
+        snapshot => {
           // Observe state change events such as progress, pause, and resume
           // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
           const progress =
@@ -508,7 +526,7 @@ export default {
               break
           }
         },
-        (error) => {
+        error => {
           // Handle unsuccessful uploads
           // console.log({ error })
           this.$q.notify({
@@ -522,7 +540,7 @@ export default {
         () => {
           // Handle successful uploads on complete
           // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-          this.$getdownloadurl(uploadTask.snapshot.ref).then((downloadURL) => {
+          this.$getdownloadurl(uploadTask.snapshot.ref).then(downloadURL => {
             // console.log('File available at', downloadURL)
             this.projectAvatar = `${files[0].name.split('.')[0]}.${
               files[0].name.split('.')[1]
@@ -531,7 +549,7 @@ export default {
         }
       )
     },
-    saveProjectDetails () {
+    saveProjectDetails() {
       // console.log('Saving Project details..')
       const payload = {
         createdBy: this.uid,
@@ -554,7 +572,7 @@ export default {
             classes: 'notify-custom-css'
           })
         })
-        .catch((error) => {
+        .catch(error => {
           // this.loading1 = false
           this.$q.notify({
             icon: 'las la-exclamation-circle',
@@ -565,7 +583,7 @@ export default {
           })
         })
     },
-    showTextLoading () {
+    showTextLoading() {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
       // console.log('loaded in ', ms, ' ms')
       this.visible = true
@@ -573,7 +591,7 @@ export default {
         this.visible = false
       }, ms)
     },
-    factoryFn (files) {
+    factoryFn(files) {
       // returning a Promise
       // console.log(files[0])
 
@@ -582,7 +600,7 @@ export default {
       }
       console.log({ metadata })
     },
-    fnToggle (v) {
+    fnToggle(v) {
       if (v === 1) {
         this.btnToggle = true
       } else {

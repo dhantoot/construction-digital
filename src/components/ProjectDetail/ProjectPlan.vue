@@ -2,33 +2,45 @@
   <div class="q-ma-none">
     <div class="q-pa-sm">
       <div class="row full-width justify-between items-center">
-        <strong class="text-bold text-h6" :class="{
-          'text-accent': $q.dark.isActive,
-          'text-primary': !$q.dark.isActive
-        }">Planning</strong>
+        <strong
+          class="text-bold text-h6"
+          :class="{
+            'text-accent': $q.dark.isActive,
+            'text-primary': !$q.dark.isActive
+          }"
+        >
+          Planning
+        </strong>
         <!-- <q-icon size="md" :color="$q.dark.isActive ? 'accent' : 'primary'" name="las la-undo" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/> -->
         <q-icon
           size="sm"
           :color="$q.dark.isActive ? 'accent' : 'primary'"
-          @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)">
-          <Undo2Icon/>
+          @click="
+            $router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)
+          "
+        >
+          <Undo2Icon />
         </q-icon>
       </div>
-      <div class="cal" :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']">
-          <FullCalendar
-            dark
-            :options="calendarOptions"
-            class="text"
-            style="min-height: 480px;">
-            <template #eventContent>
-              <div class="column bg-dark p-5 eventContentOverride mx-5">
-                <div class="row full-width items-center">
-                  <q-badge rounded color="yellow"/>
-                </div>
+      <div
+        class="cal"
+        :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
+      >
+        <FullCalendar
+          dark
+          :options="calendarOptions"
+          class="text"
+          style="min-height: 480px"
+        >
+          <template #eventContent>
+            <div class="column bg-dark p-5 eventContentOverride mx-5">
+              <div class="row full-width items-center">
+                <q-badge rounded color="yellow" />
               </div>
-            </template>
-          </FullCalendar>
-        </div>
+            </div>
+          </template>
+        </FullCalendar>
+      </div>
     </div>
     <q-inner-loading
       :showing="visible"
@@ -36,54 +48,67 @@
       label-class="text-teal"
       label-style="font-size: 1.1em"
     >
-      <q-spinner-ios size="50px" color="secondary"/>
+      <q-spinner-ios size="50px" color="secondary" />
     </q-inner-loading>
   </div>
   <q-dialog v-model="eventDialog" persistent>
     <q-card class="no-shadow" :class="[$q.dark.isActive ? 'dark' : '']">
-      <div v-if="false" class=""><pre>{{ {
-        'calendarOptions.events': calendarOptions.events,
-        clickInfo,
-        eventName,
-        eventDescription
-      } }}</pre></div>
+      <div v-if="false" class="">
+        <pre>{{
+          {
+            'calendarOptions.events': calendarOptions.events,
+            clickInfo,
+            eventName,
+            eventDescription
+          }
+        }}</pre>
+      </div>
       <q-card-section class="column items-center full-width gap-10">
         <q-input
+          v-model="eventName"
           :dense="true"
           filled
-          v-model="eventName"
           placeholder="Event name"
           class="full-width"
         />
         <q-input
+          v-model="eventDescription"
           :dense="true"
           filled
-          v-model="eventDescription"
           placeholder="Event Description"
           class="full-width"
         />
       </q-card-section>
-      <q-card-actions align="right" class="q-pa-md">
+      <q-card-actions align="center" class="q-pa-md">
         <q-btn
-          padding="sm xl"
-          icon="las la-times"
+          v-close-popup
+          padding="sm lg"
           class="round-btn text-capitalize"
-          label="Close"
           color="negative"
           @click="closeEventModal"
-          v-close-popup/>
+        >
+          <div class="row full-width gap-5 items-center">
+            <XIcon size="20" />
+            Cancel
+          </div>
+        </q-btn>
+
         <q-btn
-          padding="sm xl"
-          icon="las la-check"
+          padding="sm lg"
           class="round-btn text-capitalize"
-          :label="actionMode === 1 ? 'Save' : 'Update'"
           color="primary"
-          @click="upsertEvent"
           :loading="actionAccountLoader"
-          :disable="actionAccountLoader">
-          <template v-slot:loading>
+          :disable="actionAccountLoader"
+          @click="upsertEvent()"
+        >
+          <template #loading>
             <q-spinner-ios />
           </template>
+
+          <div class="row full-width gap-5 items-center">
+            <CheckIcon size="20" />
+            {{ actionMode === 1 ? 'Save' : 'Update' }}
+          </div>
         </q-btn>
       </q-card-actions>
     </q-card>
@@ -105,15 +130,15 @@ import { useMainStore } from 'stores/main'
 // Alternatively, if using UMD, load animate.css from CDN.
 export default {
   title: 'ProjectPlan',
-  props: {
-    title: String,
-    likes: Number
-  },
   components: {
     FullCalendar
     // HofsteeEventDialog
   },
-  setup (props) {
+  props: {
+    title: String,
+    likes: Number
+  },
+  setup(props) {
     console.log({ props })
     const timeStamp = Date.now()
     const todaysDate = date.formatDate(timeStamp, 'YYYY-MM-DD')
@@ -140,7 +165,7 @@ export default {
     const mainStore = useMainStore()
 
     // add event
-    const handleDateSelect = (selectInfo_) => {
+    const handleDateSelect = selectInfo_ => {
       actionMode.value = 1
       eventDialog.value = true
       // console.log('selectInfo_', selectInfo_)
@@ -149,7 +174,7 @@ export default {
     }
 
     // Update event
-    const handleEventClick = (clickInfo_) => {
+    const handleEventClick = clickInfo_ => {
       actionMode.value = 2
       console.log(clickInfo_)
       eventDialog.value = true
@@ -180,7 +205,7 @@ export default {
       visible,
       question,
       loadingAddEventSubmit: ref(false),
-      initFunction () {
+      initFunction() {
         // access setup variables here w/o using 'this'
         // console.log('initFunction called', visible.value)
       },
@@ -192,38 +217,38 @@ export default {
       return "I'm computed hook"
     }
   },
-  beforeCreate () {
+  beforeCreate() {
     // console.log('beforeCreate')
   },
-  created () {
+  created() {
     // console.log('created')
   },
-  beforeMount () {
+  beforeMount() {
     // console.log('beforeMount')
   },
-  mounted () {
+  mounted() {
     this.showTextLoading()
     this.init()
   },
-  beforeUpdate () {
+  beforeUpdate() {
     // console.log('beforeUpdate')
   },
-  updated () {
+  updated() {
     // console.log('updated')
   },
-  beforeUnmount () {
+  beforeUnmount() {
     // console.log('beforeUnmount')
   },
-  unmounted () {
+  unmounted() {
     // console.log('unmounted')
   },
   methods: {
-    async init () {
+    async init() {
       this.clickInfo = null
       // Load from datasource
       await this.getEvents()
     },
-    showTextLoading () {
+    showTextLoading() {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
       // console.log('loaded in ', ms, ' ms')
       this.visible = true
@@ -231,25 +256,32 @@ export default {
         this.visible = false
       }, ms)
     },
-    handleWeekendsToggle () {
+    handleWeekendsToggle() {
       this.calendarOptions.weekends = !this.calendarOptions.weekends // update a property
     },
-    handleEventClick (clickInfo) {
-      if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
+    handleEventClick(clickInfo) {
+      if (
+        confirm(
+          `Are you sure you want to delete the event '${clickInfo.event.title}'`
+        )
+      ) {
         clickInfo.event.remove()
       }
     },
-    handleEvents (events) {
+    handleEvents(events) {
       this.currentEvents = events
     },
-    async upsertEvent () {
-      if (this.actionMode === 1) { // save
+    async upsertEvent() {
+      if (this.actionMode === 1) {
+        // save
         await this.saveEvent()
         this.eventDialog = false
         this.eventName = ''
         this.eventDescription = ''
       } else {
-        const found = this.calendarOptions.events.find(e => e.id === this.clickInfo.id)
+        const found = this.calendarOptions.events.find(
+          e => e.id === this.clickInfo.id
+        )
         await this.updateEvent({
           id: found?.id,
           start: found?.start,
@@ -261,17 +293,20 @@ export default {
         this.eventDescription = ''
       }
     },
-    closeEventModal () {
+    closeEventModal() {
       this.clickInfo = null
       this.eventDialog = false
       this.eventName = ''
       this.eventDescription = ''
     },
-    async getEvents () {
+    async getEvents() {
       this.fetchingEvents = true
       // const todo = this.$fbref(this.$fbdb, 'todo')
-      const events = this.$fbref(this.$fbdb, `events/${this.$route.params.projectId}`)
-      this.$fbonValue(events, (snapshot) => {
+      const events = this.$fbref(
+        this.$fbdb,
+        `events/${this.$route.params.projectId}`
+      )
+      this.$fbonValue(events, snapshot => {
         const data = snapshot.val()
         if (this.$isFalsyString(data)) {
           this.calendarOptions.events = []
@@ -283,7 +318,7 @@ export default {
         this.fetchingEvents = false
       })
     },
-    async saveEvent () {
+    async saveEvent() {
       this.loadingAddEventSubmit = true
       const generatedUid = uid()
       const payload = {
@@ -293,7 +328,8 @@ export default {
         start: this.selectInfo.dateStr
       }
       const updates = {}
-      updates[`events/${this.$route.params.projectId}/${generatedUid}/`] = payload
+      updates[`events/${this.$route.params.projectId}/${generatedUid}/`] =
+        payload
       this.$fbupdate(this.$fbref(this.$fbdb), updates)
         .then(() => {
           this.loadingAddEventSubmit = false
@@ -305,7 +341,7 @@ export default {
             classes: 'notify-custom-css'
           })
         })
-        .catch((error) => {
+        .catch(error => {
           this.loadingAddEventSubmit = false
           this.$q.notify({
             icon: 'las la-exclamation-circle',
@@ -316,7 +352,7 @@ export default {
           })
         })
     },
-    async updateEvent (val) {
+    async updateEvent(val) {
       const updates = {}
       updates[`events/${this.$route.params.projectId}/${val.id}/`] = val
       await this.$fbupdate(this.$fbref(this.$fbdb), updates)
@@ -343,13 +379,14 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.fc-theme-standard td, .fc-theme-standard th {
-  border: .1px solid rgba(255, 255, 255, 0.14)!important;
+.fc-theme-standard td,
+.fc-theme-standard th {
+  border: 0.1px solid rgba(255, 255, 255, 0.14) !important;
 }
 .fc-toolbar-title {
-    font-size: 1.75em;
-    margin: 0px;
-    color: white !important;
+  font-size: 1.75em;
+  margin: 0px;
+  color: white !important;
 }
 .eventContentOverride {
   white-space: normal !important;

@@ -11,30 +11,41 @@ export const useMainStore = defineStore('mainStore', {
     getProjectsLoader: false,
     selectedMember: [],
     mobileSelectedProject: LocalStorage.getItem('mobileSelectedProject'),
-    mobileSelectedProjectTodo: LocalStorage.getItem('mobileSelectedProjectTodo'),
+    mobileSelectedProjectTodo: LocalStorage.getItem(
+      'mobileSelectedProjectTodo'
+    ),
     adminUser: LocalStorage.getItem('adminUser') || {}
   }),
 
   // not working, currently used localstorage
   persist: {
     storage: LocalStorage,
-    paths: ['counter', 'showNav', 'todoList', 'projects', 'getTodoListLoader', 'getProjectsLoader', 'selectedMember', 'mobileSelectedProject'] // specify persisted paths
+    paths: [
+      'counter',
+      'showNav',
+      'todoList',
+      'projects',
+      'getTodoListLoader',
+      'getProjectsLoader',
+      'selectedMember',
+      'mobileSelectedProject'
+    ] // specify persisted paths
   },
 
   getters: {
-    doubleCount (state) {
+    doubleCount(state) {
       return state.counter * 2
     }
   },
 
   actions: {
-    increment () {
+    increment() {
       this.counter++
     },
-    async getTodoList () {
+    async getTodoList() {
       this.getTodoListLoader = true
       const todo = this.$fbref(this.$fbdb, 'todo')
-      this.$fbonValue(todo, (snapshot) => {
+      this.$fbonValue(todo, snapshot => {
         const data = snapshot.val()
         if (this.$isFalsyString(data)) {
           this.todoList = []
@@ -46,7 +57,7 @@ export const useMainStore = defineStore('mainStore', {
         this.getTodoListLoader = false
       })
     },
-    async getProjects () {
+    async getProjects() {
       this.getProjectsLoader = true
       // const { boot } = useQuasar()
       console.log('window', window)
@@ -63,7 +74,7 @@ export const useMainStore = defineStore('mainStore', {
       //   this.getProjectsLoader = false
       // })
     },
-    async setSelectedProject (projectDetails) {
+    async setSelectedProject(projectDetails) {
       this.mobileSelectedProject = projectDetails
     }
   }

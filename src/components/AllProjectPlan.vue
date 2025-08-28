@@ -1,15 +1,19 @@
 <template>
   <div class="px-10">
-    <div class="cal" :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']">
+    <div
+      class="cal"
+      :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
+    >
       <FullCalendar
         dark
         :options="calendarOptions"
         class="text"
-        style="min-height: 480px;">
+        style="min-height: 480px"
+      >
         <template #eventContent>
           <div class="column bg-dark p-5 eventContentOverride mx-5">
             <div class="row full-width items-center">
-              <q-badge rounded color="yellow"/>
+              <q-badge rounded color="yellow" />
             </div>
           </div>
         </template>
@@ -21,52 +25,58 @@
       label-class="text-teal"
       label-style="font-size: 1.1em"
     >
-      <q-spinner-ios size="50px" color="secondary"/>
+      <q-spinner-ios size="50px" color="secondary" />
     </q-inner-loading>
   </div>
   <q-dialog v-model="eventDialog" persistent>
     <q-card class="no-shadow" :class="[$q.dark.isActive ? 'dark' : '']">
-      <div v-if="false" class=""><pre>{{ {
-        'calendarOptions.events': calendarOptions.events,
-        clickInfo,
-        eventName,
-        eventDescription
-      } }}</pre></div>
+      <div v-if="false" class="">
+        <pre>{{
+          {
+            'calendarOptions.events': calendarOptions.events,
+            clickInfo,
+            eventName,
+            eventDescription
+          }
+        }}</pre>
+      </div>
       <q-card-section class="column items-center full-width gap-10">
         <q-input
+          v-model="eventName"
           :dense="true"
           filled
-          v-model="eventName"
           placeholder="Event name"
           class="full-width"
         />
         <q-input
+          v-model="eventDescription"
           :dense="true"
           filled
-          v-model="eventDescription"
           placeholder="Event Description"
           class="full-width"
         />
       </q-card-section>
       <q-card-actions align="right" class="q-pa-md">
         <q-btn
+          v-close-popup
           padding="sm xl"
           icon="las la-times"
           class="round-btn text-capitalize"
           label="Close"
           color="negative"
           @click="closeEventModal"
-          v-close-popup/>
+        />
         <q-btn
           padding="sm xl"
           icon="las la-check"
           class="round-btn text-capitalize"
           :label="actionMode === 1 ? 'Save' : 'Update'"
           color="primary"
-          @click="upsertEvent"
           :loading="actionAccountLoader"
-          :disable="actionAccountLoader">
-          <template v-slot:loading>
+          :disable="actionAccountLoader"
+          @click="upsertEvent"
+        >
+          <template #loading>
             <q-spinner-ios />
           </template>
         </q-btn>
@@ -89,15 +99,15 @@ import HofsteeEventDialog from './Common/Dialog/HofsteeEventDialog.vue'
 // Alternatively, if using UMD, load animate.css from CDN.
 export default {
   title: 'ProjectPlan',
-  props: {
-    title: String,
-    likes: Number
-  },
   components: {
     FullCalendar
     // HofsteeEventDialog
   },
-  setup (props) {
+  props: {
+    title: String,
+    likes: Number
+  },
+  setup(props) {
     console.log({ props })
     const timeStamp = Date.now()
     const todaysDate = date.formatDate(timeStamp, 'YYYY-MM-DD')
@@ -123,7 +133,7 @@ export default {
     const actionMode = ref(1)
 
     // add event
-    const handleDateSelect = (selectInfo_) => {
+    const handleDateSelect = selectInfo_ => {
       actionMode.value = 1
       eventDialog.value = true
       // console.log('selectInfo_', selectInfo_)
@@ -132,7 +142,7 @@ export default {
     }
 
     // Update event
-    const handleEventClick = (clickInfo_) => {
+    const handleEventClick = clickInfo_ => {
       actionMode.value = 2
       console.log(clickInfo_)
       eventDialog.value = true
@@ -161,7 +171,7 @@ export default {
       calendarOptions,
       visible,
       question,
-      initFunction () {
+      initFunction() {
         // access setup variables here w/o using 'this'
         // console.log('initFunction called', visible.value)
       },
@@ -173,48 +183,51 @@ export default {
       return "I'm computed hook"
     }
   },
-  beforeCreate () {
+  beforeCreate() {
     // console.log('beforeCreate')
   },
-  created () {
+  created() {
     // console.log('created')
   },
-  beforeMount () {
+  beforeMount() {
     // console.log('beforeMount')
   },
-  mounted () {
+  mounted() {
     this.showTextLoading()
     this.init()
   },
-  beforeUpdate () {
+  beforeUpdate() {
     // console.log('beforeUpdate')
   },
-  updated () {
+  updated() {
     // console.log('updated')
   },
-  beforeUnmount () {
+  beforeUnmount() {
     // console.log('beforeUnmount')
   },
-  unmounted () {
+  unmounted() {
     // console.log('unmounted')
   },
   methods: {
-    init () {
+    init() {
       this.clickInfo = null
       // Load from datasource
-      this.calendarOptions.events = [{
-        title: 'Sample',
-        description: 'The Description',
-        start: this.todaysDate,
-        id: uid()
-      }, {
-        title: '2 Sample',
-        description: 'Charm T',
-        start: this.todaysDate,
-        id: uid()
-      }]
+      this.calendarOptions.events = [
+        {
+          title: 'Sample',
+          description: 'The Description',
+          start: this.todaysDate,
+          id: uid()
+        },
+        {
+          title: '2 Sample',
+          description: 'Charm T',
+          start: this.todaysDate,
+          id: uid()
+        }
+      ]
     },
-    showTextLoading () {
+    showTextLoading() {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
       // console.log('loaded in ', ms, ' ms')
       this.visible = true
@@ -222,21 +235,26 @@ export default {
         this.visible = false
       }, ms)
     },
-    handleWeekendsToggle () {
+    handleWeekendsToggle() {
       this.calendarOptions.weekends = !this.calendarOptions.weekends // update a property
     },
-    handleEventClick (clickInfo) {
-      if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
+    handleEventClick(clickInfo) {
+      if (
+        confirm(
+          `Are you sure you want to delete the event '${clickInfo.event.title}'`
+        )
+      ) {
         clickInfo.event.remove()
       }
     },
-    handleEvents (events) {
+    handleEvents(events) {
       this.currentEvents = events
     },
-    upsertEvent () {
+    upsertEvent() {
       console.info('selectInfo', this.selectInfo)
       console.log(this.clickInfo)
-      if (this.actionMode === 1) { // save
+      if (this.actionMode === 1) {
+        // save
         this.calendarOptions.events.push({
           title: this.eventName,
           description: this.eventDescription,
@@ -248,7 +266,9 @@ export default {
         this.eventDescription = ''
       } else {
         console.log('updating..')
-        const found = this.calendarOptions.events.find(e => e.id === this.clickInfo.id)
+        const found = this.calendarOptions.events.find(
+          e => e.id === this.clickInfo.id
+        )
         // found.title = this.eventName
         console.log('found', found)
         found.extendedProps.description = this.eventDescription
@@ -259,7 +279,7 @@ export default {
         this.eventDescription = ''
       }
     },
-    closeEventModal () {
+    closeEventModal() {
       this.clickInfo = null
       this.eventDialog = false
       this.eventName = ''
@@ -269,13 +289,14 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.fc-theme-standard td, .fc-theme-standard th {
-  border: .1px solid rgba(255, 255, 255, 0.14)!important;
+.fc-theme-standard td,
+.fc-theme-standard th {
+  border: 0.1px solid rgba(255, 255, 255, 0.14) !important;
 }
 .fc-toolbar-title {
-    font-size: 1.75em;
-    margin: 0px;
-    color: white !important;
+  font-size: 1.75em;
+  margin: 0px;
+  color: white !important;
 }
 .eventContentOverride {
   white-space: normal !important;

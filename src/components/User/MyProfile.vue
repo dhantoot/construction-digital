@@ -1,18 +1,39 @@
 <template>
   <div>
     <div class="row full-width q-px-lg q-py-lg absolute">
-      <div class="row full-width text-h5 q-pb-md" :class="[$q.dark.isActive ? 'accent' : 'primary']">Account</div>
+      <div
+        class="row full-width text-h5 q-pb-md"
+        :class="[$q.dark.isActive ? 'accent' : 'primary']"
+      >
+        Account
+      </div>
       <div class="row full-width q-py-sm justify-center">
         <q-avatar size="80px">
-          <img :src="obj?.avatar?.length > 0 ? `${obj.avatar}` : `default-user.jpeg`"/>
+          <img
+            :src="
+              obj?.avatar?.length > 0 ? `${obj.avatar}` : `default-user.jpeg`
+            "
+          />
         </q-avatar>
       </div>
       <div class="row full-width q-py-sm justify-start">
-        <div class="row full-width" :class="[$q.dark.isActive ? 'accent' : 'primary']">First Name</div>
-        <q-input class="full-width" :input-class="[$q.dark.isActive ? 'accent' : 'primary']" v-model="obj.firstName" clearable :dense="true" filled>
-          <template v-slot:prepend>
+        <div
+          class="row full-width"
+          :class="[$q.dark.isActive ? 'accent' : 'primary']"
+        >
+          First Name
+        </div>
+        <q-input
+          v-model="obj.firstName"
+          class="full-width"
+          :input-class="[$q.dark.isActive ? 'accent' : 'primary']"
+          clearable
+          :dense="true"
+          filled
+        >
+          <template #prepend>
             <!-- <q-icon name="las la-user" :class="[$q.dark.isActive ? 'accent' : 'primary']"/> -->
-            <UserIcon/>
+            <UserIcon />
           </template>
 
           <!-- <template v-slot:label>
@@ -22,11 +43,23 @@
         </q-input>
       </div>
       <div class="row full-width q-py-sm justify-start">
-        <div class="row full-width" :class="[$q.dark.isActive ? 'accent' : 'primary']">Last Name</div>
-        <q-input class="full-width" :input-class="[$q.dark.isActive ? 'accent' : 'primary']"  v-model="obj.lastName" clearable :dense="true" filled>
-          <template v-slot:prepend>
+        <div
+          class="row full-width"
+          :class="[$q.dark.isActive ? 'accent' : 'primary']"
+        >
+          Last Name
+        </div>
+        <q-input
+          v-model="obj.lastName"
+          class="full-width"
+          :input-class="[$q.dark.isActive ? 'accent' : 'primary']"
+          clearable
+          :dense="true"
+          filled
+        >
+          <template #prepend>
             <!-- <q-icon name="las la-user" :class="[$q.dark.isActive ? 'accent' : 'primary']"/> -->
-            <UserIcon/>
+            <UserIcon />
           </template>
 
           <!-- <template v-slot:label>
@@ -36,10 +69,25 @@
         </q-input>
       </div>
       <div class="row full-width q-py-sm justify-start">
-        <div class="row full-width" :class="[$q.dark.isActive ? 'accent' : 'primary']">Phone Number</div>
-        <q-input class="full-width" :input-class="[$q.dark.isActive ? 'accent' : 'primary']"  v-model="obj.phone_number" clearable :dense="true" filled>
-          <template v-slot:prepend>
-            <q-icon name="las la-phone" :class="[$q.dark.isActive ? 'accent' : 'primary']"/>
+        <div
+          class="row full-width"
+          :class="[$q.dark.isActive ? 'accent' : 'primary']"
+        >
+          Phone Number
+        </div>
+        <q-input
+          v-model="obj.phone_number"
+          class="full-width"
+          :input-class="[$q.dark.isActive ? 'accent' : 'primary']"
+          clearable
+          :dense="true"
+          filled
+        >
+          <template #prepend>
+            <q-icon
+              name="las la-phone"
+              :class="[$q.dark.isActive ? 'accent' : 'primary']"
+            />
           </template>
 
           <!-- <template v-slot:label>
@@ -49,10 +97,25 @@
         </q-input>
       </div>
       <div class="row full-width q-py-sm justify-start">
-        <div class="row full-width" :class="[$q.dark.isActive ? 'accent' : 'primary']">Email</div>
-        <q-input class="full-width" :input-class="[$q.dark.isActive ? 'accent' : 'primary']"  v-model="obj.email" clearable :dense="true" filled>
-          <template v-slot:prepend>
-            <q-icon name="las la-envelope" :class="[$q.dark.isActive ? 'accent' : 'primary']"/>
+        <div
+          class="row full-width"
+          :class="[$q.dark.isActive ? 'accent' : 'primary']"
+        >
+          Email
+        </div>
+        <q-input
+          v-model="obj.email"
+          class="full-width"
+          :input-class="[$q.dark.isActive ? 'accent' : 'primary']"
+          clearable
+          :dense="true"
+          filled
+        >
+          <template #prepend>
+            <q-icon
+              name="las la-envelope"
+              :class="[$q.dark.isActive ? 'accent' : 'primary']"
+            />
           </template>
 
           <!-- <template v-slot:label>
@@ -63,40 +126,45 @@
       </div>
 
       <div class="row full-width q-py-sm justify-between">
-        <q-tabs v-model="tab" class="bg-white-4 full-width" :dense="true" align="justify">
+        <q-tabs
+          v-model="tab"
+          class="bg-white-4 full-width"
+          :dense="true"
+          align="justify"
+        >
           <q-tab
             class="text-capitalize"
             :class="[$q.dark.isActive ? 'primary' : 'primary']"
             name="upload"
             icon="las la-upload"
             label="Upload"
-        />
+          />
           <q-tab
             class="text-capitalize"
             :class="[$q.dark.isActive ? 'primary' : 'primary']"
             name="capture"
             icon="las la-camera"
             label="Capture"
-        />
+          />
         </q-tabs>
-        <div class="full-width q-pt-xs" v-if="tab === 'upload'">
+        <div v-if="tab === 'upload'" class="full-width q-pt-xs">
           <q-file
+            v-model="obj.file"
             :dense="true"
             label-color="accent"
             filled
-            v-model="obj.file"
             label="Choose File"
             accept=".jpg, image/*"
             :bg-color="[$q.dark.isActive ? 'primary' : 'primary']"
             class="round-btn"
             :disable="loadingSubmit"
           >
-            <template v-slot:prepend>
-              <q-icon name="cloud_upload" color="accent"/>
+            <template #prepend>
+              <q-icon name="cloud_upload" color="accent" />
             </template>
           </q-file>
         </div>
-        <div class="full-width q-pt-xs" v-if="tab === 'capture'">
+        <div v-if="tab === 'capture'" class="full-width q-pt-xs">
           <q-btn
             dense
             align="left"
@@ -105,10 +173,10 @@
             :color="[$q.dark.isActive ? 'primary' : 'primary']"
             icon="las la-camera"
             label="Open camera"
-            @click="captureImage"
             :disable="!deviceIsReady"
-            style="height: 40px;"
-        />
+            style="height: 40px"
+            @click="captureImage"
+          />
         </div>
       </div>
     </div>
@@ -145,31 +213,30 @@
           'bg-primary text-accent': $q.dark.isActive
         }"
       >
-      <div class="row full-width justify-between">
-        <q-btn
-          flat
-          @click="this.$router.push(`/projects`)">
-          <template #default>
-            <ArrowLeftIcon size="18" class="q-mr-sm" />
-            <span class="text-bold text-capitalize">Back</span>
-          </template>
-        </q-btn>
-        <q-btn
-          flat
-          :loading="loadingSubmit"
-          :disable="loadingSubmit"
-          @click="uploadFile()">
-          <template #default>
-            <SquarePenIcon size="18" class="q-mr-sm" />
-            <span class="text-bold text-capitalize">Update</span>
-          </template>
-        </q-btn>
-      </div>
+        <div class="row full-width justify-between">
+          <q-btn flat @click="$router.push(`/projects`)">
+            <template #default>
+              <ArrowLeftIcon size="18" class="q-mr-sm" />
+              <span class="text-bold text-capitalize">Back</span>
+            </template>
+          </q-btn>
+          <q-btn
+            flat
+            :loading="loadingSubmit"
+            :disable="loadingSubmit"
+            @click="uploadFile()"
+          >
+            <template #default>
+              <SquarePenIcon size="18" class="q-mr-sm" />
+              <span class="text-bold text-capitalize">Update</span>
+            </template>
+          </q-btn>
+        </div>
       </q-bottom-navigation>
-  </div>
+    </div>
 
     <q-inner-loading :showing="fetchUserProfileLoader">
-      <q-spinner-ios size="50px" color="secondary"/>
+      <q-spinner-ios size="50px" color="secondary" />
     </q-inner-loading>
   </div>
 </template>
@@ -180,7 +247,7 @@ import { LocalStorage } from 'quasar'
 import { useMainStore } from 'stores/main'
 export default {
   // name: 'ComponentName',
-  setup () {
+  setup() {
     const authUser = LocalStorage.getItem('authUser')
     const deviceIsReady = ref(false)
     const mainStore = useMainStore()
@@ -195,18 +262,27 @@ export default {
       fetchUserProfileLoader: ref(false)
     }
   },
-  async beforeMount () {
+  computed: {
+    routeName: function () {
+      return this.$route.name
+    }
+  },
+  async beforeMount() {
     this.fetchUserProfileLoader = true
     await this.fetchUserProfile()
   },
-  mounted () {
+  mounted() {
     // this.mainStore.showNav = true
   },
   methods: {
-    uploadFile () {
+    uploadFile() {
       this.loadingSubmit = true
       console.log('this.obj.file', this.obj.file)
-      if (Array.isArray(this.obj.file) || !this.obj.file?.size || !this.obj.file) {
+      if (
+        Array.isArray(this.obj.file) ||
+        !this.obj.file?.size ||
+        !this.obj.file
+      ) {
         // no new uploaded. skip upload and proceed to profile update
         console.log('skip upload and updating profile..')
         this.updateProfile()
@@ -227,7 +303,7 @@ export default {
         )
         uploadTask.on(
           'state_changed',
-          (snapshot) => {
+          snapshot => {
             // Observe state change events such as progress, pause, and resume
             // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
             const progress =
@@ -258,7 +334,7 @@ export default {
             // Handle successful uploads on complete
             // For instance, get the download URL: https://firebasestorage.googleapis.com/...
             this.$getdownloadurl(uploadTask.snapshot.ref).then(
-              async (downloadURL) => {
+              async downloadURL => {
                 // console.log('File available at', downloadURL)
                 // console.log(files)
                 this.obj.avatar = downloadURL
@@ -269,7 +345,7 @@ export default {
         )
       }
     },
-    async updateProfile () {
+    async updateProfile() {
       console.log('Updating user profile..', this.obj)
       const updates = {}
       // slash at the end is very important (../avatar/)
@@ -284,7 +360,8 @@ export default {
             position: 'top-right',
             classes: 'notify-custom-css'
           })
-        }).catch((error) => {
+        })
+        .catch(error => {
           console.log({ error })
           // this.loading1 = false
           this.$q.notify({
@@ -297,22 +374,17 @@ export default {
         })
       this.loadingSubmit = false
     },
-    async fetchUserProfile () {
+    async fetchUserProfile() {
       console.log('this.authUser', this.authUser.uid)
       const users = this.$fbref(this.$fbdb, `users/${this.authUser.uid}`)
-      this.$fbonValue(users, (snapshot) => {
+      this.$fbonValue(users, snapshot => {
         const data = snapshot.val()
         this.obj = data
         this.fetchUserProfileLoader = false
       })
     },
-    captureImage () {
+    captureImage() {
       console.log('captureImage..')
-    }
-  },
-  computed: {
-    routeName: function () {
-      return this.$route.name
     }
   }
 }

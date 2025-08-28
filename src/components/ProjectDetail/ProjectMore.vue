@@ -1,97 +1,132 @@
 <template>
   <div class="column gap-10 q-pa-sm scroll full-width">
-    <div class="row" v-if="false">
+    <div v-if="false" class="row">
       <q-input
+        v-model="text"
         standout="bg-transparent"
         :input-class="$q.dark.isActive ? 'text-accent' : 'text-primary'"
-        v-model="text"
         :dense="dense"
         :style="{
           width: '100%'
-        }">
-        <template v-slot:prepend>
+        }"
+      >
+        <template #prepend>
           <!-- <q-icon color="accent" name="las la-arrow-left" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/> -->
         </template>
-        <template v-slot:append>
-          <q-icon v-if="!text" name="las la-search" :class="{
-            'text-accent': text === '',
-            'text-primary': text !== ''
-          }"/>
-          <q-icon v-if="text" name="clear" class="cursor-pointer text-accent" @click="text = ''"/>
+        <template #append>
+          <q-icon
+            v-if="!text"
+            name="las la-search"
+            :class="{
+              'text-accent': text === '',
+              'text-primary': text !== ''
+            }"
+          />
+          <q-icon
+            v-if="text"
+            name="clear"
+            class="cursor-pointer text-accent"
+            @click="text = ''"
+          />
         </template>
       </q-input>
     </div>
     <div class="row justify-between items-center">
-      <strong class="text-bold text-h6" :class="{
-        'text-primary': !$q.dark.isActive,
-        'text-accent': $q.dark.isActive
-      }">User Controls</strong>
+      <strong
+        class="text-bold text-h6"
+        :class="{
+          'text-primary': !$q.dark.isActive,
+          'text-accent': $q.dark.isActive
+        }"
+      >
+        User Controls
+      </strong>
       <!-- <q-icon size="md" :color="$q.dark.isActive ? 'accent' : 'primary'" name="las la-undo" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/> -->
       <q-icon
         size="sm"
         :color="$q.dark.isActive ? 'accent' : 'primary'"
-        @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)">
-        <Undo2Icon/>
+        @click="$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"
+      >
+        <Undo2Icon />
       </q-icon>
     </div>
     <div class="full-width">
       <q-list padding class="text-accent full-width">
-        <q-item clickable v-ripple class="">
+        <q-item v-ripple clickable class="">
           <q-item-section>
-            <q-item-label :class="{
-              'text-primary': !$q.dark.isActive,
-              'text-accent': $q.dark.isActive
-            }" class="text-bold">Content filtering</q-item-label>
-            <q-item-label :class="{
-              'text-primary': !$q.dark.isActive,
-              'text-accent': $q.dark.isActive
-            }" caption>
+            <q-item-label
+              :class="{
+                'text-primary': !$q.dark.isActive,
+                'text-accent': $q.dark.isActive
+              }"
+              class="text-bold"
+            >
+              Content filtering
+            </q-item-label>
+            <q-item-label
+              :class="{
+                'text-primary': !$q.dark.isActive,
+                'text-accent': $q.dark.isActive
+              }"
+              caption
+            >
               Set the content filtering level to restrict apps that can be
               downloaded
             </q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable v-ripple class="">
+        <q-item v-ripple clickable class="">
           <q-item-section>
-            <q-item-label class="text-bold" :class="{
-              'text-primary': !$q.dark.isActive,
-              'text-accent': $q.dark.isActive
-            }">Password</q-item-label>
-            <q-item-label :class="{
-              'text-primary': !$q.dark.isActive,
-              'text-accent': $q.dark.isActive
-            }" caption>
+            <q-item-label
+              class="text-bold"
+              :class="{
+                'text-primary': !$q.dark.isActive,
+                'text-accent': $q.dark.isActive
+              }"
+            >
+              Password
+            </q-item-label>
+            <q-item-label
+              :class="{
+                'text-primary': !$q.dark.isActive,
+                'text-accent': $q.dark.isActive
+              }"
+              caption
+            >
               Require password for purchase or use password to restrict purchase
             </q-item-label>
           </q-item-section>
         </q-item>
         <q-separator spaced />
-        <q-item-label class="text-bold" :class="{
-              'text-primary': !$q.dark.isActive,
-              'text-accent': $q.dark.isActive
-            }">General</q-item-label>
-        <q-item tag="label" v-ripple class="">
+        <q-item-label
+          class="text-bold"
+          :class="{
+            'text-primary': !$q.dark.isActive,
+            'text-accent': $q.dark.isActive
+          }"
+        >
+          General
+        </q-item-label>
+        <q-item v-ripple tag="label" class="">
           <q-item-section side top>
-            <q-checkbox dense keep-color color="positive" v-model="check1" />
+            <q-checkbox v-model="check1" dense keep-color color="positive" />
           </q-item-section>
           <q-item-section>
             <q-item-label>Notifications</q-item-label>
-            <q-item-label :class="{
-              'text-primary': !$q.dark.isActive,
-              'text-accent': $q.dark.isActive
-            }" caption>
+            <q-item-label
+              :class="{
+                'text-primary': !$q.dark.isActive,
+                'text-accent': $q.dark.isActive
+              }"
+              caption
+            >
               Notify me about updates to apps or games that I downloaded
             </q-item-label>
           </q-item-section>
         </q-item>
-        <q-item tag="label" v-ripple>
+        <q-item v-ripple tag="label">
           <q-item-section side top>
-            <q-checkbox
-              dense
-              keep-color
-              color="positive"
-              v-model="check2"
-              >
+            <q-checkbox v-model="check2" dense keep-color color="positive">
               <template #checked-icon>
                 <CheckSquareIcon size="20" />
               </template>
@@ -102,17 +137,20 @@
           </q-item-section>
           <q-item-section>
             <q-item-label>Sound</q-item-label>
-            <q-item-label :class="{
-              'text-primary': !$q.dark.isActive,
-              'text-accent': $q.dark.isActive
-            }" caption>
+            <q-item-label
+              :class="{
+                'text-primary': !$q.dark.isActive,
+                'text-accent': $q.dark.isActive
+              }"
+              caption
+            >
               Auto-update apps at anytime. Data charges may apply
             </q-item-label>
           </q-item-section>
         </q-item>
-        <q-item tag="label" v-ripple>
+        <q-item v-ripple tag="label">
           <q-item-section side top>
-            <q-checkbox dense keep-color color="positive" v-model="check3" />
+            <q-checkbox v-model="check3" dense keep-color color="positive" />
           </q-item-section>
           <q-item-section>
             <q-item-label>Auto-add widgets</q-item-label>
@@ -124,49 +162,64 @@
         <q-separator spaced />
 
         <q-item-label class="text-white text-bold">Notifications</q-item-label>
-        <q-item tag="label" v-ripple class="full-width px-20">
+        <q-item v-ripple tag="label" class="full-width px-20">
           <q-item-section>
             <q-item-label>Battery too low</q-item-label>
           </q-item-section>
           <q-item-section side>
             <div class="row px-10">
-              <q-toggle dense color="blue" v-model="notif1" val="battery" />
+              <q-toggle v-model="notif1" dense color="blue" val="battery" />
             </div>
           </q-item-section>
         </q-item>
-        <q-item tag="label" v-ripple class="">
+        <q-item v-ripple tag="label" class="">
           <q-item-section>
             <q-item-label>Friend request</q-item-label>
-            <q-item-label caption :class="{
-              'text-primary': !$q.dark.isActive,
-              'text-accent': $q.dark.isActive
-            }">Allow notification</q-item-label>
+            <q-item-label
+              caption
+              :class="{
+                'text-primary': !$q.dark.isActive,
+                'text-accent': $q.dark.isActive
+              }"
+            >
+              Allow notification
+            </q-item-label>
           </q-item-section>
           <q-item-section side>
             <div class="row px-10">
-              <q-toggle dense color="green" v-model="notif2" val="friend" />
+              <q-toggle v-model="notif2" dense color="green" val="friend" />
             </div>
           </q-item-section>
         </q-item>
-        <q-item tag="label" v-ripple class="">
+        <q-item v-ripple tag="label" class="">
           <q-item-section>
             <q-item-label>Picture uploaded</q-item-label>
-            <q-item-label caption :class="{
-              'text-primary': !$q.dark.isActive,
-              'text-accent': $q.dark.isActive
-            }">Allow notification when uploading images</q-item-label>
+            <q-item-label
+              caption
+              :class="{
+                'text-primary': !$q.dark.isActive,
+                'text-accent': $q.dark.isActive
+              }"
+            >
+              Allow notification when uploading images
+            </q-item-label>
           </q-item-section>
           <q-item-section side top>
             <div class="row px-10">
-              <q-toggle dense color="red" v-model="notif3" val="picture" />
+              <q-toggle v-model="notif3" dense color="red" val="picture" />
             </div>
           </q-item-section>
         </q-item>
         <q-separator spaced />
-        <q-item-label class="text-bold" :class="{
-              'text-primary': !$q.dark.isActive,
-              'text-accent': $q.dark.isActive
-            }">Other settings</q-item-label>
+        <q-item-label
+          class="text-bold"
+          :class="{
+            'text-primary': !$q.dark.isActive,
+            'text-accent': $q.dark.isActive
+          }"
+        >
+          Other settings
+        </q-item-label>
         <q-item>
           <q-item-section side>
             <q-icon color="teal" name="volume_down" />
@@ -183,7 +236,13 @@
             <q-icon color="deep-orange" name="brightness_medium" />
           </q-item-section>
           <q-item-section>
-            <q-slider v-model="brightness" :min="0" :max="10" label color="deep-orange" />
+            <q-slider
+              v-model="brightness"
+              :min="0"
+              :max="10"
+              label
+              color="deep-orange"
+            />
           </q-item-section>
         </q-item>
         <q-item>
@@ -195,7 +254,12 @@
           </q-item-section>
         </q-item>
       </q-list>
-      <q-inner-loading :showing="visible" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em">
+      <q-inner-loading
+        :showing="visible"
+        label="Please wait..."
+        label-class="text-teal"
+        label-style="font-size: 1.1em"
+      >
         <q-spinner-ios size="50px" color="secondary" />
       </q-inner-loading>
     </div>
@@ -210,7 +274,11 @@ import { useMainStore } from 'stores/main'
 // Alternatively, if using UMD, load animate.css from CDN.
 export default {
   title: 'ProjectMore',
-  setup () {
+  props: {
+    title: String,
+    likes: Number
+  },
+  setup() {
     const visible = ref(false)
     const question = ref('')
     const mainStore = useMainStore()
@@ -219,7 +287,7 @@ export default {
       mainStore,
       visible,
       question,
-      initFunction () {
+      initFunction() {
         // access setup variables here w/o using 'this'
         // console.log('initFunction called', visible.value)
       },
@@ -239,41 +307,37 @@ export default {
       dense: ref(true)
     }
   },
-  props: {
-    title: String,
-    likes: Number
-  },
   computed: {
     test: function () {
       return "I'm computed hook"
     }
   },
-  beforeCreate () {
+  beforeCreate() {
     // console.log('beforeCreate')
   },
-  created () {
+  created() {
     // console.log('created')
   },
-  beforeMount () {
+  beforeMount() {
     // console.log('beforeMount')
   },
-  mounted () {
+  mounted() {
     this.showTextLoading()
   },
-  beforeUpdate () {
+  beforeUpdate() {
     // console.log('beforeUpdate')
   },
-  updated () {
+  updated() {
     // console.log('updated')
   },
-  beforeUnmount () {
+  beforeUnmount() {
     // console.log('beforeUnmount')
   },
-  unmounted () {
+  unmounted() {
     // console.log('unmounted')
   },
   methods: {
-    showTextLoading () {
+    showTextLoading() {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
       // console.log('loaded in ', ms, ' ms')
       this.visible = true
@@ -286,10 +350,12 @@ export default {
 </script>
 <style lang="scss" scoped>
 .q-item {
-    min-height: 48px;
-    padding: 8px 0px!important;
-    color: inherit;
-    transition: color 0.3s, background-color 0.3s;
+  min-height: 48px;
+  padding: 8px 0px !important;
+  color: inherit;
+  transition:
+    color 0.3s,
+    background-color 0.3s;
 }
 :deep(.q-field__control:after) {
   display: none !important;

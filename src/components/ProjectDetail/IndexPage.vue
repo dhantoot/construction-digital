@@ -1,8 +1,8 @@
 <template>
   <div class="full-height">
-    <router-view/>
+    <router-view />
   </div>
-   <!-- <q-footer bordered class="text-accent">
+  <!-- <q-footer bordered class="text-accent">
     <q-tabs
       v-model="tab"
       class="text-accent"
@@ -64,44 +64,69 @@
   </q-footer> -->
 
   <div v-if="bottomNavPaths.includes(routeName)" class="bottom-nav-container">
-      <q-bottom-navigation
-        class="modern-bottom-nav shadow-4"
-        active-color="white"
-        glossy
-        :class="{
-          'bg-light': !$q.dark.isActive,
-          'bg-primary text-accent': $q.dark.isActive
-        }"
+    <q-bottom-navigation
+      class="modern-bottom-nav shadow-4"
+      active-color="white"
+      glossy
+      :class="{
+        'bg-light': !$q.dark.isActive,
+        'bg-primary text-accent': $q.dark.isActive
+      }"
+    >
+      <q-btn
+        round
+        flat
+        :class="{ 'text-purple': activeTab === 'todo' }"
+        @click="navigateTo('todo')"
       >
-        <q-btn round flat @click="$router.push({ path: `/detail/${mainStore?.mobileSelectedProject?.id}/todo` }); activeTab = 'todo'" :class="{ 'text-purple': activeTab === 'todo' }">
-          <CheckSquareIcon size="24" />
-        </q-btn>
-        <q-btn round flat @click="$router.push({ path: `/detail/${mainStore?.mobileSelectedProject?.id}/files` }); activeTab = 'files'" :class="{ 'text-purple': activeTab === 'files' }">
-          <FolderIcon size="24" />
-        </q-btn>
-        <q-btn round flat @click="$router.push({ path: `/detail/${mainStore?.mobileSelectedProject?.id}/chat` }); activeTab = 'chat'" :class="{ 'text-purple': activeTab === 'chat' }">
-          <MessageCircleIcon size="24" />
-        </q-btn>
-        <q-btn round flat @click="$router.push({ path: `/detail/${mainStore?.mobileSelectedProject?.id}/planning` }); activeTab = 'planning'" :class="{ 'text-purple': activeTab === 'planning' }">
-          <ClipboardListIcon size="24" />
-        </q-btn>
-        <q-btn round flat @click="$router.push({ path: `/detail/${mainStore?.mobileSelectedProject?.id}/more` }); activeTab = 'more'" :class="{ 'text-purple': activeTab === 'more' }">
-          <SettingsIcon size="24" />
-        </q-btn>
-      </q-bottom-navigation>
+        <CheckSquareIcon size="24" />
+      </q-btn>
+      <q-btn
+        round
+        flat
+        :class="{ 'text-purple': activeTab === 'files' }"
+        @click="navigateTo('files')"
+      >
+        <FolderIcon size="24" />
+      </q-btn>
+      <q-btn
+        round
+        flat
+        :class="{ 'text-purple': activeTab === 'chat' }"
+        @click="navigateTo('chat')"
+      >
+        <MessageCircleIcon size="24" />
+      </q-btn>
+      <q-btn
+        round
+        flat
+        :class="{ 'text-purple': activeTab === 'planning' }"
+        @click="navigateTo('planning')"
+      >
+        <ClipboardListIcon size="24" />
+      </q-btn>
+      <q-btn
+        round
+        flat
+        :class="{ 'text-purple': activeTab === 'more' }"
+        @click="navigateTo('more')"
+      >
+        <SettingsIcon size="24" />
+      </q-btn>
+    </q-bottom-navigation>
 
-      <!-- Center Label -->
-      <div v-if="tab === 'analytics'" class="center-label text-white">
-        Analytics
-      </div>
+    <!-- Center Label -->
+    <div v-if="tab === 'analytics'" class="center-label text-white">
+      Analytics
     </div>
+  </div>
 </template>
 <script>
 import { ref } from 'vue'
 import { useMainStore } from 'stores/main'
 
 export default {
-  setup () {
+  setup() {
     const mainStore = useMainStore()
     return {
       activeTab: ref('details'),
@@ -116,16 +141,50 @@ export default {
       ]
     }
   },
-  mounted () {},
   computed: {
     routeName: function () {
       return this.$route.name
     }
   },
   watch: {
-    '$route.name' (newVal) {
+    '$route.name'() {
       if (this.$route.name === 'project.details.default') {
         this.activeTab = 'details'
+      }
+    }
+  },
+  mounted() {},
+  methods: {
+    navigateTo(page) {
+      if (page === 'todo') {
+        this.$router.push({
+          path: `/detail/${this.mainStore?.mobileSelectedProject?.id}/todo`
+        })
+        this.activeTab = 'todo'
+      }
+      if (page === 'files') {
+        this.$router.push({
+          path: `/detail/${this.mainStore?.mobileSelectedProject?.id}/files`
+        })
+        this.activeTab = 'files'
+      }
+      if (page === 'chat') {
+        this.$router.push({
+          path: `/detail/${this.mainStore?.mobileSelectedProject?.id}/chat`
+        })
+        this.activeTab = 'chat'
+      }
+      if (page === 'planning') {
+        this.$router.push({
+          path: `/detail/${this.mainStore?.mobileSelectedProject?.id}/planning`
+        })
+        this.activeTab = 'planning'
+      }
+      if (page === 'more') {
+        this.$router.push({
+          path: `/detail/${this.mainStore?.mobileSelectedProject?.id}/more`
+        })
+        this.activeTab = 'more'
       }
     }
   }

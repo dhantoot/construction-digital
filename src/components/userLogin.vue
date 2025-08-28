@@ -1,19 +1,29 @@
 <template>
   <div class="row full-width justify-center absolute">
-    <div class="col text-center" style="max-width: 600px;">
+    <div class="col text-center" style="max-width: 600px">
       <q-inner-loading :showing="visible">
-        <q-spinner-ios size="50px" color="secondary"/>
+        <q-spinner-ios size="50px" color="secondary" />
       </q-inner-loading>
       <div class="col-4 q-mt-xl q-mb-md q-pt-xl">
-        <q-icon name="las la-user-circle" size="100px" class="q-pa-xs" color="primary"/>
+        <q-icon
+          name="las la-user-circle"
+          size="100px"
+          class="q-pa-xs"
+          color="primary"
+        />
         <p class="text-h2 q-mb-xl text-primary">Login</p>
       </div>
       <div class="col-2 q-mt-xl q-mb-md">
         <!-- <hr class="q-ml-xl q-mr-xl" color="black"/> -->
-        <q-separator class="q-ml-xl q-mr-xl" color="primary" inset/>
+        <q-separator class="q-ml-xl q-mr-xl" color="primary" inset />
       </div>
-      <div class="col-6 q-mt-lg" v-if="false">
-        <p class="q-mt-xl" :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']">Choose a role to login</p>
+      <div v-if="false" class="col-6 q-mt-lg">
+        <p
+          class="q-mt-xl"
+          :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
+        >
+          Choose a role to login
+        </p>
         <div class="q-gutter-sm">
           <q-radio
             v-model="role"
@@ -24,7 +34,7 @@
             class="text-positive"
             color="positive"
             keep-color
-        />
+          />
           <q-radio
             v-model="role"
             checked-icon="task_alt"
@@ -34,53 +44,52 @@
             class="text-positive"
             color="positive"
             keep-color
-        />
+          />
         </div>
       </div>
       <div class="row col-2 q-mt-sm q-px-xl q-gutter-y-md">
         <q-input
-          outline
-          :dense="true"
           ref="emailRef"
           v-model="email"
+          outline
+          :dense="true"
           placeholder="Email"
           :rules="emailRules"
-          v-on:keyup.enter="login"
           color="positive"
           input-class="text-primary"
           filled
           class="full-width"
+          @keyup.enter="login"
         >
-          <template v-slot:prepend>
+          <template #prepend>
             <UserIcon size="16" />
           </template>
         </q-input>
         <q-input
+          ref="passwordRef"
+          v-model="password"
           :type="isPwd ? 'password' : 'text'"
           :dense="true"
-          ref="passwordRef"
           outline
-          v-model="password"
           placeholder="Password"
           :rules="passwordRules"
-          v-on:keyup.enter="login"
           color="positive"
           input-class="text-primary"
           filled
           class="full-width"
+          @keyup.enter="login"
         >
-          <template v-slot:prepend>
+          <template #prepend>
             <LockIcon size="16" />
           </template>
-          <template v-slot:append>
-          <EyeIcon v-if="!isPwd" size="16" @click="isPwd = !isPwd"/>
-          <EyeClosed v-if="isPwd" size="16" @click="isPwd = !isPwd"/>
+          <template #append>
+            <EyeIcon v-if="!isPwd" size="16" @click="isPwd = !isPwd" />
+            <EyeClosed v-if="isPwd" size="16" @click="isPwd = !isPwd" />
           </template>
         </q-input>
       </div>
       <div class="row items-center justify-between q-px-xl">
         <q-btn
-          @click="reset"
           label="Clear"
           type="reset"
           color="secondary"
@@ -88,23 +97,28 @@
           no-caps
           class="pull-right text-weight-light round-btn text-grey"
           style="float: left"
+          @click="reset"
         />
         <div class="text-subtitle2">
-          <a class="clickable text-grey" @click="$router.push('/admin-portal')">Switch to admin</a>
+          <a class="clickable text-grey" @click="$router.push('/admin-portal')">
+            Switch to admin
+          </a>
         </div>
         <q-btn
-          @click="register"
           label="Register"
           color="secondary"
           flat
           no-caps
           class="pull-right text-weight-light round-btn text-grey"
           style="float: right"
+          @click="register"
         />
       </div>
       <div class="row col-2 q-mt-sm q-px-xl">
         <q-btn
-          :disable="$isFalsyString(email) || $isFalsyString(password) || loading"
+          :disable="
+            $isFalsyString(email) || $isFalsyString(password) || loading
+          "
           :loading="loading"
           size="lg"
           color="primary"
@@ -113,8 +127,8 @@
           no-caps
           @click="login"
         >
-          <template v-slot:loading>
-            <q-spinner-ios class="on-left"/>
+          <template #loading>
+            <q-spinner-ios class="on-left" />
             <small>Logging in..</small>
           </template>
         </q-btn>
@@ -139,8 +153,12 @@ const auth = getAuth()
 // Alternatively, if using UMD, load animate.css from CDN.
 export default {
   title: 'UserLogin',
+  props: {
+    title: String,
+    likes: Number
+  },
   emits: ['showHeader'],
-  setup () {
+  setup() {
     const visible = ref(false)
     const loading = ref(false)
     const question = ref('')
@@ -161,68 +179,62 @@ export default {
       username,
       usernameRef,
       usernameRules: [
-        (val) => (val !== null && val !== '') || 'Please input username'
+        val => (val !== null && val !== '') || 'Please input username'
       ],
       email,
       emailRef,
-      emailRules: [
-        (val) => (val && val.length > 0) || 'Please type your email'
-      ],
+      emailRules: [val => (val && val.length > 0) || 'Please type your email'],
       password,
       passwordRef,
       passwordRules: [
-        (val) => (val !== null && val !== '') || 'Please input password'
+        val => (val !== null && val !== '') || 'Please input password'
       ],
       isPwd: ref(true),
-      initFunction () {
+      initFunction() {
         // access setup variables here w/o using 'this'
         // console.log('initFunction called', visible.value)
       }
     }
-  },
-  props: {
-    title: String,
-    likes: Number
   },
   computed: {
     test: function () {
       return "I'm computed hook"
     }
   },
-  beforeCreate () {
+  beforeCreate() {
     // console.log('beforeCreate')
   },
-  created () {
+  created() {
     // console.log('created')
   },
-  beforeMount () {
+  beforeMount() {
     // console.log('beforeMount')
   },
-  mounted () {
+  mounted() {
     // this.showTextLoading()
     // this.$emit('showHeader', false, [])
     this.mainStore.showNav = false
     this.clearLocalStorage()
   },
-  beforeUpdate () {
+  beforeUpdate() {
     // console.log('beforeUpdate')
   },
-  updated () {
+  updated() {
     // console.log('updated')
   },
-  beforeUnmount () {
+  beforeUnmount() {
     // console.log('beforeUnmount')
   },
-  unmounted () {
+  unmounted() {
     // console.log('unmounted')
   },
   methods: {
-    clearLocalStorage () {
+    clearLocalStorage() {
       LocalStorage.set('adminUser', null)
       LocalStorage.set('authUser', null)
       LocalStorage.set('mobileSelectedProjectTodo', null)
     },
-    showTextLoading () {
+    showTextLoading() {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
       // console.log('loaded in ', ms, ' ms')
       this.visible = true
@@ -230,7 +242,7 @@ export default {
         this.visible = false
       }, ms)
     },
-    async login () {
+    async login() {
       // console.log('Logging in..')
       this.loading = true
       const [email, password] = [this.email, this.password]
@@ -266,7 +278,7 @@ export default {
       // })
 
       signInWithEmailAndPassword(auth, email, password)
-        .then(async (userCredential) => {
+        .then(async userCredential => {
           const user = userCredential.user
           const userRef = this.$fbref(this.$fbdb, 'users/' + user.uid)
           const userInfoSnapshot = await this.$fbget(userRef)
@@ -280,7 +292,7 @@ export default {
           this.loading = false
           this.$router.push('/projects')
         })
-        .catch((error) => {
+        .catch(error => {
           // console.log(error)
           this.loading = false
           this.$q.notify({
@@ -294,11 +306,11 @@ export default {
           })
         })
     },
-    register () {
+    register() {
       // console.log('Registration..')
       this.$router.push('/login-register')
     },
-    reset () {
+    reset() {
       this.email = null
       this.password = null
 

@@ -1,70 +1,122 @@
 <template>
-  <div class="full-height row hide-scrollbar" :style="{height: $q.screen.lt.sm ? 'auto' : ''}">
-    <div class="column full-width full-height q-pa-sm gap-10" :style="[$q.screen.lt.sm ? 'padding-bottom: 90px;': '']">
-
+  <div
+    class="full-height row hide-scrollbar"
+    :style="{ height: $q.screen.lt.sm ? 'auto' : '' }"
+  >
+    <div
+      class="column full-width full-height q-pa-sm gap-10"
+      :style="[$q.screen.lt.sm ? 'padding-bottom: 90px;' : '']"
+    >
       <q-card class="full-height round-panel full-width no-shadow px-10">
         <!-- For Desktop view -->
         <div v-if="$q.screen.gt.sm" class="row justify-start gap-20 q-py-md">
-          <div class="column justify-start gap-20" :class="[$q.screen.lt.sm ? 'full-width' : '']">
+          <div
+            class="column justify-start gap-20"
+            :class="[$q.screen.lt.sm ? 'full-width' : '']"
+          >
             <div class="caption text-bold">Select Project</div>
             <div class="input-container">
               <q-select
+                v-model="selectedProject"
                 class="custom-rounded-input"
                 behavior="menu"
-                :popup-content-class="[$q.dark.isActive ? 'popupSelectContent bg-contrast no-shadow' : 'popupSelectContent']"
+                :popup-content-class="[
+                  $q.dark.isActive
+                    ? 'popupSelectContent bg-contrast no-shadow'
+                    : 'popupSelectContent'
+                ]"
                 use-input
                 use-chips
                 dense
                 filled
-                v-model="selectedProject"
                 :options="filterOptions2"
                 @filter="filterProject"
                 @update:model-value="onUpdateSelectedProject"
               >
-              <template #option="scope">
-                <div class="">
-                  <q-item v-bind="scope.itemProps">
-                    <q-item-section>
-                      <q-item-label>{{ scope.opt.label }}</q-item-label>
-                      <q-item-label caption>{{ scope.opt.description }}</q-item-label>
-                    </q-item-section>
-                  </q-item>
-                </div>
-              </template>
+                <template #option="scope">
+                  <div class="">
+                    <q-item v-bind="scope.itemProps">
+                      <q-item-section>
+                        <q-item-label>{{ scope.opt.label }}</q-item-label>
+                        <q-item-label caption>
+                          {{ scope.opt.description }}
+                        </q-item-label>
+                      </q-item-section>
+                    </q-item>
+                  </div>
+                </template>
               </q-select>
             </div>
           </div>
           <div class="column justify-start gap-20">
             <div class="caption text-bold">Constructor label</div>
             <div class="row gap-10 items-center mt-8">
-              <q-radio dense v-model="userTitle" val="Architect" label="Architect" color="teal" />
-              <q-radio dense v-model="userTitle" val="Engineer" label="Engineer" color="orange" />
-              <q-radio dense v-model="userTitle" val="Foreman" label="Foreman" color="red" />
-              <q-radio dense v-model="userTitle" val="Leadman" label="Leadman" color="cyan" />
-              <q-radio dense v-model="userTitle" val="Worker" label="Worker" color="secondary" />
+              <q-radio
+                v-model="userTitle"
+                dense
+                val="Architect"
+                label="Architect"
+                color="teal"
+              />
+              <q-radio
+                v-model="userTitle"
+                dense
+                val="Engineer"
+                label="Engineer"
+                color="orange"
+              />
+              <q-radio
+                v-model="userTitle"
+                dense
+                val="Foreman"
+                label="Foreman"
+                color="red"
+              />
+              <q-radio
+                v-model="userTitle"
+                dense
+                val="Leadman"
+                label="Leadman"
+                color="cyan"
+              />
+              <q-radio
+                v-model="userTitle"
+                dense
+                val="Worker"
+                label="Worker"
+                color="secondary"
+              />
             </div>
           </div>
-          <div class="column justify-start gap-20" :class="[$q.screen.lt.sm ? 'full-width' : '']">
+          <div
+            class="column justify-start gap-20"
+            :class="[$q.screen.lt.sm ? 'full-width' : '']"
+          >
             <div class="caption text-bold">Select email to send invitation</div>
             <div class="row gap-10">
               <q-select
+                v-model="model"
                 behavior="menu"
-                :popup-content-class="[$q.dark.isActive ? 'popupSelectContent bg-contrast no-shadow' : 'popupSelectContent']"
+                :popup-content-class="[
+                  $q.dark.isActive
+                    ? 'popupSelectContent bg-contrast no-shadow'
+                    : 'popupSelectContent'
+                ]"
                 dense
                 filled
-                v-model="model"
                 use-input
                 use-chips
                 multiple
                 input-debounce="0"
-                @new-value="createValue"
                 :options="filterOptions"
-                @filter="filterFn"
                 option-value="email"
                 option-label="email"
                 :class="{
                   'q-pb-sm full-width': $q.screen.width < 433
-                }">
+                }"
+                @new-value="createValue"
+                @filter="filterFn"
+              >
                 <template #option="scope">
                   <div class="">
                     <q-item v-bind="scope.itemProps">
@@ -75,16 +127,27 @@
                   </div>
                 </template>
               </q-select>
-              <q-btn padding="xs lg" color="primary" icon="las la-paper-plane" style="height: 40px; width: 150px"
+              <q-btn
+                padding="xs lg"
+                color="primary"
+                icon="las la-paper-plane"
+                style="height: 40px; width: 150px"
                 :class="{
                   'text-capitalize': true,
                   'q-ml-none full-width': $q.screen.width < 433
-                }" :disable="!model ||
-                    model.map((e) => e.email).length < 1 ||
-                    sendEmailLoader ||
-                    !selectedProject ||
-                    !userTitle
-                    " @click="sendInvitation" :loading="sendEmailLoader" label="Send" class="round-btn">
+                }"
+                :disable="
+                  !model ||
+                  model.map(e => e.email).length < 1 ||
+                  sendEmailLoader ||
+                  !selectedProject ||
+                  !userTitle
+                "
+                :loading="sendEmailLoader"
+                label="Send"
+                class="round-btn"
+                @click="sendInvitation"
+              >
                 <template #loading>
                   <q-spinner-ios class="on-left" />
                   <small>Sending..</small>
@@ -95,7 +158,10 @@
         </div>
 
         <!-- For mobile view -->
-        <div v-if="!$q.screen.gt.sm" class="row justify-end full-width items-center pt-10">
+        <div
+          v-if="!$q.screen.gt.sm"
+          class="row justify-end full-width items-center pt-10"
+        >
           <q-btn
             rounded
             color="info"
@@ -117,8 +183,8 @@
             :columns="columns"
             :loading="rowLoading"
             :visible-columns="visibleColumns"
-            :rows-per-page-options="[12]">
-
+            :rows-per-page-options="[12]"
+          >
             <!-- loading slot -->
             <template #loading>
               <q-inner-loading :showing="visible">
@@ -142,12 +208,19 @@
                   {{ props.row.dateResponded }}
                 </q-td>
                 <q-td key="status" :props="props">
-                  <q-chip square class="q-pl-sm full-width" :class="{
-                    'full-width q-px-md': q.screen.lt.md,
-                    'bg-contrast': $q.dark.isActive
-                  }">
-                    <q-avatar :icon="getStatusIcon(props.row.status)" :color="getStatusColor(props.row.status)"
-                      text-color="white" />
+                  <q-chip
+                    square
+                    class="q-pl-sm full-width"
+                    :class="{
+                      'full-width q-px-md': q.screen.lt.md,
+                      'bg-contrast': $q.dark.isActive
+                    }"
+                  >
+                    <q-avatar
+                      :icon="getStatusIcon(props.row.status)"
+                      :color="getStatusColor(props.row.status)"
+                      text-color="white"
+                    />
                     {{ props.row.status }}
                   </q-chip>
                 </q-td>
@@ -158,10 +231,20 @@
                   {{ props.row.userTitle }}
                 </q-td>
                 <q-td key="resend" :props="props">
-                  <q-btn size="sm" icon="las la-share" padding="xs md" v-if="props.row.status === 'Pending'"
-                    class="text-capitalize text-secondary round-btn shadow" text-color="primary" color="warning"
-                    label="Resend invite" @click="resendInvite(props.row, props.rowIndex)" :dense="true"
-                    :loading="resendInviteLoader[props.rowIndex]" :disable="resendInviteLoader[props.rowIndex]">
+                  <q-btn
+                    v-if="props.row.status === 'Pending'"
+                    size="sm"
+                    icon="las la-share"
+                    padding="xs md"
+                    class="text-capitalize text-secondary round-btn shadow"
+                    text-color="primary"
+                    color="warning"
+                    label="Resend invite"
+                    :dense="true"
+                    :loading="resendInviteLoader[props.rowIndex]"
+                    :disable="resendInviteLoader[props.rowIndex]"
+                    @click="resendInvite(props.row, props.rowIndex)"
+                  >
                     <template #loading>
                       <q-spinner-ios class="on-left" />
                       <small>Sending..</small>
@@ -176,13 +259,15 @@
               <q-card class="q-ma-sm full-width no-shadow" :style="style">
                 <q-card-section>
                   <div class="text-h6">{{ props.row.projectName }}</div>
-                  <div class="text-caption text-bold">{{ props.row.invitee }}
+                  <div class="text-caption text-bold">
+                    {{ props.row.invitee }}
                     <q-chip
                       size="sm"
                       :icon="getStatusIcon(props.row.status)"
                       :color="getStatusColor(props.row.status)"
-                      text-color="white">
-                        {{ props.row.status }}
+                      text-color="white"
+                    >
+                      {{ props.row.status }}
                     </q-chip>
                   </div>
                 </q-card-section>
@@ -190,28 +275,40 @@
                 <q-separator />
 
                 <q-card-section class="q-pt-sm">
-                  <div><strong>Date Sent:</strong> {{ props.row.dateSent }}</div>
-                  <div><strong>Date Responded:</strong> {{ props.row.dateResponded }}</div>
-                  <div><strong>Invitee:</strong> {{ props.row.invitee }}</div>
-                  <div><strong>User Title:</strong> {{ props.row.userTitle }}</div>
+                  <div>
+                    <strong>Date Sent:</strong>
+                    {{ props.row.dateSent }}
+                  </div>
+                  <div>
+                    <strong>Date Responded:</strong>
+                    {{ props.row.dateResponded }}
+                  </div>
+                  <div>
+                    <strong>Invitee:</strong>
+                    {{ props.row.invitee }}
+                  </div>
+                  <div>
+                    <strong>User Title:</strong>
+                    {{ props.row.userTitle }}
+                  </div>
                 </q-card-section>
 
                 <q-card-actions align="right">
                   <q-btn
+                    v-if="props.row.status === 'Pending'"
                     size="sm"
                     icon="las la-share"
                     padding="xs md"
-                    v-if="props.row.status === 'Pending'"
                     class="text-capitalize text-secondary round-btn shadow"
                     text-color="primary"
                     color="warning"
                     label="Resend invite"
-                    @click="resendInvite(props.row, props.rowIndex)"
                     :dense="true"
                     :loading="resendInviteLoader[props.rowIndex]"
                     :disable="resendInviteLoader[props.rowIndex]"
+                    @click="resendInvite(props.row, props.rowIndex)"
                   >
-                    <template v-slot:loading>
+                    <template #loading>
                       <q-spinner-ios class="on-left" />
                       <small>Sending..</small>
                     </template>
@@ -222,30 +319,41 @@
           </q-table>
         </div>
       </q-card>
-
     </div>
   </div>
 
   <q-dialog v-model="sendInviteDialog" persistent>
     <q-card class="no-shadow">
       <q-card-section class="row items-center">
-        <q-avatar size="sm" icon="las la-pen" color="negative" text-color="white" />
+        <q-avatar
+          size="sm"
+          icon="las la-pen"
+          color="negative"
+          text-color="white"
+        />
         <span class="q-ml-sm text-h6">Send Invite</span>
       </q-card-section>
 
       <q-card-section>
         <div class="debug row full-width gap-20 scroll">
-          <div class="debug column justify-start gap-10" :class="[$q.screen.lt.sm ? 'full-width' : '']">
+          <div
+            class="debug column justify-start gap-10"
+            :class="[$q.screen.lt.sm ? 'full-width' : '']"
+          >
             <div class="debug caption text-bold">Select Project</div>
             <q-select
+              v-model="selectedProject"
               class="debug"
               behavior="menu"
-              :popup-content-class="[$q.dark.isActive ? 'popupSelectContent bg-contrast no-shadow' : 'popupSelectContent']"
+              :popup-content-class="[
+                $q.dark.isActive
+                  ? 'popupSelectContent bg-contrast no-shadow'
+                  : 'popupSelectContent'
+              ]"
               use-input
               use-chips
               dense
               filled
-              v-model="selectedProject"
               :options="filterOptions2"
               @filter="filterProject"
               @update:model-value="onUpdateSelectedProject"
@@ -255,7 +363,9 @@
                   <q-item v-bind="scope.itemProps">
                     <q-item-section>
                       <q-item-label>{{ scope.opt.label }}</q-item-label>
-                      <q-item-label caption>{{ scope.opt.description }}</q-item-label>
+                      <q-item-label caption>
+                        {{ scope.opt.description }}
+                      </q-item-label>
                     </q-item-section>
                   </q-item>
                 </div>
@@ -265,34 +375,72 @@
           <div class="debug column justify-start gap-10">
             <div class="caption text-bold">Constructor label</div>
             <div class="row gap-10 items-center">
-              <q-radio dense v-model="userTitle" val="Architect" label="Architect" color="teal" />
-              <q-radio dense v-model="userTitle" val="Engineer" label="Engineer" color="orange" />
-              <q-radio dense v-model="userTitle" val="Foreman" label="Foreman" color="red" />
-              <q-radio dense v-model="userTitle" val="Leadman" label="Leadman" color="cyan" />
-              <q-radio dense v-model="userTitle" val="Worker" label="Worker" color="secondary" />
+              <q-radio
+                v-model="userTitle"
+                dense
+                val="Architect"
+                label="Architect"
+                color="teal"
+              />
+              <q-radio
+                v-model="userTitle"
+                dense
+                val="Engineer"
+                label="Engineer"
+                color="orange"
+              />
+              <q-radio
+                v-model="userTitle"
+                dense
+                val="Foreman"
+                label="Foreman"
+                color="red"
+              />
+              <q-radio
+                v-model="userTitle"
+                dense
+                val="Leadman"
+                label="Leadman"
+                color="cyan"
+              />
+              <q-radio
+                v-model="userTitle"
+                dense
+                val="Worker"
+                label="Worker"
+                color="secondary"
+              />
             </div>
           </div>
-          <div class="debug column justify-start gap-10" :class="[$q.screen.lt.sm ? 'full-width' : '']">
+          <div
+            class="debug column justify-start gap-10"
+            :class="[$q.screen.lt.sm ? 'full-width' : '']"
+          >
             <div class="caption text-bold">Select email to send invitation</div>
             <div class="row gap-10">
               <q-select
+                v-model="model"
                 behavior="menu"
-                :popup-content-class="[$q.dark.isActive ? 'popupSelectContent bg-contrast no-shadow' : 'popupSelectContent']"
+                :popup-content-class="[
+                  $q.dark.isActive
+                    ? 'popupSelectContent bg-contrast no-shadow'
+                    : 'popupSelectContent'
+                ]"
                 dense
                 filled
-                v-model="model"
                 use-input
                 use-chips
                 multiple
                 input-debounce="0"
-                @new-value="createValue"
                 :options="filterOptions"
-                @filter="filterFn"
                 option-value="email"
                 option-label="email"
                 :class="{
                   'q-pb-sm full-width': $q.screen.width < 433
-                }">
+                }"
+                @new-value="createValue"
+                @filter="filterFn"
+              >
                 <template #option="scope">
                   <div class="">
                     <q-item v-bind="scope.itemProps">
@@ -308,27 +456,38 @@
         </div>
       </q-card-section>
 
-      <q-card-actions class="row q-pa-md full-width" :class="[$q.screen.lt.sm ? 'justify-between' : 'justify-end']">
+      <q-card-actions
+        class="row q-pa-md full-width"
+        :class="[$q.screen.lt.sm ? 'justify-between' : 'justify-end']"
+      >
         <q-btn
-          rounded size="sm"
+          v-close-popup
+          rounded
+          size="sm"
           padding="sm xl"
           icon="las la-times"
           class="text-capitalize"
           label="Cancel"
           color="negative"
-          v-close-popup
         />
 
         <q-btn
-          rounded size="sm"
+          rounded
+          size="sm"
           padding="sm xl"
           icon="las la-paper-plane"
           class="text-capitalize"
           color="primary"
-          @click="uploadFile"
           label="Send"
           :loading="loadingSubmit"
-          :disable="!model || model.map((e) => e.email).length < 1 || sendEmailLoader || !selectedProject || !userTitle"
+          :disable="
+            !model ||
+            model.map(e => e.email).length < 1 ||
+            sendEmailLoader ||
+            !selectedProject ||
+            !userTitle
+          "
+          @click="uploadFile"
         >
           <template #loading>
             <q-spinner-ios class="on-left" />
@@ -351,8 +510,12 @@ import CryptoJS from 'crypto-js'
 
 export default {
   title: 'ProjectList',
+  props: {
+    title: String,
+    likes: Number
+  },
   // directives: { formatdate },
-  setup () {
+  setup() {
     const visible = ref(false)
     const question = ref('')
     const model = ref(null)
@@ -413,7 +576,9 @@ export default {
     return {
       sendInviteDialog: ref(false),
       style: ref({
-        'background-color': computed(() => q.dark.isActive ? 'rgba(255, 255, 255, 0.1)' : '#f0f4f7'),
+        'background-color': computed(() =>
+          q.dark.isActive ? 'rgba(255, 255, 255, 0.1)' : '#f0f4f7'
+        ),
         'border-radius': '8px',
         border: '.1px solid rgb(198 198 198, 0.5)'
       }),
@@ -439,11 +604,11 @@ export default {
       rows,
       columns,
       activatedList: ref({}),
-      initFunction () {
+      initFunction() {
         // access setup variables here w/o using 'this'
         // console.log('initFunction called', visible.value)
       },
-      createValue (val, done) {
+      createValue(val, done) {
         // Calling done(var) when new-value-mode is not set or is "add", or done(var, "add") adds "var" content to the model
         // and it resets the input textbox to empty string
         // ----
@@ -462,9 +627,9 @@ export default {
 
           val
             .split(/[,;|]+/)
-            .map((v) => v.trim())
-            .filter((v) => v.length > 0)
-            .forEach((v) => {
+            .map(v => v.trim())
+            .filter(v => v.length > 0)
+            .forEach(v => {
               if (stringOptions.value.includes(v) === false) {
                 stringOptions.value.push(v)
               }
@@ -482,26 +647,22 @@ export default {
       resendInviteLoader: ref([])
     }
   },
-  props: {
-    title: String,
-    likes: Number
-  },
   computed: {
     test: function () {
       return "I'm computed hook"
     }
   },
-  beforeCreate () {
+  beforeCreate() {
     // console.log('beforeCreate')
   },
-  created () {
+  created() {
     // console.log('created')
   },
-  async beforeMount () {
+  async beforeMount() {
     // console.log('beforeMount')
     await this.fetchInvites()
   },
-  async mounted () {
+  async mounted() {
     this.showTextLoading()
 
     this.stringOptions = [
@@ -528,55 +689,62 @@ export default {
     ]
     this.getProjects()
   },
-  beforeUpdate () {
+  beforeUpdate() {
     // console.log('beforeUpdate')
   },
-  updated () {
+  updated() {
     // console.log('updated')
   },
-  beforeUnmount () {
+  beforeUnmount() {
     // console.log('beforeUnmount')
   },
-  unmounted () {
+  unmounted() {
     // console.log('unmounted')
   },
   methods: {
-    async onUpdateSelectedProject (val) {
+    async onUpdateSelectedProject(val) {
       console.log('val', val)
       if (val) {
-        this.rows = this.rows.filter(e => e.projectId === this.selectedProject.id)
+        this.rows = this.rows.filter(
+          e => e.projectId === this.selectedProject.id
+        )
         return
       }
       await this.fetchInvites()
       await this.getProjects()
     },
-    filterProject (val, update) {
+    filterProject(val, update) {
       update(() => {
         if (val === '') {
           this.filterOptions2 = this.stringOptions2
         } else {
           const needle = val.toLowerCase()
-          this.filterOptions2 = this.stringOptions2.filter((v) =>
+          this.filterOptions2 = this.stringOptions2.filter(v =>
             v.value.toLowerCase().includes(needle.toLowerCase())
           )
         }
       })
     },
-    filterFn (val, update) {
+    filterFn(val, update) {
       update(() => {
         if (val === '') {
           this.filterOptions = this.stringOptions
         } else {
           const needle = val.toLowerCase()
-          this.filterOptions = this.stringOptions.filter((v) =>
+          this.filterOptions = this.stringOptions.filter(v =>
             v.email.toLowerCase().includes(needle.toLowerCase())
           )
         }
       })
     },
-    async resendInvite ({ invitee, subject, projectName, projectId }, index) {
+    async resendInvite({ invitee, subject, projectName, projectId }, index) {
       this.resendInviteLoader[index] = true
-      const isEmailSent = await this.$sendEmail(invitee, subject, projectName, projectId)
+      const isEmailSent = await this.$sendEmail(
+        invitee,
+        subject,
+        projectName,
+        projectId
+      )
       if (!isEmailSent) {
         this.$q.notify({
           icon: 'cancel',
@@ -588,7 +756,12 @@ export default {
         return
       }
 
-      const resp = await this.savePendingInvitation(invitee, subject, projectName, projectId)
+      const resp = await this.savePendingInvitation(
+        invitee,
+        subject,
+        projectName,
+        projectId
+      )
       this.resendInviteLoader[index] = false
       if (resp) {
         this.$q.notify({
@@ -608,27 +781,27 @@ export default {
         })
       }
     },
-    getStatusColor (rowVal) {
+    getStatusColor(rowVal) {
       if (rowVal === 'Pending') return 'warning'
       if (rowVal === 'Confirmed') return 'info'
       if (rowVal === 'Rejected') return 'negative'
     },
-    getStatusIcon (rowVal) {
+    getStatusIcon(rowVal) {
       if (rowVal === 'Pending') return 'las la-history'
       if (rowVal === 'Confirmed') return 'las la-check'
       if (rowVal === 'Rejected') return 'las la-times'
     },
-    showTextLoading () {
+    showTextLoading() {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
       this.visible = true
       setTimeout(() => {
         this.visible = false
       }, ms)
     },
-    async fetchInvites () {
+    async fetchInvites() {
       this.rowLoading = true
       const invites = await this.$fbref(this.$fbdb, 'invites')
-      this.$fbonValue(invites, (snapshot) => {
+      this.$fbonValue(invites, snapshot => {
         const data = snapshot.val()
         if (this.$isFalsyString(data)) {
           this.visible = false
@@ -637,9 +810,12 @@ export default {
         }
         const data_ = Object.values(data)
         this.rows = data_
-        this.rows.forEach((item) => {
+        this.rows.forEach(item => {
           item.dateSent = date.formatDate(item._ts, 'MMM DD, YYYY HH:mm A')
-          item.dateResponded = date.formatDate(item.dateResponded, 'MMM DD, YYYY HH:mm A')
+          item.dateResponded = date.formatDate(
+            item.dateResponded,
+            'MMM DD, YYYY HH:mm A'
+          )
           item.id = uid()
           item.resend = false
         })
@@ -647,7 +823,7 @@ export default {
         this.rowLoading = false
       })
     },
-    async sendInvitation () {
+    async sendInvitation() {
       try {
         this.sendEmailLoader = true
         const { testPattern } = patterns
@@ -685,12 +861,20 @@ export default {
         const projectName = this.selectedProject.title
         const projectId = this.selectedProject.id
         console.log({
-          recepients, subject, projectName, projectId
+          recepients,
+          subject,
+          projectName,
+          projectId
         })
-        trimmedRecipients.forEach((e) => {
+        trimmedRecipients.forEach(e => {
           this.$sendEmail(e, subject, projectName, projectId)
         })
-        const resp = await this.savePendingInvitation(recepients, subject, projectName, projectId)
+        const resp = await this.savePendingInvitation(
+          recepients,
+          subject,
+          projectName,
+          projectId
+        )
         if (resp) {
           this.$q.notify({
             icon: 'check_circle',
@@ -720,7 +904,7 @@ export default {
         console.log(e)
       }
     },
-    async savePendingInvitation (recepients, subject, projectName, projectId) {
+    async savePendingInvitation(recepients, subject, projectName, projectId) {
       let invitee = []
       if (recepients.includes(',')) {
         invitee = recepients.split(',')
@@ -728,7 +912,7 @@ export default {
         invitee = [recepients]
       }
       const updates = {}
-      invitee.forEach((item) => {
+      invitee.forEach(item => {
         const record = {
           subject,
           projectName,
@@ -747,27 +931,27 @@ export default {
           console.log('Successfully inserted to DB')
           return true
         })
-        .catch((error) => {
+        .catch(error => {
           console.log({ error })
           return false
         })
     },
-    async getProjects () {
+    async getProjects() {
       console.log('getProjects fired..')
       this.getProjectsLoader = true
       const projects = this.$fbref(this.$fbdb, 'projects')
-      this.$fbonValue(projects, (snapshot) => {
+      this.$fbonValue(projects, snapshot => {
         const data = snapshot.val()
         if (this.$isFalsyString(data)) {
           this.stringOptions2 = []
           return
         }
         const data_ = Object.values(data)
-        data_.forEach((e) => {
+        data_.forEach(e => {
           e.label = e.title
           e.value = e.title
         })
-        this.stringOptions2 = data_.filter((e) => e.isActivated)
+        this.stringOptions2 = data_.filter(e => e.isActivated)
         this.getProjectsLoader = false
       })
     }
@@ -776,8 +960,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 :deep(.q-separator--horizontal) {
-    display: block;
-    height: .1px;
+  display: block;
+  height: 0.1px;
 }
 .q-menu {
   border-bottom-left-radius: 10px;

@@ -5,3 +5,7 @@
 /node_modules
 .eslintrc.js
 /quasar.config.*.temporary.compiled*
+/src-electron
+/src-pwa
+.firebase
+/assets

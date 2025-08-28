@@ -14,6 +14,6 @@ export const INITIAL_EVENTS = [
   }
 ]
 
-export function createEventId () {
+export function createEventId() {
   return String(eventGuid++)
 }

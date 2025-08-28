@@ -250,38 +250,67 @@
     :class="{
       'bg-light': !$q.dark.isActive,
       'bg-black': $q.dark.isActive
-    }">
-
+    }"
+  >
     <q-header elevated>
       <q-toolbar>
         <div class="row justify-between full-width items-center">
           <q-btn flat round dense icon="menu" />
 
           <!-- <q-toolbar-title><small>{{ 'Hofstee' }}</small></q-toolbar-title> -->
-           <div class="column items-center justify-center">
+          <div class="column items-center justify-center">
             <strong class="caption text-h5">{{ 'Hofstee' }}</strong>
             <!-- <small>{{ routeName }}</small> -->
-           </div>
+          </div>
 
-          <div class="" style="min-width: 20px;">
-            <div class="" v-if="mainStore.showNav || routeName === 'mobile.my-profile'">
+          <div class="" style="min-width: 20px">
+            <div
+              v-if="mainStore.showNav || routeName === 'mobile.my-profile'"
+              class=""
+            >
               <q-avatar>
-                <img :src="obj?.avatar?.length > 0 ? `${obj.avatar}` : `default-user.jpeg`" />
-                <HofsteeAvatar :src="obj?.avatar?.length > 0 ? `${obj.avatar}` : `default-user.jpeg`" size="30px" />
+                <img
+                  :src="
+                    obj?.avatar?.length > 0
+                      ? `${obj.avatar}`
+                      : `default-user.jpeg`
+                  "
+                />
+                <HofsteeAvatar
+                  :src="
+                    obj?.avatar?.length > 0
+                      ? `${obj.avatar}`
+                      : `default-user.jpeg`
+                  "
+                  size="30px"
+                />
               </q-avatar>
-              <q-menu style="border-radius: 10px;"
-                :class="[$q.dark.isActive ? 'bg-contrast text-accent no-shadow' : 'bg-light text-primary']"
-                :offset="[13, 16]">
-                <template v-slot:activator="{ on }">
+              <q-menu
+                style="border-radius: 10px"
+                :class="[
+                  $q.dark.isActive
+                    ? 'bg-contrast text-accent no-shadow'
+                    : 'bg-light text-primary'
+                ]"
+                :offset="[13, 16]"
+              >
+                <template #activator="{ on }">
                   <q-btn flat dense icon="more_vert" v-on="on" />
                 </template>
                 <q-list style="min-width: 200px">
                   <q-item>
                     <q-item-section>Dark Mode</q-item-section>
                     <q-item-section side>
-                      <q-toggle v-if="mainStore.showNav || routeName === 'MyProfile'" dense v-model="isDark"
-                        checked-icon="las la-moon" color="grey" unchecked-icon="las la-sun" label=""
-                        @update:model-value="toggleMode" />
+                      <q-toggle
+                        v-if="mainStore.showNav || routeName === 'MyProfile'"
+                        v-model="isDark"
+                        dense
+                        checked-icon="las la-moon"
+                        color="grey"
+                        unchecked-icon="las la-sun"
+                        label=""
+                        @update:model-value="toggleMode"
+                      />
                       <!-- <q-btn-toggle
                             v-if="mainStore.showNav || routeName === 'MyProfile'"
                             v-model="isDark"
@@ -311,13 +340,13 @@
                           </q-btn-toggle> -->
                     </q-item-section>
                   </q-item>
-                  <q-item clickable v-ripple :to="`/profile/${authUser.uid}`">
+                  <q-item v-ripple clickable :to="`/profile/${authUser.uid}`">
                     <q-item-section>My Profile</q-item-section>
                     <q-item-section side>
                       <UserIcon size="20" />
                     </q-item-section>
                   </q-item>
-                  <q-item clickable v-ripple @click="signOut">
+                  <q-item v-ripple clickable @click="signOut">
                     <q-item-section>Logout</q-item-section>
                     <q-item-section side>
                       <Log-outIcon size="18" />
@@ -331,42 +360,75 @@
       </q-toolbar>
     </q-header>
 
-    <q-page-container style="padding-bottom: 180px;">
-      <router-view @emitFromChild="emitFromChild" />
+    <q-page-container style="padding-bottom: 180px">
+      <router-view @emit-from-child="emitFromChild" />
     </q-page-container>
 
-    <div v-if="
-      !routeName.includes('project.details') &&
-      routeName !== 'mobile.userlogin' &&
-      routeName !== 'mobile.my-profile' &&
-      routeName !== 'mobile.login-register'"
-      class="bottom-nav-container">
-      <q-bottom-navigation class="modern-bottom-nav shadow-4" active-color="white" glossy :class="{
+    <div
+      v-if="
+        !routeName.includes('project.details') &&
+        routeName !== 'mobile.userlogin' &&
+        routeName !== 'mobile.my-profile' &&
+        routeName !== 'mobile.login-register'
+      "
+      class="bottom-nav-container"
+    >
+      <q-bottom-navigation
+        class="modern-bottom-nav shadow-4"
+        active-color="white"
+        glossy
+        :class="{
           'bg-light': !$q.dark.isActive,
           'bg-primary text-accent': $q.dark.isActive
-        }">
-        <q-btn round flat @click="$router.push({ path: `/dashboard` }); activeTab='dashboard';" :class="{ 'text-purple': activeTab === 'dashboard' }">
+        }"
+      >
+        <q-btn
+          round
+          flat
+          :class="{ 'text-purple': activeTab === 'dashboard' }"
+          @click="activatePage('dashboard')"
+        >
           <div class="column justify-start items-center">
             <HomeIcon size="24" />
             <!-- <span style="font-size: 10px;" class="text-capitalize text-caption">Home</span> -->
           </div>
         </q-btn>
-        <q-btn round flat @click="$router.push({ path: `/projects` }); activeTab='projects';" :class="{ 'text-purple': activeTab === 'projects' }">
+        <q-btn
+          round
+          flat
+          :class="{ 'text-purple': activeTab === 'projects' }"
+          @click="activatePage('projects')"
+        >
           <div class="column justify-start items-center">
             <ListIcon size="24" />
           </div>
         </q-btn>
-        <q-btn round flat @click="activeTab='search';" :class="{ 'text-purple': activeTab === 'search' }">
+        <q-btn
+          round
+          flat
+          :class="{ 'text-purple': activeTab === 'search' }"
+          @click="activatePage('search')"
+        >
           <div class="column justify-start items-center">
             <SearchIcon size="24" />
           </div>
         </q-btn>
-        <q-btn round flat @click="$router.push({ path: `/plans` }); activeTab='plans';" :class="{ 'text-purple': activeTab === 'plans' }">
+        <q-btn
+          round
+          flat
+          :class="{ 'text-purple': activeTab === 'plans' }"
+          @click="activatePage('plans')"
+        >
           <div class="column justify-start items-center">
             <CalendarIcon size="24" />
           </div>
         </q-btn>
-        <q-btn round flat @click="$router.push(`/profile/${authUser.uid}`); activeTab='profile';" :class="{ 'text-purple': activeTab === 'profile' }">
+        <q-btn
+          round
+          flat
+          :class="{ 'text-purple': activeTab === 'profile' }"
+          @click="activatePage('profile')"
+        >
           <div class="column justify-start items-center">
             <UserIcon size="24" />
           </div>
@@ -378,7 +440,6 @@
         Analytics
       </div> -->
     </div>
-
   </q-layout>
 </template>
 
@@ -389,7 +450,7 @@ import { LocalStorage, useQuasar } from 'quasar'
 import { useThemeStore } from 'stores/theme'
 
 export default {
-  setup () {
+  setup() {
     const themeStore = useThemeStore()
     const leftDrawerOpen = ref(false)
     const deviceIsReady = ref(false)
@@ -419,33 +480,51 @@ export default {
       breadcrumbs: [],
       leftDrawerOpen,
       link: ref(''),
-      toggleLeftDrawer () {
+      toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value
       },
       lorem: 'Lorem ipsum dolor',
       obj: ref({})
     }
   },
-  async mounted () {
+  computed: {
+    routeName: function () {
+      return this.$route.name
+    },
+    avatar: function () {
+      return this.obj?.avatar || null
+    }
+  },
+  async mounted() {
     this.authUser = LocalStorage.getItem('authUser')
     console.log('MainLayout monunter')
     this.themeStore.setCurrentTheme(17) // 1,17, 20(light), 22(light)
     await this.fetchUserProfile()
   },
   methods: {
-    emitFromChild () {
+    activatePage(page) {
+      if (page == 'profile') {
+        this.$router.push(`/profile/${this.authUser.uid}`)
+        this.activeTab = 'profile'
+
+        return
+      }
+      this.$router.push({ path: `/${page}` })
+      this.activeTab = page
+    },
+    emitFromChild() {
       console.log('emitFromChild..')
       this.fetchUserProfile()
     },
-    async fetchUserProfile () {
+    async fetchUserProfile() {
       this.authUser = LocalStorage.getItem('authUser')
       const users = this.$fbref(this.$fbdb, `users/${this.authUser.uid}`)
-      this.$fbonValue(users, (snapshot) => {
+      this.$fbonValue(users, snapshot => {
         const data = snapshot.val()
         this.obj = data
       })
     },
-    toggleMode (val) {
+    toggleMode(val) {
       this.$q.dark.isActive = val
       if (val) {
         this.$q.addressbarColor.set('#000000')
@@ -453,12 +532,12 @@ export default {
         this.$q.addressbarColor.set('#25252b')
       }
     },
-    showHeader (arg, breadcrumbs) {
+    showHeader(arg, breadcrumbs) {
       console.log('--receiving emits from login page', arg)
       this.headerState = arg
       this.breadcrumbs = breadcrumbs
     },
-    signOut () {
+    signOut() {
       console.log('logging out..')
       this.link = 'signout'
       LocalStorage.removeItem('authUser')
@@ -468,14 +547,6 @@ export default {
       this.mainStore.mobileSelectedProject = null
       this.mainStore.showNav = false
       this.$router.push('/login')
-    }
-  },
-  computed: {
-    routeName: function () {
-      return this.$route.name
-    },
-    avatar: function () {
-      return this.obj?.avatar || null
     }
   }
 }

@@ -1,28 +1,41 @@
 <template>
   <q-card class="no-border-radius no-shadow bg-transparent">
-    <q-img :src="`${mainStore?.mobileSelectedProject?.avatarFullPath}`" height="160px">
+    <q-img
+      :src="`${mainStore?.mobileSelectedProject?.avatarFullPath}`"
+      height="160px"
+    >
       <div class="absolute-bottom q-mt-none row justify-between items-center">
         <div>
           <q-btn
+            v-if="
+              $route.path === `/detail/${mainStore?.mobileSelectedProject?.id}`
+            "
             color="primary"
-            rounded v-if="this.$route.path === `/detail/${mainStore?.mobileSelectedProject?.id}`"
+            rounded
             class="text-accent round-btn"
-            @click="this.$router.push('/projects')">
+            @click="$router.push('/projects')"
+          >
             <template #default>
-              <ArrowLeftIcon size="18"/>
+              <ArrowLeftIcon size="18" />
             </template>
           </q-btn>
         </div>
-        <div class="text-h6" v-ellipsis="20">{{ mainStore?.mobileSelectedProject?.title }}</div>
+        <div v-ellipsis="20" class="text-h6">
+          {{ mainStore?.mobileSelectedProject?.title }}
+        </div>
         <div>
           <q-btn
+            v-if="
+              $route.path === `/detail/${mainStore?.mobileSelectedProject?.id}`
+            "
             disabled
             color="primary"
-            rounded v-if="this.$route.path === `/detail/${mainStore?.mobileSelectedProject?.id}`"
+            rounded
             class="text-accent round-btn"
-            @click="this.$router.push({ path: '/new-member' })">
+            @click="$router.push({ path: '/new-member' })"
+          >
             <template #default>
-              <UserPlusIcon size="18"/>
+              <UserPlusIcon size="18" />
             </template>
           </q-btn>
         </div>
@@ -31,13 +44,18 @@
     <q-card-section flat class="q-ma-none q-pa-none">
       <div class="column full-width gap-10 q-pa-sm">
         <div class="row justify-start">
-          <strong class="text-bold text-h6" :class="{
-            'text-accent': $q.dark.isActive,
-            'text-primary': !$q.dark.isActive
-          }">Project Member</strong>
+          <strong
+            class="text-bold text-h6"
+            :class="{
+              'text-accent': $q.dark.isActive,
+              'text-primary': !$q.dark.isActive
+            }"
+          >
+            Project Member
+          </strong>
         </div>
         <q-list class="scroll pb-10" style="">
-          <q-item clickable v-ripple v-for="item of invites" :key="item">
+          <q-item v-for="item of invites" :key="item" v-ripple clickable>
             <q-item-section avatar>
               <q-avatar>
                 <img :src="`${item?.avatar || 'default-user.jpeg'}`" />
@@ -46,11 +64,16 @@
 
             <q-item-section>
               <q-item-label caption lines="2">
-                <span class="text-weight-bold" :class="{
-                  'text-primary': !$q.dark.isActive,
-                  'text-accent': $q.dark.isActive,
-                  'text-capitalize': !item?.noSignUpYet
-                }">{{ item?.fullName }}</span>
+                <span
+                  class="text-weight-bold"
+                  :class="{
+                    'text-primary': !$q.dark.isActive,
+                    'text-accent': $q.dark.isActive,
+                    'text-capitalize': !item?.noSignUpYet
+                  }"
+                >
+                  {{ item?.fullName }}
+                </span>
               </q-item-label>
               <q-item-label caption lines="1">
                 <span class="text-weight-light">{{ item?.userTitle }}</span>
@@ -58,7 +81,13 @@
             </q-item-section>
 
             <q-item-section side top>
-              <q-chip square :dense="true" :color="getColor(item)" text-color="white" :icon="getIcon(item)">
+              <q-chip
+                square
+                :dense="true"
+                :color="getColor(item)"
+                text-color="white"
+                :icon="getIcon(item)"
+              >
                 <small>{{ item?.role }}</small>
               </q-chip>
             </q-item-section>
@@ -66,7 +95,12 @@
         </q-list>
       </div>
     </q-card-section>
-    <q-inner-loading :showing="visible" label="Please wait..." label-class="text-teal" label-style="font-size: 1.1em">
+    <q-inner-loading
+      :showing="visible"
+      label="Please wait..."
+      label-class="text-teal"
+      label-style="font-size: 1.1em"
+    >
       <q-spinner-ios size="50px" color="secondary" />
     </q-inner-loading>
   </q-card>
@@ -78,7 +112,7 @@ import ellipsis from 'src/directives/ellipsis'
 
 export default {
   directives: { ellipsis },
-  setup () {
+  setup() {
     const visible = ref(false)
     const mainStore = useMainStore()
 
@@ -94,12 +128,12 @@ export default {
       selectedProject: ref({})
     }
   },
-  async mounted () {
+  async mounted() {
     this.visible = true
     await this.fetchAllUsers() // fetchAllInvites was called in the last part of fetchAllUsers()
   },
   methods: {
-    getColor (item) {
+    getColor(item) {
       if (item.role === 'admin') {
         return 'primary'
       } else if (item.role === 'client') {
@@ -110,8 +144,12 @@ export default {
         return 'negative'
       }
     },
-    getIcon (item) {
-      if (item.role !== 'admin' && item.role !== 'client' && item.role !== 'agent') {
+    getIcon(item) {
+      if (
+        item.role !== 'admin' &&
+        item.role !== 'client' &&
+        item.role !== 'agent'
+      ) {
         if (item.status === 'Pending') {
           return 'las la-user-clock'
         } else if (item.status === 'Confirmed') {
@@ -127,10 +165,10 @@ export default {
         return 'las la-user-secret'
       }
     },
-    async fetchAllUsers () {
+    async fetchAllUsers() {
       this.getUsersLoader = true
       const users = this.$fbref(this.$fbdb, 'users')
-      this.$fbonValue(users, async (snapshot) => {
+      this.$fbonValue(users, async snapshot => {
         const data = snapshot.val()
         if (this.$isFalsyString(data)) {
           this.users = []
@@ -142,27 +180,32 @@ export default {
         this.getUsersLoader = false
       })
     },
-    async fetchAllInvites () {
+    async fetchAllInvites() {
       this.getInvitesLoader = true
       const invites = this.$fbref(this.$fbdb, 'invites')
-      this.$fbonValue(invites, (snapshot) => {
+      this.$fbonValue(invites, snapshot => {
         const data = snapshot.val()
         if (this.$isFalsyString(data)) {
           this.invites = []
           return
         }
         const data_ = Object.values(data)
-        this.invites = data_.filter((e) => e.projectId === this.$route.params.projectId)
+        this.invites = data_.filter(
+          e => e.projectId === this.$route.params.projectId
+        )
 
         // get invitees
-        this.invites.forEach((item) => {
-          const resp = this.users.find((e) => e.email === item.invitee)
+        this.invites.forEach(item => {
+          const resp = this.users.find(e => e.email === item.invitee)
           if (resp) {
             item.firstName = resp?.firstName
             item.lastName = resp?.lastName
             item.role = resp?.role
             item.avatar = resp?.avatar
-            item.fullName = (resp?.firstName || resp?.lastName) ? `${resp?.firstName} ${resp?.lastName}` : item.invitee
+            item.fullName =
+              resp?.firstName || resp?.lastName
+                ? `${resp?.firstName} ${resp?.lastName}`
+                : item.invitee
           } else {
             item.fullName = item.invitee
             item.avatar = undefined
@@ -171,34 +214,46 @@ export default {
         })
 
         // get admin details
-        const resp = this.users.find((e) => e.uid === this.mainStore?.mobileSelectedProject?.createdBy)
+        const resp = this.users.find(
+          e => e.uid === this.mainStore?.mobileSelectedProject?.createdBy
+        )
         this.invites.unshift({
           role: resp?.role,
           userTitle: resp?.role,
-          fullName: (resp?.firstName || resp?.lastName) ? `${resp?.firstName} ${resp?.lastName}` : resp?.email,
+          fullName:
+            resp?.firstName || resp?.lastName
+              ? `${resp?.firstName} ${resp?.lastName}`
+              : resp?.email,
           avatar: resp?.avatar,
           uid: resp?.uid
         })
 
         // get agent details
-        for (const item of this.mainStore?.mobileSelectedProject?.agent) {
-          const agent = this.users.find((e) => e.email === item.email)
+        for (const item of this.mainStore?.mobileSelectedProject?.agent || []) {
+          const agent = this.users.find(e => e.email === item.email)
           this.invites.unshift({
             role: 'agent',
             userTitle: 'agent',
-            fullName: (agent?.firstName || agent?.lastName) ? `${agent?.firstName} ${agent?.lastName}` : agent?.email || item.email,
+            fullName:
+              agent?.firstName || agent?.lastName
+                ? `${agent?.firstName} ${agent?.lastName}`
+                : agent?.email || item.email,
             avatar: agent?.avatar,
             uid: agent?.uid
           })
         }
 
         // get client details
-        for (const client of this.mainStore?.mobileSelectedProject?.client) {
-          const owner = this.users.find((e) => e.email === client.email)
+        for (const client of this.mainStore?.mobileSelectedProject?.client ||
+          []) {
+          const owner = this.users.find(e => e.email === client.email)
           this.invites.unshift({
             role: 'client',
             userTitle: 'client',
-            fullName: (owner?.firstName || owner?.lastName) ? `${owner?.firstName} ${owner?.lastName}` : owner?.email || client.email,
+            fullName:
+              owner?.firstName || owner?.lastName
+                ? `${owner?.firstName} ${owner?.lastName}`
+                : owner?.email || client.email,
             avatar: owner?.avatar,
             uid: owner?.uid
           })
@@ -219,9 +274,11 @@ export default {
   height: calc(100vh - 81px);
 }
 .q-item {
-    min-height: 48px;
-    padding: 8px 0px!important;
-    color: inherit;
-    transition: color 0.3s, background-color 0.3s;
+  min-height: 48px;
+  padding: 8px 0px !important;
+  color: inherit;
+  transition:
+    color 0.3s,
+    background-color 0.3s;
 }
 </style>

@@ -14,7 +14,6 @@
   src: url(fonts/Dhanix5-Light.ttf);
 }
 
-
 @font-face {
   font-family: 'Dhanixblue';
   src: url(fonts/Dhanixblue-Light.ttf);
@@ -76,7 +75,7 @@
 }
 
 @font-face {
-  font-family: 'inter';
+  font-family: 'inter_';
   src: url(fonts/Inter.ttc) format('truetype');
   font-weight: 100 900;
   font-display: swap;
@@ -87,6 +86,15 @@
   src: url(fonts/Raleway-Regular.ttf);
 }
 
+@font-face {
+  font-family: 'inter';
+  src: url(fonts/inter/Inter-Regular.ttf);
+}
+
+@font-face {
+  font-family: 'interLight';
+  src: url(fonts/inter/Inter-Light.ttf);
+}
 
 .main-layout {
   // font-family: 'inter', sans-serif;
@@ -99,16 +107,16 @@
   overflow: hidden;
 }
 
-
-
 body {
   // font-family: 'inter', sans-serif;
-  font-family: 'iosevkaAileLight';
+  // font-family: 'iosevkaAileLight';
+  font-family: 'inter';
   // font-feature-settings: 'cv13' 1, 'calt' 1;
   // font-variation-settings: 'wght' 200;
   // font-family: 'Inter';
   // font-family: 'inter', sans-serif;
   // font-weight: 400;
+  background: #f0f0f0;
 }
 
 .cv12-text {
@@ -139,10 +147,10 @@ body {
 }
 
 .q-toggle__track {
- height: 24px;
- border-radius: 13px;
- margin-top: -6px;
- width: 37px;
+  height: 24px;
+  border-radius: 13px;
+  margin-top: -6px;
+  width: 37px;
 }
 
 .q-toggle__thumb {
@@ -155,8 +163,8 @@ body {
 }
 
 .q-toggle--dense .q-toggle__thumb {
- top: 0;
- left: 2.5px;
+  top: 0;
+  left: 2.5px;
 }
 
 .q-field--filled .q-field__control {
@@ -173,26 +181,28 @@ body {
 }
 
 .q-message-text--received {
-    border-radius: 12px 12px 12px 0;
+  border-radius: 12px 12px 12px 0;
 }
 
 .q-message-text--sent {
-    color: #e0e0e0;
-    border-radius: 12px 12px 0 12px;
+  color: #e0e0e0;
+  border-radius: 12px 12px 0 12px;
 }
 
 .q-date__header {
-    border-top-left-radius: inherit;
-    color: #fff;
-    background-color: transparent;
-    padding: 16px;
+  border-top-left-radius: inherit;
+  color: #fff;
+  background-color: transparent;
+  padding: 16px;
 }
 
 .q-item {
-    min-height: 48px;
-    padding: 8px 10px;
-    color: inherit;
-    transition: color 0.3s, background-color 0.3s;
+  min-height: 48px;
+  padding: 8px 10px;
+  color: inherit;
+  transition:
+    color 0.3s,
+    background-color 0.3s;
 }
 
 .q-uploader__list {
@@ -204,14 +214,19 @@ body {
 }
 
 .q-drawer--left.q-drawer--bordered {
-  border-right: .0.1px solid #000000 !important;
+  border-right: 0.1px solid #000000 !important;
 }
 
-.q-list--dark.q-list--separator > .q-item-type + .q-item-type, .q-list--dark.q-list--separator > .q-virtual-scroll__content > .q-item-type + .q-item-type {
+.q-list--dark.q-list--separator > .q-item-type + .q-item-type,
+.q-list--dark.q-list--separator
+  > .q-virtual-scroll__content
+  > .q-item-type
+  + .q-item-type {
   border-top-color: rgb(255 255 255 / 8%);
 }
 
-.q-list--separator > .q-item-type + .q-item-type, .q-list--separator > .q-virtual-scroll__content > .q-item-type + .q-item-type {
+.q-list--separator > .q-item-type + .q-item-type,
+.q-list--separator > .q-virtual-scroll__content > .q-item-type + .q-item-type {
   border-top: 1px solid rgb(0 0 0 / 5%);
 }
 
@@ -331,62 +346,62 @@ body {
 
 $weights: 100, 200, 300, 400, 500, 600, 700, 800, 900;
 @each $i in $weights {
-    .f-w-#{$i} {
-        font-weight: #{$i};
-    }
+  .f-w-#{$i} {
+    font-weight: #{$i};
+  }
 }
 
 @for $i from 0 through 100 {
-    .gap-#{$i} {
-        gap: #{$i}px;
-    }
+  .gap-#{$i} {
+    gap: #{$i}px;
+  }
 
-    .height-#{$i} {
-      height: #{$i}#{'%'};
-    }
+  .height-#{$i} {
+    height: #{$i}#{'%'};
+  }
 }
 
 @for $i from 1 through 1920 {
   .width-px-#{$i} {
-    width: #{$i}#{"px"};
+    width: #{$i}#{'px'};
   }
 
   .max-width-px-#{$i} {
-    max-width: #{$i}#{"px"};
+    max-width: #{$i}#{'px'};
   }
 
   .min-width-px-#{$i} {
-    min-width: #{$i}#{"px"};
+    min-width: #{$i}#{'px'};
   }
 
   .height-px-#{$i} {
-    height: #{$i}#{"px"};
+    height: #{$i}#{'px'};
   }
 
   .max-height-px-#{$i} {
-    max-height: #{$i}#{"px"};
+    max-height: #{$i}#{'px'};
   }
 }
 
 .debug {
   // border: .1px dashed rgba(4, 250, 230, 0.5);
-  border: .1px dashed coral;
+  border: 0.1px dashed coral;
 }
 
 .debug1 {
-  border: .1px dashed rgb(255, 127, 80, .5);
+  border: 0.1px dashed rgb(255, 127, 80, 0.5);
 }
 
 .debug2 {
-  border: .1px dashed rgb(184, 58, 58);
+  border: 0.1px dashed rgb(184, 58, 58);
 }
 
 .debug3 {
-  border: .1px dashed rgba(42, 228, 32, 0.5);
+  border: 0.1px dashed rgba(42, 228, 32, 0.5);
 }
 
 .debugcontainer {
-  border: .1px dashed rgba(162, 255, 80, 0.5);
+  border: 0.1px dashed rgba(162, 255, 80, 0.5);
 }
 
 .bg-contrast {
@@ -408,7 +423,7 @@ $weights: 100, 200, 300, 400, 500, 600, 700, 800, 900;
 
 .popupSelectContent {
   border-radius: 8px;
-  margin-top: .2em !important;
+  margin-top: 0.2em !important;
 
   &.dark {
     background-color: #484850;
@@ -445,18 +460,18 @@ $weights: 100, 200, 300, 400, 500, 600, 700, 800, 900;
 }
 :deep(.fc-theme-standard td),
 :deep(.fc-theme-standard th) {
-  border: .1px solid rgb(198 198 198 / 50%)
+  border: 0.1px solid rgb(198 198 198 / 50%);
 }
 :deep(.fc .fc-scrollgrid) {
-    border-bottom-width: 0px;
-    border-collapse: separate;
-    border-right-width: 0px;
-    border-left-width: 0px;
-    border-top-width: 0px;
+  border-bottom-width: 0px;
+  border-collapse: separate;
+  border-right-width: 0px;
+  border-left-width: 0px;
+  border-top-width: 0px;
 }
 :deep(.q-separator--horizontal) {
-    display: block;
-    height: .1px;
+  display: block;
+  height: 0.1px;
 }
 
 .bottom-nav-container {

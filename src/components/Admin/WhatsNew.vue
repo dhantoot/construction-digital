@@ -1,11 +1,14 @@
 <template>
-  <div class="row hide-scrollbar" :style="{height: $q.screen.lt.sm ? 'auto' : '94.5vh;'}">
+  <div
+    class="row hide-scrollbar"
+    :style="{ height: $q.screen.lt.sm ? 'auto' : '94.5vh;' }"
+  >
     <div class="row full-width full-height q-pa-sm">
       <q-card class="full-width round-panel no-shadow">
         <q-card-section>
           <HofsteeAlert>
             <template #icon>
-              <q-icon name="las la-info-circle" color="primary" size="xs"/>
+              <q-icon name="las la-info-circle" color="primary" size="xs" />
             </template>
             <template #header>
               <b>Comming soon...</b>
@@ -41,7 +44,14 @@ import HofsteeAlert from '../Common/Alert/HofsteeAlert.vue'
 // Alternatively, if using UMD, load animate.css from CDN.
 export default {
   title: 'ProjectList',
-  setup () {
+  components: {
+    HofsteeAlert
+  },
+  props: {
+    title: String,
+    likes: Number
+  },
+  setup() {
     const visible = ref(false)
     const question = ref('')
     const $q = useQuasar()
@@ -50,7 +60,7 @@ export default {
       visible,
       question,
       q: $q,
-      initFunction () {
+      initFunction() {
         // access setup variables here w/o using 'this'
         // console.log('initFunction called', visible.value)
         this.q.screen.setSizes({ xxs: 400 })
@@ -59,45 +69,38 @@ export default {
       }
     }
   },
-  props: {
-    title: String,
-    likes: Number
-  },
-  components: {
-    HofsteeAlert
-  },
   computed: {
     test: function () {
       return "I'm computed hook"
     }
   },
-  beforeCreate () {
+  beforeCreate() {
     // console.log('beforeCreate')
   },
-  created () {
+  created() {
     // console.log('created')
   },
-  beforeMount () {
+  beforeMount() {
     // console.log('beforeMount')
   },
-  mounted () {
+  mounted() {
     // this.$emit('showHeader', true, [])
     this.showTextLoading()
   },
-  beforeUpdate () {
+  beforeUpdate() {
     // console.log('beforeUpdate')
   },
-  updated () {
+  updated() {
     // console.log('updated')
   },
-  beforeUnmount () {
+  beforeUnmount() {
     // console.log('beforeUnmount')
   },
-  unmounted () {
+  unmounted() {
     // console.log('unmounted')
   },
   methods: {
-    showTextLoading () {
+    showTextLoading() {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
       // console.log('loaded in ', ms, ' ms')
       this.visible = true

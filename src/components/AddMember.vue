@@ -4,42 +4,27 @@
       <strong class="text-h6 text-bold text-white">Add Member</strong>
     </div>
     <div class="column gap-10">
-      <q-input
-        :dense="true"
-        filled
-        v-model="fname"
-        placeholder="First Name"
-      />
-      <q-input
-        :dense="true"
-        filled
-        v-model="lname"
-        placeholder="Last Name"
-      />
+      <q-input v-model="fname" :dense="true" filled placeholder="First Name" />
+      <q-input v-model="lname" :dense="true" filled placeholder="Last Name" />
       <q-select
+        v-model="role"
         behavior="menu"
         popup-content-class="popupSelectContent"
-        v-model="role"
         :dense="true"
         filled
         label="Role"
         :options="options"
-        @filter="filterFn"
         input-debounce="0"
         clearable
+        @filter="filterFn"
       >
-        <template v-slot:no-option>
+        <template #no-option>
           <q-item>
-            <q-item-section class="text-grey"> No results </q-item-section>
+            <q-item-section class="text-grey">No results</q-item-section>
           </q-item>
         </template>
       </q-select>
-      <q-input
-        :dense="true"
-        filled
-        v-model="text"
-        placeholder="Project Name"
-      />
+      <q-input v-model="text" :dense="true" filled placeholder="Project Name" />
       <q-input
         v-model="desc"
         :dense="true"
@@ -100,27 +85,34 @@
     />
   </div> -->
 
-  <div class="row full-width q-px-lg q-py-sm justify-between items-start absolute fixed-bottom" style="margin-bottom:82px">
+  <div
+    class="row full-width q-px-lg q-py-sm justify-between items-start absolute fixed-bottom"
+    style="margin-bottom: 82px"
+  >
     <div>
-      <q-btn class="round-btn" color="primary" icon="las la-arrow-left" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/>
+      <q-btn
+        class="round-btn"
+        color="primary"
+        icon="las la-arrow-left"
+        @click="$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"
+      />
     </div>
     <div>
       <q-btn
-        @click="addMember"
         color="primary"
         label="Add Member"
         class="text-capitalize text-accent round-btn"
         :loading="loadingSubmit"
         icon="las la-plus"
+        @click="addMember"
       >
-        <template v-slot:loading>
-          <q-spinner-ios class="on-left"/>
+        <template #loading>
+          <q-spinner-ios class="on-left" />
           Saving...
         </template>
       </q-btn>
     </div>
   </div>
-
 </template>
 <script>
 import { ref } from 'vue'
@@ -132,7 +124,11 @@ import { useMainStore } from 'stores/main'
 // Alternatively, if using UMD, load animate.css from CDN.
 export default {
   title: 'ProjectList',
-  setup () {
+  props: {
+    title: String,
+    likes: Number
+  },
+  setup() {
     const options = ref(stringOptions)
     const visible = ref(false)
     const mainStore = useMainStore()
@@ -146,7 +142,7 @@ export default {
       text: ref(null),
       desc: ref(null),
       options,
-      filterFn (val, update) {
+      filterFn(val, update) {
         if (val === '') {
           update(() => {
             options.value = stringOptions
@@ -160,36 +156,32 @@ export default {
         update(() => {
           const needle = val.toLowerCase()
           options.value = stringOptions.filter(
-            (v) => v.toLowerCase().indexOf(needle) > -1
+            v => v.toLowerCase().indexOf(needle) > -1
           )
         })
       },
       visible,
-      initFunction () {
+      initFunction() {
         // access setup variables here w/o using 'this'
         // console.log('initFunction called', visible.value)
       }
     }
-  },
-  props: {
-    title: String,
-    likes: Number
   },
   computed: {
     test: function () {
       return "I'm computed hook"
     }
   },
-  beforeCreate () {
+  beforeCreate() {
     // console.log('beforeCreate')
   },
-  created () {
+  created() {
     // console.log('created')
   },
-  beforeMount () {
+  beforeMount() {
     // console.log('beforeMount')
   },
-  mounted () {
+  mounted() {
     this.showTextLoading()
     // this.$emit('showHeader', false, [
     //   {
@@ -199,20 +191,20 @@ export default {
     //   }
     // ])
   },
-  beforeUpdate () {
+  beforeUpdate() {
     // console.log('beforeUpdate')
   },
-  updated () {
+  updated() {
     // console.log('updated')
   },
-  beforeUnmount () {
+  beforeUnmount() {
     // console.log('beforeUnmount')
   },
-  unmounted () {
+  unmounted() {
     // console.log('unmounted')
   },
   methods: {
-    showTextLoading () {
+    showTextLoading() {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
       // console.log('loaded in ', ms, ' ms')
       this.visible = true
@@ -220,7 +212,7 @@ export default {
         this.visible = false
       }, ms)
     },
-    addMember () {
+    addMember() {
       console.log('Adding member')
     }
   }

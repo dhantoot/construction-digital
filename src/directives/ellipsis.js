@@ -2,7 +2,7 @@
 // import { Directive } from 'vue'
 
 const ellipsis = {
-  mounted (el, binding) {
+  mounted(el, binding) {
     const text = el.textContent
     const maxLength = binding.value || 5
 

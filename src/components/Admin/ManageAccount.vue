@@ -1,10 +1,19 @@
 <template>
-  <div class="full-height row hide-scrollbar" :style="{height: $q.screen.lt.sm ? 'auto' : ''}">
-    <div class="full-height row full-width full-height q-pa-sm" :style="[$q.screen.lt.sm ? 'padding-bottom: 90px;': '']">
+  <div
+    class="full-height row hide-scrollbar"
+    :style="{ height: $q.screen.lt.sm ? 'auto' : '' }"
+  >
+    <div
+      class="full-height row full-width full-height q-pa-sm"
+      :style="[$q.screen.lt.sm ? 'padding-bottom: 90px;' : '']"
+    >
       <q-card class="full-height no-shadow round-panel full-width px-10 pt-10">
-
-        <div class="row full-width" :class="[$q.screen.lt.sm ? 'justify-between' : 'justify-left gap-10 mb-10']">
-
+        <div
+          class="row full-width"
+          :class="[
+            $q.screen.lt.sm ? 'justify-between' : 'justify-left gap-10 mb-10'
+          ]"
+        >
           <div class="row gap-10">
             <q-btn
               v-if="selected[0]"
@@ -15,8 +24,13 @@
               :label="selected[0].isActive ? 'Deactivate' : 'Activate'"
               icon="las la-power-off"
               no-caps
-              @click="openConfirmDialog(`Would you like to ${selected[0].isActive ? 'Deactivate' : 'Activate'} this account?`, 'updateAccountStatus')">
-            </q-btn>
+              @click="
+                openConfirmDialog(
+                  `Would you like to ${selected[0].isActive ? 'Deactivate' : 'Activate'} this account?`,
+                  'updateAccountStatus'
+                )
+              "
+            ></q-btn>
 
             <q-btn
               v-if="selected[0]"
@@ -27,9 +41,13 @@
               label="Delete"
               icon="las la-trash-alt"
               no-caps
-              @click="openConfirmDialog('Would you like to delete this account?', 'deleteAccount')">
-            </q-btn>
-
+              @click="
+                openConfirmDialog(
+                  'Would you like to delete this account?',
+                  'deleteAccount'
+                )
+              "
+            ></q-btn>
           </div>
 
           <q-btn
@@ -37,19 +55,19 @@
             rounded
             color="info"
             size="sm"
-            @click="createTemplate"
             label="New"
-            icon="las la-user-tie">
-          </q-btn>
-
+            icon="las la-user-tie"
+            @click="createTemplate"
+          ></q-btn>
         </div>
 
         <q-table
+          v-model:selected="selected"
           dense
           no-data-label="I didn't find anything for you"
-          class="q-mb-sm" row-key="uid"
+          class="q-mb-sm"
+          row-key="uid"
           selection="single"
-          v-model:selected="selected"
           wrap-cells
           :grid="$q.screen.lt.sm"
           :selection-options="selectionOptions"
@@ -57,15 +75,18 @@
           :columns="columns"
           :loading="rowLoading"
           :visible-columns="visibleColumns"
-          :rows-per-page-options="[10]">
-
+          :rows-per-page-options="[10]"
+        >
           <template #body="props">
             <q-tr :props="props" :selected="props.selected">
               <q-td key="uid" :props="props">
                 {{ props.row.uid }}
               </q-td>
               <q-td auto-width>
-                <q-checkbox v-model="props.selected" @update:model-value="setSelected" />
+                <q-checkbox
+                  v-model="props.selected"
+                  @update:model-value="setSelected"
+                />
               </q-td>
               <q-td key="avatar" :props="props">
                 <q-avatar rounded>
@@ -82,12 +103,19 @@
                 {{ props.row.lastName }}
               </q-td>
               <q-td key="isActive" :props="props">
-                <q-chip square class="q-pl-sm full-width" :class="{
-                  'full-width q-px-md': $q.screen.lt.md,
-                  'bg-contrast': $q.dark.isActive
-                }">
-                  <q-avatar :icon="getStatusIcon(props.row.isActive)" :color="getStatusColor(props.row.isActive)"
-                    text-color="white" />
+                <q-chip
+                  square
+                  class="q-pl-sm full-width"
+                  :class="{
+                    'full-width q-px-md': $q.screen.lt.md,
+                    'bg-contrast': $q.dark.isActive
+                  }"
+                >
+                  <q-avatar
+                    :icon="getStatusIcon(props.row.isActive)"
+                    :color="getStatusColor(props.row.isActive)"
+                    text-color="white"
+                  />
                   {{ props.row.isActive ? 'Active' : 'Inactive' }}
                 </q-chip>
               </q-td>
@@ -111,27 +139,47 @@
                   <img :src="props.row.avatar" />
                 </q-avatar>
                 <div class="col">
-                  <div class="text-weight-bold">{{ props.row.firstName }} {{ props.row.lastName }}</div>
-                  <div class="text-caption text-grey">{{ props.row.email }}</div>
+                  <div class="text-weight-bold">
+                    {{ props.row.firstName }} {{ props.row.lastName }}
+                  </div>
+                  <div class="text-caption text-grey">
+                    {{ props.row.email }}
+                  </div>
                 </div>
-                <q-checkbox v-model="props.selected" @update:model-value="setSelected" />
+                <q-checkbox
+                  v-model="props.selected"
+                  @update:model-value="setSelected"
+                />
               </q-card-section>
 
               <q-separator />
 
               <q-card-section class="q-pt-sm">
-                <div><strong>UID:</strong> {{ props.row.uid }}</div>
-                <div><strong>Role:</strong> {{ props.row.role }}</div>
-                <div><strong>Position:</strong> {{ props.row.position }}</div>
-                <div><strong>Phone:</strong> {{ props.row.phone_number }}</div>
+                <div>
+                  <strong>UID:</strong>
+                  {{ props.row.uid }}
+                </div>
+                <div>
+                  <strong>Role:</strong>
+                  {{ props.row.role }}
+                </div>
+                <div>
+                  <strong>Position:</strong>
+                  {{ props.row.position }}
+                </div>
+                <div>
+                  <strong>Phone:</strong>
+                  {{ props.row.phone_number }}
+                </div>
 
                 <div class="q-mt-sm">
                   <q-chip
                     size="sm"
                     :icon="getStatusIcon(props.row.isActive)"
                     :color="getStatusColor(props.row.isActive)"
-                    text-color="white">
-                      {{ props.row.isActive ? 'Active' : 'Inactive' }}
+                    text-color="white"
+                  >
+                    {{ props.row.isActive ? 'Active' : 'Inactive' }}
                   </q-chip>
                 </div>
               </q-card-section>
@@ -148,15 +196,38 @@
   <q-dialog v-model="confirm" persistent>
     <q-card class="no-shadow">
       <q-card-section class="row items-center">
-        <q-avatar size="sm" icon="las la-exclamation" color="negative" text-color="white" />
+        <q-avatar
+          size="sm"
+          icon="las la-exclamation"
+          color="negative"
+          text-color="white"
+        />
         <span class="q-ml-sm text-h6">{{ confirmMsg }}</span>
       </q-card-section>
 
       <q-card-actions align="right" class="q-pa-md">
-        <q-btn rounded size="sm" padding="sm xl" icon="las la-times" class="text-capitalize" label="Close" color="negative"
-          v-close-popup />
-        <q-btn rounded size="sm" padding="sm xl" icon="las la-check" class="text-capitalize" label="Confirm" color="info"
-          @click="callConfirmFn()" :loading="actionAccountLoader" :disable="actionAccountLoader">
+        <q-btn
+          v-close-popup
+          rounded
+          size="sm"
+          padding="sm xl"
+          icon="las la-times"
+          class="text-capitalize"
+          label="Close"
+          color="negative"
+        />
+        <q-btn
+          rounded
+          size="sm"
+          padding="sm xl"
+          icon="las la-check"
+          class="text-capitalize"
+          label="Confirm"
+          color="info"
+          :loading="actionAccountLoader"
+          :disable="actionAccountLoader"
+          @click="callConfirmFn()"
+        >
           <template #loading>
             <q-spinner-ios />
           </template>
@@ -173,12 +244,23 @@ import { useQuasar } from 'quasar'
 // you are using in quasar.config file > animations.
 // Alternatively, if using UMD, load animate.css from CDN.
 export default {
-  setup () {
+  components: {},
+  props: {
+    title: String,
+    likes: Number
+  },
+  setup() {
     const visible = ref(false)
     const question = ref('')
     const rows = ref([])
     const columns = [
-      { name: 'uid', align: 'left', label: 'ID', field: 'uid', sortable: true },
+      {
+        name: 'uid',
+        align: 'left',
+        label: 'ID',
+        field: 'uid',
+        sortable: true
+      },
       {
         name: 'avatar',
         align: 'left',
@@ -228,7 +310,12 @@ export default {
         field: 'position',
         sortable: true
       },
-      { name: 'phone_number', align: 'left', label: 'Phone', field: 'phone_number' }
+      {
+        name: 'phone_number',
+        align: 'left',
+        label: 'Phone',
+        field: 'phone_number'
+      }
     ]
     const visibleColumns = [
       'avatar',
@@ -244,7 +331,9 @@ export default {
 
     return {
       style: ref({
-        'background-color': computed(() => $q.dark.isActive ? 'rgba(255, 255, 255, 0.1)' : '#f0f4f7'),
+        'background-color': computed(() =>
+          $q.dark.isActive ? 'rgba(255, 255, 255, 0.1)' : '#f0f4f7'
+        ),
         'border-radius': '8px',
         border: '.1px solid rgb(198 198 198, 0.5)'
       }),
@@ -269,62 +358,56 @@ export default {
       searchKey: ref(''),
       visible,
       question,
-      initFunction () {
+      initFunction() {
         // access setup variables here w/o using 'this'
         // console.log('initFunction called', visible.value)
       }
     }
-  },
-  components: {
-  },
-  props: {
-    title: String,
-    likes: Number
   },
   computed: {
     test: function () {
       return "I'm computed hook"
     }
   },
-  beforeCreate () {
+  beforeCreate() {
     // console.log('beforeCreate')
   },
-  created () {
+  created() {
     // console.log('created')
   },
-  async beforeMount () {
+  async beforeMount() {
     // console.log('beforeMount')
     await this.fetchUsers()
   },
-  mounted () {
+  mounted() {
     // this.$emit('showHeader', true, [])
     this.showTextLoading()
   },
-  beforeUpdate () {
+  beforeUpdate() {
     // console.log('beforeUpdate')
   },
-  updated () {
+  updated() {
     // console.log('updated')
   },
-  beforeUnmount () {
+  beforeUnmount() {
     // console.log('beforeUnmount')
   },
-  unmounted () {
+  unmounted() {
     // console.log('unmounted')
   },
   methods: {
     // -- Confirm Dialog Start --
-    openConfirmDialog (confirmMsg, confirmCallbackFn) {
+    openConfirmDialog(confirmMsg, confirmCallbackFn) {
       this.confirmMsg = confirmMsg
       this.confirmCallbackFn = confirmCallbackFn
       this.confirm = true
     },
-    callConfirmFn () {
+    callConfirmFn() {
       const fn = this.confirmCallbackFn
       this[fn]()
     },
     // -- Confirm Dialog End --
-    async updateAccountStatus () {
+    async updateAccountStatus() {
       this.actionAccountLoader = true
       console.log('updating account status..')
       if (this.selected[0].email === 'tagailo.danvincent@gmail.com') {
@@ -370,7 +453,7 @@ export default {
           this.confirm = false
         })
     },
-    async deleteAccount () {
+    async deleteAccount() {
       console.log('deleting account..')
       this.actionAccountLoader = true
       setTimeout(() => {
@@ -386,11 +469,11 @@ export default {
         this.confirm = false
       }, 2000)
     },
-    setSelected (value, evt) {
+    setSelected(value, evt) {
       console.log(value, this.selected[0])
       this.updateMode = value
     },
-    showTextLoading () {
+    showTextLoading() {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
       // console.log('loaded in ', ms, ' ms')
       this.visible = true
@@ -398,7 +481,7 @@ export default {
         this.visible = false
       }, ms)
     },
-    async search () {
+    async search() {
       const type = 'address'
       const input = this.searchKey
       const resp = await this.$findPlace(type, input)
@@ -411,10 +494,10 @@ export default {
         classes: 'notify-custom-css'
       })
     },
-    async fetchUsers () {
+    async fetchUsers() {
       this.rowLoading = true
       const users = await this.$fbref(this.$fbdb, 'users')
-      this.$fbonValue(users, (snapshot) => {
+      this.$fbonValue(users, snapshot => {
         const data = snapshot.val()
         if (this.$isFalsyString(data)) {
           this.rows = []
@@ -424,11 +507,11 @@ export default {
         this.rowLoading = false
       })
     },
-    getStatusColor (rowVal) {
+    getStatusColor(rowVal) {
       if (rowVal) return 'info'
       else return 'negative'
     },
-    getStatusIcon (rowVal) {
+    getStatusIcon(rowVal) {
       if (rowVal) return 'las la-check'
       else return 'las la-times'
     }
@@ -440,7 +523,7 @@ export default {
   min-height: 807px;
 }
 :deep(.q-separator--horizontal) {
-    display: block;
-    height: .1px;
+  display: block;
+  height: 0.1px;
 }
 </style>

@@ -1,7 +1,16 @@
 <template>
   <!-- Admin Login -->
-  <div class="row hide-scrollbar items-center justify-center" :style="`height: 100vh; background: #f2f4f7`">
-    <q-card flat class="q-ma-sm no-shadow" :class="[$q.screen.gt.xs ? 'width-px-500' : 'width-px-400 bg-transparent']">
+  <div
+    class="row hide-scrollbar items-center justify-center"
+    :style="`height: 100vh; background: #f2f4f7`"
+  >
+    <q-card
+      flat
+      class="q-ma-sm no-shadow"
+      :class="[
+        $q.screen.gt.xs ? 'width-px-500' : 'width-px-400 bg-transparent'
+      ]"
+    >
       <q-card-section class="">
         <div class="text-h6">Admin Login</div>
         <div class="text-subtitle2 row justify-between">
@@ -13,47 +22,48 @@
         <q-input :dense="true" filled v-model="password" placeholder="Password" @keydown.enter.prevent="login" type="password" style="font-size: 20px;" /> -->
 
         <q-input
+          v-model="username"
           outline
           :dense="true"
-          v-model="username"
           placeholder="Username"
-          @keydown.enter.prevent="login"
           color="positive"
           input-class="text-primary"
           filled
           class="full-width"
+          @keydown.enter.prevent="login"
         >
-          <template v-slot:prepend>
+          <template #prepend>
             <UserIcon size="16" />
           </template>
         </q-input>
 
         <q-input
+          v-model="password"
           :type="isPwd ? 'password' : 'text'"
           :dense="true"
           outline
-          v-model="password"
           placeholder="Password"
           :rules="passwordRules"
-          v-on:keyup.enter="login"
           color="positive"
           input-class="text-primary"
           filled
           class="full-width"
+          @keyup.enter="login"
         >
-          <template v-slot:prepend>
+          <template #prepend>
             <LockIcon size="16" />
           </template>
-          <template v-slot:append>
-            <EyeIcon v-if="!isPwd" size="16" @click="isPwd = !isPwd"/>
-            <EyeClosed v-if="isPwd" size="16" @click="isPwd = !isPwd"/>
+          <template #append>
+            <EyeIcon v-if="!isPwd" size="16" @click="isPwd = !isPwd" />
+            <EyeClosed v-if="isPwd" size="16" @click="isPwd = !isPwd" />
           </template>
         </q-input>
-
       </q-card-section>
       <q-card-section>
         <div class="text-subtitle2 row justify-center">
-          <a class="clickable" @click="$router.push('/login')">Switch to mobile</a>
+          <a class="clickable" @click="$router.push('/login')">
+            Switch to mobile
+          </a>
         </div>
       </q-card-section>
       <q-card-actions align="center">
@@ -63,28 +73,30 @@
           class="text-capitalize bg-negative round-btn"
           :disable="loadingSubmit"
           :style="{
-            'width': '47%'
-          }">
+            width: '47%'
+          }"
+        >
           <template #default>
-            <XIcon class="q-mr-sm"/>
+            <XIcon class="q-mr-sm" />
             <span class="text-capitalize">Clear</span>
           </template>
         </q-btn>
         <q-btn
           padding="sm xl"
-          @click="login"
           color="primary"
           class="text-capitalize bg-info round-btn"
           :loading="loadingSubmit"
           :disable="loadingSubmit || !username || !password"
           :style="{
-            'width': '47%'
-          }">
+            width: '47%'
+          }"
+          @click="login"
+        >
           <template #default>
-            <CheckIcon class="q-mr-sm"/>
+            <CheckIcon class="q-mr-sm" />
             <span class="text-capitalize">Sign In</span>
           </template>
-          <template v-slot:loading>
+          <template #loading>
             <q-spinner-ios class="on-left" />
             <small>Logging in..</small>
           </template>
@@ -98,10 +110,7 @@ import { ref } from 'vue'
 import { LocalStorage } from 'quasar'
 import { useMainStore } from 'stores/main'
 
-import {
-  signInWithEmailAndPassword,
-  getAuth
-} from 'firebase/auth'
+import { signInWithEmailAndPassword, getAuth } from 'firebase/auth'
 const auth = getAuth()
 
 // Don't forget to specify which animations
@@ -109,8 +118,12 @@ const auth = getAuth()
 // Alternatively, if using UMD, load animate.css from CDN.
 export default {
   title: 'AdminLogin',
+  props: {
+    title: String,
+    likes: Number
+  },
   emits: ['emitFromChild'],
-  setup () {
+  setup() {
     const mainStore = useMainStore()
     const visible = ref(false)
     const question = ref('')
@@ -119,7 +132,7 @@ export default {
       visible,
       question,
       mainStore,
-      initFunction () {
+      initFunction() {
         // access setup variables here w/o using 'this'
         // console.log('initFunction called', visible.value)
       },
@@ -129,42 +142,38 @@ export default {
       isPwd: ref(true)
     }
   },
-  props: {
-    title: String,
-    likes: Number
-  },
   computed: {
     test: function () {
       return "I'm computed hook"
     }
   },
-  beforeCreate () {
+  beforeCreate() {
     // console.log('beforeCreate')
   },
-  created () {
+  created() {
     // console.log('created')
   },
-  beforeMount () {
+  beforeMount() {
     // console.log('beforeMount')
   },
-  mounted () {
+  mounted() {
     // this.$emit('showHeader', true, [])
     this.showTextLoading()
   },
-  beforeUpdate () {
+  beforeUpdate() {
     // console.log('beforeUpdate')
   },
-  updated () {
+  updated() {
     // console.log('updated')
   },
-  beforeUnmount () {
+  beforeUnmount() {
     // console.log('beforeUnmount')
   },
-  unmounted () {
+  unmounted() {
     // console.log('unmounted')
   },
   methods: {
-    showTextLoading () {
+    showTextLoading() {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
       // console.log('loaded in ', ms, ' ms')
       this.visible = true
@@ -172,13 +181,13 @@ export default {
         this.visible = false
       }, ms)
     },
-    login () {
+    login() {
       if (!this.username || !this.password) {
         return
       }
       this.loadingSubmit = true
       signInWithEmailAndPassword(auth, this.username, this.password)
-        .then(async (userCredential) => {
+        .then(async userCredential => {
           const user = userCredential.user
           const userRef = this.$fbref(this.$fbdb, 'users/' + user.uid)
           const userInfoSnapshot = await this.$fbget(userRef)
@@ -212,7 +221,7 @@ export default {
             this.$emit('emitFromChild')
           }
         })
-        .catch((error) => {
+        .catch(error => {
           this.loadingSubmit = false
           this.$q.notify({
             icon: 'cancel',
@@ -225,7 +234,7 @@ export default {
           })
         })
     },
-    handleEventMount (info) {
+    handleEventMount(info) {
       info.el.style.backgroundColor = 'transparent'
       info.el.style.border = 'none'
       info.el.style.color = 'black'

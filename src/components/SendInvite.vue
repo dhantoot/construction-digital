@@ -5,13 +5,13 @@
       Send your invitation to user dhan with the role Employee via email of with
       a link
     </p>
-    <q-input filled v-model="email" label="Email" class="bg-grey-2"/>
+    <q-input v-model="email" filled label="Email" class="bg-grey-2" />
     <q-btn
       size="lg"
       style="background: goldenrod; color: white"
       label="Send E-mail"
       class="fixed-bottom q-mb-lg q-ml-xs q-mr-xs round-btn"
-   />
+    />
   </div>
 </template>
 <script>
@@ -23,7 +23,11 @@ const stringOptions = ['Employee', 'Contractor', 'Admin', 'Client', 'Builders']
 // Alternatively, if using UMD, load animate.css from CDN.
 export default {
   title: 'ProjectList',
-  setup () {
+  props: {
+    title: String,
+    likes: Number
+  },
+  setup() {
     const options = ref(stringOptions)
     const visible = ref(false)
 
@@ -34,7 +38,7 @@ export default {
       text: ref(null),
       desc: ref(null),
       options,
-      filterFn (val, update) {
+      filterFn(val, update) {
         if (val === '') {
           update(() => {
             options.value = stringOptions
@@ -48,53 +52,49 @@ export default {
         update(() => {
           const needle = val.toLowerCase()
           options.value = stringOptions.filter(
-            (v) => v.toLowerCase().indexOf(needle) > -1
+            v => v.toLowerCase().indexOf(needle) > -1
           )
         })
       },
       visible,
-      initFunction () {
+      initFunction() {
         // access setup variables here w/o using 'this'
         // console.log('initFunction called', visible.value)
       }
     }
-  },
-  props: {
-    title: String,
-    likes: Number
   },
   computed: {
     test: function () {
       return "I'm computed hook"
     }
   },
-  beforeCreate () {
+  beforeCreate() {
     // console.log('beforeCreate')
   },
-  created () {
+  created() {
     // console.log('created')
   },
-  beforeMount () {
+  beforeMount() {
     // console.log('beforeMount')
   },
-  mounted () {
+  mounted() {
     // this.$emit('showHeader', true, [])
     this.showTextLoading()
   },
-  beforeUpdate () {
+  beforeUpdate() {
     // console.log('beforeUpdate')
   },
-  updated () {
+  updated() {
     // console.log('updated')
   },
-  beforeUnmount () {
+  beforeUnmount() {
     // console.log('beforeUnmount')
   },
-  unmounted () {
+  unmounted() {
     // console.log('unmounted')
   },
   methods: {
-    showTextLoading () {
+    showTextLoading() {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
       // console.log('loaded in ', ms, ' ms')
       this.visible = true

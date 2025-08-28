@@ -1,8 +1,10 @@
 <template>
-  <div class="row hide-scrollbar full-height"
+  <div
+    class="row hide-scrollbar full-height"
     :style="{
       height: $q.screen.lt.sm ? 'auto' : ''
-    }">
+    }"
+  >
     <div class="row full-width full-height q-pa-sm">
       <router-view />
     </div>
@@ -18,46 +20,46 @@ import formatdate from 'src/directives/formatdate'
 // Alternatively, if using UMD, load animate.css from CDN.
 export default {
   title: 'SowTemplateDefaultPage',
-  setup () {
-    const visible = ref(false)
-
-    return {
-      visible
-    }
-  },
   components: {},
   directives: { ellipsis, formatdate },
   props: {
     title: String,
     likes: Number
   },
+  setup() {
+    const visible = ref(false)
+
+    return {
+      visible
+    }
+  },
   computed: {
     test: function () {
       return "I'm computed hook"
     }
   },
-  beforeCreate () {
+  beforeCreate() {
     // console.log('beforeCreate')
   },
-  created () {
+  created() {
     // console.log('created')
   },
-  async beforeMount () {
+  async beforeMount() {
     // console.log('beforeMount')
   },
-  mounted () {
+  mounted() {
     // this.$emit('showHeader', true, [])
   },
-  beforeUpdate () {
+  beforeUpdate() {
     // console.log('beforeUpdate')
   },
-  updated () {
+  updated() {
     // console.log('updated')
   },
-  beforeUnmount () {
+  beforeUnmount() {
     // console.log('beforeUnmount')
   },
-  unmounted () {
+  unmounted() {
     // console.log('unmounted')
   },
   methods: {}

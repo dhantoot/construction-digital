@@ -2,66 +2,81 @@
   <div class="row q-gutter-sm">
     <div class="col-6">
       <q-
-         behavior="menu"
-         popup-content-class="popupSelectContent"
+        v-model="model"
+        behavior="menu"
+        popup-content-class="popupSelectContent"
         :dense="true"
         filled
         input-debounce="0"
-        v-model="model"
         :options="options"
         label="Select options"
         clearable
         emit-value
-     />
+      />
     </div>
     <div class="col-5 text-right">
-      <b><i class="las la-euro-sign"></i>27.00</b>
+      <b>
+        <i class="las la-euro-sign"></i>
+        27.00
+      </b>
       <p>Total amount</p>
     </div>
   </div>
   <q-list bordered separator padding>
     <q-item-label header>Open Agreements</q-item-label>
 
-    <q-item tag="label" v-ripple>
+    <q-item v-ripple tag="label">
       <q-item-section>
-        <q-item-label
-          ><q-badge rounded color="orange"/> Agreement One</q-item-label
-        >
-        <q-item-label caption class="q-ml-md"
-          >Waiting for response from Dan</q-item-label
-        >
+        <q-item-label>
+          <q-badge rounded color="orange" />
+          Agreement One
+        </q-item-label>
+        <q-item-label caption class="q-ml-md">
+          Waiting for response from Dan
+        </q-item-label>
       </q-item-section>
       <q-item-section side top>
-        <b><i class="las la-euro-sign"></i>78.00</b>
+        <b>
+          <i class="las la-euro-sign"></i>
+          78.00
+        </b>
       </q-item-section>
     </q-item>
 
-    <q-item tag="label" v-ripple>
+    <q-item v-ripple tag="label">
       <q-item-section>
-        <q-item-label
-          ><q-badge rounded color="orange"/> Feb2024 agreement</q-item-label
-        >
-        <q-item-label caption class="q-ml-md"
-          >Waiting for response from Amton</q-item-label
-        >
+        <q-item-label>
+          <q-badge rounded color="orange" />
+          Feb2024 agreement
+        </q-item-label>
+        <q-item-label caption class="q-ml-md">
+          Waiting for response from Amton
+        </q-item-label>
       </q-item-section>
       <q-item-section side top>
-        <b><i class="las la-euro-sign"></i>45.00</b>
+        <b>
+          <i class="las la-euro-sign"></i>
+          45.00
+        </b>
       </q-item-section>
     </q-item>
 
-    <q-item tag="label" v-ripple>
+    <q-item v-ripple tag="label">
       <q-item-section>
-        <q-item-label
-          ><q-badge rounded color="orange"/> May2024 agreement</q-item-label
-        >
-        <q-item-label caption class="q-ml-md"
-          >Waiting for response from Zack</q-item-label
-        >
+        <q-item-label>
+          <q-badge rounded color="orange" />
+          May2024 agreement
+        </q-item-label>
+        <q-item-label caption class="q-ml-md">
+          Waiting for response from Zack
+        </q-item-label>
       </q-item-section>
 
       <q-item-section side top>
-        <b><i class="las la-euro-sign"></i>27.00</b>
+        <b>
+          <i class="las la-euro-sign"></i>
+          27.00
+        </b>
       </q-item-section>
     </q-item>
   </q-list>
@@ -72,7 +87,7 @@
       icon="las la-notes-medical"
       color="grey-1"
       class="text-green round-btn"
-   />
+    />
   </q-page-sticky>
 </template>
 
@@ -84,7 +99,11 @@ import { ref } from 'vue'
 // Alternatively, if using UMD, load animate.css from CDN.
 export default {
   title: 'ProjectAgreement',
-  setup () {
+  props: {
+    title: String,
+    likes: Number
+  },
+  setup() {
     const visible = ref(false)
     const question = ref('')
 
@@ -93,7 +112,7 @@ export default {
       question,
       model: ref('All agreements'),
       options: ['All agreements', 'Facebook', 'Twitter', 'Apple', 'Oracle'],
-      initFunction () {
+      initFunction() {
         // access setup variables here w/o using 'this'
         // console.log('initFunction called', visible.value)
       },
@@ -116,41 +135,37 @@ export default {
       dense: ref(true)
     }
   },
-  props: {
-    title: String,
-    likes: Number
-  },
   computed: {
     test: function () {
       return "I'm computed hook"
     }
   },
-  beforeCreate () {
+  beforeCreate() {
     // console.log('beforeCreate')
   },
-  created () {
+  created() {
     // console.log('created')
   },
-  beforeMount () {
+  beforeMount() {
     // console.log('beforeMount')
   },
-  mounted () {
+  mounted() {
     this.showTextLoading()
   },
-  beforeUpdate () {
+  beforeUpdate() {
     // console.log('beforeUpdate')
   },
-  updated () {
+  updated() {
     // console.log('updated')
   },
-  beforeUnmount () {
+  beforeUnmount() {
     // console.log('beforeUnmount')
   },
-  unmounted () {
+  unmounted() {
     // console.log('unmounted')
   },
   methods: {
-    showTextLoading () {
+    showTextLoading() {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
       // console.log('loaded in ', ms, ' ms')
       this.visible = true

@@ -2,7 +2,7 @@
   <q-card class="my-card q-ma-sm">
     <!-- <q-skeleton square/> -->
     <q-inner-loading :showing="visible">
-      <q-spinner-ios size="50px" color="secondary"/>
+      <q-spinner-ios size="50px" color="secondary" />
     </q-inner-loading>
   </q-card>
 </template>
@@ -14,55 +14,55 @@ import { ref } from 'vue'
 // Alternatively, if using UMD, load animate.css from CDN.
 export default {
   title: 'ProjectList',
-  setup () {
+  props: {
+    title: String,
+    likes: Number
+  },
+  setup() {
     const visible = ref(false)
     const question = ref('')
 
     return {
       visible,
       question,
-      initFunction () {
+      initFunction() {
         // access setup variables here w/o using 'this'
         // console.log('initFunction called', visible.value)
       }
     }
-  },
-  props: {
-    title: String,
-    likes: Number
   },
   computed: {
     test: function () {
       return "I'm computed hook"
     }
   },
-  beforeCreate () {
+  beforeCreate() {
     // console.log('beforeCreate')
   },
-  created () {
+  created() {
     // console.log('created')
   },
-  beforeMount () {
+  beforeMount() {
     // console.log('beforeMount')
   },
-  mounted () {
+  mounted() {
     // this.$emit('showHeader', true, [])
     this.showTextLoading()
   },
-  beforeUpdate () {
+  beforeUpdate() {
     // console.log('beforeUpdate')
   },
-  updated () {
+  updated() {
     // console.log('updated')
   },
-  beforeUnmount () {
+  beforeUnmount() {
     // console.log('beforeUnmount')
   },
-  unmounted () {
+  unmounted() {
     // console.log('unmounted')
   },
   methods: {
-    showTextLoading () {
+    showTextLoading() {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
       // console.log('loaded in ', ms, ' ms')
       this.visible = true

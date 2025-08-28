@@ -4,19 +4,22 @@
   </div>
   <div class="row q-pa-md full-width q-gutter-md bg-grey-2 q-mt-xl">
     <q-input
+      v-model="todoTitle"
       class="full-width"
       :dense="true"
       filled
-      v-model="todoTitle"
       placeholder="Title"
-      input-class="text-accent"/>
-    <q-input class="full-width"
+      input-class="text-accent"
+    />
+    <q-input
+      v-model="todoDesc"
+      class="full-width"
       :dense="true"
       placeholder="Description..."
-      v-model="todoDesc"
       filled
       autogrow
-      input-class="text-accent"/>
+      input-class="text-accent"
+    />
   </div>
   <div class="scroll q-pb-xl">
     <q-list padding dense>
@@ -24,22 +27,25 @@
         <q-item-section>
           <q-uploader
             :factory="factoryFn"
-            :uploadProgressLabel="uploadProgressLabel"
+            :upload-progress-label="uploadProgressLabel"
             label="Upload Files"
             :multiple="false"
             accept=".jpg, image/*"
             class="full-width"
             auto-upload
-         />
+          />
         </q-item-section>
       </q-item>
 
-      <q-separator spaced/>
+      <q-separator spaced />
 
       <q-item tag="memberList">
         <q-item-section>
-          <q-item-label class="text-accent q-mb-md">Assign Members <small class="text-smallest"><i>(scroll to view more)</i></small></q-item-label>
-          <q-list class="q-pl-none scroll" style="max-height: 23vh;">
+          <q-item-label class="text-accent q-mb-md">
+            Assign Members
+            <small class="text-smallest"><i>(scroll to view more)</i></small>
+          </q-item-label>
+          <q-list class="q-pl-none scroll" style="max-height: 23vh">
             <!--
               Rendering a <label> tag (notice tag="label")
               so QCheckboxes will respond to clicks on QItems to
@@ -47,12 +53,12 @@
             -->
 
             <q-item
-              :clickable="false"
-              tag="label"
-              v-ripple
-              class="q-pl-none"
               v-for="member in invitee"
               :key="member"
+              v-ripple
+              :clickable="false"
+              tag="label"
+              class="q-pl-none"
             >
               <q-item-section avatar>
                 <q-checkbox
@@ -60,19 +66,22 @@
                   :val="member.id"
                   color="teal"
                   :disable="!member.id"
-               />
+                />
               </q-item-section>
               <q-item-section>
-                <q-item-label class="text-accent">{{ member?.fullname || member?.email }}</q-item-label>
-                <q-item-label class="text-primary">{{ member.userTitle }}</q-item-label>
+                <q-item-label class="text-accent">
+                  {{ member?.fullname || member?.email }}
+                </q-item-label>
+                <q-item-label class="text-primary">
+                  {{ member.userTitle }}
+                </q-item-label>
               </q-item-section>
 
               <q-item-section avatar>
                 <q-avatar rounded>
-                  <img :src="`${member?.avatar || 'default-user.jpeg'}`"/>
+                  <img :src="`${member?.avatar || 'default-user.jpeg'}`" />
                 </q-avatar>
               </q-item-section>
-
             </q-item>
           </q-list>
           <q-inner-loading
@@ -82,34 +91,44 @@
             label-style="font-size: 1.1em"
             class="q-mx-md"
           >
-            <q-spinner-ios size="50px" color="secondary"/>
+            <q-spinner-ios size="50px" color="secondary" />
           </q-inner-loading>
         </q-item-section>
       </q-item>
     </q-list>
   </div>
-  <div class="row full-width q-px-sm q-py-sm justify-between items-start absolute fixed-bottom" style="margin-bottom:82px">
-      <div class="q-pl-xs">
-        <q-btn class="round-btn" color="primary" icon="las la-arrow-left" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}/todo`)"/>
-      </div>
-      <div class="q-pr-xs">
-        <q-btn
-          @click="saveTodo"
-          rounded
-          color="primary"
-          label="Create"
-          class="text-capitalize round-btn"
-          :loading="loadingSubmit"
-          :disable="!todoTitle || !todoDesc || loadingSubmit"
-          icon="las la-plus"
-        >
-          <template v-slot:loading>
-            <q-spinner-ios class="on-left"/>
-            Saving...
-          </template>
-        </q-btn>
-      </div>
+  <div
+    class="row full-width q-px-sm q-py-sm justify-between items-start absolute fixed-bottom"
+    style="margin-bottom: 82px"
+  >
+    <div class="q-pl-xs">
+      <q-btn
+        class="round-btn"
+        color="primary"
+        icon="las la-arrow-left"
+        @click="
+          $router.push(`/detail/${mainStore?.mobileSelectedProject?.id}/todo`)
+        "
+      />
     </div>
+    <div class="q-pr-xs">
+      <q-btn
+        rounded
+        color="primary"
+        label="Create"
+        class="text-capitalize round-btn"
+        :loading="loadingSubmit"
+        :disable="!todoTitle || !todoDesc || loadingSubmit"
+        icon="las la-plus"
+        @click="saveTodo"
+      >
+        <template #loading>
+          <q-spinner-ios class="on-left" />
+          Saving...
+        </template>
+      </q-btn>
+    </div>
+  </div>
 </template>
 <script>
 import { ref } from 'vue'
@@ -121,7 +140,11 @@ import { useMainStore } from 'stores/main'
 // Alternatively, if using UMD, load animate.css from CDN.
 export default {
   title: 'ProjectCreateTodo',
-  setup () {
+  props: {
+    title: String,
+    likes: Number
+  },
+  setup() {
     const visible = ref(false)
     const question = ref('')
     const loadingSubmit = ref(false)
@@ -139,7 +162,7 @@ export default {
       loadingtodoList,
       visible,
       question,
-      initFunction () {
+      initFunction() {
         // access setup variables here w/o using 'this'
         // console.log('initFunction called', visible.value)
       },
@@ -211,43 +234,39 @@ export default {
       users: ref([])
     }
   },
-  props: {
-    title: String,
-    likes: Number
-  },
   computed: {
     test: function () {
       return "I'm computed hook"
     }
   },
-  beforeCreate () {
+  beforeCreate() {
     // console.log('beforeCreate')
   },
-  created () {
+  created() {
     // console.log('created')
   },
-  async beforeMount () {
+  async beforeMount() {
     // console.log('beforeMount')
     await this.fetchUsers()
     await this.fetchInvitee()
   },
-  async mounted () {
+  async mounted() {
     this.showTextLoading()
   },
-  beforeUpdate () {
+  beforeUpdate() {
     // console.log('beforeUpdate')
   },
-  updated () {
+  updated() {
     // console.log('updated')
   },
-  beforeUnmount () {
+  beforeUnmount() {
     // console.log('beforeUnmount')
   },
-  unmounted () {
+  unmounted() {
     // console.log('unmounted')
   },
   methods: {
-    showTextLoading () {
+    showTextLoading() {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
       // console.log('loaded in ', ms, ' ms')
       this.visible = true
@@ -255,7 +274,7 @@ export default {
         this.visible = false
       }, ms)
     },
-    saveTodo () {
+    saveTodo() {
       this.loadingSubmit = true
       const generatedUid = uid()
       const payload = {
@@ -304,7 +323,7 @@ export default {
       //     })
       //   })
     },
-    factoryFn (files) {
+    factoryFn(files) {
       // console.log({ files })
       const metadata = {
         contentType: files[0].type
@@ -322,7 +341,7 @@ export default {
       )
       uploadTask.on(
         'state_changed',
-        (snapshot) => {
+        snapshot => {
           // Observe state change events such as progress, pause, and resume
           // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
           const progress =
@@ -343,7 +362,7 @@ export default {
               break
           }
         },
-        (error) => {
+        error => {
           // Handle unsuccessful uploads
           // console.log({ error })
           this.$q.notify({
@@ -358,7 +377,7 @@ export default {
           console.log('Upload successful')
           // Handle successful uploads on complete
           // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-          this.$getdownloadurl(uploadTask.snapshot.ref).then((downloadURL) => {
+          this.$getdownloadurl(uploadTask.snapshot.ref).then(downloadURL => {
             console.log('File available at', downloadURL)
             this.todoFiles.push(downloadURL)
             // this.avatar = `${files[0].name.split('.')[0]}.${files[0].name.split('.')[1]}`
@@ -366,10 +385,10 @@ export default {
         }
       )
     },
-    async fetchUsers () {
+    async fetchUsers() {
       this.fetchUsersLoader = true
       const users = await this.$fbref(this.$fbdb, 'users')
-      this.$fbonValue(users, (snapshot) => {
+      this.$fbonValue(users, snapshot => {
         const data = snapshot.val()
         if (this.$isFalsyString(data)) {
           return
@@ -378,27 +397,36 @@ export default {
         this.fetchUsersLoader = false
       })
     },
-    async fetchInvitee () {
+    async fetchInvitee() {
       this.fetchInviteeLoader = true
       const invites = await this.$fbref(this.$fbdb, 'invites')
-      this.$fbonValue(invites, async (snapshot) => {
+      this.$fbonValue(invites, async snapshot => {
         const data = snapshot.val()
         if (this.$isFalsyString(data)) {
           return
         }
         const data_ = Object.values(data)
-        data_.forEach((item) => {
+        data_.forEach(item => {
           item.dateSent = date.formatDate(item._ts, 'MMM DD, YYYY HH:mm A')
-          item.dateResponded = date.formatDate(item.dateResponded, 'MMM DD, YYYY HH:mm A')
+          item.dateResponded = date.formatDate(
+            item.dateResponded,
+            'MMM DD, YYYY HH:mm A'
+          )
           item.resend = false
         })
         for await (const item of data_) {
-          if (item.projectId === this.$route.params.projectId && item.status !== 'Rejected') {
-            const userDetail = this.users.find((user) => user.email === item.invitee)
+          if (
+            item.projectId === this.$route.params.projectId &&
+            item.status !== 'Rejected'
+          ) {
+            const userDetail = this.users.find(
+              user => user.email === item.invitee
+            )
             item.id = userDetail?.uid || undefined
-            item.fullname = userDetail?.firstName && userDetail?.lastName
-              ? `${userDetail?.firstName} ${userDetail?.lastName}`
-              : item.invitee
+            item.fullname =
+              userDetail?.firstName && userDetail?.lastName
+                ? `${userDetail?.firstName} ${userDetail?.lastName}`
+                : item.invitee
             item.avatar = userDetail?.avatar
             item.isSelected = false
             this.invitee.push(item)

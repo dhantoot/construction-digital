@@ -1,27 +1,30 @@
 <template>
-    <div class="column p-10">
-      <q-input v-model="name" label="Name" />
-      <q-input v-model="email" label="Email" />
-      <q-btn @click="onOK">OK</q-btn>
-      <q-btn @click="onCancel">Cancel</q-btn>
-    </div>
-  </template>
+  <div class="column p-10">
+    <q-input v-model="name" label="Name" />
+    <q-input v-model="email" label="Email" />
+    <q-btn @click="onOK">OK</q-btn>
+    <q-btn @click="onCancel">Cancel</q-btn>
+  </div>
+</template>
 
 <script>
 export default {
   emits: ['ok', 'hide'],
-  data () {
+  data() {
     return {
       eventName: '',
       eventDescription: ''
     }
   },
   methods: {
-    onOK () {
-      this.$emit('ok', { eventName: this.eventName, eventDescription: this.eventDescription })
+    onOK() {
+      this.$emit('ok', {
+        eventName: this.eventName,
+        eventDescription: this.eventDescription
+      })
       this.$q.dialog.hide()
     },
-    onCancel () {
+    onCancel() {
       this.$q.dialog.hide()
     }
   }

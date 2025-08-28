@@ -139,18 +139,23 @@ export default boot(async ({ app } /* { app, router, ... } */) => {
   app.config.globalProperties.$fbuploadstring = uploadString
   app.config.globalProperties.$fbsendPasswordResetEmail = sendPasswordResetEmail
   app.config.globalProperties.$serverTimestamp = serverTimestamp()
-  app.config.globalProperties.$getFilePath = (filename) => {
+  app.config.globalProperties.$getFilePath = filename => {
     const starsRef = _ref(storage, filename) // files/1x1_me.jpeg
     return getDownloadURL(starsRef)
-      .then((url) => {
+      .then(url => {
         return url
       })
-      .catch((error) => {
+      .catch(error => {
         console.log('error', error)
         return ''
       })
   }
-  app.config.globalProperties.$sendEmail = async (to, subject, projectName, projectId) => {
+  app.config.globalProperties.$sendEmail = async (
+    to,
+    subject,
+    projectName,
+    projectId
+  ) => {
     try {
       const emailHash = CryptoJS.SHA256(to).toString()
       const acceptLink = `https://hofstee-app.web.app/#/accept-invite/${projectId}?h=${emailHash}`
@@ -172,25 +177,35 @@ export default boot(async ({ app } /* { app, router, ... } */) => {
       </div>
       `
       console.log({
-        to, subject, html
+        to,
+        subject,
+        html
       })
       const myFunction = httpsCallable(functions, 'sendCustomEmail')
       console.log({ myFunction })
-      return myFunction({ to, subject, html }).then((result) => {
-        console.log(result)
+      return myFunction({ to, subject, html })
+        .then(result => {
+          console.log(result)
 
-        return true
-      }).catch((error) => {
-        console.log(error)
+          return true
+        })
+        .catch(error => {
+          console.log(error)
 
-        return false
-      })
+          return false
+        })
     } catch (error) {
       console.error('Error sending email:', error)
       return false
     }
   }
-  app.config.globalProperties.$sendEmailToAgentAndClient = async (to, subject, projectName, projectId, arg) => {
+  app.config.globalProperties.$sendEmailToAgentAndClient = async (
+    to,
+    subject,
+    projectName,
+    projectId,
+    arg
+  ) => {
     try {
       const emailHash = CryptoJS.SHA256(to).toString()
       const externalUserType = arg === 'client' ? 'clientId' : 'agentId'
@@ -211,19 +226,23 @@ export default boot(async ({ app } /* { app, router, ... } */) => {
       </div>
       `
       console.log({
-        to, subject, html
+        to,
+        subject,
+        html
       })
       const myFunction = httpsCallable(functions, 'sendCustomEmail')
       console.log({ myFunction })
-      return myFunction({ to, subject, html }).then((result) => {
-        console.log(result)
+      return myFunction({ to, subject, html })
+        .then(result => {
+          console.log(result)
 
-        return true
-      }).catch((error) => {
-        console.log(error)
+          return true
+        })
+        .catch(error => {
+          console.log(error)
 
-        return false
-      })
+          return false
+        })
     } catch (error) {
       console.error('Error sending email:', error)
       return false
@@ -232,15 +251,17 @@ export default boot(async ({ app } /* { app, router, ... } */) => {
   app.config.globalProperties.$findPlace = async (type, input) => {
     console.log('searching', input)
     const myFunction = httpsCallable(functions, 'getPlaces')
-    return myFunction({ type, input }).then((result) => {
-      return result
-    }).catch((error) => {
-      console.log(error)
+    return myFunction({ type, input })
+      .then(result => {
+        return result
+      })
+      .catch(error => {
+        console.log(error)
 
-      return error
-    })
+        return error
+      })
   }
-  app.config.globalProperties.$getStorageRef = (path) => {
+  app.config.globalProperties.$getStorageRef = path => {
     return _ref(storage, path)
   }
 

@@ -1,15 +1,15 @@
 <template>
-    <div class="p-5" :style="style">
-        <div class="row gap-10 items-center">
-            <div class="column col-auto justify-center">
-                <slot name="icon"/>
-            </div>
-            <div class="column width-80">
-                <div><slot name="header"/></div>
-                <div><slot name="body"/></div>
-            </div>
-        </div>
+  <div class="p-5" :style="style">
+    <div class="row gap-10 items-center">
+      <div class="column col-auto justify-center">
+        <slot name="icon" />
+      </div>
+      <div class="column width-80">
+        <div><slot name="header" /></div>
+        <div><slot name="body" /></div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -51,7 +51,7 @@ export default {
       required: false
     }
   },
-  setup (props) {
+  setup(props) {
     const opacityAlphaChannel = 80 // = 0.5
     const style = ref({
       'background-color': props.backgroundColor,
@@ -64,9 +64,7 @@ export default {
       style
     }
   },
-  mounted () {}
+  mounted() {}
 }
 </script>
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

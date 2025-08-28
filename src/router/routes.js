@@ -44,17 +44,22 @@ const routes = [
           {
             path: '/detail/:projectId/chat',
             name: 'project.details.chat',
-            component: () => import('components/ProjectDetail/ProjectChat/IndexComponent.vue'),
+            component: () =>
+              import('components/ProjectDetail/ProjectChat/IndexComponent.vue'),
             children: [
               {
                 path: '',
                 name: 'project.details.chat.default',
-                component: () => import('components/ProjectDetail/ProjectChat/ProjectChat.vue')
+                component: () =>
+                  import('components/ProjectDetail/ProjectChat/ProjectChat.vue')
               },
               {
                 path: '/detail/:projectId/chat/:recipientUID',
                 name: 'project.details.chat.detail',
-                component: () => import('components/ProjectDetail/ProjectChat/ProjectChatDetails.vue')
+                component: () =>
+                  import(
+                    'components/ProjectDetail/ProjectChat/ProjectChatDetails.vue'
+                  )
               }
             ]
           },
@@ -137,22 +142,26 @@ const routes = [
       },
       {
         path: '/manage-sow',
-        component: () => import('src/components/Admin/SowComponents/IndexPage.vue'),
+        component: () =>
+          import('src/components/Admin/SowComponents/IndexPage.vue'),
         children: [
           {
             path: '',
             name: 'Scope of Works',
-            component: () => import('src/components/Admin/SowComponents/ListPage.vue')
+            component: () =>
+              import('src/components/Admin/SowComponents/ListPage.vue')
           },
           {
             path: '/manage-sow/create',
             name: 'Scope of Works - Create',
-            component: () => import('src/components/Admin/SowComponents/CreatePage.vue')
+            component: () =>
+              import('src/components/Admin/SowComponents/CreatePage.vue')
           },
           {
             path: '/manage-sow/:templateId/detail',
             name: 'Scope of Works - Detail',
-            component: () => import('src/components/Admin/SowComponents/DetailPage.vue')
+            component: () =>
+              import('src/components/Admin/SowComponents/DetailPage.vue')
           }
         ]
       },

@@ -8,14 +8,14 @@ export const useThemeStore = defineStore('theme', {
   }),
 
   getters: {
-    doubleCount: (state) => state.counter
+    doubleCount: state => state.counter
   },
 
   actions: {
-    setCurrentTheme (index) {
+    setCurrentTheme(index) {
       this.themeIndex = index
     },
-    getCurrentTheme () {
+    getCurrentTheme() {
       return `${this.currentTheme}${this.themeIndex}.jpeg`
     }
   }

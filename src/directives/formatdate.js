@@ -2,7 +2,7 @@
 import { date } from 'quasar'
 
 const formatdate = {
-  mounted (el, binding) {
+  mounted(el, binding) {
     const text = el.textContent
     // const dateformat = binding.value || 'MMM DD, YYYY HH:mm A'
     const dateformat = binding.value || 'MMM DD, YYYY'

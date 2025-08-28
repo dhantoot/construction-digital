@@ -1,16 +1,22 @@
 <template>
   <div class="column gap-10 q-pa-sm">
     <div class="row full-width justify-between items-center">
-      <strong class="text-bold text-h6" :class="{
-        'text-accent': $q.dark.isActive,
-        'text-primary': !$q.dark.isActive
-      }">Files</strong>
+      <strong
+        class="text-bold text-h6"
+        :class="{
+          'text-accent': $q.dark.isActive,
+          'text-primary': !$q.dark.isActive
+        }"
+      >
+        Files
+      </strong>
       <!-- <q-icon size="md" :color="$q.dark.isActive ? 'accent' : 'primary'" name="las la-undo" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/> -->
       <q-icon
         size="sm"
         :color="$q.dark.isActive ? 'accent' : 'primary'"
-        @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)">
-        <Undo2Icon/>
+        @click="$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"
+      >
+        <Undo2Icon />
       </q-icon>
     </div>
     <div class="row">
@@ -27,32 +33,47 @@
         </template>
       </q-input> -->
       <q-input
+        v-model="text"
         standout="bg-transparent"
         :input-class="$q.dark.isActive ? 'text-accent' : 'text-primary'"
-        v-model="text"
         :dense="dense"
         :style="{
           width: '100%'
-        }">
-        <template v-slot:prepend>
+        }"
+      >
+        <template #prepend>
           <!-- <q-icon color="accent" name="las la-arrow-left" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/> -->
         </template>
-        <template v-slot:append>
-          <q-icon v-if="!text" :class="{
-            'text-accent': text === '',
-            'text-primary': text !== ''
-          }">
-            <SearchIcon/>
+        <template #append>
+          <q-icon
+            v-if="!text"
+            :class="{
+              'text-accent': text === '',
+              'text-primary': text !== ''
+            }"
+          >
+            <SearchIcon />
           </q-icon>
-          <q-icon v-if="text" name="clear" class="cursor-pointer text-accent" @click="text = ''"/>
+          <q-icon
+            v-if="text"
+            name="clear"
+            class="cursor-pointer text-accent"
+            @click="text = ''"
+          />
         </template>
       </q-input>
     </div>
     <div>
       <div class="q-gutter-md row justify-between">
-        <q-img v-for="item in arr" :key="item" :src="`${item.url}`" spinner-color="white"
-          style="height: 100px; max-width: 100px" class="rounded-borders q-mb-xs">
-          <template v-slot:loading>
+        <q-img
+          v-for="item in arr"
+          :key="item"
+          :src="`${item.url}`"
+          spinner-color="white"
+          style="height: 100px; max-width: 100px"
+          class="rounded-borders q-mb-xs"
+        >
+          <template #loading>
             <div class="text-accent">
               <q-spinner-ios />
             </div>
@@ -75,7 +96,11 @@ import { useMainStore } from 'stores/main'
 // Alternatively, if using UMD, load animate.css from CDN.
 export default {
   title: 'ProjectFiles',
-  setup () {
+  props: {
+    title: String,
+    likes: Number
+  },
+  setup() {
     const visible = ref(false)
     const question = ref('')
     const url = ref('https://picsum.photos/500/300')
@@ -93,42 +118,38 @@ export default {
       dense: ref(true)
     }
   },
-  props: {
-    title: String,
-    likes: Number
-  },
   computed: {
     test: function () {
       return "I'm computed hook"
     }
   },
-  beforeCreate () {
+  beforeCreate() {
     // console.log('beforeCreate')
   },
-  created () {
+  created() {
     // console.log('created')
   },
-  beforeMount () {
+  beforeMount() {
     // console.log('beforeMount')
   },
-  mounted () {
+  mounted() {
     this.showTextLoading()
     this.getFiles()
   },
-  beforeUpdate () {
+  beforeUpdate() {
     // console.log('beforeUpdate')
   },
-  updated () {
+  updated() {
     // console.log('updated')
   },
-  beforeUnmount () {
+  beforeUnmount() {
     // console.log('beforeUnmount')
   },
-  unmounted () {
+  unmounted() {
     // console.log('unmounted')
   },
   methods: {
-    showTextLoading () {
+    showTextLoading() {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
       // console.log('loaded in ', ms, ' ms')
       this.visible = true
@@ -136,24 +157,28 @@ export default {
         this.visible = false
       }, ms)
     },
-    async getFiles () {
+    async getFiles() {
       const paths = ['projects', 'todo', '']
-      Promise.all(paths.map((dir) => {
-        return this.$storageListAll(this.$getStorageRef(`files/${dir}`)).then(response => {
-          const images = response.items
-          images.forEach(image => {
-            this.$getdownloadurl(image).then(url => {
-              // Use URL to display the image
-              this.arr.push({
-                url,
-                name: dir ? `${dir}` : 'root'
+      Promise.all(
+        paths.map(dir => {
+          return this.$storageListAll(this.$getStorageRef(`files/${dir}`))
+            .then(response => {
+              const images = response.items
+              images.forEach(image => {
+                this.$getdownloadurl(image).then(url => {
+                  // Use URL to display the image
+                  this.arr.push({
+                    url,
+                    name: dir ? `${dir}` : 'root'
+                  })
+                })
               })
             })
-          })
-        }).catch(error => {
-          console.error(error)
+            .catch(error => {
+              console.error(error)
+            })
         })
-      }))
+      )
     }
   }
 }

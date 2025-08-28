@@ -4,7 +4,7 @@
       <q-toolbar>
         <q-toolbar-title class="row items-center">
           <q-avatar>
-            <q-icon name="las la-envelope-open"/>
+            <q-icon name="las la-envelope-open" />
           </q-avatar>
           Invitation Response
         </q-toolbar-title>

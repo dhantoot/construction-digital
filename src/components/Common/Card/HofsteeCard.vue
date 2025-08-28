@@ -1,18 +1,20 @@
 <template>
-    <q-card
-      dense
-      :style="style"
-      class="no-shadow p-10" :class="{
-          'no-border': noBorder
-      }">
-        <div class="">
-          <slot name="header"/>
-        </div>
-        <div class="pt-10 full-height">
-          <slot name="body"/>
-        </div>
-        <slot name="body-loader"></slot>
-      </q-card>
+  <q-card
+    dense
+    :style="style"
+    class="no-shadow p-10"
+    :class="{
+      'no-border': noBorder
+    }"
+  >
+    <div class="">
+      <slot name="header" />
+    </div>
+    <div class="pt-10 full-height">
+      <slot name="body" />
+    </div>
+    <slot name="body-loader"></slot>
+  </q-card>
 </template>
 <script>
 import { ref } from 'vue'
@@ -43,7 +45,7 @@ export default {
       default: false
     }
   },
-  setup (props) {
+  setup(props) {
     const style = ref({
       'background-color': props.backgroundColor,
       'border-radius': props.borderRadius,
@@ -55,7 +57,7 @@ export default {
       style
     }
   },
-  mounted () {}
+  mounted() {}
 }
 </script>
 <style lang="scss" scoped>

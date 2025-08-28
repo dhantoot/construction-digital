@@ -1,77 +1,211 @@
 <template>
-  <div class="row hide-scrollbar full-height" :style="{height: $q.screen.lt.sm ? 'auto' : ''}">
-    <div class="row full-width full-height q-pa-sm" :style="[$q.screen.lt.sm ? 'padding-bottom: 90px;': '']">
-      <div v-if="$q.screen.gt.sm" class="col-3 pr-10" :class="{
-        'col-12': $q.screen.lt.md
-      }">
+  <div
+    class="row hide-scrollbar full-height"
+    :style="{ height: $q.screen.lt.sm ? 'auto' : '' }"
+  >
+    <div
+      class="row full-width full-height q-pa-sm"
+      :style="[$q.screen.lt.sm ? 'padding-bottom: 90px;' : '']"
+    >
+      <div
+        v-if="$q.screen.gt.sm"
+        class="col-3 pr-10"
+        :class="{
+          'col-12': $q.screen.lt.md
+        }"
+      >
         <q-card class="round-panel full-height no-shadow">
           <q-card-section>
-            <div class="text-h6">{{ selected.length ? 'Update' : 'New' }} Project</div>
+            <div class="text-h6">
+              {{ selected.length ? 'Update' : 'New' }} Project
+            </div>
             <div class="text-subtitle2 row justify-between">
-              <div>{{ selected.length ? 'update project details' : 'add a new project' }}</div>
-              <div v-if="selected.length" class="text-blue text-bold">[ Update Mode ]</div>
+              <div>
+                {{
+                  selected.length
+                    ? 'update project details'
+                    : 'add a new project'
+                }}
+              </div>
+              <div v-if="selected.length" class="text-blue text-bold">
+                [ Update Mode ]
+              </div>
             </div>
           </q-card-section>
           <q-card-section class="q-gutter-sm">
-            <q-select behavior="menu"
-            :popup-content-class="[$q.dark.isActive ? 'popupSelectContent bg-contrast no-shadow' : 'popupSelectContent']"
-            filled clearable v-model="searchKey" use-input input-debounce="0"
-            label="Location. (trigger search after 10 charaters)" class="q-mt-md" :dense="true" :options="options"
-              :loading="searchingPlaceLoader" @filter="filterFn">
-              <template v-slot:no-option>
+            <q-select
+              v-model="searchKey"
+              behavior="menu"
+              :popup-content-class="[
+                $q.dark.isActive
+                  ? 'popupSelectContent bg-contrast no-shadow'
+                  : 'popupSelectContent'
+              ]"
+              filled
+              clearable
+              use-input
+              input-debounce="0"
+              label="Location. (trigger search after 10 charaters)"
+              class="q-mt-md"
+              :dense="true"
+              :options="options"
+              :loading="searchingPlaceLoader"
+              @filter="filterFn"
+            >
+              <template #no-option>
                 <q-item>
-                  <q-item-section class="text-grey"> No results </q-item-section>
+                  <q-item-section class="text-grey">No results</q-item-section>
                 </q-item>
               </template>
             </q-select>
-            <q-input :dense="true" filled v-model="text" label="Name"/>
-            <q-input :dense="true" placeholder="Description..." v-model="desc" filled type="textarea" />
-            <q-tabs v-model="tab" class="bg-white-4" :dense="true" align="justify">
-              <q-tab class="text-orange text-capitalize" name="upload" icon="las la-upload" label="Upload" />
-              <q-tab class="text-negative text-capitalize" name="capture" icon="las la-camera" label="Capture" />
+            <q-input v-model="text" :dense="true" filled label="Name" />
+            <q-input
+              v-model="desc"
+              :dense="true"
+              placeholder="Description..."
+              filled
+              type="textarea"
+            />
+            <q-tabs
+              v-model="tab"
+              class="bg-white-4"
+              :dense="true"
+              align="justify"
+            >
+              <q-tab
+                class="text-orange text-capitalize"
+                name="upload"
+                icon="las la-upload"
+                label="Upload"
+              />
+              <q-tab
+                class="text-negative text-capitalize"
+                name="capture"
+                icon="las la-camera"
+                label="Capture"
+              />
             </q-tabs>
-            <div class="full-width q-pt-xs" v-if="tab === 'upload'">
-              <q-file :dense="true" label-color="primary" filled v-model="file" label="Choose File" multiple
-                accept=".jpg, image/*" class="q-ml-sm shadow-2">
-                <template v-slot:prepend>
+            <div v-if="tab === 'upload'" class="full-width q-pt-xs">
+              <q-file
+                v-model="file"
+                :dense="true"
+                label-color="primary"
+                filled
+                label="Choose File"
+                multiple
+                accept=".jpg, image/*"
+                class="q-ml-sm shadow-2"
+              >
+                <template #prepend>
                   <q-icon name="cloud_upload" color="primary" />
                 </template>
               </q-file>
             </div>
-            <div class="full-width q-pl-sm q-pt-xs" v-if="tab === 'capture'">
-              <q-btn dense align="left" class="text-capitalize full-width no-shadow round-btn" text-color="primary"
-                color="grey-2" icon="las la-camera" label="Open camera" @click="captureImage" :disable="deviceIsReady"
-                style="height: 40px;" />
+            <div v-if="tab === 'capture'" class="full-width q-pl-sm q-pt-xs">
+              <q-btn
+                dense
+                align="left"
+                class="text-capitalize full-width no-shadow round-btn"
+                text-color="primary"
+                color="grey-2"
+                icon="las la-camera"
+                label="Open camera"
+                :disable="deviceIsReady"
+                style="height: 40px"
+                @click="captureImage"
+              />
             </div>
             <div class="q-py-sm">
               <q-toggle
-                dense
                 v-model="isActivated"
+                dense
                 checked-icon="check"
                 color="positive"
                 unchecked-icon="clear"
                 label="&nbsp;&nbsp;Set as activated upon submit"
               />
             </div>
-            <q-input :dense="true" prefix="$" filled v-model="budget" label="Budget" placeholder="0.00"
-              input-class="text-right" />
-            <q-input :dense="true" v-model="dateFrom" filled type="date" label="Date from" />
-            <q-input :dense="true" v-model="dateTo" filled type="date" label="Date to" />
-            <q-select behavior="menu"
-            :popup-content-class="[$q.dark.isActive ? 'popupSelectContent bg-contrast no-shadow' : 'popupSelectContent']"
-            :placeholder="agent.length ? '' : 'Agent'" :dense="true" filled v-model="agent" use-input
-              use-chips multiple input-debounce="0" @new-value="createAgentValue" :options="filterAgentOptions"
-              @filter="filterAgentFn" option-value="email" option-label="email" />
-            <q-select behavior="menu"
-            :popup-content-class="[$q.dark.isActive ? 'popupSelectContent bg-contrast no-shadow' : 'popupSelectContent']"
-            :placeholder="client.length ? '' : 'Client'" :dense="true" filled v-model="client" use-input
-              use-chips multiple input-debounce="0" @new-value="createClientValue" :options="filterClientOptions"
-              @filter="filterClientFn" option-value="email" option-label="email" />
-            <q-select behavior="menu"
-            :popup-content-class="[$q.dark.isActive ? 'popupSelectContent bg-contrast no-shadow' : 'popupSelectContent']"
-            :label="'SOW Template'" :dense="true" filled v-model="templateId" input-debounce="0"
-              :options="sowTemplates" :loading="sowTemplateLoader || loadingTodoSubmit">
-              <template v-slot:loading>
+            <q-input
+              v-model="budget"
+              :dense="true"
+              prefix="$"
+              filled
+              label="Budget"
+              placeholder="0.00"
+              input-class="text-right"
+            />
+            <q-input
+              v-model="dateFrom"
+              :dense="true"
+              filled
+              type="date"
+              label="Date from"
+            />
+            <q-input
+              v-model="dateTo"
+              :dense="true"
+              filled
+              type="date"
+              label="Date to"
+            />
+            <q-select
+              v-model="agent"
+              behavior="menu"
+              :popup-content-class="[
+                $q.dark.isActive
+                  ? 'popupSelectContent bg-contrast no-shadow'
+                  : 'popupSelectContent'
+              ]"
+              :placeholder="agent.length ? '' : 'Agent'"
+              :dense="true"
+              filled
+              use-input
+              use-chips
+              multiple
+              input-debounce="0"
+              :options="filterAgentOptions"
+              option-value="email"
+              option-label="email"
+              @new-value="createAgentValue"
+              @filter="filterAgentFn"
+            />
+            <q-select
+              v-model="client"
+              behavior="menu"
+              :popup-content-class="[
+                $q.dark.isActive
+                  ? 'popupSelectContent bg-contrast no-shadow'
+                  : 'popupSelectContent'
+              ]"
+              :placeholder="client.length ? '' : 'Client'"
+              :dense="true"
+              filled
+              use-input
+              use-chips
+              multiple
+              input-debounce="0"
+              :options="filterClientOptions"
+              option-value="email"
+              option-label="email"
+              @new-value="createClientValue"
+              @filter="filterClientFn"
+            />
+            <q-select
+              v-model="templateId"
+              behavior="menu"
+              :popup-content-class="[
+                $q.dark.isActive
+                  ? 'popupSelectContent bg-contrast no-shadow'
+                  : 'popupSelectContent'
+              ]"
+              :label="'SOW Template'"
+              :dense="true"
+              filled
+              input-debounce="0"
+              :options="sowTemplates"
+              :loading="sowTemplateLoader || loadingTodoSubmit"
+            >
+              <template #loading>
                 <div class="row justify-center">
                   <q-spinner-ios />
                 </div>
@@ -80,14 +214,36 @@
           </q-card-section>
           <q-card-actions>
             <div class="row justify-between full-width q-px-sm">
-              <q-btn icon="las la-undo" padding="sm xl" flat class="text-capitalize bg-negative round-btn" label="Reset"
-                :disable="loadingSubmit" @click="formReset">
-              </q-btn>
-              <q-btn icon="las la-check" padding="sm xl" @click="uploadFile" color="info"
-                :label="selected.length ? 'Update' : 'Submit'" class="text-capitalize round-btn"
+              <q-btn
+                icon="las la-undo"
+                padding="sm xl"
+                flat
+                class="text-capitalize bg-negative round-btn"
+                label="Reset"
+                :disable="loadingSubmit"
+                @click="formReset"
+              ></q-btn>
+              <q-btn
+                icon="las la-check"
+                padding="sm xl"
+                color="info"
+                :label="selected.length ? 'Update' : 'Submit'"
+                class="text-capitalize round-btn"
                 :loading="loadingSubmit"
-                :disable="loadingSubmit || !searchKey || !text || !desc || (updateMode ? false : !file) || !budget || !dateFrom || !dateTo || !templateId">
-                <template v-slot:loading>
+                :disable="
+                  loadingSubmit ||
+                  !searchKey ||
+                  !text ||
+                  !desc ||
+                  (updateMode ? false : !file) ||
+                  !budget ||
+                  !dateFrom ||
+                  !dateTo ||
+                  !templateId
+                "
+                @click="uploadFile"
+              >
+                <template #loading>
                   <q-spinner-ios />
                 </template>
               </q-btn>
@@ -98,44 +254,57 @@
           </q-inner-loading>
         </q-card>
       </div>
-      <div class="col-9" :class="{
-        'col-12': $q.screen.lt.md
-      }">
+      <div
+        class="col-9"
+        :class="{
+          'col-12': $q.screen.lt.md
+        }"
+      >
         <q-card
           class="round-panel full-height no-shadow px-10 pt-10"
-          :class="[$q.screen.gt.sm ? 'pt-15 mb-10' : 'pt-0']">
-
+          :class="[$q.screen.gt.sm ? 'pt-15 mb-10' : 'pt-0']"
+        >
           <div class="row justify-between full-width items-center">
-              <div class="text-subtitle2">
-                <q-chip size="sm" icon="check" color="positive" text-color="white">
-                  {{rows.filter(f => f.isActivated == true).length}} Activated
-                </q-chip>
-                <q-chip size="sm" icon="close" color="negative" text-color="white">
-                  {{rows.filter(f => f.isActivated == false).length}} Not Activated
-                </q-chip>
-              </div>
-              <!-- <div class="text-h6">{{ $q.screen.gt.sm ? 'List of Projects' : '' }}</div> -->
-               <div v-if="$q.screen.lt.sm" class="">
-                <q-btn
-                  rounded
-                  :color="selected.length ? 'primary' : 'info'"
-                  size="sm"
-                  :label="selected.length ? 'Update Project' : 'New Project'"
-                  :icon="selected.length ? 'las la-pen' : 'las la-plus'"
-                  no-caps
-                  @click="updateProjectDialog = true"
-                />
-               </div>
+            <div class="text-subtitle2">
+              <q-chip
+                size="sm"
+                icon="check"
+                color="positive"
+                text-color="white"
+              >
+                {{ rows.filter(f => f.isActivated == true).length }} Activated
+              </q-chip>
+              <q-chip
+                size="sm"
+                icon="close"
+                color="negative"
+                text-color="white"
+              >
+                {{ rows.filter(f => f.isActivated == false).length }} Not
+                Activated
+              </q-chip>
+            </div>
+            <!-- <div class="text-h6">{{ $q.screen.gt.sm ? 'List of Projects' : '' }}</div> -->
+            <div v-if="$q.screen.lt.sm" class="">
+              <q-btn
+                rounded
+                :color="selected.length ? 'primary' : 'info'"
+                size="sm"
+                :label="selected.length ? 'Update Project' : 'New Project'"
+                :icon="selected.length ? 'las la-pen' : 'las la-plus'"
+                no-caps
+                @click="updateProjectDialog = true"
+              />
+            </div>
           </div>
           <div class="row full-width scroll">
-
             <q-table
+              v-model:selected="selected"
               flat
               no-data-label="I didn't find anything for you"
               class="q-mb-sm full-width"
               row-key="title"
               selection="single"
-              v-model:selected="selected"
               wrap-cells
               :hide-pagination="$q.screen.lt.sm"
               :grid="$q.screen.lt.sm"
@@ -144,15 +313,18 @@
               :columns="columns"
               :loading="rowLoading"
               :visible-columns="visibleColumns"
-              :rows-per-page-options="[10]">
-
+              :rows-per-page-options="[10]"
+            >
               <template #body="props">
                 <q-tr :props="props" :selected="props.selected">
                   <q-td key="id" :props="props">
                     {{ props.row.id }}
                   </q-td>
                   <q-td auto-width>
-                    <q-checkbox v-model="props.selected" @update:model-value="setSelected" />
+                    <q-checkbox
+                      v-model="props.selected"
+                      @update:model-value="setSelected"
+                    />
                   </q-td>
                   <q-td key="avatarFullPath" :props="props">
                     <q-avatar rounded>
@@ -162,26 +334,31 @@
                   <q-td key="title" :props="props">
                     {{ props.row.title }}
                   </q-td>
-                  <q-td key="description" :props="props" v-ellipsis="30">
-                    {{ props.row.description.length > maxLength ? props.row.descriptionShortened : props.row.description }}
+                  <q-td key="description" v-ellipsis="30" :props="props">
+                    {{
+                      props.row.description.length > maxLength
+                        ? props.row.descriptionShortened
+                        : props.row.description
+                    }}
                   </q-td>
                   <q-td key="budget" :props="props">
                     {{ props.row.budget }}
                   </q-td>
-                  <q-td v-formatdate key="dateFrom" :props="props">
+                  <q-td key="dateFrom" v-formatdate :props="props">
                     {{ props.row.dateFrom }}
                   </q-td>
-                  <q-td v-formatdate key="dateTo" :props="props">
+                  <q-td key="dateTo" v-formatdate :props="props">
                     {{ props.row.dateTo }}
                   </q-td>
                   <q-td key="createdBy" :props="props">
                     {{ props.row.createdBy }}
                   </q-td>
-                  <q-td v-formatdate key="dateCreated" :props="props">
+                  <q-td key="dateCreated" v-formatdate :props="props">
                     {{ props.row.dateCreated }}
                   </q-td>
                   <q-td key="isActive" :props="props">
                     <q-toggle
+                      v-model="activatedList[props.row.id]"
                       dense
                       name="djan"
                       checked-icon="check"
@@ -189,7 +366,7 @@
                       color="positive"
                       unchecked-color="negative"
                       @update:model-value="updateStatus(props.row)"
-                      v-model="activatedList[props.row.id]" />
+                    />
                   </q-td>
                 </q-tr>
               </template>
@@ -204,28 +381,51 @@
                     </q-item-section>
 
                     <q-item-section>
-                      <q-item-label class="text-h6">{{ props.row.title }}</q-item-label>
+                      <q-item-label class="text-h6">
+                        {{ props.row.title }}
+                      </q-item-label>
                       <q-item-label caption>
-                        {{ props.row.description.length > maxLength ? props.row.descriptionShortened : props.row.description }}
+                        {{
+                          props.row.description.length > maxLength
+                            ? props.row.descriptionShortened
+                            : props.row.description
+                        }}
                       </q-item-label>
                     </q-item-section>
 
                     <q-item-section side>
-                      <q-checkbox dense v-model="props.selected" @update:model-value="setSelected" />
+                      <q-checkbox
+                        v-model="props.selected"
+                        dense
+                        @update:model-value="setSelected"
+                      />
                     </q-item-section>
                   </q-item>
 
                   <q-separator />
 
                   <q-card-section>
-                    <div class="text-subtitle2"><b>Budget:</b> {{ props.row.budget }}</div>
-                    <div><b>From:</b> <span v-formatdate v-html="props.row.dateFrom"></span></div>
-                    <div><b>To:</b> <span v-formatdate v-html="props.row.dateTo"></span></div>
-                    <div><b>Created:</b> <span v-formatdate v-html="props.row.dateCreated"></span></div>
+                    <div class="text-subtitle2">
+                      <b>Budget:</b>
+                      {{ props.row.budget }}
+                    </div>
+                    <div>
+                      <b>From:</b>
+                      <span v-formatdate v-html="props.row.dateFrom"></span>
+                    </div>
+                    <div>
+                      <b>To:</b>
+                      <span v-formatdate v-html="props.row.dateTo"></span>
+                    </div>
+                    <div>
+                      <b>Created:</b>
+                      <span v-formatdate v-html="props.row.dateCreated"></span>
+                    </div>
                   </q-card-section>
 
                   <q-card-actions align="right">
                     <q-toggle
+                      v-model="activatedList[props.row.id]"
                       class="mr-5"
                       dense
                       name="djan"
@@ -234,13 +434,11 @@
                       color="positive"
                       unchecked-color="negative"
                       @update:model-value="updateStatus(props.row)"
-                      v-model="activatedList[props.row.id]"
                     />
                   </q-card-actions>
                 </q-card>
               </template>
             </q-table>
-
           </div>
           <q-inner-loading :showing="rowLoading">
             <q-spinner-ios size="50px" color="secondary" />
@@ -252,18 +450,32 @@
   <q-dialog v-model="updateProjectDialog" persistent>
     <q-card class="no-shadow">
       <q-card-section class="row items-center">
-        <q-avatar size="sm" icon="las la-pen" color="negative" text-color="white" />
-        <span class="q-ml-sm text-h6">{{ selected.length ? 'Update Project Details' : 'Add New Project' }}</span>
+        <q-avatar
+          size="sm"
+          icon="las la-pen"
+          color="negative"
+          text-color="white"
+        />
+        <span class="q-ml-sm text-h6">
+          {{ selected.length ? 'Update Project Details' : 'Add New Project' }}
+        </span>
       </q-card-section>
 
       <q-card-section>
-        <div class="row justify-between full-width items-center gap-10 scroll" style="height: 60vh;">
+        <div
+          class="row justify-between full-width items-center gap-10 scroll"
+          style="height: 60vh"
+        >
           <q-select
+            v-model="searchKey"
             behavior="menu"
-            :popup-content-class="[$q.dark.isActive ? 'popupSelectContent bg-contrast no-shadow' : 'popupSelectContent']"
+            :popup-content-class="[
+              $q.dark.isActive
+                ? 'popupSelectContent bg-contrast no-shadow'
+                : 'popupSelectContent'
+            ]"
             filled
             clearable
-            v-model="searchKey"
             use-input
             input-debounce="0"
             label="Location. (trigger search after 10 charaters)"
@@ -271,47 +483,82 @@
             :dense="true"
             :options="options"
             :loading="searchingPlaceLoader"
-            @filter="filterFn">
-              <template v-slot:no-option>
-                <q-item>
-                  <q-item-section class="text-grey"> No results </q-item-section>
-                </q-item>
-              </template>
+            @filter="filterFn"
+          >
+            <template #no-option>
+              <q-item>
+                <q-item-section class="text-grey">No results</q-item-section>
+              </q-item>
+            </template>
           </q-select>
-          <q-input class="full-width" :dense="true" filled v-model="text" label="Name"/>
-          <q-input class="full-width" :dense="true" placeholder="Description..." v-model="desc" filled type="textarea" />
+          <q-input
+            v-model="text"
+            class="full-width"
+            :dense="true"
+            filled
+            label="Name"
+          />
+          <q-input
+            v-model="desc"
+            class="full-width"
+            :dense="true"
+            placeholder="Description..."
+            filled
+            type="textarea"
+          />
           <q-tabs
             v-model="tab"
             class="bg-white-4 full-width"
             :dense="true"
-            align="justify">
-              <q-tab class="text-orange text-capitalize" name="upload" icon="las la-upload" label="Upload" />
-              <q-tab class="text-negative text-capitalize" name="capture" icon="las la-camera" label="Capture" />
+            align="justify"
+          >
+            <q-tab
+              class="text-orange text-capitalize"
+              name="upload"
+              icon="las la-upload"
+              label="Upload"
+            />
+            <q-tab
+              class="text-negative text-capitalize"
+              name="capture"
+              icon="las la-camera"
+              label="Capture"
+            />
           </q-tabs>
-          <div class="full-width q-pt-xs" v-if="tab === 'upload'">
+          <div v-if="tab === 'upload'" class="full-width q-pt-xs">
             <q-file
+              v-model="file"
               :dense="true"
               label-color="primary"
               filled
-              v-model="file"
               label="Choose File"
               multiple
               accept=".jpg, image/*"
-              class="shadow-2">
-              <template v-slot:prepend>
+              class="shadow-2"
+            >
+              <template #prepend>
                 <q-icon name="cloud_upload" color="primary" />
               </template>
             </q-file>
           </div>
-          <div class="full-width q-pl-sm q-pt-xs" v-if="tab === 'capture'">
-            <q-btn dense align="left" class="text-capitalize full-width no-shadow round-btn" text-color="primary"
-              color="grey-2" icon="las la-camera" label="Open camera" @click="captureImage" :disable="deviceIsReady"
-              style="height: 40px;" />
+          <div v-if="tab === 'capture'" class="full-width q-pl-sm q-pt-xs">
+            <q-btn
+              dense
+              align="left"
+              class="text-capitalize full-width no-shadow round-btn"
+              text-color="primary"
+              color="grey-2"
+              icon="las la-camera"
+              label="Open camera"
+              :disable="deviceIsReady"
+              style="height: 40px"
+              @click="captureImage"
+            />
           </div>
           <div class="q-py-sm full-width">
             <q-toggle
-              dense
               v-model="isActivated"
+              dense
               checked-icon="check"
               color="positive"
               unchecked-icon="clear"
@@ -319,76 +566,108 @@
             />
           </div>
           <q-input
+            v-model="budget"
             class="full-width"
             :dense="true"
             prefix="$"
             filled
-            v-model="budget"
             label="Budget"
             placeholder="0.00"
             input-class="text-right"
           />
-            <q-input class="full-width" :dense="true" v-model="dateFrom" filled type="date" label="Date from" />
-            <q-input class="full-width" :dense="true" v-model="dateTo" filled type="date" label="Date to" />
-            <q-select
-              class="full-width"
-              behavior="menu"
-              :popup-content-class="[$q.dark.isActive ? 'popupSelectContent bg-contrast no-shadow' : 'popupSelectContent']"
-              option-value="email"
-              option-label="email"
-              filled
-              v-model="agent"
-              use-input
-              use-chips
-              multiple
-              input-debounce="0"
-              @new-value="createAgentValue"
-              @filter="filterAgentFn"
-              :options="filterAgentOptions"
-              :placeholder="agent.length ? '' : 'Agent'"
-              :dense="true"
-            />
-            <q-select
-              class="full-width"
-              behavior="menu"
-              :popup-content-class="[$q.dark.isActive ? 'popupSelectContent bg-contrast no-shadow' : 'popupSelectContent']"
-              filled
-              v-model="client"
-              use-input
-              use-chips
-              multiple
-              input-debounce="0"
-              option-value="email"
-              option-label="email"
-              @new-value="createClientValue"
-              @filter="filterClientFn"
-              :options="filterClientOptions"
-              :placeholder="client.length ? '' : 'Client'"
-              :dense="true"
-            />
-            <q-select
-              class="full-width"
-              behavior="menu"
-              :popup-content-class="[$q.dark.isActive ? 'popupSelectContent bg-contrast no-shadow' : 'popupSelectContent']"
-              filled
-              v-model="templateId"
-              input-debounce="0"
-              :label="'SOW Template'"
-              :dense="true"
-              :options="sowTemplates"
-              :loading="sowTemplateLoader || loadingTodoSubmit">
-              <template v-slot:loading>
-                <div class="row justify-center">
-                  <q-spinner-ios />
-                </div>
-              </template>
-            </q-select>
+          <q-input
+            v-model="dateFrom"
+            class="full-width"
+            :dense="true"
+            filled
+            type="date"
+            label="Date from"
+          />
+          <q-input
+            v-model="dateTo"
+            class="full-width"
+            :dense="true"
+            filled
+            type="date"
+            label="Date to"
+          />
+          <q-select
+            v-model="agent"
+            class="full-width"
+            behavior="menu"
+            :popup-content-class="[
+              $q.dark.isActive
+                ? 'popupSelectContent bg-contrast no-shadow'
+                : 'popupSelectContent'
+            ]"
+            option-value="email"
+            option-label="email"
+            filled
+            use-input
+            use-chips
+            multiple
+            input-debounce="0"
+            :options="filterAgentOptions"
+            :placeholder="agent.length ? '' : 'Agent'"
+            :dense="true"
+            @new-value="createAgentValue"
+            @filter="filterAgentFn"
+          />
+          <q-select
+            v-model="client"
+            class="full-width"
+            behavior="menu"
+            :popup-content-class="[
+              $q.dark.isActive
+                ? 'popupSelectContent bg-contrast no-shadow'
+                : 'popupSelectContent'
+            ]"
+            filled
+            use-input
+            use-chips
+            multiple
+            input-debounce="0"
+            option-value="email"
+            option-label="email"
+            :options="filterClientOptions"
+            :placeholder="client.length ? '' : 'Client'"
+            :dense="true"
+            @new-value="createClientValue"
+            @filter="filterClientFn"
+          />
+          <q-select
+            v-model="templateId"
+            class="full-width"
+            behavior="menu"
+            :popup-content-class="[
+              $q.dark.isActive
+                ? 'popupSelectContent bg-contrast no-shadow'
+                : 'popupSelectContent'
+            ]"
+            filled
+            input-debounce="0"
+            :label="'SOW Template'"
+            :dense="true"
+            :options="sowTemplates"
+            :loading="sowTemplateLoader || loadingTodoSubmit"
+          >
+            <template #loading>
+              <div class="row justify-center">
+                <q-spinner-ios />
+              </div>
+            </template>
+          </q-select>
         </div>
       </q-card-section>
 
-      <q-card-actions class="row q-pa-md full-width" :class="[$q.screen.lt.sm ? 'justify-between' : 'justify-end']">
+      <q-card-actions
+        class="row q-pa-md full-width"
+        :class="[$q.screen.lt.sm ? 'justify-between' : 'justify-end']"
+      >
         <q-btn
-          rounded size="sm"
+          v-close-popup
+          rounded
+          size="sm"
           padding="sm xl"
           icon="las la-times"
           class="text-capitalize"
@@ -396,21 +675,32 @@
           color="negative"
           :disable="loadingSubmit"
           @click="formReset"
-          v-close-popup
         />
         <q-btn
-          rounded size="sm"
+          rounded
+          size="sm"
           padding="sm xl"
           icon="las la-check"
           class="text-capitalize"
           color="info"
-          @click="uploadFile"
           :label="selected.length ? 'Update' : 'Submit'"
           :loading="loadingSubmit"
-          :disable="loadingSubmit || !searchKey || !text || !desc || (updateMode ? false : !file) || !budget || !dateFrom || !dateTo || !templateId">
-            <template v-slot:loading>
-              <q-spinner-ios />
-            </template>
+          :disable="
+            loadingSubmit ||
+            !searchKey ||
+            !text ||
+            !desc ||
+            (updateMode ? false : !file) ||
+            !budget ||
+            !dateFrom ||
+            !dateTo ||
+            !templateId
+          "
+          @click="uploadFile"
+        >
+          <template #loading>
+            <q-spinner-ios />
+          </template>
         </q-btn>
       </q-card-actions>
     </q-card>
@@ -429,23 +719,79 @@ const stringOptions = []
 // Alternatively, if using UMD, load animate.css from CDN.
 export default {
   title: 'ProjectList',
-  emits: ['emitFromChild'],
-  components: {
-  },
+  components: {},
   directives: { ellipsis, formatdate },
-  setup () {
+  props: {
+    title: String,
+    likes: Number
+  },
+  emits: ['emitFromChild'],
+  setup() {
     const rows = []
     const columns = [
       { name: 'id', align: 'left', label: 'ID', field: 'id', sortable: true },
-      { name: 'avatarFullPath', align: 'left', label: 'Avatar', field: 'avatarFullPath' },
-      { name: 'title', required: true, align: 'left', label: 'Project Title', field: 'title', sortable: true },
-      { name: 'description', align: 'left', label: 'Description', field: 'description', sortable: true },
-      { name: 'budget', align: 'left', label: 'Budget', field: 'budget', sortable: true },
-      { name: 'dateFrom', align: 'left', label: 'From', field: 'dateFrom', sortable: true },
-      { name: 'dateTo', align: 'left', label: 'To', field: 'dateTo', sortable: true },
-      { name: 'createdBy', align: 'left', label: 'Created By', field: 'createdBy', sortable: true },
-      { name: 'dateCreated', align: 'left', label: 'Date Created', field: 'dateCreated', sortable: true },
-      { name: 'isActive', align: 'right', label: 'Activated', field: 'isActive' }
+      {
+        name: 'avatarFullPath',
+        align: 'left',
+        label: 'Avatar',
+        field: 'avatarFullPath'
+      },
+      {
+        name: 'title',
+        required: true,
+        align: 'left',
+        label: 'Project Title',
+        field: 'title',
+        sortable: true
+      },
+      {
+        name: 'description',
+        align: 'left',
+        label: 'Description',
+        field: 'description',
+        sortable: true
+      },
+      {
+        name: 'budget',
+        align: 'left',
+        label: 'Budget',
+        field: 'budget',
+        sortable: true
+      },
+      {
+        name: 'dateFrom',
+        align: 'left',
+        label: 'From',
+        field: 'dateFrom',
+        sortable: true
+      },
+      {
+        name: 'dateTo',
+        align: 'left',
+        label: 'To',
+        field: 'dateTo',
+        sortable: true
+      },
+      {
+        name: 'createdBy',
+        align: 'left',
+        label: 'Created By',
+        field: 'createdBy',
+        sortable: true
+      },
+      {
+        name: 'dateCreated',
+        align: 'left',
+        label: 'Date Created',
+        field: 'dateCreated',
+        sortable: true
+      },
+      {
+        name: 'isActive',
+        align: 'right',
+        label: 'Activated',
+        field: 'isActive'
+      }
     ]
     const timeStamp = Date.now()
     const formattedTimestamp = date.formatDate(
@@ -478,9 +824,9 @@ export default {
     //   StatusBar.backgroundColorByHexString('#C10015')
     // }, false)
 
-    function captureImage () {
+    function captureImage() {
       navigator.camera.getPicture(
-        (data) => {
+        data => {
           // on success
           $q.notify(data)
           camData.value = data
@@ -496,7 +842,7 @@ export default {
       )
     }
 
-    function printNavigator () {
+    function printNavigator() {
       // console.log('printing out navigator', navigator)
       // console.log('typeof navigator 296', typeof navigator)
 
@@ -513,7 +859,7 @@ export default {
       // }
     }
 
-    function saveLocally (f) {
+    function saveLocally(f) {
       try {
         this.logs.push('> saveLocally: at try')
         window.resolveLocalFileSystemURL(
@@ -543,7 +889,7 @@ export default {
               classes: 'notify-custom-css'
             })
           },
-          (err) => {
+          err => {
             // console.log(err)
             this.logs.push('> Error at inner catch: ' + err)
             this.$q.notify({
@@ -567,7 +913,7 @@ export default {
       }
     }
 
-    function saveLocally2 (f) {
+    function saveLocally2(f) {
       try {
         this.logs.push('> saveLocally2: at try')
         // eslint-disable-next-line no-undef
@@ -591,7 +937,7 @@ export default {
                 this.logs.push('> after writeFile')
                 // eslint-disable-next-line no-undef
               },
-              (err) => {
+              err => {
                 this.logs.push(
                   '> requestFileSystem:OnErrorCreateFile callback error' + err
                 )
@@ -599,7 +945,7 @@ export default {
             )
             // eslint-disable-next-line no-undef
           },
-          (err) => {
+          err => {
             this.logs.push(
               '> requestFileSystem:OnErrorLoadFs callback error' + err
             )
@@ -621,7 +967,9 @@ export default {
       addProjectDialog: ref(false),
       updateProjectDialog: ref(false),
       style: ref({
-        'background-color': computed(() => $q.dark.isActive ? 'rgba(255, 255, 255, 0.1)' : '#f0f4f7'),
+        'background-color': computed(() =>
+          $q.dark.isActive ? 'rgba(255, 255, 255, 0.1)' : '#f0f4f7'
+        ),
         'border-radius': '8px',
         border: '.1px solid rgb(198 198 198, 0.5)'
       }),
@@ -641,7 +989,17 @@ export default {
         highlight: true
       },
       updateMode: ref(false),
-      visibleColumns: ref(['avatarFullPath', 'title', 'description', 'budget', 'dateFrom', 'dateTo', 'avatar', 'dateCreated', 'isActive']),
+      visibleColumns: ref([
+        'avatarFullPath',
+        'title',
+        'description',
+        'budget',
+        'dateFrom',
+        'dateTo',
+        'avatar',
+        'dateCreated',
+        'isActive'
+      ]),
       rowLoading: ref(false),
       loadingSubmit: ref(false),
       isActivated: ref(false),
@@ -680,17 +1038,16 @@ export default {
       desc,
       options,
       visible,
-      initFunction () {
-      },
-      createAgentValue (val, done) {
+      initFunction() {},
+      createAgentValue(val, done) {
         if (val.length > 0) {
           const modelValue = (agent.value || []).slice()
 
           val
             .split(/[,;|]+/)
-            .map((v) => v.trim())
-            .filter((v) => v.length > 0)
-            .forEach((v) => {
+            .map(v => v.trim())
+            .filter(v => v.length > 0)
+            .forEach(v => {
               if (agentStringOptions.value.includes(v) === false) {
                 agentStringOptions.value.push(v)
               }
@@ -705,15 +1062,15 @@ export default {
           agent.value = modelValue
         }
       },
-      createClientValue (val, done) {
+      createClientValue(val, done) {
         if (val.length > 0) {
           const modelValue = (client.value || []).slice()
 
           val
             .split(/[,;|]+/)
-            .map((v) => v.trim())
-            .filter((v) => v.length > 0)
-            .forEach((v) => {
+            .map(v => v.trim())
+            .filter(v => v.length > 0)
+            .forEach(v => {
               if (clientStringOptions.value.includes(v) === false) {
                 clientStringOptions.value.push(v)
               }
@@ -735,10 +1092,6 @@ export default {
       loadingTodoSubmit: ref(false)
     }
   },
-  props: {
-    title: String,
-    likes: Number
-  },
   computed: {
     test: function () {
       return "I'm computed hook"
@@ -747,17 +1100,17 @@ export default {
       return this.$q.dark.isActive ? 'rgba(255, 255, 255, 0.1)' : '#f0f4f7'
     }
   },
-  beforeCreate () {
+  beforeCreate() {
     // console.log('beforeCreate')
   },
-  created () {
+  created() {
     // console.log('created')
   },
-  beforeMount () {
+  beforeMount() {
     // console.log('beforeMount')
     this.fetchProjects()
   },
-  async mounted () {
+  async mounted() {
     this.showTextLoading()
     this.authUser = LocalStorage.getItem('authUser')
     this.uid = this.authUser.uid
@@ -800,44 +1153,44 @@ export default {
 
     this.$emit('emitFromChild')
   },
-  beforeUpdate () {
+  beforeUpdate() {
     // console.log('beforeUpdate')
   },
-  updated () {
+  updated() {
     // console.log('updated')
   },
-  beforeUnmount () {
+  beforeUnmount() {
     // console.log('beforeUnmount')
   },
-  unmounted () {
+  unmounted() {
     // console.log('unmounted')
   },
   methods: {
-    filterClientFn (val, update) {
+    filterClientFn(val, update) {
       update(() => {
         if (val === '') {
           this.filterClientOptions = this.clientStringOptions
         } else {
           const needle = val.toLowerCase()
-          this.filterClientOptions = this.clientStringOptions?.filter((v) =>
+          this.filterClientOptions = this.clientStringOptions?.filter(v =>
             v.email?.toLowerCase().includes(needle.toLowerCase())
           )
         }
       })
     },
-    filterAgentFn (val, update) {
+    filterAgentFn(val, update) {
       update(() => {
         if (val === '') {
           this.filterAgentOptions = this.agentStringOptions
         } else {
           const needle = val.toLowerCase()
-          this.filterAgentOptions = this.agentStringOptions?.filter((v) =>
+          this.filterAgentOptions = this.agentStringOptions?.filter(v =>
             v.email?.toLowerCase().includes(needle.toLowerCase())
           )
         }
       })
     },
-    setSelected (value, evt) {
+    setSelected(value, evt) {
       console.log(value, this.selected[0])
       console.log('this.sowTemplates', this.sowTemplates)
       this.updateMode = value
@@ -856,14 +1209,16 @@ export default {
       this.dateTo = this.selected[0]?.dateTo
       this.agent = this.selected[0]?.agent || []
       this.client = this.selected[0]?.client || []
-      this.templateId = this.sowTemplates.find((e) => e.id === this.selected[0]?.templateId)
+      this.templateId = this.sowTemplates.find(
+        e => e.id === this.selected[0]?.templateId
+      )
     },
-    enterPressed (evt) {
+    enterPressed(evt) {
       console.log('enter key is pressed', evt)
       console.log('this.searchKey', this.searchKey)
       // this.filterFn(this.searchKey, () => {}, () => {})
     },
-    filterFn (val, update, abort) {
+    filterFn(val, update, abort) {
       if (val === '') {
         update(() => {
           this.options = stringOptions
@@ -879,7 +1234,7 @@ export default {
       update(async () => {
         const needle = val.toLowerCase()
         const resp = await this.$findPlace('address', needle)
-        this.options = resp?.data?.predictions.map((e) => {
+        this.options = resp?.data?.predictions.map(e => {
           return {
             label: e.description,
             value: e.description
@@ -888,7 +1243,7 @@ export default {
         this.searchingPlaceLoader = false
       })
     },
-    async startProject () {
+    async startProject() {
       // console.log('> file', this.file)
       this.logs.push('>' + JSON.stringify(this.file))
       // for (const item in this.file[0]) {
@@ -903,7 +1258,7 @@ export default {
       this.logs.push('>' + JSON.stringify(this.file[0]))
       this.saveLocally(this.file[0])
     },
-    async startProject2 () {
+    async startProject2() {
       // console.log('> file', this.file)
       this.logs.push('>' + JSON.stringify(this.file))
       // for (const item in this.file[0]) {
@@ -918,7 +1273,7 @@ export default {
       this.logs.push('>' + JSON.stringify(this.file[0]))
       this.saveLocally2(this.file[0])
     },
-    async uploadFile () {
+    async uploadFile() {
       this.loadingSubmit = true
       const files = this.file
       if (files === null) {
@@ -942,7 +1297,7 @@ export default {
       )
       uploadTask.on(
         'state_changed',
-        (snapshot) => {
+        snapshot => {
           // Observe state change events such as progress, pause, and resume
           // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
           const progress =
@@ -972,7 +1327,7 @@ export default {
           // Handle successful uploads on complete
           // For instance, get the download URL: https://firebasestorage.googleapis.com/...
           this.$getdownloadurl(uploadTask.snapshot.ref).then(
-            async (downloadURL) => {
+            async downloadURL => {
               // console.log('File available at', downloadURL)
               // console.log(files)
               this.projectAvatar = `${files[0].name.split('.')[0]}.${
@@ -991,7 +1346,7 @@ export default {
         }
       )
     },
-    async updateProjectDetails () {
+    async updateProjectDetails() {
       console.log('this.templateId', this.templateId)
       const payload = {
         createdBy: this.selected[0]?.createdBy,
@@ -1045,7 +1400,7 @@ export default {
           await this.fetchProjects()
         })
     },
-    async saveProjectDetails () {
+    async saveProjectDetails() {
       const payload = {
         createdBy: this.uid,
         dateCreated: this.formattedTimestamp,
@@ -1093,19 +1448,31 @@ export default {
           await this.fetchProjects()
         })
     },
-    async sendClientEmail (projectId) {
+    async sendClientEmail(projectId) {
       const clients = this.client.map(e => e.email)
       const agents = this.agent.map(e => e.email)
       const subject = 'Join to Application'
       const projectName = this.text
-      clients.forEach((recepient) => {
-        this.$sendEmailToAgentAndClient(recepient, subject, projectName, projectId, 'client')
+      clients.forEach(recepient => {
+        this.$sendEmailToAgentAndClient(
+          recepient,
+          subject,
+          projectName,
+          projectId,
+          'client'
+        )
       })
-      agents.forEach((agent) => {
-        this.$sendEmailToAgentAndClient(agent, subject, projectName, projectId, 'agent')
+      agents.forEach(agent => {
+        this.$sendEmailToAgentAndClient(
+          agent,
+          subject,
+          projectName,
+          projectId,
+          'agent'
+        )
       })
     },
-    async formReset () {
+    async formReset() {
       this.searchKey = null
       this.text = null
       this.desc = null
@@ -1118,7 +1485,7 @@ export default {
       this.agent = []
       this.templateId = null
     },
-    showTextLoading () {
+    showTextLoading() {
       const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 100)
       // console.log('loaded in ', ms, ' ms')
       this.visible = true
@@ -1126,20 +1493,20 @@ export default {
         this.visible = false
       }, ms)
     },
-    factoryFn (files) {
+    factoryFn(files) {
       const metadata = {
         contentType: files[0].type
       }
       console.log({ metadata })
     },
-    fnToggle (v) {
+    fnToggle(v) {
       if (v === 1) {
         this.btnToggle = true
       } else {
         this.btnToggle = false
       }
     },
-    async fetchProjects () {
+    async fetchProjects() {
       this.rowLoading = true
       this.rows = []
       const projectsTable = this.$fbref(this.$fbdb, 'projects')
@@ -1161,7 +1528,8 @@ export default {
 
         // apply ellipsis to long text description
         if (element.description.length > this.maxLength) {
-          element.descriptionShortened = element.description.substring(0, this.maxLength) + '..'
+          element.descriptionShortened =
+            element.description.substring(0, this.maxLength) + '..'
         }
 
         // apply dateCreated format.
@@ -1169,7 +1537,7 @@ export default {
       })
       this.rowLoading = false
     },
-    async updateStatus (val) {
+    async updateStatus(val) {
       delete val.isActive
       val.isActivated = !val.isActivated
       const updates = {}
@@ -1194,10 +1562,10 @@ export default {
           })
         })
     },
-    async getSowTemplate () {
+    async getSowTemplate() {
       this.sowTemplateLoader = true
       const sowTemplates = this.$fbref(this.$fbdb, 'sowTemplates')
-      this.$fbonValue(sowTemplates, (snapshot) => {
+      this.$fbonValue(sowTemplates, snapshot => {
         const data = snapshot.val()
         if (this.$isFalsyString(data)) {
           this.sowTemplates = []
@@ -1205,7 +1573,7 @@ export default {
         }
         const data_ = Object.values(data)
         this.sowTemplates = data_
-        this.sowTemplates.forEach((item) => {
+        this.sowTemplates.forEach(item => {
           item.dateCreated = date.formatDate(
             item.dateCreated,
             'MMM DD, YYYY HH:mm A'
@@ -1216,7 +1584,7 @@ export default {
         this.sowTemplateLoader = false
       })
     },
-    async autoMapTodoList () {
+    async autoMapTodoList() {
       console.log('this.sowTemplates before:', this.sowTemplates)
       for (const outerItem of this.sowTemplates) {
         for (const item in outerItem.sow) {
@@ -1232,7 +1600,7 @@ export default {
       }
       console.log('this.sowTemplates after:', this.sowTemplates)
     },
-    async saveTodo (projectId) {
+    async saveTodo(projectId) {
       this.loadingTodoSubmit = true
       console.log('this.templateId', this.templateId)
       const updates = {}
@@ -1248,7 +1616,7 @@ export default {
             classes: 'notify-custom-css'
           })
         })
-        .catch((error) => {
+        .catch(error => {
           // console.log({ error })
           this.loadingTodoSubmit = false
           this.$q.notify({
@@ -1268,14 +1636,16 @@ export default {
   min-height: 857px;
 }
 .q-item {
-    min-height: 48px;
-    padding: 8px 10px !important;
-    color: inherit;
-    transition: color 0.3s, background-color 0.3s;
+  min-height: 48px;
+  padding: 8px 10px !important;
+  color: inherit;
+  transition:
+    color 0.3s,
+    background-color 0.3s;
 }
 :deep(.q-separator--horizontal) {
-    display: block;
-    height: .1px;
+  display: block;
+  height: 0.1px;
 }
 :deep(.q-field__control:after) {
   display: none !important;
