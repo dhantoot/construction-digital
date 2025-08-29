@@ -1190,7 +1190,7 @@ export default {
         }
       })
     },
-    setSelected(value, evt) {
+    setSelected(value) {
       console.log(value, this.selected[0])
       console.log('this.sowTemplates', this.sowTemplates)
       this.updateMode = value
@@ -1519,7 +1519,7 @@ export default {
       }
       // console.log('results', results)
       this.rows = Object.values(results)
-      this.rows.forEach((element, index) => {
+      this.rows.forEach(element => {
         element.isActive = element.isActivated || false
         // The next line is a MAGIC. theres a bug in the framework regarding
         // qtoggle animation not working inside qTable !!!

@@ -10,10 +10,15 @@
 <script>
 export default {
   props: {
-    src: String,
+    src: {
+      type: String,
+      required: true,
+      default: ''
+    },
     size: {
       type: String,
-      required: false
+      required: false,
+      default: '32px'
     }
   }
 }

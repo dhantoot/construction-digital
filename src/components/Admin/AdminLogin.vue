@@ -2,7 +2,7 @@
   <!-- Admin Login -->
   <div
     class="row hide-scrollbar items-center justify-center"
-    :style="`height: 100vh; background: #f2f4f7`"
+    :style="`height: 100vh;`"
   >
     <q-card
       flat

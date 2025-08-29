@@ -3,7 +3,7 @@
     view="lHh lpR lFf"
     class="full-height no-scroll"
     :style="{
-      background: $q.dark.isActive ? 'black' : '#f2f4f7'
+      background: $q.dark.isActive ? 'black' : ''
     }"
   >
     <q-header
@@ -14,7 +14,7 @@
         'border-bottom': $q.dark.isActive
           ? '.1px solid #3a3a3a'
           : '.1px solid rgb(198 198 198 / 50%)',
-        background: $q.dark.isActive ? 'black' : '#f2f4f7'
+        background: $q.dark.isActive ? 'black' : ''
       }"
     >
       <q-toolbar>
@@ -359,57 +359,6 @@
       }"
     >
       <router-view @emit-from-child="emitFromChild" />
-
-      <!-- <q-footer v-if="$route.name !== 'Admin Login' && !$q.screen.gt.xs" dense bordered :class="{
-        'bg-dark': $q.dark.isActive,
-        'bg-white text-black': !$q.dark.isActive
-      }">
-          <q-tabs
-            v-model="tab"
-            class="shadow-2"
-            no-caps
-            switch-indicator
-            indicator-color="primary"
-          >
-            <q-tab
-              @click="$router.push('/admin-portal')"
-              alert=""
-              name="Home"
-              square icon="las la-play"
-            >
-              <q-badge color="negative" floating>7</q-badge>
-            </q-tab>
-
-            <q-tab
-              @click="$router.push('/manage-sow')"
-              name="SOW"
-              square icon="las la-tools"
-            ></q-tab>
-
-            <q-tab
-              @click="$router.push('/manage-projects')"
-              name="Projects"
-              square icon="las la-folder-open"
-            >
-              <q-badge color="negative" floating>2</q-badge>
-            </q-tab>
-
-            <q-tab
-              @click="$router.push('/manage-invites')"
-              name="Invites"
-              square icon="lab la-telegram-plane"
-            >
-            </q-tab>
-
-            <q-tab
-              @click="$router.push('/manage-accounts')"
-              name="User"
-              square icon="las la-user-tag"
-            >
-            </q-tab>
-
-          </q-tabs>
-      </q-footer> -->
     </q-page-container>
 
     <div

@@ -469,7 +469,7 @@ export default {
         this.confirm = false
       }, 2000)
     },
-    setSelected(value, evt) {
+    setSelected(value) {
       console.log(value, this.selected[0])
       this.updateMode = value
     },

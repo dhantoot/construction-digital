@@ -100,7 +100,7 @@
           @click="reset"
         />
         <div class="text-subtitle2">
-          <a class="clickable text-grey" @click="$router.push('/admin-portal')">
+          <a class="clickable text-grey" @click="goToAdminView">
             Switch to admin
           </a>
         </div>
@@ -154,8 +154,16 @@ const auth = getAuth()
 export default {
   title: 'UserLogin',
   props: {
-    title: String,
-    likes: Number
+    title: {
+      type: String,
+      required: false,
+      default: ''
+    },
+    likes: {
+      type: Number,
+      required: false,
+      default: 0
+    }
   },
   emits: ['showHeader'],
   setup() {
@@ -229,6 +237,16 @@ export default {
     // console.log('unmounted')
   },
   methods: {
+    goToAdminView() {
+      localStorage.removeItem('adminUser')
+      localStorage.removeItem('authUser')
+      localStorage.removeItem('mobileSelectedProjectTodo')
+      localStorage.setItem('showNav', false)
+      Object.keys(localStorage)
+        .filter(k => k.startsWith('firebase:'))
+        .forEach(k => localStorage.removeItem(k))
+      this.$router.push('/admin-login')
+    },
     clearLocalStorage() {
       LocalStorage.set('adminUser', null)
       LocalStorage.set('authUser', null)
