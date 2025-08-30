@@ -144,7 +144,6 @@
         class="full-width q-mb-xs"
         multiple
         auto-upload
-        flat
       >
         <template #list="">
           <div v-for="item of todoFiles" :key="item" class="">

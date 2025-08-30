@@ -27,6 +27,7 @@ $info: #1f3957;
 $warning: #e0b269;
 
 $contrast: #353535; // not working
+$light: #f0f0f0; // not working
 
 $colors: (
   'primary': $primary,
@@ -37,5 +38,6 @@ $colors: (
   'negative': $negative,
   'info': $info,
   'warning': $warning,
-  'contrast': $contrast
+  'contrast': $contrast,
+  'light': $light
 );

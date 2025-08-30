@@ -196,12 +196,11 @@
   <q-dialog v-model="confirm" persistent>
     <q-card class="no-shadow">
       <q-card-section class="row items-center">
-        <q-avatar
-          size="sm"
-          icon="las la-exclamation"
-          color="negative"
-          text-color="white"
-        />
+        <q-avatar size="sm">
+          <template #default>
+            <CircleAlertIcon size="20" />
+          </template>
+        </q-avatar>
         <span class="q-ml-sm text-h6">{{ confirmMsg }}</span>
       </q-card-section>
 
@@ -211,18 +210,19 @@
           rounded
           size="sm"
           padding="sm xl"
-          icon="las la-times"
           class="text-capitalize"
-          label="Close"
           color="negative"
-        />
+        >
+          <template #default>
+            <XIcon class="q-mr-sm" />
+            <span class="text-capitalize">Close</span>
+          </template>
+        </q-btn>
         <q-btn
           rounded
           size="sm"
           padding="sm xl"
-          icon="las la-check"
           class="text-capitalize"
-          label="Confirm"
           color="info"
           :loading="actionAccountLoader"
           :disable="actionAccountLoader"
@@ -230,6 +230,11 @@
         >
           <template #loading>
             <q-spinner-ios />
+          </template>
+
+          <template #default>
+            <CheckIcon class="q-mr-sm" />
+            <span class="text-capitalize">Confirm</span>
           </template>
         </q-btn>
       </q-card-actions>

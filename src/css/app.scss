@@ -513,3 +513,11 @@ $weights: 100, 200, 300, 400, 500, 600, 700, 800, 900;
 :deep(.q-field__control:after) {
   display: none !important;
 }
+
+.bg-light {
+  background: #f0f0f0 !important;
+}
+
+.text-light {
+  color: #f0f0f0 !important;
+}

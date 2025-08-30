@@ -2,22 +2,23 @@
   <q-layout
     view="lHh lpR lFf"
     class="full-height no-scroll"
-    :style="{
-      background: $q.dark.isActive ? 'black' : ''
-    }"
+    :class="[
+      $q.dark.isActive ? 'text-accent bg-black' : 'text-primary bg-light'
+    ]"
   >
     <q-header
       v-if="$route.name !== 'Admin Login'"
-      :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
       height-hint="98"
       :style="{
         'border-bottom': $q.dark.isActive
           ? '.1px solid #3a3a3a'
-          : '.1px solid rgb(198 198 198 / 50%)',
-        background: $q.dark.isActive ? 'black' : ''
+          : '.1px solid rgb(198 198 198 / 50%)'
       }"
+      :class="[
+        $q.dark.isActive ? 'text-accent bg-black' : 'text-primary bg-light'
+      ]"
     >
-      <q-toolbar>
+      <q-toolbar class="dhan">
         <q-toolbar-title>
           {{ routeName }}
         </q-toolbar-title>
@@ -114,7 +115,7 @@
         'border-right': $q.dark.isActive
           ? '.1px solid #3a3a3a'
           : '.1px solid rgb(198 198 198 / 50%)',
-        background: $q.dark.isActive ? 'black' : '#f2f4f7'
+        background: $q.dark.isActive ? 'black' : '#F0F0F0'
       }"
       @click.capture="drawerClick"
     >
@@ -460,12 +461,11 @@
       }"
     >
       <q-card-section class="row items-center">
-        <q-avatar
-          size="sm"
-          icon="las la-exclamation"
-          color="negative"
-          text-color="white"
-        />
+        <q-avatar size="sm">
+          <template #default>
+            <CircleAlertIcon size="20" />
+          </template>
+        </q-avatar>
         <span class="q-ml-sm text-h6">{{ confirmMsg }}</span>
       </q-card-section>
 
@@ -473,16 +473,18 @@
         <q-btn
           v-close-popup
           padding="sm xl"
-          icon="las la-times"
           class="round-btn text-capitalize"
-          label="Close"
           color="negative"
-        />
+        >
+          <template #default>
+            <XIcon class="q-mr-sm" />
+            <span class="text-capitalize">Close</span>
+          </template>
+        </q-btn>
+
         <q-btn
           padding="sm xl"
-          icon="las la-check"
           class="round-btn text-capitalize"
-          label="Confirm"
           color="info"
           :loading="actionAccountLoader"
           :disable="actionAccountLoader"
@@ -491,6 +493,11 @@
           <template #loading>
             <q-spinner-ios class="on-left" />
             <small>Logging out..</small>
+          </template>
+
+          <template #default>
+            <CheckIcon class="q-mr-sm" />
+            <span class="text-capitalize">Confirm</span>
           </template>
         </q-btn>
       </q-card-actions>
