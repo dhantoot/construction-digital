@@ -98,6 +98,17 @@ module.exports = configure(function (/* ctx */) {
           },
         ],
       ],
+
+      vueCompilerOptions: {
+        isCustomElement: tag => {
+          // Example patterns:
+          return (
+            tag.startsWith('q-bottom-') ||
+            tag.startsWith('q-bottom-navigation') ||
+            ['HofsteeAvatar', 'another-element'].includes(tag)
+          )
+        }
+      }
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#devServer

@@ -195,6 +195,7 @@
     <q-spinner-ios size="50px" color="secondary" />
   </q-inner-loading>
 </template>
+
 <script>
 import { ref } from 'vue'
 import moment from 'moment'
@@ -971,6 +972,7 @@ export default {
   }
 }
 </script>
+
 <style lang="scss" scoped>
 .panel-wrapper {
   opacity: 0.5; /* 50% opacity */

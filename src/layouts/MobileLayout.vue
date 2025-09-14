@@ -1,248 +1,3 @@
-<!-- <template>
-  <q-layout
-    class="full-height"
-    v-no-scroll
-    view="lHh lpR fFf"
-    :class="{
-      'bg-light': !$q.dark.isActive,
-      'bg-black': $q.dark.isActive
-    }"
-    >
-    <q-header elevated class="text-warning" :class="{
-      'bg-primary': !$q.dark.isActive,
-      'bg-black': $q.dark.isActive
-    }">
-      <q-toolbar class="text-accent q-py-sm q-px-md justify-between">
-        <div class="row full-width items-center justify-between">
-          <q-btn @click="leftDrawerOpen = !leftDrawerOpen" flat round :dense="true" icon="menu" class="q-mr-sm round-btn"/>
-          <q-toolbar-title class="text-center">Hofstee Inc.</q-toolbar-title>
-          <div class="ml-10 row items-center full-height min-width-px-23">
-            <div v-if="mainStore.showNav || routeName === 'mobile.my-profile'">
-              <q-avatar>
-                <img :src="obj?.avatar?.length > 0 ? `${obj.avatar}` : `default-user.jpeg`"/>
-                <HofsteeAvatar :src="obj?.avatar?.length > 0 ? `${obj.avatar}` : `default-user.jpeg`" size="30px"/>
-              </q-avatar>
-                <q-menu
-                  style="border-radius: 10px;"
-                  :class="[$q.dark.isActive ? 'bg-contrast text-accent no-shadow' : 'bg-light text-primary']"
-                  :offset="[13, 16]">
-                  <template v-slot:activator="{ on }">
-                    <q-btn flat dense icon="more_vert" v-on="on" />
-                  </template>
-                  <q-list style="min-width: 200px">
-                    <q-item>
-                      <q-item-section>Dark Mode</q-item-section>
-                      <q-item-section side>
-                        <q-toggle
-                          v-if="mainStore.showNav || routeName === 'MyProfile'"
-                          dense
-                          v-model="isDark"
-                          checked-icon="las la-moon"
-                          color="grey"
-                          unchecked-icon="las la-sun"
-                          label=""
-                          @update:model-value="toggleMode"
-                        />
-                      </q-item-section>
-                    </q-item>
-                    <q-item clickable v-ripple :to="`/profile/${authUser.uid}`">
-                      <q-item-section>My Profile</q-item-section>
-                      <q-item-section side>
-                        <q-icon name="las la-user"/>
-                      </q-item-section>
-                    </q-item>
-                    <q-item clickable v-ripple @click="signOut">
-                      <q-item-section>Logout</q-item-section>
-                      <q-item-section side>
-                        <q-icon name="las la-sign-out-alt"/>
-                      </q-item-section>
-                    </q-item>
-                  </q-list>
-                </q-menu>
-            </div>
-          </div>
-        </div>
-      </q-toolbar>
-    </q-header>
-
-    <q-drawer v-model="leftDrawerOpen" side="left" overlay behavior="mobile" class="q-mt-xl q-pt-lg" :class="{
-    'bg-light': !$q.dark.isActive,
-    'bg-black': $q.dark.isActive
-  }" >
-      <q-list :bordered="!$q.dark.isActive" separator padding class="text-caption" :class="{
-        'text-accent': $q.dark.isActive,
-        'text-primary': $q.dark.isActive
-      }">
-      <q-item
-        clickable
-        v-ripple
-        :active="link === 'back'"
-        @click="leftDrawerOpen=false; this.$router.push(`/projects`)"
-        active-class="my-menu-link"
-      >
-        <q-item-section avatar>
-          <q-icon name="las la-arrow-left"/>
-        </q-item-section>
-
-        <q-item-section></q-item-section>
-      </q-item>
-      <q-item
-        clickable
-        v-ripple
-        :active="link === 'profile'"
-        @click="link = 'profile'; mainStore.showNav = false; $router.push(`/profile/${authUser.uid}`);"
-        active-class="my-menu-link"
-      >
-        <q-item-section avatar>
-          <q-icon name="las la-user"/>
-        </q-item-section>
-
-        <q-item-section>My profile</q-item-section>
-      </q-item>
-
-      <q-item
-        clickable
-        v-ripple
-        :active="link === 'company'"
-        @click="link = 'company'"
-        active-class="my-menu-link"
-      >
-        <q-item-section avatar>
-          <q-icon name="las la-building"/>
-        </q-item-section>
-
-        <q-item-section>Company Info</q-item-section>
-      </q-item>
-
-      <q-item
-        clickable
-        v-ripple
-        :active="link === 'emailsettings'"
-        @click="link = 'emailsettings'"
-        active-class="my-menu-link"
-      >
-        <q-item-section avatar>
-          <q-icon name="las la-envelope"/>
-        </q-item-section>
-
-        <q-item-section>Email Settings</q-item-section>
-      </q-item>
-
-      <q-item
-        clickable
-        v-ripple
-        :active="link === 'trash'"
-        @click="link = 'trash'"
-        active-class="my-menu-link"
-      >
-        <q-item-section avatar>
-          <q-icon name="las la-trash"/>
-        </q-item-section>
-
-        <q-item-section>Archive Projects</q-item-section>
-      </q-item>
-
-      <q-separator spaced class="q-pa-xs"/>
-
-      <q-item
-        clickable
-        v-ripple
-        :active="link === 'terms'"
-        @click="link = 'terms'"
-        active-class="my-menu-link"
-      >
-        <q-item-section avatar>
-          <q-icon name="las la-file-alt"/>
-        </q-item-section>
-
-        <q-item-section>Terms and Condition</q-item-section>
-      </q-item>
-
-      <q-item
-        clickable
-        v-ripple
-        :active="link === 'privacy'"
-        @click="link = 'privacy'"
-        active-class="my-menu-link"
-      >
-        <q-item-section avatar>
-          <q-icon name="las la-shield-alt"/>
-        </q-item-section>
-
-        <q-item-section>Privacy Statement</q-item-section>
-      </q-item>
-
-      <q-item
-        clickable
-        v-ripple
-        :active="link === 'about'"
-        @click="link = 'about'"
-        active-class="my-menu-link"
-      >
-        <q-item-section avatar>
-          <q-icon name="las la-question"/>
-        </q-item-section>
-
-        <q-item-section>About Us</q-item-section>
-      </q-item>
-
-      <q-separator spaced class="q-pa-xs"/>
-
-      <q-item
-        clickable
-        v-ripple
-        :active="link === 'signout'"
-        @click="signOut"
-        active-class="my-menu-link"
-      >
-        <q-item-section avatar>
-          <q-icon name="las la-sign-out-alt"/>
-        </q-item-section>
-
-        <q-item-section>Logout</q-item-section>
-      </q-item>
-    </q-list>
-    </q-drawer>
-
-    <q-page-container style="height: 100vh;overflow-y: hidden;" class="debug">
-      <q-tabs
-        no-scroll
-        v-if="mainStore.showNav && !routeName?.includes('project.details')"
-        v-model="tab"
-        no-caps
-        inline-label
-        class="q-mb-none shadow-2 debug"
-        :indicator-color="$q.dark.isActive ? 'accent' : 'primary'"
-      >
-        <q-tab name="home" label="Home" :class="{
-          'text-primary': !$q.dark.isActive,
-          'text-accent': $q.dark.isActive
-        }" @click='$router.push({ path: `/` })'/>
-        <q-tab name="mails" label="Projects" :class="{
-          'text-primary': !$q.dark.isActive,
-          'text-accent': $q.dark.isActive
-        }" @click='$router.push({ path: `/projects` })'/>
-        <q-tab name="alarms" label="Dashboard" :class="{
-          'text-primary': !$q.dark.isActive,
-          'text-accent': $q.dark.isActive
-        }" @click='$router.push({ path: `/dashboard` })'/>
-        <q-tab name="movies" label="Planning" :class="{
-          'text-primary': !$q.dark.isActive,
-          'text-accent': $q.dark.isActive
-        }" @click='$router.push({ path: `/plans` })'/>
-        <q-tab name="profile" label="Profile" :class="{
-          'text-primary': !$q.dark.isActive,
-          'text-accent': $q.dark.isActive
-        }" @click='$router.push({ path: `/profile` })'/>
-      </q-tabs>
-
-      <div class="debug3">
-        <router-view @emitFromChild="emitFromChild"/>
-      </div>
-    </q-page-container>
-
-  </q-layout>
-</template> -->
 
 <template>
   <q-layout
@@ -255,7 +10,7 @@
     <q-header elevated>
       <q-toolbar>
         <div class="row justify-between full-width items-center">
-          <q-btn flat round dense icon="menu" />
+          <q-btn title="x" flat round dense icon="menu" />
 
           <!-- <q-toolbar-title><small>{{ 'Hofstee' }}</small></q-toolbar-title> -->
           <div class="column items-center justify-center">
@@ -383,7 +138,7 @@
         }"
       >
         <q-btn
-          aria-placeholder="Go to Dashboard"
+          aria-label="Go to Dashboard"
           round
           flat
           :class="{ 'text-purple': activeTab === 'dashboard' }"
@@ -395,7 +150,7 @@
           </div>
         </q-btn>
         <q-btn
-          aria-placeholder="Go to Projects"
+          aria-label="Go to Projects"
           round
           flat
           :class="{ 'text-purple': activeTab === 'projects' }"
@@ -406,7 +161,7 @@
           </div>
         </q-btn>
         <q-btn
-          aria-placeholder="Go to Search"
+          aria-label="Go to Search"
           round
           flat
           :class="{ 'text-purple': activeTab === 'search' }"
@@ -417,7 +172,7 @@
           </div>
         </q-btn>
         <q-btn
-          aria-placeholder="Go to plans"
+          aria-label="Go to Plans"
           round
           flat
           :class="{ 'text-purple': activeTab === 'plans' }"
@@ -428,7 +183,7 @@
           </div>
         </q-btn>
         <q-btn
-          aria-placeholder="Go to Profile"
+          aria-label="Go to Profile"
           round
           flat
           :class="{ 'text-purple': activeTab === 'profile' }"
@@ -475,6 +230,7 @@ export default {
     // }, false)
 
     return {
+      selectedTab: ref(null),
       activeTab,
       isDark,
       themeStore,

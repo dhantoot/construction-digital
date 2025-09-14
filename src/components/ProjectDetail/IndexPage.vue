@@ -116,7 +116,7 @@
     </div>
 
     <!-- Center Label -->
-    <div v-if="tab === 'analytics'" class="center-label text-white">
+    <div v-if="activeTab === 'analytics'" class="center-label text-white">
       Analytics
     </div>
   </div>

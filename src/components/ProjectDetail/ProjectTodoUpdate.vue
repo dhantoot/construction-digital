@@ -175,8 +175,28 @@
         </template>
       </q-uploader>
     </div>
-    <div class="row debug full-width">
-      <q-checkbox v-model="isCompleted" keep-color label="Completed" />
+    <div class="row full-width">
+       <HofsteeAlert
+        :background-color="{
+          '#292727': $q.dark.isActive
+        }"
+        border-radius="8px"
+        border-color="cancel"
+        border="0.1px solid"
+        height="54px"
+      >
+        <!-- <template #icon>
+          <q-icon
+            name="las la-pause-circle"
+            color="negative"
+            size="lg"
+          />
+        </template> -->
+        <!-- <template #header>Completed</template> -->
+        <template #body>
+          <q-checkbox v-model="isCompleted" keep-color label="Completed" color="primary"/>
+        </template>
+      </HofsteeAlert>
     </div>
   </div>
 
@@ -287,12 +307,16 @@
 import { ref } from 'vue'
 import { uid, LocalStorage, date } from 'quasar'
 import { useMainStore } from 'stores/main'
+import HofsteeAlert from '../Common/Alert/HofsteeAlert.vue'
 
 // Don't forget to specify which animations
 // you are using in quasar.config file > animations.
 // Alternatively, if using UMD, load animate.css from CDN.
 export default {
   title: 'ProjectCreateTodo',
+  components: {
+    HofsteeAlert
+  },
   props: {
     title: {
       type: String,

@@ -110,7 +110,7 @@
 body {
   // font-family: 'inter', sans-serif;
   // font-family: 'iosevkaAileLight';
-  font-family: 'inter';
+  font-family: 'inter'; // LAST USED
   // font-feature-settings: 'cv13' 1, 'calt' 1;
   // font-variation-settings: 'wght' 200;
   // font-family: 'Inter';
@@ -468,6 +468,10 @@ $weights: 100, 200, 300, 400, 500, 600, 700, 800, 900;
   border-right-width: 0px;
   border-left-width: 0px;
   border-top-width: 0px;
+}
+:deep(.fc .fc-toolbar-title) {
+  font-size: 18px;
+  margin: 0px;
 }
 :deep(.q-separator--horizontal) {
   display: block;

@@ -93,6 +93,7 @@
   </q-inner-loading>
   <q-page-sticky v-if="false" position="bottom-right" :offset="[18, 18]">
     <q-btn
+      title="xx"
       fab
       icon="add"
       color="grey-1"

@@ -54,6 +54,11 @@ export default {
       type: String,
       default: '',
       required: false
+    },
+    width: {
+      type: String,
+      default: '',
+      required: false
     }
   },
   setup(props) {
@@ -62,7 +67,8 @@ export default {
       'background-color': props.backgroundColor,
       'border-radius': props.borderRadius,
       border: `${props.border} ${Object.keys(theme).includes(props.borderColor) ? theme[props.borderColor] : props.borderColor}${opacityAlphaChannel}`,
-      height: props.height || '250px'
+      height: props.height || '250px',
+      width: props?.width || '100%'
     })
 
     return {
