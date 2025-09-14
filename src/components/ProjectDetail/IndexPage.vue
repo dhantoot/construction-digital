@@ -64,7 +64,7 @@
   </q-footer> -->
 
   <div v-if="bottomNavPaths.includes(routeName)" class="bottom-nav-container">
-    <q-bottom-navigation
+    <div
       class="modern-bottom-nav shadow-4"
       active-color="white"
       glossy
@@ -113,7 +113,7 @@
       >
         <SettingsIcon size="24" />
       </q-btn>
-    </q-bottom-navigation>
+    </div>
 
     <!-- Center Label -->
     <div v-if="tab === 'analytics'" class="center-label text-white">

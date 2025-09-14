@@ -176,11 +176,7 @@
       </q-uploader>
     </div>
     <div class="row debug full-width">
-      <q-checkbox
-        v-model="selectedTodoDetail.isCompleted"
-        keep-color
-        label="Completed"
-      />
+      <q-checkbox v-model="isCompleted" keep-color label="Completed" />
     </div>
   </div>
 
@@ -188,8 +184,7 @@
     v-if="routeName == 'project.details.todo.update'"
     class="bottom-nav-container"
   >
-    <q-bottom-navigation
-      v-model="tab"
+    <div
       class="modern-bottom-nav shadow-4"
       active-color="white"
       glossy
@@ -227,7 +222,7 @@
           </template>
         </q-btn>
       </div>
-    </q-bottom-navigation>
+    </div>
   </div>
 
   <!-- <div class="row full-width q-px-sm q-py-sm justify-between items-start absolute fixed-bottom"
@@ -359,7 +354,8 @@ export default {
       timeline: ref({
         from: date.formatDate(new Date(), 'YYYY/MM/DD'),
         to: ''
-      })
+      }),
+      isCompleted: ref(false)
     }
   },
   computed: {
@@ -457,7 +453,8 @@ export default {
           assignee: this.invitee.filter(e => e.isSelected).map(f => f.id),
           timeline: this.timeline,
           duration: diff + 1,
-          isLocked: false
+          isLocked: false,
+          isCompleted: this.isCompleted
         }
         const updates = {}
         console.log({
@@ -671,15 +668,21 @@ export default {
       })
     },
     setUpdateValues() {
-      this.selectedTodoDetail = LocalStorage.getItem(
-        'mobileSelectedProjectTodo'
-      )
-      this.todoTitle = this.selectedTodoDetail.todoTitle
-      this.todoDesc = this.selectedTodoDetail.todoDesc
-      this.todoFiles = [this.selectedTodoDetail?.avatar] || ['broken-img.png']
-      this.timeline = this.selectedTodoDetail?.timeline || {
-        from: date.formatDate(new Date(), 'YYYY/MM/DD'),
-        to: ''
+      try {
+        this.selectedTodoDetail = LocalStorage.getItem(
+          'mobileSelectedProjectTodo'
+        )
+        this.todoTitle = this.selectedTodoDetail.todoTitle
+        this.todoDesc = this.selectedTodoDetail.todoDesc
+        this.todoFiles = [this.selectedTodoDetail?.avatar] || ['broken-img.png']
+        this.timeline = this.selectedTodoDetail?.timeline || {
+          from: date.formatDate(new Date(), 'YYYY/MM/DD'),
+          to: ''
+        }
+        this.isCompleted = this.selectedTodoDetail?.isCompleted
+        console.log('this.selectedTodoDetail', this.selectedTodoDetail)
+      } catch (e) {
+        console.log(e)
       }
     }
   }

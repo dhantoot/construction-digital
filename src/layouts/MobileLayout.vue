@@ -373,7 +373,7 @@
       "
       class="bottom-nav-container"
     >
-      <q-bottom-navigation
+      <div
         class="modern-bottom-nav shadow-4"
         active-color="white"
         glossy
@@ -383,6 +383,7 @@
         }"
       >
         <q-btn
+          aria-placeholder="Go to Dashboard"
           round
           flat
           :class="{ 'text-purple': activeTab === 'dashboard' }"
@@ -394,6 +395,7 @@
           </div>
         </q-btn>
         <q-btn
+          aria-placeholder="Go to Projects"
           round
           flat
           :class="{ 'text-purple': activeTab === 'projects' }"
@@ -404,6 +406,7 @@
           </div>
         </q-btn>
         <q-btn
+          aria-placeholder="Go to Search"
           round
           flat
           :class="{ 'text-purple': activeTab === 'search' }"
@@ -414,6 +417,7 @@
           </div>
         </q-btn>
         <q-btn
+          aria-placeholder="Go to plans"
           round
           flat
           :class="{ 'text-purple': activeTab === 'plans' }"
@@ -424,6 +428,7 @@
           </div>
         </q-btn>
         <q-btn
+          aria-placeholder="Go to Profile"
           round
           flat
           :class="{ 'text-purple': activeTab === 'profile' }"
@@ -433,7 +438,7 @@
             <UserIcon size="24" />
           </div>
         </q-btn>
-      </q-bottom-navigation>
+      </div>
 
       <!-- Center Label -->
       <!-- <div v-if="tab === 'analytics'" class="center-label text-white">

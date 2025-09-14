@@ -203,8 +203,7 @@
     </div> -->
 
     <div v-if="routeName == 'mobile.my-profile'" class="bottom-nav-container">
-      <q-bottom-navigation
-        v-model="tab"
+      <div
         class="modern-bottom-nav shadow-4"
         active-color="white"
         glossy
@@ -232,7 +231,7 @@
             </template>
           </q-btn>
         </div>
-      </q-bottom-navigation>
+      </div>
     </div>
 
     <q-inner-loading :showing="fetchUserProfileLoader">
@@ -375,13 +374,17 @@ export default {
       this.loadingSubmit = false
     },
     async fetchUserProfile() {
-      console.log('this.authUser', this.authUser.uid)
-      const users = this.$fbref(this.$fbdb, `users/${this.authUser.uid}`)
-      this.$fbonValue(users, snapshot => {
-        const data = snapshot.val()
-        this.obj = data
-        this.fetchUserProfileLoader = false
-      })
+      try {
+        console.log('this.authUser', this.authUser?.uid)
+        const users = this.$fbref(this.$fbdb, `users/${this.authUser?.uid}`)
+        this.$fbonValue(users, snapshot => {
+          const data = snapshot.val()
+          this.obj = data
+          this.fetchUserProfileLoader = false
+        })
+      } catch (e) {
+        console.log('e', e)
+      }
     },
     captureImage() {
       console.log('captureImage..')

@@ -367,7 +367,7 @@
       v-if="$route.name !== 'Admin Login' && !$q.screen.gt.xs"
       class="bottom-nav-container"
     >
-      <q-bottom-navigation
+      <div
         class="modern-bottom-nav shadow-4"
         active-color="white"
         glossy
@@ -451,7 +451,7 @@
             <UserSearchIcon size="24" />
           </div>
         </q-btn>
-      </q-bottom-navigation>
+      </div>
     </div>
   </q-layout>
 

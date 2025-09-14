@@ -96,8 +96,7 @@
       </q-footer> -->
   </div>
   <!-- <div class="bottom-nav-container">
-      <q-bottom-navigation
-        v-model="tab"
+      <div
         class="modern-bottom-nav shadow-4"
         active-color="white"
         glossy
@@ -120,7 +119,7 @@
           />
           <q-btn round flat icon="send" :color="colorMode" @click="sendMessage" />
         </div>
-    </q-bottom-navigation>
+    </div>
     </div> -->
 
   <q-footer
