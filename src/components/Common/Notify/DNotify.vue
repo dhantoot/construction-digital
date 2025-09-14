@@ -14,9 +14,18 @@
 <script>
 export default {
   props: {
-    message: String,
-    type: String, // 'positive', 'negative', 'warning', 'info'
-    position: String // 'top', 'bottom', 'left', 'right'
+    message: {
+      type: String,
+      default: ''
+    },
+    type: {
+      type: String,
+      default: 'positive'
+    }, // 'positive', 'negative', 'warning', 'info'
+    position: {
+      type: String,
+      default: 'top'
+    } // 'top', 'bottom', 'left', 'right'
   },
   // name: 'ComponentName',
   setup() {

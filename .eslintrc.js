@@ -36,7 +36,9 @@ module.exports = {
     // General rules
     'prefer-promise-reject-errors': 'off',
     'quotes': ['warn', 'single', { avoidEscape: true }],
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+
+    'vue/no-v-html': 'off',
   },
 
   globals: {

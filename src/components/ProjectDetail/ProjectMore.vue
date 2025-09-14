@@ -275,8 +275,14 @@ import { useMainStore } from 'stores/main'
 export default {
   title: 'ProjectMore',
   props: {
-    title: String,
-    likes: Number
+    title: {
+      type: String,
+      default: ''
+    },
+    likes: {
+      type: Number,
+      default: 0
+    }
   },
   setup() {
     const visible = ref(false)

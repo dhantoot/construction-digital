@@ -175,8 +175,14 @@ import { useQuasar, LocalStorage, uid, date } from 'quasar'
 export default {
   title: 'ProjectChatDetails',
   props: {
-    title: String,
-    likes: Number
+    title: {
+      type: String,
+      default: ''
+    },
+    likes: {
+      type: Number,
+      default: 0
+    }
   },
   setup() {
     const visible = ref(false)

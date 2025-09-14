@@ -10,8 +10,14 @@
 <script>
 export default {
   props: {
-    label: String,
-    fn: Function
+    label: {
+      type: String,
+      default: ''
+    },
+    fn: {
+      type: Function,
+      default: () => {}
+    }
   },
   setup() {
     return {}

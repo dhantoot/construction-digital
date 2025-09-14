@@ -130,8 +130,14 @@ const stringOptions = []
 export default {
   title: 'ProjectList',
   props: {
-    title: String,
-    likes: Number
+    title: {
+      type: String,
+      default: ''
+    },
+    likes: {
+      type: Number,
+      default: 0
+    }
   },
   setup() {
     const timeStamp = Date.now()
@@ -541,7 +547,7 @@ export default {
           // Handle successful uploads on complete
           // For instance, get the download URL: https://firebasestorage.googleapis.com/...
           this.$getdownloadurl(uploadTask.snapshot.ref).then(downloadURL => {
-            // console.log('File available at', downloadURL)
+            console.log('File available at', downloadURL)
             this.projectAvatar = `${files[0].name.split('.')[0]}.${
               files[0].name.split('.')[1]
             }`

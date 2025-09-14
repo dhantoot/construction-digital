@@ -177,8 +177,14 @@ import { useMainStore } from 'stores/main'
 export default {
   title: 'UserRegistration',
   props: {
-    title: String,
-    likes: Number
+    title: {
+      type: String,
+      default: ''
+    },
+    likes: {
+      type: Number,
+      default: 0
+    }
   },
   emits: ['showHeader'],
   setup() {

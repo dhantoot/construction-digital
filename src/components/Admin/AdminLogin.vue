@@ -119,8 +119,14 @@ const auth = getAuth()
 export default {
   title: 'AdminLogin',
   props: {
-    title: String,
-    likes: Number
+    title: {
+      type: String,
+      default: ''
+    },
+    likes: {
+      type: Number,
+      default: 0
+    }
   },
   emits: ['emitFromChild'],
   setup() {

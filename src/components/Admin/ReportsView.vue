@@ -105,7 +105,7 @@ export default {
       drawer: ref(false),
       miniState,
 
-      drawerClick(e) {
+      drawerClick() {
         // // if in "mini" state and user
         // // click on drawer, we switch it to "normal" mode
         // if (miniState.value) {

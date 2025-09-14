@@ -266,8 +266,14 @@ import { LocalStorage } from 'quasar'
 export default {
   title: 'ProjectTodo',
   props: {
-    title: String,
-    likes: Number
+    title: {
+      type: String,
+      default: ''
+    },
+    likes: {
+      type: Number,
+      default: 0
+    }
   },
   setup() {
     const visible = ref(false)
@@ -462,6 +468,7 @@ export default {
       this.reset_ = reset
     },
     viewTodoDetail(selectedTodo) {
+      console.log('hmm')
       LocalStorage.set('mobileSelectedProjectTodo', selectedTodo)
       this.$router.push(
         `/detail/${this.mainStore?.mobileSelectedProject?.id}/todo/${selectedTodo.id}/update`

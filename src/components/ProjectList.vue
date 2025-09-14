@@ -110,8 +110,14 @@ import { LocalStorage } from 'quasar'
 export default {
   title: 'ProjectList',
   props: {
-    title: String,
-    likes: Number
+    title: {
+      type: String,
+      default: ''
+    },
+    likes: {
+      type: Number,
+      default: 0
+    }
   },
   emits: ['emitFromChild'],
   setup() {
@@ -222,7 +228,7 @@ export default {
 
         // If admin role, then return all data
         if (role === 'admin') {
-          this.projects = [...data_, ...data_, ...data_, ...data_]
+          this.projects = [...data_]
           this.getProjectsLoader = false
           return
         }

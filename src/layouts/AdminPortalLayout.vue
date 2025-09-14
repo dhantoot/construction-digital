@@ -2,9 +2,9 @@
   <q-layout
     view="lHh lpR lFf"
     class="full-height no-scroll"
-    :class="[
-      $q.dark.isActive ? 'text-accent bg-black' : 'text-primary bg-light'
-    ]"
+    :style="{
+      background: $q.dark.isActive ? 'black' : ''
+    }"
   >
     <q-header
       v-if="$route.name !== 'Admin Login'"
@@ -12,7 +12,8 @@
       :style="{
         'border-bottom': $q.dark.isActive
           ? '.1px solid #3a3a3a'
-          : '.1px solid rgb(198 198 198 / 50%)'
+          : '.1px solid rgb(198 198 198 / 50%)',
+        background: $q.dark.isActive ? 'black' : ''
       }"
       :class="[
         $q.dark.isActive ? 'text-accent bg-black' : 'text-primary bg-light'

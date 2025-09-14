@@ -203,8 +203,14 @@ import { date, LocalStorage } from 'quasar'
 export default {
   title: 'Dashboard',
   props: {
-    title: String,
-    likes: Number
+    title: {
+      type: String,
+      default: ''
+    },
+    likes: {
+      type: Number,
+      default: 0
+    }
   },
   setup() {
     const visible = ref(false)

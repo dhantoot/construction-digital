@@ -32,22 +32,27 @@ export default {
   props: {
     backgroundColor: {
       type: String,
+      default: '',
       required: false
     },
     borderRadius: {
       type: String,
+      default: '',
       required: false
     },
     borderColor: {
       type: String,
+      default: '',
       required: false
     },
     border: {
       type: String,
+      default: '',
       required: false
     },
     height: {
       type: String,
+      default: '',
       required: false
     }
   },

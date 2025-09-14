@@ -175,6 +175,13 @@
         </template>
       </q-uploader>
     </div>
+    <div class="row debug full-width">
+      <q-checkbox
+        v-model="selectedTodoDetail.isCompleted"
+        keep-color
+        label="Completed"
+      />
+    </div>
   </div>
 
   <div

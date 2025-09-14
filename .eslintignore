@@ -9,3 +9,10 @@
 /src-pwa
 .firebase
 /assets
+/src/assets/smtp/smtp.js
+/src/assets/smtp/
+src/assets/smtp/smtp.js
+src/assets/smtp/
+node_modules
+dist
+src/stores/store-flag.d.ts
