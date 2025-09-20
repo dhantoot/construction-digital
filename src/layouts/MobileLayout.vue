@@ -1,4 +1,3 @@
-
 <template>
   <q-layout
     view="lHh lpr lFf"

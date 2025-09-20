@@ -176,7 +176,7 @@
       </q-uploader>
     </div>
     <div class="row full-width">
-       <HofsteeAlert
+      <HofsteeAlert
         :background-color="{
           '#292727': $q.dark.isActive
         }"
@@ -194,7 +194,12 @@
         </template> -->
         <!-- <template #header>Completed</template> -->
         <template #body>
-          <q-checkbox v-model="isCompleted" keep-color label="Completed" color="primary"/>
+          <q-checkbox
+            v-model="isCompleted"
+            keep-color
+            label="Completed"
+            color="primary"
+          />
         </template>
       </HofsteeAlert>
     </div>

@@ -17,6 +17,7 @@
         <!-- <hr class="q-ml-xl q-mr-xl" color="black"/> -->
         <q-separator class="q-ml-xl q-mr-xl" color="primary" inset />
       </div>
+
       <div v-if="false" class="col-6 q-mt-lg">
         <p
           class="q-mt-xl"
@@ -47,6 +48,7 @@
           />
         </div>
       </div>
+
       <div class="row col-2 q-mt-sm q-px-xl q-gutter-y-md">
         <q-input
           ref="emailRef"
@@ -56,7 +58,7 @@
           placeholder="Email"
           :rules="emailRules"
           color="positive"
-          input-class="text-primary"
+          input-class="text-primary text-caption"
           filled
           class="full-width"
           @keyup.enter="login"
@@ -74,7 +76,7 @@
           placeholder="Password"
           :rules="passwordRules"
           color="positive"
-          input-class="text-primary"
+          input-class="text-primary text-caption"
           filled
           class="full-width"
           @keyup.enter="login"
@@ -95,21 +97,23 @@
           color="secondary"
           flat
           no-caps
-          class="pull-right text-weight-light round-btn text-grey"
+          class="pull-right round-btn text-grey text-caption"
           style="float: left"
           @click="reset"
         />
-        <div class="text-subtitle2">
-          <a class="clickable text-grey" @click="goToAdminView">
+
+        <div class="">
+          <a class="clickable text-grey text-caption" @click="goToAdminView">
             Switch to admin
           </a>
         </div>
+
         <q-btn
           label="Register"
           color="secondary"
           flat
           no-caps
-          class="pull-right text-weight-light round-btn text-grey"
+          class="pull-right round-btn text-grey text-caption"
           style="float: right"
           @click="register"
         />

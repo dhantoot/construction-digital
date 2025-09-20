@@ -13,7 +13,6 @@
           }"
         >
           <div class="column full-width justify-start">
-
             <div class="row p-10 gap-10">
               <div
                 class="col"
@@ -183,7 +182,6 @@
                 </template>
               </HofsteeCard>
             </div>
-
           </div>
         </div>
 
@@ -231,61 +229,61 @@
               :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
             >
               <FullCalendar
-                    :options="calendarOptions"
-                    style="max-height: 61.5vh"
-                    :event-class-names="getEventClass"
+                :options="calendarOptions"
+                style="max-height: 61.5vh"
+                :event-class-names="getEventClass"
+              >
+                <template #eventContent="arg">
+                  <div
+                    v-if="!$q.screen.lt.sm"
+                    class="column p-5 mx-5"
+                    :class="[
+                      $q.dark.isActive
+                        ? 'eventContentOverrideDarkMode'
+                        : 'eventContentOverride'
+                    ]"
                   >
-                    <template #eventContent="arg">
-                      <div
-                        v-if="!$q.screen.lt.sm"
-                        class="column p-5 mx-5"
+                    <div class="row full-width items-center">
+                      <q-badge
+                        rounded
+                        :color="$q.dark.isActive ? 'warning' : 'primary'"
+                      />
+                      <span
+                        class="pl-5"
                         :class="[
-                          $q.dark.isActive
-                            ? 'eventContentOverrideDarkMode'
-                            : 'eventContentOverride'
+                          $q.dark.isActive ? 'text-warning' : 'text-primary'
                         ]"
                       >
-                        <div class="row full-width items-center">
-                          <q-badge
-                            rounded
-                            :color="$q.dark.isActive ? 'warning' : 'primary'"
-                          />
-                          <span
-                            class="pl-5"
-                            :class="[
-                              $q.dark.isActive ? 'text-warning' : 'text-primary'
-                            ]"
-                          >
-                            Medium
-                          </span>
-                        </div>
-                        <div class="row full-width">
-                          <b>{{ arg.event.title }}</b>
-                        </div>
-                        <div class="row full-width">
-                          Today is my sons birthday. everyone should attend
-                        </div>
-                      </div>
+                        Medium
+                      </span>
+                    </div>
+                    <div class="row full-width">
+                      <b>{{ arg.event.title }}</b>
+                    </div>
+                    <div class="row full-width">
+                      Today is my sons birthday. everyone should attend
+                    </div>
+                  </div>
 
-                      <div
-                        v-if="$q.screen.lt.sm"
-                        class="column p-5 mx-5"
-                        :class="[
-                          $q.dark.isActive
-                            ? 'eventContentOverrideDarkMode'
-                            : 'eventContentOverride'
-                        ]"
-                      >
-                        <div class="row full-width items-center">
-                          <q-badge
-                            rounded
-                            :color="$q.dark.isActive ? 'warning' : 'primary'"
-                          />
-                          <div v-if="false">{{ arg }}</div>
-                        </div>
-                      </div>
-                    </template>
-                  </FullCalendar>
+                  <div
+                    v-if="$q.screen.lt.sm"
+                    class="column p-5 mx-5"
+                    :class="[
+                      $q.dark.isActive
+                        ? 'eventContentOverrideDarkMode'
+                        : 'eventContentOverride'
+                    ]"
+                  >
+                    <div class="row full-width items-center">
+                      <q-badge
+                        rounded
+                        :color="$q.dark.isActive ? 'warning' : 'primary'"
+                      />
+                      <div v-if="false">{{ arg }}</div>
+                    </div>
+                  </div>
+                </template>
+              </FullCalendar>
             </div>
 
             <!-- <q-separator /> -->
@@ -297,7 +295,6 @@
               bottom
             </div> -->
           </div>
-
         </div>
       </div>
     </div>
@@ -486,7 +483,7 @@ export default {
         grid: {
           borderColor: '#f1f1f1'
         }
-      },
+      }
     }
   },
   computed: {
@@ -756,7 +753,7 @@ export default {
         })
         this.getProjectsLoader = false
       })
-    },
+    }
   }
 }
 </script>
