@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="false"
     class="row hide-scrollbar"
     :style="{ height: $q.screen.lt.sm ? 'auto' : '94.5vh;' }"
   >
@@ -7,7 +8,7 @@
       <!-- Dashboard -->
       <div class="row full-height full-width">
         <div
-          class="row col-9 full-height"
+          class="row col-9 full-height full-width"
           :class="{
             'col-12': $q.screen.lt.md
           }"
@@ -20,7 +21,7 @@
                   'col-12': $q.screen.lt.md
                 }"
               >
-                <HofsteeCard height="250px" no-border>
+                <HofsteeCard class="col-sm-12 col-md-4 col-lg-4" style="max-width: 450px;" height="250px" no-border>
                   <template #header>Reminders</template>
 
                   <template #body>
@@ -103,7 +104,7 @@
                   'col-12': $q.screen.lt.md
                 }"
               >
-                <HofsteeCard height="250px" no-border>
+                <HofsteeCard class="col-sm-12 col-md-4 col-lg-4" style="max-width: 450px;" height="250px" no-border>
                   <template #header>Todays Task</template>
                   <template #body>
                     <div class="column gap-10 justify-evenly height-90">
@@ -133,7 +134,7 @@
                   'col-12': $q.screen.lt.md
                 }"
               >
-                <HofsteeCard height="250px" no-border>
+                <HofsteeCard class="col-sm-12 col-md-4 col-lg-4" style="max-width: 450px;" height="250px" no-border>
                   <template #header>Todays Meeting {{ selectedDate }}</template>
                   <template #body-loader>
                     <q-inner-loading :showing="loading3">
@@ -148,7 +149,7 @@
             </div>
 
             <div class="row px-10">
-              <HofsteeCard class="full-width full-height" no-border>
+              <HofsteeCard class="col-sm-12 col-md-12 col-lg-12 full-height" no-border>
                 <template #header>Projects</template>
                 <template #body>
                   <div
@@ -299,8 +300,287 @@
       </div>
     </div>
   </div>
-  <!-- <h5 class="text-center" v-if="mainStore?.adminUser?.uid">Welcome to the admin portal</h5> -->
+
+  
+  <div
+    class="row hide-scrollbar q-pa-md"
+    :style="{ height: $q.screen.lt.sm ? 'auto' : '94.5vh;' }">
+
+    <div class="row q-col-gutter-md full-width">
+      
+      <!-- Left Section: 4 cards (3 top, 1 bottom) -->
+      <div class="col-12 col-md-9">
+        
+        <!-- Top 3 cards -->
+        <div class="row q-col-gutter-md q-mb-md">
+          <div class="col-12 col-sm-6 col-lg-4">
+            <HofsteeCard class="full-height" no-border>
+              <template #header>Reminders</template>
+
+              <template #body>
+                <div class="column gap-10">
+                      <HofsteeAlert
+                        :background-color="{
+                          '#292727': $q.dark.isActive
+                        }"
+                        border-radius="8px"
+                        border-color="cancel"
+                        border="0.1px solid"
+                        height="54px"
+                      >
+                        <template #icon>
+                          <q-icon
+                            name="las la-pause-circle"
+                            color="negative"
+                            size="lg"
+                          />
+                        </template>
+                        <template #header>Hello There</template>
+                        <template #body>Lorem ipsum dolor set ewmit</template>
+                      </HofsteeAlert>
+
+                      <HofsteeAlert
+                        :background-color="{
+                          '#292727': $q.dark.isActive
+                        }"
+                        border-radius="8px"
+                        border-color="green"
+                        border="0.1px solid"
+                        height="54px"
+                      >
+                        <template #icon>
+                          <q-icon
+                            name="las la-play-circle"
+                            color="green"
+                            size="lg"
+                          />
+                        </template>
+                        <template #header>Hello There</template>
+                        <template #body>Lorem ipsum dolor set ewmit</template>
+                      </HofsteeAlert>
+
+                      <HofsteeAlert
+                        :background-color="{
+                          '#292727': $q.dark.isActive
+                        }"
+                        border-radius="8px"
+                        border-color="red"
+                        border="0.1px solid"
+                        height="54px"
+                      >
+                        <template #icon>
+                          <q-icon
+                            name="las la-stop-circle"
+                            color="red"
+                            size="lg"
+                          />
+                        </template>
+                        <template #header>Hello There</template>
+                        <template #body>Lorem ipsum dolor set ewmit</template>
+                      </HofsteeAlert>
+                </div>
+              </template>
+
+              <template #body-loader>
+                <q-inner-loading :showing="loading1">
+                  <q-spinner-ios
+                    size="50px"
+                    :color="$q.dark.isActive ? 'accent' : 'primary'"
+                  />
+                </q-inner-loading>
+              </template>
+            </HofsteeCard>
+          </div>
+
+          <div class="col-12 col-sm-6 col-lg-4">
+            <HofsteeCard class="full-height" no-border>
+              <template #header>Todays Task</template>
+              <template #body>
+                <div class="column gap-10 justify-evenly height-90">
+                      <div class="row full-width gap-10">
+                        <div class="col">Box 1</div>
+                        <div class="col">Box 2</div>
+                      </div>
+                      <div class="row full-width gap-10">
+                        <div class="col">Box 3</div>
+                        <div class="col">Box 4</div>
+                      </div>
+                </div>
+              </template>
+              <template #body-loader>
+                <q-inner-loading :showing="loading2">
+                  <q-spinner-ios
+                    size="50px"
+                    :color="$q.dark.isActive ? 'accent' : 'primary'"
+                  />
+                </q-inner-loading>
+              </template>
+            </HofsteeCard>
+          </div>
+
+          <div class="col-12 col-lg-4">
+            <HofsteeCard class="full-height" no-border>
+              <template #header>Todays Meeting {{ selectedDate }}</template>
+              <template #body-loader>
+                <q-inner-loading :showing="loading3">
+                  <q-spinner-ios
+                    size="50px"
+                    :color="$q.dark.isActive ? 'accent' : 'primary'"
+                  />
+                </q-inner-loading>
+              </template>
+            </HofsteeCard>
+          </div>
+        </div>
+
+        <!-- Bottom 1 card (full width) -->
+        <div class="row q-mt-md">
+          <div class="col-12">
+            <q-card 
+              flat
+              bordered
+              class="row full-width"
+              style="border-radius: 8px;"
+            >
+              <!-- <q-card-section>
+                <div class="text-small row full-width">Projects</div>
+              </q-card-section> -->
+              
+              <q-card-section>
+                <div class="text-small row full-width q-mb-lg">Projects</div>
+                <div class="row gap-10 full-width justify-between">
+                  <div
+                    v-for="item of projectListMapped.filter(e => e.groupedData)"
+                    :key="item"
+                    class="row full-width"
+                  >
+                    <q-card
+                      :class="$q.dark.isActive ? 'bg-grey-10' : ''"
+                      :flat="$q.dark.isActive"
+                      class="col-12"
+                    >
+                      <q-card-section>
+                        <div class="text-subtitle1">{{ item.title }}</div>
+                      </q-card-section>
+                      <q-card-section class="q-pa-none">
+                        <apexchart
+                          type="line"
+                          height="300"
+                          :options="item.projectTaskCompleted"
+                          :series="item.projectTaskCompletedValue"
+                        />
+                      </q-card-section>
+                    </q-card>
+                  </div>
+                </div>
+              </q-card-section>
+              
+              <q-inner-loading :showing="getProjectsLoader">
+                <q-spinner-ios size="50px" color="primary" />
+              </q-inner-loading>
+              
+            </q-card>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Section: 2 cards (top and bottom) -->
+      <div class="col-12 col-md-3">
+        <div class="column q-gutter-md full-height">
+          
+          <!-- Top right card -->
+          <div class="col">
+            <q-card class="full-height">
+              <q-card-section>
+                <div class="text-h6">Right Top</div>
+                <div class="text-subtitle2">Statistics</div>
+              </q-card-section>
+              <q-card-section class="text-center">
+                <div class="text-h4 text-primary">85%</div>
+                <div class="text-caption text-grey-6">Completion Rate</div>
+                <q-linear-progress 
+                  :value="0.85" 
+                  color="primary" 
+                  size="8px"
+                  class="q-mt-sm"
+                />
+              </q-card-section>
+              <q-card-section>
+                <div class="row justify-between items-center q-gutter-sm">
+                  <div class="text-center">
+                    <div class="text-weight-bold">24</div>
+                    <div class="text-caption">Active</div>
+                  </div>
+                  <div class="text-center">
+                    <div class="text-weight-bold">12</div>
+                    <div class="text-caption">Pending</div>
+                  </div>
+                  <div class="text-center">
+                    <div class="text-weight-bold">8</div>
+                    <div class="text-caption">Done</div>
+                  </div>
+                </div>
+              </q-card-section>
+            </q-card>
+          </div>
+
+          <!-- Bottom right card -->
+          <div class="col">
+            <q-card class="full-height">
+              <q-card-section>
+                <div class="text-h6">Right Bottom</div>
+                <div class="text-subtitle2">Recent Activity</div>
+              </q-card-section>
+              <q-card-section>
+                <q-list dense>
+                  <q-item>
+                    <q-item-section avatar>
+                      <q-avatar color="primary" text-color="white" size="sm">
+                        1
+                      </q-avatar>
+                    </q-item-section>
+                    <q-item-section>
+                      <q-item-label class="text-body2">New user registered</q-item-label>
+                      <q-item-label caption>2 hours ago</q-item-label>
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item>
+                    <q-item-section avatar>
+                      <q-avatar color="secondary" text-color="white" size="sm">
+                        2
+                      </q-avatar>
+                    </q-item-section>
+                    <q-item-section>
+                      <q-item-label class="text-body2">Order completed</q-item-label>
+                      <q-item-label caption>4 hours ago</q-item-label>
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item>
+                    <q-item-section avatar>
+                      <q-avatar color="accent" text-color="white" size="sm">
+                        3
+                      </q-avatar>
+                    </q-item-section>
+                    <q-item-section>
+                      <q-item-label class="text-body2">System updated</q-item-label>
+                      <q-item-label caption>1 day ago</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+              </q-card-section>
+              <q-card-actions>
+                <q-btn flat color="primary" size="sm">View All</q-btn>
+              </q-card-actions>
+            </q-card>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
+
 <script>
 import { ref } from 'vue'
 import { LocalStorage, date as dateFormatter } from 'quasar'
