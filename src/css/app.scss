@@ -10,6 +10,11 @@
 // }
 
 @font-face {
+  font-family: 'DhanixSE';
+  src: url(fonts/DhanixSe-ExtendedLight.ttf);
+}
+
+@font-face {
   font-family: 'Dhanix5';
   src: url(fonts/Dhanix5-Light.ttf);
 }
@@ -121,7 +126,7 @@ body {
   // font-family: 'inter', sans-serif;
   // font-family: 'iosevkaAileLight';
   // font-family: 'inter'; // LAST USED
-  font-family: 'Dhanix8';
+  font-family: 'DhanixSE';
   // font-feature-settings: 'cv13' 1, 'calt' 1;
   // font-variation-settings: 'wght' 200;
   // font-family: 'Inter';
@@ -535,4 +540,9 @@ $weights: 100, 200, 300, 400, 500, 600, 700, 800, 900;
 
 .text-light {
   color: #f0f0f0 !important;
+}
+
+:deep(.fc-direction-ltr .fc-toolbar > * > :not(:first-child)) {
+    margin-left: 0.75em;
+    display: none;
 }

@@ -21,7 +21,12 @@
                   'col-12': $q.screen.lt.md
                 }"
               >
-                <HofsteeCard class="col-sm-12 col-md-4 col-lg-4" style="max-width: 450px;" height="250px" no-border>
+                <HofsteeCard
+                  class="col-sm-12 col-md-4 col-lg-4"
+                  style="max-width: 450px"
+                  height="250px"
+                  no-border
+                >
                   <template #header>Reminders</template>
 
                   <template #body>
@@ -43,7 +48,7 @@
                           />
                         </template>
                         <template #header>Hello There</template>
-                        <template #body>Lorem ipsum dolor set ewmit</template>
+                        <template #body>Lorem ipsum dolor set emit</template>
                       </HofsteeAlert>
 
                       <HofsteeAlert
@@ -104,7 +109,12 @@
                   'col-12': $q.screen.lt.md
                 }"
               >
-                <HofsteeCard class="col-sm-12 col-md-4 col-lg-4" style="max-width: 450px;" height="250px" no-border>
+                <HofsteeCard
+                  class="col-sm-12 col-md-4 col-lg-4"
+                  style="max-width: 450px"
+                  height="250px"
+                  no-border
+                >
                   <template #header>Todays Task</template>
                   <template #body>
                     <div class="column gap-10 justify-evenly height-90">
@@ -134,7 +144,12 @@
                   'col-12': $q.screen.lt.md
                 }"
               >
-                <HofsteeCard class="col-sm-12 col-md-4 col-lg-4" style="max-width: 450px;" height="250px" no-border>
+                <HofsteeCard
+                  class="col-sm-12 col-md-4 col-lg-4"
+                  style="max-width: 450px"
+                  height="250px"
+                  no-border
+                >
                   <template #header>Todays Meeting {{ selectedDate }}</template>
                   <template #body-loader>
                     <q-inner-loading :showing="loading3">
@@ -149,7 +164,10 @@
             </div>
 
             <div class="row px-10">
-              <HofsteeCard class="col-sm-12 col-md-12 col-lg-12 full-height" no-border>
+              <HofsteeCard
+                class="col-sm-12 col-md-12 col-lg-12 full-height"
+                no-border
+              >
                 <template #header>Projects</template>
                 <template #body>
                   <div
@@ -301,16 +319,13 @@
     </div>
   </div>
 
-  
   <div
     class="row hide-scrollbar q-pa-md"
-    :style="{ height: $q.screen.lt.sm ? 'auto' : '94.5vh;' }">
-
+    :style="{ height: $q.screen.lt.sm ? 'auto' : '94.5vh;' }"
+  >
     <div class="row q-col-gutter-md full-width">
-      
       <!-- Left Section: 4 cards (3 top, 1 bottom) -->
       <div class="col-12 col-md-9">
-        
         <!-- Top 3 cards -->
         <div class="row q-col-gutter-md q-mb-md">
           <div class="col-12 col-sm-6 col-lg-4">
@@ -319,65 +334,61 @@
 
               <template #body>
                 <div class="column gap-10">
-                      <HofsteeAlert
-                        :background-color="{
-                          '#292727': $q.dark.isActive
-                        }"
-                        border-radius="8px"
-                        border-color="cancel"
-                        border="0.1px solid"
-                        height="54px"
-                      >
-                        <template #icon>
-                          <q-icon
-                            name="las la-pause-circle"
-                            color="negative"
-                            size="lg"
-                          />
-                        </template>
-                        <template #header>Hello There</template>
-                        <template #body>Lorem ipsum dolor set ewmit</template>
-                      </HofsteeAlert>
+                  <HofsteeAlert
+                    :background-color="{
+                      '#292727': $q.dark.isActive
+                    }"
+                    border-radius="8px"
+                    border-color="cancel"
+                    border="0.1px solid"
+                    height="54px"
+                  >
+                    <template #icon>
+                      <q-icon
+                        name="las la-pause-circle"
+                        color="negative"
+                        size="lg"
+                      />
+                    </template>
+                    <template #header>Hello There</template>
+                    <template #body>Lorem ipsum dolor set ewmit</template>
+                  </HofsteeAlert>
 
-                      <HofsteeAlert
-                        :background-color="{
-                          '#292727': $q.dark.isActive
-                        }"
-                        border-radius="8px"
-                        border-color="green"
-                        border="0.1px solid"
-                        height="54px"
-                      >
-                        <template #icon>
-                          <q-icon
-                            name="las la-play-circle"
-                            color="green"
-                            size="lg"
-                          />
-                        </template>
-                        <template #header>Hello There</template>
-                        <template #body>Lorem ipsum dolor set ewmit</template>
-                      </HofsteeAlert>
+                  <HofsteeAlert
+                    :background-color="{
+                      '#292727': $q.dark.isActive
+                    }"
+                    border-radius="8px"
+                    border-color="green"
+                    border="0.1px solid"
+                    height="54px"
+                  >
+                    <template #icon>
+                      <q-icon
+                        name="las la-play-circle"
+                        color="green"
+                        size="lg"
+                      />
+                    </template>
+                    <template #header>Hello There</template>
+                    <template #body>Lorem ipsum dolor set ewmit</template>
+                  </HofsteeAlert>
 
-                      <HofsteeAlert
-                        :background-color="{
-                          '#292727': $q.dark.isActive
-                        }"
-                        border-radius="8px"
-                        border-color="red"
-                        border="0.1px solid"
-                        height="54px"
-                      >
-                        <template #icon>
-                          <q-icon
-                            name="las la-stop-circle"
-                            color="red"
-                            size="lg"
-                          />
-                        </template>
-                        <template #header>Hello There</template>
-                        <template #body>Lorem ipsum dolor set ewmit</template>
-                      </HofsteeAlert>
+                  <HofsteeAlert
+                    :background-color="{
+                      '#292727': $q.dark.isActive
+                    }"
+                    border-radius="8px"
+                    border-color="red"
+                    border="0.1px solid"
+                    height="54px"
+                  >
+                    <template #icon>
+                      <q-icon name="las la-stop-circle" color="red" size="lg" />
+                    </template>
+                    <template #header>Hello There</template>
+                    <template #body>Lorem ipsum dolor set ewmit</template>
+                  </HofsteeAlert>
                 </div>
               </template>
 
@@ -397,14 +408,14 @@
               <template #header>Todays Task</template>
               <template #body>
                 <div class="column gap-10 justify-evenly height-90">
-                      <div class="row full-width gap-10">
-                        <div class="col">Box 1</div>
-                        <div class="col">Box 2</div>
-                      </div>
-                      <div class="row full-width gap-10">
-                        <div class="col">Box 3</div>
-                        <div class="col">Box 4</div>
-                      </div>
+                  <div class="row full-width gap-10">
+                    <div class="col">Box 1</div>
+                    <div class="col">Box 2</div>
+                  </div>
+                  <div class="row full-width gap-10">
+                    <div class="col">Box 3</div>
+                    <div class="col">Box 4</div>
+                  </div>
                 </div>
               </template>
               <template #body-loader>
@@ -436,16 +447,16 @@
         <!-- Bottom 1 card (full width) -->
         <div class="row q-mt-md">
           <div class="col-12">
-            <q-card 
+            <q-card
               flat
               bordered
               class="row full-width"
-              style="border-radius: 8px;"
+              style="border-radius: 8px"
             >
               <!-- <q-card-section>
                 <div class="text-small row full-width">Projects</div>
               </q-card-section> -->
-              
+
               <q-card-section>
                 <div class="text-small row full-width q-mb-lg">Projects</div>
                 <div class="row gap-10 full-width justify-between">
@@ -474,11 +485,10 @@
                   </div>
                 </div>
               </q-card-section>
-              
+
               <q-inner-loading :showing="getProjectsLoader">
                 <q-spinner-ios size="50px" color="primary" />
               </q-inner-loading>
-              
             </q-card>
           </div>
         </div>
@@ -487,7 +497,6 @@
       <!-- Right Section: 2 cards (top and bottom) -->
       <div class="col-12 col-md-3">
         <div class="column q-gutter-md full-height">
-          
           <!-- Top right card -->
           <div class="col">
             <q-card class="full-height">
@@ -498,9 +507,9 @@
               <q-card-section class="text-center">
                 <div class="text-h4 text-primary">85%</div>
                 <div class="text-caption text-grey-6">Completion Rate</div>
-                <q-linear-progress 
-                  :value="0.85" 
-                  color="primary" 
+                <q-linear-progress
+                  :value="0.85"
+                  color="primary"
                   size="8px"
                   class="q-mt-sm"
                 />
@@ -528,51 +537,72 @@
           <div class="col">
             <q-card class="full-height">
               <q-card-section>
-                <div class="text-h6">Right Bottom</div>
-                <div class="text-subtitle2">Recent Activity</div>
+                <div class="text-small">Right Bottom</div>
+                <div class="text-small">Recent Activity</div>
               </q-card-section>
               <q-card-section>
-                <q-list dense>
-                  <q-item>
-                    <q-item-section avatar>
-                      <q-avatar color="primary" text-color="white" size="sm">
-                        1
-                      </q-avatar>
-                    </q-item-section>
-                    <q-item-section>
-                      <q-item-label class="text-body2">New user registered</q-item-label>
-                      <q-item-label caption>2 hours ago</q-item-label>
-                    </q-item-section>
-                  </q-item>
+                <div
+                  class="height-60 p-10"
+                  :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
+                >
+                  <FullCalendar
+                    :options="calendarOptions"
+                    style="max-height: 61.5vh"
+                    :event-class-names="getEventClass"
+                  >
+                    <template #eventContent="arg">
+                      <div
+                        v-if="!$q.screen.lt.sm"
+                        class="column p-5 mx-5"
+                        :class="[
+                          $q.dark.isActive
+                            ? 'eventContentOverrideDarkMode'
+                            : 'eventContentOverride'
+                        ]"
+                      >
+                        <div class="row full-width items-center">
+                          <q-badge
+                            rounded
+                            :color="$q.dark.isActive ? 'warning' : 'primary'"
+                          />
+                          <span
+                            class="pl-5"
+                            :class="[
+                              $q.dark.isActive ? 'text-warning' : 'text-primary'
+                            ]"
+                          >
+                            Medium
+                          </span>
+                        </div>
+                        <div class="row full-width">
+                          <b>{{ arg.event.title }}</b>
+                        </div>
+                        <div class="row full-width">
+                          Today is my sons birthday. everyone should attend
+                        </div>
+                      </div>
 
-                  <q-item>
-                    <q-item-section avatar>
-                      <q-avatar color="secondary" text-color="white" size="sm">
-                        2
-                      </q-avatar>
-                    </q-item-section>
-                    <q-item-section>
-                      <q-item-label class="text-body2">Order completed</q-item-label>
-                      <q-item-label caption>4 hours ago</q-item-label>
-                    </q-item-section>
-                  </q-item>
-
-                  <q-item>
-                    <q-item-section avatar>
-                      <q-avatar color="accent" text-color="white" size="sm">
-                        3
-                      </q-avatar>
-                    </q-item-section>
-                    <q-item-section>
-                      <q-item-label class="text-body2">System updated</q-item-label>
-                      <q-item-label caption>1 day ago</q-item-label>
-                    </q-item-section>
-                  </q-item>
-                </q-list>
+                      <div
+                        v-if="$q.screen.lt.sm"
+                        class="column p-5 mx-5"
+                        :class="[
+                          $q.dark.isActive
+                            ? 'eventContentOverrideDarkMode'
+                            : 'eventContentOverride'
+                        ]"
+                      >
+                        <div class="row full-width items-center">
+                          <q-badge
+                            rounded
+                            :color="$q.dark.isActive ? 'warning' : 'primary'"
+                          />
+                          <div v-if="false">{{ arg }}</div>
+                        </div>
+                      </div>
+                    </template>
+                  </FullCalendar>
+                </div>
               </q-card-section>
-              <q-card-actions>
-                <q-btn flat color="primary" size="sm">View All</q-btn>
-              </q-card-actions>
             </q-card>
           </div>
         </div>
@@ -586,7 +616,6 @@ import { ref } from 'vue'
 import { LocalStorage, date as dateFormatter } from 'quasar'
 import { useMainStore } from 'stores/main'
 import { signInWithEmailAndPassword, getAuth } from 'firebase/auth'
-const auth = getAuth()
 import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -595,6 +624,8 @@ import VerticalBar from '../Common/Graphs/VerticalBar.vue'
 import HofsteeAlert from '../Common/Alert/HofsteeAlert.vue'
 import HofsteeCard from '../Common/Card/HofsteeCard.vue'
 import { date } from 'quasar'
+
+const auth = getAuth()
 // Don't forget to specify which animations
 // you are using in quasar.config file > animations.
 // Alternatively, if using UMD, load animate.css from CDN.
@@ -1069,7 +1100,19 @@ export default {
   height: 0.1px;
 }
 :deep(.fc .fc-toolbar-title) {
-  font-size: 18px;
+  font-size: 12px;
   margin: 0px;
+  white-space: nowrap;
+}
+:deep(.fc-direction-ltr .fc-toolbar > * > :not(:first-child)) {
+  margin-left: 0.75em;
+  display: none;
+}
+:deep(.fc .fc-button-group > .fc-button) {
+  flex: 1 1 auto;
+  position: relative;
+  height: 25px;
+  padding: 2px;
+  font-size: 12px;
 }
 </style>
