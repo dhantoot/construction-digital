@@ -53,7 +53,7 @@
 
           <q-item-section>
             <q-item-label
-              class="text-bold"
+              class="text-weight-medium"
               :class="{
                 'text-accent': $q.dark.isActive,
                 'text-primary': !$q.dark.isActive
@@ -64,6 +64,7 @@
             <q-item-label
               caption
               lines="2"
+              class="text-weight-thin"
               :class="{
                 'text-accent': $q.dark.isActive,
                 'text-primary': !$q.dark.isActive

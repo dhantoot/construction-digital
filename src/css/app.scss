@@ -1,63 +1,29 @@
 // app global css in SCSS form
-// @font-face {
-//     font-family: 'iosevka';
-//     src: url(fonts/iosevka/Iosevka-Regular.ttc)
-// }
-
-// @font-face {
-//     font-family: 'iosevka-light';
-//     src: url(fonts/iosevka/Iosevka-Light.ttc)
-// }
 
 @font-face {
-  font-family: 'DhanixSE';
+  font-family: 'DhanixSe-SemiExtendedLight';
+  src: url(fonts/DhanixSe-SemiExtendedLight.ttf);
+}
+
+@font-face {
+  font-family: 'DhanixSe-ExtendedExtraLight';
+  src: url(fonts/DhanixSe-ExtendedExtraLight.ttf);
+}
+
+@font-face {
+  font-family: 'DhanixSe-ExtendedThin';
+  src: url(fonts/DhanixSe-ExtendedThin.ttf);
+}
+
+@font-face {
+  font-family: 'DhanixSe-ExtendedLight';
   src: url(fonts/DhanixSe-ExtendedLight.ttf);
-}
-
-@font-face {
-  font-family: 'Dhanix5';
-  src: url(fonts/Dhanix5-Light.ttf);
-}
-
-@font-face {
-  font-family: 'Dhanix7';
-  src: url(fonts/Dhanix7-Extended.ttf);
-}
-
-@font-face {
-  font-family: 'Dhanix8';
-  src: url(fonts/Dhanix8-Extended.ttf);
-}
-
-@font-face {
-  font-family: 'Dhanixblue';
-  src: url(fonts/Dhanixblue-Light.ttf);
-}
-
-@font-face {
-  font-family: 'dhantae';
-  src: url(fonts/Dhantae-Regular.ttf);
-}
-
-@font-face {
-  font-family: 'dhantae-Light';
-  src: url(fonts/Dhantae-Light.ttf);
-}
-
-@font-face {
-  font-family: 'dhantae-Extended';
-  src: url(fonts/Dhantae-Extended.ttf);
 }
 
 @font-face {
   font-family: 'metrophobic';
   src: url(fonts/Metrophobic-Regular.ttf);
 }
-
-// @font-face {
-//   font-family: 'inter';
-//   src: url(fonts/InterVariable.ttf);
-// }
 
 @font-face {
   font-family: 'victormono';
@@ -112,26 +78,11 @@
 }
 
 .main-layout {
-  // font-family: 'inter', sans-serif;
-  // font-feature-settings: 'cv13' 1, 'calt' 1;
-  // font-family: 'nothing';
-  // font-family: 'firasans';
-  // font-family: 'inter', sans-serif;
-  // font-family: 'inter';
-  // font-weight: 100;
   overflow: hidden;
 }
 
 body {
-  // font-family: 'inter', sans-serif;
-  // font-family: 'iosevkaAileLight';
-  // font-family: 'inter'; // LAST USED
-  font-family: 'DhanixSE';
-  // font-feature-settings: 'cv13' 1, 'calt' 1;
-  // font-variation-settings: 'wght' 200;
-  // font-family: 'Inter';
-  // font-family: 'inter', sans-serif;
-  // font-weight: 400;
+  font-family: 'metrophobic';
   background: #f0f0f0;
 }
 
