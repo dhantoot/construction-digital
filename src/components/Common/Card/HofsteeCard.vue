@@ -3,6 +3,8 @@
     dense
     :style="style"
     class="no-shadow p-10"
+    :bordered="bordered"
+    :flat="flat"
     :class="{
       'no-border': noBorder
     }"
@@ -41,6 +43,14 @@ export default {
       default: '250px'
     },
     noBorder: {
+      type: Boolean,
+      default: false
+    },
+    bordered: {
+      type: Boolean,
+      default: false
+    },
+    flat: {
       type: Boolean,
       default: false
     }

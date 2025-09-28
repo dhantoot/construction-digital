@@ -253,7 +253,7 @@ export default {
           return
         }
 
-        // If contructors, filter projects by invitation
+        // If contractors, filter projects by invitation
         if (role === 'constructor') {
           this.projects = data_.filter(project =>
             this.projectIds.includes(project.id)

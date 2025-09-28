@@ -3,13 +3,13 @@
     class="row hide-scrollbar q-pa-md"
     :style="{ height: $q.screen.lt.sm ? 'auto' : '94.5vh;' }"
   >
-    <div class="row q-col-gutter-md full-width">
+    <div class="row q-col-gutter-y-md full-width">
       <!-- Left Section: 4 cards (3 top, 1 bottom) -->
       <div class="col-12 col-md-9">
         <!-- Top 3 cards -->
         <div class="row q-col-gutter-md q-mb-md">
           <div class="col-12 col-sm-6 col-lg-4">
-            <HofsteeCard class="full-height" no-border>
+            <HofsteeCard class="full-height" bordered flat>
               <template #header>Reminders</template>
 
               <template #body>
@@ -84,17 +84,33 @@
           </div>
 
           <div class="col-12 col-sm-6 col-lg-4">
-            <HofsteeCard class="full-height" no-border>
-              <template #header>Todays Task</template>
+            <HofsteeCard class="full-height" bordered flat>
+              <template #header>Today's Task</template>
               <template #body>
                 <div class="column gap-10 justify-evenly height-90">
                   <div class="row full-width gap-10">
-                    <div class="col">Box 1</div>
-                    <div class="col">Box 2</div>
+                    <div class="col">
+                      <q-card flat :style="$q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'">
+                        Box I
+                      </q-card>
+                    </div>
+                    <div class="col">
+                      <q-card flat :style="$q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'">
+                        Box II
+                      </q-card>
+                    </div>
                   </div>
                   <div class="row full-width gap-10">
-                    <div class="col">Box 3</div>
-                    <div class="col">Box 4</div>
+                    <div class="col">
+                      <q-card flat :style="$q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'">
+                        Box III
+                      </q-card>
+                    </div>
+                    <div class="col">
+                      <q-card flat :style="$q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'">
+                        Box IV
+                      </q-card>
+                    </div>
                   </div>
                 </div>
               </template>
@@ -110,7 +126,7 @@
           </div>
 
           <div class="col-12 col-lg-4">
-            <HofsteeCard class="full-height" no-border>
+            <HofsteeCard class="full-height" bordered flat>
               <template #header>Todays Meeting {{ selectedDate }}</template>
               <template #body-loader>
                 <q-inner-loading :showing="loading3">
@@ -134,17 +150,17 @@
               style="border-radius: 8px"
             >
               <q-card-section>
-                <div class=" text-small row q-mb-md">Projects</div>
-                <div class=" row gap-10 justify-between">
+                <div class="text-small row q-mb-md">Projects</div>
+                <div class="row gap-20 justify-between">
                   <div
                     v-for="item of projectListMapped.filter(e => e.groupedData)"
                     :key="item"
-                    class=" row"
+                    class="col col-sm-12 col-xs-12"
                   >
                     <q-card
-                      :class="$q.dark.isActive ? 'bg-grey-10' : ''"
+                      :class="$q.dark.isActive ? 'bg-grey-10' : 'bg-aliceblue'"
                       :flat="$q.dark.isActive"
-                      class=""
+                      :style="$q.dark.isActive ? '' : 'background: #f0f8ff'"
                     >
                       <q-card-section>
                         <div class="text-subtitle1">{{ item.title }}</div>
@@ -171,11 +187,11 @@
       </div>
 
       <!-- Right Section: 2 cards (top and bottom) -->
-      <div class="col-12 col-md-3">
-        <div class="column q-gutter-md full-height justify-start">
+      <div class="col-12 col-md-3" :class="[$q.screen.lt.md ? 'px-20' : 'pl-20']">
+        <div class="column q-gutter-md full-height justify-start items-start">
           <!-- Top right card -->
-          <div class="col">
-            <HofsteeCard class="" no-border>
+          <div class="row full-width pl-10">
+            <HofsteeCard bordered flat class="full-width">
               <template #header>Statistics</template>
               <template #body>
                 <div class="row full-width gap-10 items-center">
@@ -188,25 +204,46 @@
                     class="q-mt-sm"
                   />
 
-                  <div
-                    class="full-width row justify-between items-center q-gutter-sm"
-                    style="border: 1px solid black"
+                  <HofsteeAlert
+                      :background-color="{
+                      '#3E3E47': $q.dark.isActive
+                    }"
+                      border-radius="8px"
+                      border-color="primary"
+                      border="0.1px solid"
+                      height="54px"
                   >
-                    <div class="text-center">
-                      <div class="text-weight-bold">24</div>
-                      <div class="text-caption">Active</div>
-                    </div>
+                    <template #icon>
+                      <q-icon
+                          name="las la-play-circle"
+                          color="primary"
+                          size="lg"
+                      />
+                    </template>
+                    <template #header>12 Active</template>
+                    <template #body>Lorem ipsum dolor set ewmit</template>
+                  </HofsteeAlert>
 
-                    <div class="text-center">
-                      <div class="text-weight-bold">12</div>
-                      <div class="text-caption">Pending</div>
-                    </div>
+                  <HofsteeAlert
+                      :background-color="{
+                      '#3E3E47': $q.dark.isActive
+                    }"
+                      border-radius="8px"
+                      border-color="primary"
+                      border="0.1px solid"
+                      height="54px"
+                  >
+                    <template #icon>
+                      <q-icon
+                          name="las la-play-circle"
+                          color="primary"
+                          size="lg"
+                      />
+                    </template>
+                    <template #header>12 Pending</template>
+                    <template #body>Lorem ipsum dolor set ewmit</template>
+                  </HofsteeAlert>
 
-                    <div class="text-center">
-                      <div class="text-weight-bold">8</div>
-                      <div class="text-caption">Done</div>
-                    </div>
-                  </div>
                 </div>
               </template>
 
@@ -222,148 +259,71 @@
           </div>
 
           <!-- Bottom right card -->
-          <div class="col">
-            <HofsteeCard class="" no-border>
-              <template #header>Recent Activity</template>
-              <template #body>
-                <div class="row full-width gap-10 items-center">
-                  <FullCalendar
-                    :options="calendarOptions"
-                    style="max-height: 61.5vh"
-                    :event-class-names="getEventClass"
-                  >
-                    <template #eventContent="arg">
-                      <div
-                        v-if="!$q.screen.lt.sm"
-                        class="column p-5 mx-5"
-                        :class="[
+          <div class="row full-width pl-10">
+            <q-card flat bordered class="full-width px-10">
+              <FullCalendar
+                  :options="calendarOptions"
+                  style="max-height: 70.5vh; width:100%"
+                  :event-class-names="getEventClass"
+              >
+                <template #eventContent="arg">
+                  <div
+                      v-if="!$q.screen.lt.sm"
+                      class="column p-5 mx-5"
+                      :class="[
                           $q.dark.isActive
                             ? 'eventContentOverrideDarkMode'
                             : 'eventContentOverride'
                         ]"
-                      >
-                        <div class="row full-width items-center">
-                          <q-badge
-                            rounded
-                            :color="$q.dark.isActive ? 'warning' : 'primary'"
-                          />
-                          <span
-                            class="pl-5"
-                            :class="[
+                  >
+                    <div class="row full-width items-center">
+                      <q-badge
+                          rounded
+                          :color="$q.dark.isActive ? 'warning' : 'primary'"
+                      />
+                      <span
+                          class="pl-5"
+                          :class="[
                               $q.dark.isActive ? 'text-warning' : 'text-primary'
                             ]"
-                          >
+                      >
                             Medium
                           </span>
-                        </div>
-                        <div class="row full-width">
-                          <b>{{ arg.event.title }}</b>
-                        </div>
-                        <div class="row full-width">
-                          Today is my sons birthday. everyone should attend
-                        </div>
-                      </div>
+                    </div>
+                    <div class="row full-width">
+                      <b>{{ arg.event.title }}</b>
+                    </div>
+                    <div class="row full-width">
+                      Today is my sons birthday. everyone should attend
+                    </div>
+                  </div>
 
-                      <div
-                        v-if="$q.screen.lt.sm"
-                        class="column p-5 mx-5"
-                        :class="[
+                  <div
+                      v-if="$q.screen.lt.sm"
+                      class="column p-5 mx-5"
+                      :class="[
                           $q.dark.isActive
                             ? 'eventContentOverrideDarkMode'
                             : 'eventContentOverride'
                         ]"
-                      >
-                        <div class="row full-width items-center">
-                          <q-badge
-                            rounded
-                            :color="$q.dark.isActive ? 'warning' : 'primary'"
-                          />
-                          <div v-if="false">{{ arg }}</div>
-                        </div>
-                      </div>
-                    </template>
-                  </FullCalendar>
-                </div>
-              </template>
-
-              <template #body-loader>
-                <q-inner-loading :showing="loading3">
-                  <q-spinner-ios
+                  >
+                    <div class="row full-width items-center">
+                      <q-badge
+                          rounded
+                          :color="$q.dark.isActive ? 'warning' : 'primary'"
+                      />
+                      <div v-if="false">{{ arg }}</div>
+                    </div>
+                  </div>
+                </template>
+              </FullCalendar>
+              <q-inner-loading :showing="loading3">
+                <q-spinner-ios
                     size="50px"
                     :color="$q.dark.isActive ? 'accent' : 'primary'"
-                  />
-                </q-inner-loading>
-              </template>
-            </HofsteeCard>
-
-            <!--            <q-card class="full-height">-->
-            <!--              <q-card-section>-->
-            <!--                <div class="text-subtitle1">Recent Activity</div>-->
-            <!--              </q-card-section>-->
-            <!--              <q-card-section>-->
-            <!--                <div-->
-            <!--                  class="height-60 p-10"-->
-            <!--                  :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"-->
-            <!--                >-->
-            <!--&lt;!&ndash;                  <FullCalendar&ndash;&gt;-->
-            <!--&lt;!&ndash;                    :options="calendarOptions"&ndash;&gt;-->
-            <!--&lt;!&ndash;                    style="max-height: 61.5vh"&ndash;&gt;-->
-            <!--&lt;!&ndash;                    :event-class-names="getEventClass"&ndash;&gt;-->
-            <!--&lt;!&ndash;                  >&ndash;&gt;-->
-            <!--&lt;!&ndash;                    <template #eventContent="arg">&ndash;&gt;-->
-            <!--&lt;!&ndash;                      <div&ndash;&gt;-->
-            <!--&lt;!&ndash;                        v-if="!$q.screen.lt.sm"&ndash;&gt;-->
-            <!--&lt;!&ndash;                        class="column p-5 mx-5"&ndash;&gt;-->
-            <!--&lt;!&ndash;                        :class="[&ndash;&gt;-->
-            <!--&lt;!&ndash;                          $q.dark.isActive&ndash;&gt;-->
-            <!--&lt;!&ndash;                            ? 'eventContentOverrideDarkMode'&ndash;&gt;-->
-            <!--&lt;!&ndash;                            : 'eventContentOverride'&ndash;&gt;-->
-            <!--&lt;!&ndash;                        ]"&ndash;&gt;-->
-            <!--&lt;!&ndash;                      >&ndash;&gt;-->
-            <!--&lt;!&ndash;                        <div class="row full-width items-center">&ndash;&gt;-->
-            <!--&lt;!&ndash;                          <q-badge&ndash;&gt;-->
-            <!--&lt;!&ndash;                            rounded&ndash;&gt;-->
-            <!--&lt;!&ndash;                            :color="$q.dark.isActive ? 'warning' : 'primary'"&ndash;&gt;-->
-            <!--&lt;!&ndash;                          />&ndash;&gt;-->
-            <!--&lt;!&ndash;                          <span&ndash;&gt;-->
-            <!--&lt;!&ndash;                            class="pl-5"&ndash;&gt;-->
-            <!--&lt;!&ndash;                            :class="[&ndash;&gt;-->
-            <!--&lt;!&ndash;                              $q.dark.isActive ? 'text-warning' : 'text-primary'&ndash;&gt;-->
-            <!--&lt;!&ndash;                            ]"&ndash;&gt;-->
-            <!--&lt;!&ndash;                          >&ndash;&gt;-->
-            <!--&lt;!&ndash;                            Medium&ndash;&gt;-->
-            <!--&lt;!&ndash;                          </span>&ndash;&gt;-->
-            <!--&lt;!&ndash;                        </div>&ndash;&gt;-->
-            <!--&lt;!&ndash;                        <div class="row full-width">&ndash;&gt;-->
-            <!--&lt;!&ndash;                          <b>{{ arg.event.title }}</b>&ndash;&gt;-->
-            <!--&lt;!&ndash;                        </div>&ndash;&gt;-->
-            <!--&lt;!&ndash;                        <div class="row full-width">&ndash;&gt;-->
-            <!--&lt;!&ndash;                          Today is my sons birthday. everyone should attend&ndash;&gt;-->
-            <!--&lt;!&ndash;                        </div>&ndash;&gt;-->
-            <!--&lt;!&ndash;                      </div>&ndash;&gt;-->
-
-            <!--&lt;!&ndash;                      <div&ndash;&gt;-->
-            <!--&lt;!&ndash;                        v-if="$q.screen.lt.sm"&ndash;&gt;-->
-            <!--&lt;!&ndash;                        class="column p-5 mx-5"&ndash;&gt;-->
-            <!--&lt;!&ndash;                        :class="[&ndash;&gt;-->
-            <!--&lt;!&ndash;                          $q.dark.isActive&ndash;&gt;-->
-            <!--&lt;!&ndash;                            ? 'eventContentOverrideDarkMode'&ndash;&gt;-->
-            <!--&lt;!&ndash;                            : 'eventContentOverride'&ndash;&gt;-->
-            <!--&lt;!&ndash;                        ]"&ndash;&gt;-->
-            <!--&lt;!&ndash;                      >&ndash;&gt;-->
-            <!--&lt;!&ndash;                        <div class="row full-width items-center">&ndash;&gt;-->
-            <!--&lt;!&ndash;                          <q-badge&ndash;&gt;-->
-            <!--&lt;!&ndash;                            rounded&ndash;&gt;-->
-            <!--&lt;!&ndash;                            :color="$q.dark.isActive ? 'warning' : 'primary'"&ndash;&gt;-->
-            <!--&lt;!&ndash;                          />&ndash;&gt;-->
-            <!--&lt;!&ndash;                          <div v-if="false">{{ arg }}</div>&ndash;&gt;-->
-            <!--&lt;!&ndash;                        </div>&ndash;&gt;-->
-            <!--&lt;!&ndash;                      </div>&ndash;&gt;-->
-            <!--&lt;!&ndash;                    </template>&ndash;&gt;-->
-            <!--&lt;!&ndash;                  </FullCalendar>&ndash;&gt;-->
-            <!--                </div>-->
-            <!--              </q-card-section>-->
-            <!--            </q-card>-->
+                />
+              </q-inner-loading>
+            </q-card>
           </div>
         </div>
       </div>
