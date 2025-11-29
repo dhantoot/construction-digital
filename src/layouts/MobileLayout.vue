@@ -167,7 +167,8 @@
           @click="activatePage('search')"
         >
           <div class="column justify-start items-center">
-            <SearchIcon size="24" />
+        <!-- <SearchIcon size="24" />-->
+            <HexagonIcon size="30" />
           </div>
         </q-btn>
         <q-btn
@@ -269,6 +270,11 @@ export default {
 
         return
       }
+
+      if (page == 'search') {
+        return
+      }
+
       this.$router.push({ path: `/${page}` })
       this.activeTab = page
     },

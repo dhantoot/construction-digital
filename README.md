@@ -40,6 +40,7 @@ See [Android Requirements](./src/assets/Android-Requirements.PNG).
 
 ### How to run the apk in emulator
 
+using cordova
 ```n
 cd src-cordova
 cordova run android
@@ -48,7 +49,17 @@ cordova run android
 This will build the debug-apk located at
 `\src-cordova\platforms\android\app\build\outputs\apk\debug`
 
-### How to build the APK
+---------------
+
+using capacitor
+```n
+quasar build -m capacitor -T android
+```
+
+This will build the debug-apk located at
+`src-capacitor/android/app/build/outputs/apk/release/app-release-unsigned.apk`
+
+### How to sign the unsigned APK
 
 > only once per PC
 > keytool -genkey -v -keystore my-release-key.keystore -alias hofstee_app -keyalg RSA -keysize 2048 -validity 20000
@@ -57,12 +68,17 @@ CN=dan vincent tagailo, OU=freelance org, O=dhans, L=mandaluyong, ST=metro manil
 
 pass = 123233
 
+For cordova
 > zipalign
 > zipalign -v 4 ./src-cordova/platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk Hofstee.apk
 
 > apksigner
 > apksigner sign --ks my-release-key.keystore --ks-key-alias hofstee_app Hofstee.apk
 > <enter pass> = 123233
+
+For capacitor
+> zipalign -v 4 ./src-capacitor/android/app/build/outputs/apk/release/app-release-unsigned.apk Hofstee.apk
+
 
 > Publishing to playstore
 > https://quasar.dev/quasar-cli-vite/developing-cordova-apps/publishing-to-store

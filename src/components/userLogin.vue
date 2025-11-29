@@ -312,7 +312,7 @@ export default {
           SessionStorage.set('authUser', user)
           this.mainStore.showNav = true
           this.loading = false
-          this.$router.push('/projects')
+          this.$router.push('/dashboard')
         })
         .catch(error => {
           // console.log(error)

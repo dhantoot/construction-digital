@@ -181,18 +181,10 @@
           '#292727': $q.dark.isActive
         }"
         border-radius="8px"
-        border-color="cancel"
+        :border-color="isCompleted ? 'green' : 'cancel'"
         border="0.1px solid"
         height="54px"
       >
-        <!-- <template #icon>
-          <q-icon
-            name="las la-pause-circle"
-            color="negative"
-            size="lg"
-          />
-        </template> -->
-        <!-- <template #header>Completed</template> -->
         <template #body>
           <q-checkbox
             v-model="isCompleted"
