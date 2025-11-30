@@ -90,24 +90,44 @@
                 <div class="column gap-10 justify-evenly height-90">
                   <div class="row full-width gap-10">
                     <div class="col">
-                      <q-card flat :style="$q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'">
+                      <q-card
+                        flat
+                        :style="
+                          $q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'
+                        "
+                      >
                         Box I
                       </q-card>
                     </div>
                     <div class="col">
-                      <q-card flat :style="$q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'">
+                      <q-card
+                        flat
+                        :style="
+                          $q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'
+                        "
+                      >
                         Box II
                       </q-card>
                     </div>
                   </div>
                   <div class="row full-width gap-10">
                     <div class="col">
-                      <q-card flat :style="$q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'">
+                      <q-card
+                        flat
+                        :style="
+                          $q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'
+                        "
+                      >
                         Box III
                       </q-card>
                     </div>
                     <div class="col">
-                      <q-card flat :style="$q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'">
+                      <q-card
+                        flat
+                        :style="
+                          $q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'
+                        "
+                      >
                         Box IV
                       </q-card>
                     </div>
@@ -187,10 +207,13 @@
       </div>
 
       <!-- Right Section: 2 cards (top and bottom) -->
-      <div class="col-12 col-md-3" :class="[$q.screen.lt.md ? 'px-20' : 'pl-20']">
+      <div
+        class="col-12 col-md-3"
+        :class="[$q.screen.lt.md ? 'pl-15' : 'pl-20']"
+      >
         <div class="column q-gutter-md full-height justify-start items-start">
           <!-- Top right card -->
-          <div class="row full-width pl-10">
+          <div class="row full-width pl-10" v-if="$q.screen.gt.sm">
             <HofsteeCard bordered flat class="full-width">
               <template #header>Statistics</template>
               <template #body>
@@ -205,19 +228,19 @@
                   />
 
                   <HofsteeAlert
-                      :background-color="{
+                    :background-color="{
                       '#3E3E47': $q.dark.isActive
                     }"
-                      border-radius="8px"
-                      border-color="primary"
-                      border="0.1px solid"
-                      height="54px"
+                    border-radius="8px"
+                    border-color="primary"
+                    border="0.1px solid"
+                    height="54px"
                   >
                     <template #icon>
                       <q-icon
-                          name="las la-play-circle"
-                          color="primary"
-                          size="lg"
+                        name="las la-play-circle"
+                        color="primary"
+                        size="lg"
                       />
                     </template>
                     <template #header>12 Active</template>
@@ -225,25 +248,24 @@
                   </HofsteeAlert>
 
                   <HofsteeAlert
-                      :background-color="{
+                    :background-color="{
                       '#3E3E47': $q.dark.isActive
                     }"
-                      border-radius="8px"
-                      border-color="primary"
-                      border="0.1px solid"
-                      height="54px"
+                    border-radius="8px"
+                    border-color="primary"
+                    border="0.1px solid"
+                    height="54px"
                   >
                     <template #icon>
                       <q-icon
-                          name="las la-play-circle"
-                          color="primary"
-                          size="lg"
+                        name="las la-play-circle"
+                        color="primary"
+                        size="lg"
                       />
                     </template>
                     <template #header>12 Pending</template>
                     <template #body>Lorem ipsum dolor set ewmit</template>
                   </HofsteeAlert>
-
                 </div>
               </template>
 
@@ -259,36 +281,36 @@
           </div>
 
           <!-- Bottom right card -->
-          <div class="row full-width pl-10">
-            <q-card flat bordered class="full-width px-10">
+          <div class="row full-width" :class="[$q.screen.lt.sm ? '' : 'pl-10']">
+            <q-card flat bordered class="full-width" :class="[$q.screen.lt.sm ? 'mb-70' : 'px-10']">
               <FullCalendar
-                  :options="calendarOptions"
-                  style="max-height: 70.5vh; width:100%"
-                  :event-class-names="getEventClass"
+                :options="calendarOptions"
+                style="max-height: 70.5vh; width: 100%"
+                :event-class-names="getEventClass"
               >
                 <template #eventContent="arg">
                   <div
-                      v-if="!$q.screen.lt.sm"
-                      class="column p-5 mx-5"
-                      :class="[
-                          $q.dark.isActive
-                            ? 'eventContentOverrideDarkMode'
-                            : 'eventContentOverride'
-                        ]"
+                    v-if="!$q.screen.lt.sm"
+                    class="column p-5 mx-5"
+                    :class="[
+                      $q.dark.isActive
+                        ? 'eventContentOverrideDarkMode'
+                        : 'eventContentOverride'
+                    ]"
                   >
                     <div class="row full-width items-center">
                       <q-badge
-                          rounded
-                          :color="$q.dark.isActive ? 'warning' : 'primary'"
+                        rounded
+                        :color="$q.dark.isActive ? 'warning' : 'primary'"
                       />
                       <span
-                          class="pl-5"
-                          :class="[
-                              $q.dark.isActive ? 'text-warning' : 'text-primary'
-                            ]"
+                        class="pl-5"
+                        :class="[
+                          $q.dark.isActive ? 'text-warning' : 'text-primary'
+                        ]"
                       >
-                            Medium
-                          </span>
+                        Medium
+                      </span>
                     </div>
                     <div class="row full-width">
                       <b>{{ arg.event.title }}</b>
@@ -299,18 +321,18 @@
                   </div>
 
                   <div
-                      v-if="$q.screen.lt.sm"
-                      class="column p-5 mx-5"
-                      :class="[
-                          $q.dark.isActive
-                            ? 'eventContentOverrideDarkMode'
-                            : 'eventContentOverride'
-                        ]"
+                    v-if="$q.screen.lt.sm"
+                    class="column p-5 mx-5"
+                    :class="[
+                      $q.dark.isActive
+                        ? 'eventContentOverrideDarkMode'
+                        : 'eventContentOverride'
+                    ]"
                   >
                     <div class="row full-width items-center">
                       <q-badge
-                          rounded
-                          :color="$q.dark.isActive ? 'warning' : 'primary'"
+                        rounded
+                        :color="$q.dark.isActive ? 'warning' : 'primary'"
                       />
                       <div v-if="false">{{ arg }}</div>
                     </div>
@@ -319,20 +341,21 @@
               </FullCalendar>
               <q-inner-loading :showing="loading3">
                 <q-spinner-ios
-                    size="50px"
-                    :color="$q.dark.isActive ? 'accent' : 'primary'"
+                  size="50px"
+                  :color="$q.dark.isActive ? 'accent' : 'primary'"
                 />
               </q-inner-loading>
             </q-card>
           </div>
         </div>
+
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { nextTick, ref } from 'vue'
 import { LocalStorage, date as dateFormatter } from 'quasar'
 import { useMainStore } from 'stores/main'
 import { signInWithEmailAndPassword, getAuth } from 'firebase/auth'
@@ -545,7 +568,9 @@ export default {
     this.getProjectsLoader = true
     await this.getProjectByUser()
     await this.getTodoList()
-    await this.getProjects()
+    nextTick(async() => {
+      await this.getProjects()
+    })
   },
   beforeUpdate() {
     // console.log('beforeUpdate')
@@ -626,10 +651,8 @@ export default {
       return ['my-custom-event']
     },
     async getProjectByUser() {
-      console.log('getProjectByUser..')
       const userDetails = LocalStorage.getItem('authUser')
       const { email } = userDetails
-      console.log({ email })
       const invites = this.$fbref(this.$fbdb, 'invites')
       this.$fbonValue(invites, snapshot => {
         const data = snapshot.val()
@@ -637,11 +660,9 @@ export default {
           return
         }
         const data_ = Object.values(data)
-        console.log('data_ from invites', data_)
         this.projectIds = data_
           .filter(e => e.invitee === email)
           .map(e => e.projectId)
-        console.log('this.projectIds', this.projectIds)
       })
     },
     async getTodoList(project) {
@@ -750,23 +771,17 @@ export default {
         // map projects by user role
         const userDetails = LocalStorage.getItem('authUser')
         const { role, email } = userDetails
-        console.log({
-          role
-        })
 
         if (role === 'client') {
           data_ = data_.filter(e => e.client?.map(f => f.email).includes(email))
-          console.log('filtered data_', data_)
         }
 
         if (role === 'agent') {
           data_ = data_.filter(e => e.agent?.map(f => f.email).includes(email))
-          console.log('filtered data_', data_)
         }
 
         if (role === 'constructor') {
           data_ = data_.filter(project => this.projectIds.includes(project.id))
-          console.log('filtered data_', data_)
         }
 
         this.projectListMapped = data_
@@ -776,11 +791,12 @@ export default {
             isActivated: e.isActivated
           }))
           .filter(e => e.isActivated)
+
         this.projectListMapped.forEach(async project => {
           if (!project) {
             return false
           }
-          this.getTodoList(project)
+          await this.getTodoList(project)
         })
         this.getProjectsLoader = false
       })
@@ -788,6 +804,7 @@ export default {
   }
 }
 </script>
+
 <style lang="scss" scoped>
 .eventContentOverrideDarkMode {
   white-space: normal !important;

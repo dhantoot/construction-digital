@@ -5,7 +5,7 @@
   >
     <q-card
       class="no-shadow round-panel full-width px-10"
-      :class="[$q.screen.lt.sm ? 'pb-60' : 'full-height']"
+      :class="[$q.screen.lt.sm ? 'transparent pb-60' : 'full-height']"
     >
       <!-- <div class="bg-orange row full-width py-10 gap-15" :class="[$q.screen.lt.sm ? 'justify-between' : 'justify-between']">
         <q-btn
@@ -82,10 +82,7 @@
             </q-btn>
           </div>
 
-          <div
-            v-if="false"
-            class="row justify-between full-width items-center q-mb-xl gap-10"
-          >
+          <div v-if="false" class="row justify-between full-width items-center q-mb-xl gap-10">
             <q-input
               v-model="section"
               filled
@@ -166,9 +163,10 @@
           >
             <q-btn
               size="sm"
-              flat
+              rounded
               label="Back"
               icon="las la-arrow-left"
+              color="warning"
               no-caps
               class="round-btn"
               @click="$router.push('/manage-sow')"
@@ -460,7 +458,7 @@ export default {
     return {
       style: ref({
         'background-color': computed(() =>
-          $q.dark.isActive ? 'rgba(255, 255, 255, 0.1)' : '#f0f4f7'
+          $q.dark.isActive ? 'rgba(255, 255, 255, 0.1)' : '#ffffff'
         ),
         'border-radius': '8px',
         border: '.1px solid rgb(198 198 198, 0.5)'

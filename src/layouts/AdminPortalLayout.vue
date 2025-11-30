@@ -510,6 +510,8 @@
 import { ref } from 'vue'
 import { useMainStore } from 'stores/main'
 import { LocalStorage } from 'quasar'
+import { Capacitor } from '@capacitor/core'
+import { StatusBar, Style } from '@capacitor/status-bar'
 import HofsteeAvatar from 'src/components/Common/Badge/HofsteeAvatar.vue'
 
 export default {
@@ -522,6 +524,11 @@ export default {
     const mainStore = useMainStore()
     const activeBtn = ref(0)
 
+    if (Capacitor.isNativePlatform()) {
+      StatusBar.setBackgroundColor({ color: '#f0f0f0' })
+      StatusBar.setStyle({ style: Style.Light })
+    }
+
     return {
       activeBtn,
       confirm: ref(false),
@@ -533,17 +540,7 @@ export default {
       mainStore,
       miniState,
       isDark,
-      drawerClick() {
-        // // if in "mini" state and user
-        // // click on drawer, we switch it to "normal" mode
-        // if (miniState.value) {
-        //   miniState.value = false
-        //   // notice we have registered an event with capture flag;
-        //   // we need to stop further propagation as this click is
-        //   // intended for switching drawer to "normal" mode only
-        //   e.stopPropagation()
-        // }
-      },
+      drawerClick() {},
       obj: ref({})
     }
   },
@@ -552,12 +549,14 @@ export default {
       return this.$route.name
     }
   },
-  mounted() {
-    // this.mainStore.adminUser = null
-    // this.mainStore.authUser = null
+  async mounted() {
     this.$q.dark.isActive = false
+    // if (Capacitor.isNativePlatform()) {
+    //   await StatusBar.setBackgroundColor({color: '#f0f0f0'})
+    //   await StatusBar.setStyle({style: Style.Light})
+    // }
+
     this.authUser = LocalStorage.getItem('authUser')
-    // this.fetchUserProfile()
   },
   methods: {
     emitFromChild() {
@@ -577,6 +576,15 @@ export default {
     },
     toggleMode(val) {
       this.$q.dark.isActive = val
+      if (val) {
+        // this.$q.addressbarColor.set('#000000')
+        StatusBar.setBackgroundColor({ color: '#000000' })
+        StatusBar.setStyle({ style: Style.Dark })
+      } else {
+        // this.$q.addressbarColor.set('#f0f0f0')
+        StatusBar.setBackgroundColor({ color: '#f0f0f0' })
+        StatusBar.setStyle({ style: Style.Light })
+      }
     },
     openConfirmDialog(confirmMsg, confirmCallbackFn) {
       this.confirmMsg = confirmMsg
@@ -606,6 +614,7 @@ export default {
   }
 }
 </script>
+
 <style lang="scss" scoped>
 .hovered:active {
   background: #e0e2e5;

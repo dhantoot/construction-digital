@@ -78,8 +78,11 @@ For cordova
 
 For capacitor
 > zipalign -v 4 ./src-capacitor/android/app/build/outputs/apk/release/app-release-unsigned.apk Hofstee.apk
+OR
+> /Users/dhan/Library/Android/sdk/build-tools/30.0.3/zipalign -v 4 ./src-capacitor/android/app/build/outputs/apk/release/app-release-unsigned.apk Hofstee.apk
 
-
+> apksigner
+> /Users/dhan/Library/Android/sdk/build-tools/30.0.3/apksigner sign --ks my-release-key.keystore --ks-key-alias hofstee_app Hofstee.apk
 > Publishing to playstore
 > https://quasar.dev/quasar-cli-vite/developing-cordova-apps/publishing-to-store
 
@@ -94,10 +97,10 @@ For capacitor
 > cordova plugin add cordova-plugin-vibration
 > cordova plugin add cordova-plugin-statusbar
 
-> generate icon using icongenie
-> icongenie generate -m cordova -i /path/to/source/icon.png [-b /path/to/background.png]
+> generate icon using icongenie (npm i -g icongenie)
+> icongenie generate -m capacitor -i src/assets/icon-background.png [-b /path/to/background.png]
 > example:
-> icongenie generate -m cordova -i src/assets/icon-foreground.png [-b src/assets/icon-background.PNG]
+> icongenie generate -m capacitor -i src/assets/icon-foreground.png [-b src/assets/icon-background.PNG]
 
 > https://stackoverflow.com/questions/49689385/cordova-how-to-move-file-to-the-download-folder > https://cordova.apache.org/docs/en/12.x/reference/cordova-plugin-file/index.html#writeFile
 

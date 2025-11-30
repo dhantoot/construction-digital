@@ -65,33 +65,6 @@
                         label=""
                         @update:model-value="toggleMode"
                       />
-                      <!-- <q-btn-toggle
-                            v-if="mainStore.showNav || routeName === 'MyProfile'"
-                            v-model="isDark"
-                            toggle-color="primary"
-                            color="grey"
-                            dense
-                            unelevated
-                            rounded
-                            @update:model-value="toggleMode"
-                            :options="[
-                              {
-                                value: false,
-                                slot: 'light'
-                              },
-                              {
-                                value: true,
-                                slot: 'dark'
-                              }
-                            ]"
-                          >
-                            <template #light>
-                              <SunIcon size="18" />
-                            </template>
-                            <template #dark>
-                              <MoonIcon size="18" />
-                            </template>
-                          </q-btn-toggle> -->
                     </q-item-section>
                   </q-item>
                   <q-item v-ripple clickable :to="`/profile/${authUser.uid}`">
@@ -167,7 +140,7 @@
           @click="activatePage('search')"
         >
           <div class="column justify-start items-center">
-        <!-- <SearchIcon size="24" />-->
+            <!-- <SearchIcon size="24" />-->
             <HexagonIcon size="30" />
           </div>
         </q-btn>
@@ -206,8 +179,10 @@
 <script>
 import { ref } from 'vue'
 import { useMainStore } from 'stores/main'
-import { LocalStorage, useQuasar } from 'quasar'
+import { LocalStorage } from 'quasar'
 import { useThemeStore } from 'stores/theme'
+import { StatusBar, Style } from '@capacitor/status-bar'
+import { Capacitor } from '@capacitor/core'
 
 export default {
   setup() {
@@ -216,18 +191,13 @@ export default {
     const deviceIsReady = ref(false)
     const mainStore = useMainStore()
     const authUser = ref(null)
-    const $q = useQuasar()
     const isDark = ref(false)
     const activeTab = ref('dashboard')
-    // const bgPhoto = ''
-    $q.addressbarColor.set('#25252b')
-    // document.addEventListener('deviceready', () => {
-    //   deviceIsReady.value = true
-    //   // eslint-disable-next-line no-undef
-    //   StatusBar.overlaysWebView(false)
-    //   // eslint-disable-next-line no-undef
-    //   StatusBar.backgroundColorByHexString('#C10015')
-    // }, false)
+
+    if (Capacitor.isNativePlatform()) {
+      StatusBar.setBackgroundColor({ color: '#f0f0f0' })
+      StatusBar.setStyle({ style: Style.Light })
+    }
 
     return {
       selectedTab: ref(null),
@@ -257,6 +227,11 @@ export default {
     }
   },
   async mounted() {
+    // if (Capacitor.isNativePlatform()) {
+    //   StatusBar.setBackgroundColor({color: '#f0f0f0'})
+    //   StatusBar.setStyle({style: Style.Light})
+    // }
+
     this.authUser = LocalStorage.getItem('authUser')
     console.log('MainLayout monunter')
     this.themeStore.setCurrentTheme(17) // 1,17, 20(light), 22(light)
@@ -293,9 +268,13 @@ export default {
     toggleMode(val) {
       this.$q.dark.isActive = val
       if (val) {
-        this.$q.addressbarColor.set('#000000')
+        // this.$q.addressbarColor.set('#000000')
+        StatusBar.setBackgroundColor({ color: '#000000' })
+        StatusBar.setStyle({ style: Style.Dark })
       } else {
-        this.$q.addressbarColor.set('#25252b')
+        // this.$q.addressbarColor.set('#f0f0f0')
+        StatusBar.setBackgroundColor({ color: '#f0f0f0' })
+        StatusBar.setStyle({ style: Style.Light })
       }
     },
     showHeader(arg, breadcrumbs) {

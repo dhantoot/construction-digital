@@ -7,7 +7,7 @@
       class="full-height row full-width full-height q-pa-sm"
       :style="[$q.screen.lt.sm ? 'padding-bottom: 90px;' : '']"
     >
-      <q-card class="full-height no-shadow round-panel full-width px-10 pt-10">
+      <q-card class="full-height no-shadow round-panel full-width px-10 pt-10" :class="[$q.screen.lt.sm ? 'bg-transparent' : '']">
         <div
           class="row full-width"
           :class="[
@@ -343,7 +343,7 @@ export default {
     return {
       style: ref({
         'background-color': computed(() =>
-          $q.dark.isActive ? 'rgba(255, 255, 255, 0.1)' : '#f0f4f7'
+          $q.dark.isActive ? 'rgba(255, 255, 255, 0.1)' : '#ffffff'
         ),
         'border-radius': '8px',
         border: '.1px solid rgb(198 198 198, 0.5)'

@@ -7,7 +7,7 @@
       class="column full-width full-height q-pa-sm gap-10"
       :style="[$q.screen.lt.sm ? 'padding-bottom: 90px;' : '']"
     >
-      <q-card class="full-height round-panel full-width no-shadow px-10">
+      <q-card class="full-height round-panel full-width no-shadow px-10" :class="[$q.screen.lt.sm ? 'bg-transparent' : '']">
         <!-- For Desktop view -->
         <div v-if="$q.screen.gt.sm" class="row justify-start gap-20 q-py-md">
           <div
@@ -172,6 +172,7 @@
             @click="sendInviteDialog = true"
           />
         </div>
+
         <div class="row full-width">
           <q-table
             no-data-label="I didn't find anything for you"
@@ -318,6 +319,7 @@
             </template>
           </q-table>
         </div>
+
       </q-card>
     </div>
   </div>
@@ -335,15 +337,15 @@
       </q-card-section>
 
       <q-card-section>
-        <div class="debug row full-width gap-20 scroll">
+        <div class="row full-width gap-20 scroll">
           <div
-            class="debug column justify-start gap-10"
+            class="column justify-start gap-10"
             :class="[$q.screen.lt.sm ? 'full-width' : '']"
           >
-            <div class="debug caption text-bold">Select Project</div>
+            <div class="caption text-bold">Select Project</div>
             <q-select
               v-model="selectedProject"
-              class="debug"
+              class=""
               behavior="menu"
               :popup-content-class="[
                 $q.dark.isActive
@@ -372,7 +374,7 @@
               </template>
             </q-select>
           </div>
-          <div class="debug column justify-start gap-10">
+          <div class="column justify-start gap-10">
             <div class="caption text-bold">Constructor label</div>
             <div class="row gap-10 items-center">
               <q-radio
@@ -413,7 +415,7 @@
             </div>
           </div>
           <div
-            class="debug column justify-start gap-10"
+            class="column justify-start gap-10"
             :class="[$q.screen.lt.sm ? 'full-width' : '']"
           >
             <div class="caption text-bold">Select email to send invitation</div>
@@ -583,7 +585,7 @@ export default {
       sendInviteDialog: ref(false),
       style: ref({
         'background-color': computed(() =>
-          q.dark.isActive ? 'rgba(255, 255, 255, 0.1)' : '#f0f4f7'
+          q.dark.isActive ? 'rgba(255, 255, 255, 0.1)' : '#ffffff'
         ),
         'border-radius': '8px',
         border: '.1px solid rgb(198 198 198, 0.5)'

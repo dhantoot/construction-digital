@@ -1,5 +1,9 @@
 <template>
-  <q-card class="round-panel full-height full-width no-shadow px-10 pt-10">
+  <q-card class="round-panel full-height full-width no-shadow px-10 pt-10"
+     :class="[
+        $q.screen.lt.sm ? 'transparent' : ''
+     ]"
+  >
     <div
       class="row full-width"
       :class="[
@@ -278,7 +282,7 @@ export default {
       return "I'm computed hook"
     },
     bgColor: function () {
-      return this.$q.dark.isActive ? 'rgba(255, 255, 255, 0.1)' : '#f0f4f7'
+      return this.$q.dark.isActive ? 'rgba(255, 255, 255, 0.1)' : '#ffffff'
     }
   },
   beforeCreate() {

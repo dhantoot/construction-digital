@@ -17,7 +17,7 @@
         <q-card class="round-panel full-height no-shadow">
           <q-card-section>
             <div class="text-h6">
-              {{ selected.length ? 'Update' : 'New' }} Project
+              {{ selected.length ? 'Update' : 'New Project' }}
             </div>
             <div class="text-subtitle2 row justify-between">
               <div>
@@ -254,6 +254,7 @@
           </q-inner-loading>
         </q-card>
       </div>
+
       <div
         class="col-9"
         :class="{
@@ -262,7 +263,7 @@
       >
         <q-card
           class="round-panel full-height no-shadow px-10 pt-10"
-          :class="[$q.screen.gt.sm ? 'pt-15 mb-10' : 'pt-0']"
+          :class="[$q.screen.gt.sm ? 'pt-15 mb-10' : 'pt-0 bg-transparent']"
         >
           <div class="row justify-between full-width items-center">
             <div class="text-subtitle2">
@@ -290,14 +291,16 @@
                 rounded
                 :color="selected.length ? 'primary' : 'info'"
                 size="sm"
-                :label="selected.length ? 'Update Project' : 'New Project'"
+                :label="selected.length ? 'Update' : 'New Project'"
                 :icon="selected.length ? 'las la-pen' : 'las la-plus'"
                 no-caps
                 @click="updateProjectDialog = true"
               />
             </div>
           </div>
+
           <div class="row full-width scroll">
+
             <q-table
               v-model:selected="selected"
               flat
@@ -438,11 +441,15 @@
                   </q-card-actions>
                 </q-card>
               </template>
+
             </q-table>
+
           </div>
+
           <q-inner-loading :showing="rowLoading">
             <q-spinner-ios size="50px" color="secondary" />
           </q-inner-loading>
+
         </q-card>
       </div>
     </div>
@@ -974,7 +981,7 @@ export default {
       updateProjectDialog: ref(false),
       style: ref({
         'background-color': computed(() =>
-          $q.dark.isActive ? 'rgba(255, 255, 255, 0.1)' : '#f0f4f7'
+          $q.dark.isActive ? 'rgba(255, 255, 255, 0.1)' : '#ffffff'
         ),
         'border-radius': '8px',
         border: '.1px solid rgb(198 198 198, 0.5)'
