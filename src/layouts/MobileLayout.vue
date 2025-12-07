@@ -1,20 +1,31 @@
 <template>
   <q-layout
     view="lHh lpr lFf"
-    :class="{
-      'bg-light': !$q.dark.isActive,
-      'bg-black': $q.dark.isActive
+    class="full-height no-scroll"
+    :style="{
+      background: $q.dark.isActive ? 'black' : ''
     }"
   >
-    <q-header elevated>
+    <q-header
+      v-if="$route.name !== 'mobile.userlogin'"
+      height-hint="98"
+      :style="{
+        'border-bottom': $q.dark.isActive
+          ? '.1px solid #3a3a3a'
+          : '.1px solid rgb(198 198 198 / 50%)',
+        background: $q.dark.isActive ? 'black' : ''
+      }"
+      :class="[
+        $q.dark.isActive ? 'text-accent bg-black' : 'text-primary bg-light'
+      ]"
+    >
+
       <q-toolbar>
         <div class="row justify-between full-width items-center">
           <q-btn title="x" flat round dense icon="menu" />
 
-          <!-- <q-toolbar-title><small>{{ 'Hofstee' }}</small></q-toolbar-title> -->
           <div class="column items-center justify-center">
             <strong class="caption text-h5">{{ 'Hofstee' }}</strong>
-            <!-- <small>{{ routeName }}</small> -->
           </div>
 
           <div class="" style="min-width: 20px">
@@ -87,7 +98,13 @@
       </q-toolbar>
     </q-header>
 
-    <q-page-container style="padding-bottom: 180px">
+    <q-page-container
+      :style="{
+        'background: black': $q.dark.isActive,
+        'background: #f2f4f7': !$q.dark.isActive,
+        'height: 100vh': $q.screen.gt.sm,
+        'padding-bottom: 70px': !$q.screen.gt.sm
+      }">
       <router-view @emit-from-child="emitFromChild" />
     </q-page-container>
 
@@ -177,7 +194,7 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { nextTick, ref } from 'vue'
 import { useMainStore } from 'stores/main'
 import { LocalStorage } from 'quasar'
 import { useThemeStore } from 'stores/theme'
@@ -235,6 +252,7 @@ export default {
     this.authUser = LocalStorage.getItem('authUser')
     console.log('MainLayout monunter')
     this.themeStore.setCurrentTheme(17) // 1,17, 20(light), 22(light)
+    await nextTick()
     await this.fetchUserProfile()
   },
   methods: {
@@ -253,9 +271,10 @@ export default {
       this.$router.push({ path: `/${page}` })
       this.activeTab = page
     },
-    emitFromChild() {
+    async emitFromChild() {
       console.log('emitFromChild..')
-      this.fetchUserProfile()
+      await nextTick()
+      await this.fetchUserProfile()
     },
     async fetchUserProfile() {
       this.authUser = LocalStorage.getItem('authUser')

@@ -178,9 +178,9 @@
                     class="col col-sm-12 col-xs-12"
                   >
                     <q-card
-                      :class="$q.dark.isActive ? 'bg-grey-10' : 'bg-aliceblue'"
+                      :class="[$q.dark.isActive ? 'bg-grey-10 text-white' : '']"
                       :flat="$q.dark.isActive"
-                      :style="$q.dark.isActive ? '' : 'background: #f0f8ff'"
+                      :style="$q.dark.isActive ? '' : 'background: rgb(252 252 252)'"
                     >
                       <q-card-section>
                         <div class="text-subtitle1">{{ item.title }}</div>

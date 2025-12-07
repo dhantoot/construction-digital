@@ -170,3 +170,27 @@ firebase deploy --only functions:getPlaces
 ```bash
 https://fullcalendar.io/docs/vue
 ```
+
+
+```src-capacitor > package.json
+{
+  "name": "hofstee",
+  "version": "0.0.1",
+  "description": "An app for a construction builder company",
+  "author": "dan vincent tagailo",
+  "private": true,
+  "dependencies": {
+    "@capacitor/android": "^6.2.1",
+    "@capacitor/app": "^6.0.0",
+    "@capacitor/cli": "^6.0.0",
+    "@capacitor/core": "^6.0.0",
+    "@capacitor/status-bar": "^6.0.3"
+  }
+}
+
+```
+
+```Run this command to run capacitor build directly and not opening android studio
+cd src-capacitor
+npx cap run android
+```

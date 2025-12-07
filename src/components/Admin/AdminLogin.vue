@@ -17,15 +17,14 @@
           <div>Login required to use the portal</div>
         </div>
       </q-card-section>
-      <q-card-section class="column gap-10">
-        <!-- <q-input :dense="true" filled v-model="username" placeholder="Username" @keydown.enter.prevent="login" style="font-size: 18px;" />
-        <q-input :dense="true" filled v-model="password" placeholder="Password" @keydown.enter.prevent="login" type="password" style="font-size: 20px;" /> -->
 
+      <q-card-section class="column gap-10">
         <q-input
           v-model="username"
           outline
           :dense="true"
-          placeholder="Username"
+          placeholder="Email / Username"
+          :rules="usernameRules"
           color="positive"
           input-class="text-primary"
           filled
@@ -58,37 +57,55 @@
             <EyeClosed v-if="isPwd" size="16" @click="isPwd = !isPwd" />
           </template>
         </q-input>
+
       </q-card-section>
+
       <q-card-section>
-        <div class="text-subtitle2 row justify-center">
-          <a class="clickable" @click="$router.push('/login')">
-            Switch to mobile
-          </a>
+        <div class="text-subtitle2 row justify-between items-center">
+
+          <q-btn
+              dense
+              padding="xs lg"
+              label="Clear"
+              flat
+              no-caps
+              class="pull-right round-btn text-grey text-caption ghost"
+          />
+
+          <q-btn
+              dense
+              padding="xs lg"
+              label="Switch to mobile"
+              color="gray"
+              flat
+              no-caps
+              class="pull-right round-btn text-grey text-caption ghost"
+              @click="$router.push('/login')"
+          />
+
+          <q-btn
+              dense
+              padding="xs lg"
+              label="Register"
+              flat
+              no-caps
+              class="pull-right round-btn text-grey text-caption ghost"
+              @click="register"
+          />
+
         </div>
       </q-card-section>
+
       <q-card-actions align="center">
+
         <q-btn
-          padding="sm xl"
-          flat
-          class="text-capitalize bg-negative round-btn"
-          :disable="loadingSubmit"
-          :style="{
-            width: '47%'
-          }"
-        >
-          <template #default>
-            <XIcon class="q-mr-sm" />
-            <span class="text-capitalize">Clear</span>
-          </template>
-        </q-btn>
-        <q-btn
-          padding="sm xl"
+          padding="md xl"
           color="primary"
           class="text-capitalize bg-info round-btn"
           :loading="loadingSubmit"
           :disable="loadingSubmit || !username || !password"
           :style="{
-            width: '47%'
+            width: '96%'
           }"
           @click="login"
         >
@@ -102,6 +119,7 @@
           </template>
         </q-btn>
       </q-card-actions>
+
     </q-card>
   </div>
 </template>
@@ -144,6 +162,12 @@ export default {
       },
       username: ref('tagailo.danvincent@gmail.com'),
       password: ref('Admin@123'),
+      usernameRules: [
+        val => (val !== null && val !== '') || 'Please input username'
+      ],
+      passwordRules: [
+        val => (val !== null && val !== '') || 'Please input password'
+      ],
       loadingSubmit: ref(false),
       isPwd: ref(true)
     }

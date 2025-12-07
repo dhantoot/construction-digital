@@ -1,143 +1,130 @@
 <template>
-  <div class="row full-width justify-center absolute">
-    <div class="col text-center" style="max-width: 600px">
-      <q-inner-loading :showing="visible">
-        <q-spinner-ios size="50px" color="secondary" />
-      </q-inner-loading>
-      <div class="col-4 q-mt-xl q-mb-md q-pt-xl">
-        <q-icon
-          name="las la-user-circle"
-          size="100px"
-          class="q-pa-xs"
-          color="primary"
-        />
-        <p class="text-h2 q-mb-xl text-primary">Login</p>
-      </div>
-      <div class="col-2 q-mt-xl q-mb-md">
-        <!-- <hr class="q-ml-xl q-mr-xl" color="black"/> -->
-        <q-separator class="q-ml-xl q-mr-xl" color="primary" inset />
-      </div>
+  <!-- User Login -->
+  <div
+      class="row hide-scrollbar items-center justify-center"
+      :style="`height: 100vh;`"
+  >
+    <q-card
+        flat
+        class="q-ma-sm no-shadow"
+        :class="[
+        $q.screen.gt.xs ? 'width-px-500' : 'width-px-400 bg-transparent'
+      ]"
+    >
 
-      <div v-if="false" class="col-6 q-mt-lg">
-        <p
-          class="q-mt-xl"
-          :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
-        >
-          Choose a role to login
-        </p>
-        <div class="q-gutter-sm">
-          <q-radio
-            v-model="role"
-            checked-icon="task_alt"
-            unchecked-icon="panorama_fish_eye"
-            val="contructor"
-            label="Constructor"
-            class="text-positive"
-            color="positive"
-            keep-color
-          />
-          <q-radio
-            v-model="role"
-            checked-icon="task_alt"
-            unchecked-icon="panorama_fish_eye"
-            val="home owner"
-            label="Home Owner"
-            class="text-positive"
-            color="positive"
-            keep-color
-          />
+      <q-card-section class="">
+        <div class="text-h6">User Login</div>
+        <div class="text-subtitle2 row justify-between">
+          <div>Login required to use the portal</div>
         </div>
-      </div>
+      </q-card-section>
 
-      <div class="row col-2 q-mt-sm q-px-xl q-gutter-y-md">
-        <q-input
-          ref="emailRef"
-          v-model="email"
-          outline
-          :dense="true"
-          placeholder="Email"
-          :rules="emailRules"
-          color="positive"
-          input-class="text-primary text-caption"
-          filled
-          class="full-width"
-          @keyup.enter="login"
-        >
-          <template #prepend>
-            <UserIcon size="16" />
-          </template>
-        </q-input>
-        <q-input
-          ref="passwordRef"
-          v-model="password"
-          :type="isPwd ? 'password' : 'text'"
-          :dense="true"
-          outline
-          placeholder="Password"
-          :rules="passwordRules"
-          color="positive"
-          input-class="text-primary text-caption"
-          filled
-          class="full-width"
-          @keyup.enter="login"
-        >
-          <template #prepend>
-            <LockIcon size="16" />
-          </template>
-          <template #append>
-            <EyeIcon v-if="!isPwd" size="16" @click="isPwd = !isPwd" />
-            <EyeClosed v-if="isPwd" size="16" @click="isPwd = !isPwd" />
-          </template>
-        </q-input>
-      </div>
-      <div class="row items-center justify-between q-px-xl">
-        <q-btn
-          label="Clear"
-          type="reset"
-          color="secondary"
-          flat
-          no-caps
-          class="pull-right round-btn text-grey text-caption"
-          style="float: left"
-          @click="reset"
-        />
+      <q-card-section class="column gap-10">
+       <q-input
+         ref="emailRef"
+         v-model="email"
+         outline
+         :dense="true"
+         placeholder="Email / Username"
+         :rules="usernameRules"
+         color="positive"
+         input-class="text-primary"
+         filled
+         class="full-width"
+         @keyup.enter.prevent="login"
+       >
+         <template #prepend>
+           <UserIcon size="16" />
+         </template>
+       </q-input>
 
-        <div class="">
-          <a class="clickable text-grey text-caption" @click="goToAdminView">
-            Switch to admin
-          </a>
+       <q-input
+         ref="passwordRef"
+         v-model="password"
+         :type="isPwd ? 'password' : 'text'"
+         :dense="true"
+         outline
+         placeholder="Password"
+         :rules="passwordRules"
+         color="positive"
+         input-class="text-primary"
+         filled
+         class="full-width"
+         @keyup.enter="login"
+       >
+         <template #prepend>
+           <LockIcon size="16" />
+         </template>
+         <template #append>
+           <EyeIcon v-if="!isPwd" size="16" @click="isPwd = !isPwd" />
+           <EyeClosed v-if="isPwd" size="16" @click="isPwd = !isPwd" />
+         </template>
+       </q-input>
+
+      </q-card-section>
+
+      <q-card-section>
+        <div class="text-subtitle2 row justify-between items-center">
+
+          <q-btn
+            dense
+            padding="xs lg"
+            label="Clear"
+            flat
+            no-caps
+            class="pull-right round-btn text-grey text-caption ghost"
+            @click="reset"
+          />
+
+          <q-btn
+              dense
+              padding="xs lg"
+              label="Switch to admin"
+              color="gray"
+              flat
+              no-caps
+              class="pull-right round-btn text-grey text-caption ghost"
+              @click="goToAdminView"
+          />
+
+          <q-btn
+            dense
+            padding="xs lg"
+            label="Register"
+            flat
+            no-caps
+            class="pull-right round-btn text-grey text-caption ghost"
+            @click="register"
+          />
+
         </div>
+      </q-card-section>
+
+      <q-card-actions align="center">
 
         <q-btn
-          label="Register"
-          color="secondary"
-          flat
-          no-caps
-          class="pull-right round-btn text-grey text-caption"
-          style="float: right"
-          @click="register"
-        />
-      </div>
-      <div class="row col-2 q-mt-sm q-px-xl">
-        <q-btn
-          :disable="
-            $isFalsyString(email) || $isFalsyString(password) || loading
-          "
-          :loading="loading"
-          size="lg"
-          color="primary"
-          label="Login"
-          class="full-width round-btn"
-          no-caps
-          @click="login"
+            padding="md xl"
+            color="primary"
+            class="text-capitalize bg-info round-btn"
+            :loading="loading"
+            :disable="$isFalsyString(email) || $isFalsyString(password) || loading"
+            :style="{
+              width: '96%'
+            }"
+            @click="login"
         >
+          <template #default>
+            <CheckIcon class="q-mr-sm" />
+            <span class="text-capitalize">Sign In</span>
+          </template>
           <template #loading>
             <q-spinner-ios class="on-left" />
             <small>Logging in..</small>
           </template>
         </q-btn>
-      </div>
-    </div>
+      </q-card-actions>
+
+    </q-card>
   </div>
 </template>
 <script>

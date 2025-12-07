@@ -352,7 +352,6 @@
     </q-drawer>
 
     <q-page-container
-      class=""
       :style="{
         'background: black': $q.dark.isActive,
         'background: #f2f4f7': !$q.dark.isActive,
@@ -507,7 +506,7 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 import { useMainStore } from 'stores/main'
 import { LocalStorage } from 'quasar'
 import { Capacitor } from '@capacitor/core'
@@ -559,8 +558,9 @@ export default {
     this.authUser = LocalStorage.getItem('authUser')
   },
   methods: {
-    emitFromChild() {
-      this.fetchUserProfile()
+    async emitFromChild() {
+      await nextTick()
+      await this.fetchUserProfile()
     },
     async fetchUserProfile() {
       console.log('fetchUserProfile..')
