@@ -10,7 +10,7 @@
             v-if="
               $route.path === `/detail/${mainStore?.mobileSelectedProject?.id}`
             "
-            color="primary"
+            color="negative"
             rounded
             class="text-accent round-btn"
             @click="$router.push('/projects')"

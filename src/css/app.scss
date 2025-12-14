@@ -81,9 +81,31 @@
   overflow: hidden;
 }
 
+///* 2. Fix the main page container content (ADJUST THIS RULE) */
+//.page-container {
+//  /* Pushes toolbar content below the status bar */
+//  padding-top: env(safe-area-inset-top);
+//
+//  /* Keeps bottom content above the transparent navigation bar */
+//  padding-bottom: env(safe-area-inset-bottom);
+//
+//  /* REMOVE padding-top: env(safe-area-inset-top); here. It is redundant now. */
+//}
+//
+//.q-page-container {
+//  /* Pushes toolbar content below the status bar */
+//  padding-top: env(safe-area-inset-top);
+//
+//  /* Keeps bottom content above the transparent navigation bar */
+//  padding-bottom: env(safe-area-inset-bottom);
+//
+//  /* REMOVE padding-top: env(safe-area-inset-top); here. It is redundant now. */
+//}
+
 body {
   font-family: 'metrophobic';
   background: #f0f0f0;
+  --q-safe-area-bottom: 0px;
 }
 
 .cv12-text {
@@ -501,3 +523,13 @@ $weights: 100, 200, 300, 400, 500, 600, 700, 800, 900;
 .ghost {
   background: rgba(0, 0, 0, 0.05);
 }
+
+:deep(.q-page-container) {
+  padding-top: env(safe-area-inset-top) !important;
+  padding-bottom: env(safe-area-inset-bottom) !important;
+}
+
+//:deep(.page-container) {
+//  padding-top: env(safe-area-inset-top) !important;
+//  padding-bottom: env(safe-area-inset-bottom) !important;
+//}

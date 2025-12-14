@@ -4,10 +4,13 @@
     :style="{ height: $q.screen.lt.sm ? 'auto' : '' }"
   >
     <div
-      class="column full-width full-height q-pa-sm gap-10"
+      class="column full-width full-height gap-10"
       :style="[$q.screen.lt.sm ? 'padding-bottom: 90px;' : '']"
     >
-      <q-card class="full-height round-panel full-width no-shadow px-10" :class="[$q.screen.lt.sm ? 'bg-transparent' : '']">
+      <q-card
+        class="full-height round-panel full-width no-shadow px-10"
+        :class="[$q.screen.lt.sm ? 'bg-transparent' : '']"
+      >
         <!-- For Desktop view -->
         <div v-if="$q.screen.gt.sm" class="row justify-start gap-20 q-py-md">
           <div
@@ -260,7 +263,7 @@
               <q-card class="q-ma-sm full-width no-shadow" :style="style">
                 <q-card-section>
                   <div class="text-h6">{{ props.row.projectName }}</div>
-                  <div class="text-caption text-bold">
+                  <div class="text-caption text-bold row justify-between items-center">
                     {{ props.row.invitee }}
                     <q-chip
                       size="sm"
@@ -277,17 +280,17 @@
 
                 <q-card-section class="q-pt-sm">
                   <div>
-                    <strong>Date Sent:</strong>
+                    <strong>Sent:</strong>
                     {{ props.row.dateSent }}
                   </div>
                   <div>
-                    <strong>Date Responded:</strong>
+                    <strong>Responded:</strong>
                     {{ props.row.dateResponded }}
                   </div>
-                  <div>
-                    <strong>Invitee:</strong>
-                    {{ props.row.invitee }}
-                  </div>
+<!--                  <div>-->
+<!--                    <strong>Invitee:</strong>-->
+<!--                    {{ props.row.invitee }}-->
+<!--                  </div>-->
                   <div>
                     <strong>User Title:</strong>
                     {{ props.row.userTitle }}
@@ -319,7 +322,6 @@
             </template>
           </q-table>
         </div>
-
       </q-card>
     </div>
   </div>

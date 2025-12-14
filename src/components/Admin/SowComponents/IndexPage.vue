@@ -5,7 +5,7 @@
       height: $q.screen.lt.sm ? 'auto' : ''
     }"
   >
-    <div class="row full-width full-height q-pa-sm">
+    <div class="row full-width full-height">
       <router-view />
     </div>
   </div>

@@ -194,3 +194,38 @@ https://fullcalendar.io/docs/vue
 cd src-capacitor
 npx cap run android
 ```
+
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Base application theme -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
+
+        <!-- Enable light icons (makes nav bar transparent instead of black) -->
+        <item name="android:windowLightNavigationBar">true</item>
+
+        <item name="android:fitsSystemWindows">false</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:background">@null</item>
+    </style>
+
+    <style name="AppTheme.NoActionBarLaunch" parent="Theme.SplashScreen">
+        <item name="android:background">@drawable/splash</item>
+    </style>
+
+</resources>
+
+Quick build:
+quasar build -m capacitor -T android
+/Users/dhan/Library/Android/sdk/build-tools/30.0.3/zipalign -v 4 ./src-capacitor/android/app/build/outputs/apk/release/app-release-unsigned.apk Hofstee.apk
+/Users/dhan/Library/Android/sdk/build-tools/30.0.3/apksigner sign --ks my-release-key.keystore --ks-key-alias hofstee_app Hofstee.apk

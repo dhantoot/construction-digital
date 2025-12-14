@@ -1,111 +1,104 @@
 <template>
   <q-layout
-    view="lHh lpr lFf"
-    class="full-height no-scroll"
+    view="lHh lpR lFf"
+    class="no-scroll"
     :style="{
       background: $q.dark.isActive ? 'black' : ''
     }"
   >
-    <q-header
-      v-if="$route.name !== 'mobile.userlogin'"
-      height-hint="98"
-      :style="{
-        'border-bottom': $q.dark.isActive
-          ? '.1px solid #3a3a3a'
-          : '.1px solid rgb(198 198 198 / 50%)',
-        background: $q.dark.isActive ? 'black' : ''
-      }"
-      :class="[
-        $q.dark.isActive ? 'text-accent bg-black' : 'text-primary bg-light'
-      ]"
-    >
-
-      <q-toolbar>
-        <div class="row justify-between full-width items-center">
-          <q-btn title="x" flat round dense icon="menu" />
-
-          <div class="column items-center justify-center">
-            <strong class="caption text-h5">{{ 'Hofstee' }}</strong>
-          </div>
-
-          <div class="" style="min-width: 20px">
-            <div
-              v-if="mainStore.showNav || routeName === 'mobile.my-profile'"
-              class=""
-            >
-              <q-avatar>
-                <img
-                  :src="
-                    obj?.avatar?.length > 0
-                      ? `${obj.avatar}`
-                      : `default-user.jpeg`
-                  "
-                />
-                <HofsteeAvatar
-                  :src="
-                    obj?.avatar?.length > 0
-                      ? `${obj.avatar}`
-                      : `default-user.jpeg`
-                  "
-                  size="30px"
-                />
-              </q-avatar>
-              <q-menu
-                style="border-radius: 10px"
-                :class="[
-                  $q.dark.isActive
-                    ? 'bg-contrast text-accent no-shadow'
-                    : 'bg-light text-primary'
-                ]"
-                :offset="[13, 16]"
-              >
-                <template #activator="{ on }">
-                  <q-btn flat dense icon="more_vert" v-on="on" />
-                </template>
-                <q-list style="min-width: 200px">
-                  <q-item>
-                    <q-item-section>Dark Mode</q-item-section>
-                    <q-item-section side>
-                      <q-toggle
-                        v-if="mainStore.showNav || routeName === 'MyProfile'"
-                        v-model="isDark"
-                        dense
-                        checked-icon="las la-moon"
-                        color="grey"
-                        unchecked-icon="las la-sun"
-                        label=""
-                        @update:model-value="toggleMode"
-                      />
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple clickable :to="`/profile/${authUser.uid}`">
-                    <q-item-section>My Profile</q-item-section>
-                    <q-item-section side>
-                      <UserIcon size="20" />
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple clickable @click="signOut">
-                    <q-item-section>Logout</q-item-section>
-                    <q-item-section side>
-                      <Log-outIcon size="18" />
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-menu>
-            </div>
-          </div>
-        </div>
-      </q-toolbar>
-    </q-header>
-
     <q-page-container
+      class="page-container"
       :style="{
         'background: black': $q.dark.isActive,
         'background: #f2f4f7': !$q.dark.isActive,
-        'height: 100vh': $q.screen.gt.sm,
-        'padding-bottom: 70px': !$q.screen.gt.sm
-      }">
+        'height: 100vh': $q.screen.gt.sm
+      }"
+    >
+      <div class="row full-width mt-45 items-center">
+        <div
+          v-if="$route.name !== 'mobile.userlogin'"
+          :style="{
+            background: $q.dark.isActive ? 'black' : ''
+          }"
+          :class="[
+            $q.dark.isActive ? 'text-accent bg-black' : 'text-primary bg-light'
+          ]"
+          class="full-width"
+        >
+          <!-- Replaces q-toolbar: uses flex classes for alignment -->
+          <div class="row justify-between full-width items-center px-5">
+            <q-btn title="x" flat round dense icon="menu" />
+
+            <div class="column items-center justify-center">
+              <strong class="caption text-h6">{{ 'Hofstee' }}</strong>
+            </div>
+
+            <div class="" style="min-width: 20px">
+              <div
+                v-if="mainStore.showNav || routeName === 'mobile.my-profile'"
+                class=""
+              >
+                <q-avatar>
+                  <HofsteeAvatar
+                    :src="
+                      obj?.avatar?.length > 0
+                        ? `${obj.avatar}`
+                        : `default-user.jpeg`
+                    "
+                    size="35px"
+                  />
+                </q-avatar>
+                <q-menu
+                  style="border-radius: 10px"
+                  :class="[
+                    $q.dark.isActive
+                      ? 'bg-contrast text-accent no-shadow'
+                      : 'bg-light text-primary'
+                  ]"
+                  :offset="[13, 16]"
+                >
+                  <template #activator="{ on }">
+                    <q-btn flat dense icon="more_vert" v-on="on" />
+                  </template>
+                  <q-list style="min-width: 200px">
+                    <q-item>
+                      <q-item-section>Dark Mode</q-item-section>
+                      <q-item-section side>
+                        <q-toggle
+                          v-if="mainStore.showNav || routeName === 'MyProfile'"
+                          v-model="isDark"
+                          dense
+                          checked-icon="las la-moon"
+                          color="grey"
+                          unchecked-icon="las la-sun"
+                          label=""
+                          @update:model-value="toggleMode"
+                        />
+                      </q-item-section>
+                    </q-item>
+                    <q-item v-ripple clickable :to="`/profile/${authUser.uid}`">
+                      <q-item-section>My Profile</q-item-section>
+                      <q-item-section side>
+                        <UserIcon size="20" />
+                      </q-item-section>
+                    </q-item>
+                    <q-item v-ripple clickable @click="signOut">
+                      <q-item-section>Logout</q-item-section>
+                      <q-item-section side>
+                        <Log-outIcon size="18" />
+                      </q-item-section>
+                    </q-item>
+                  </q-list>
+                </q-menu>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
       <router-view @emit-from-child="emitFromChild" />
+
     </q-page-container>
 
     <div
@@ -135,7 +128,6 @@
         >
           <div class="column justify-start items-center">
             <HomeIcon size="24" />
-            <!-- <span style="font-size: 10px;" class="text-capitalize text-caption">Home</span> -->
           </div>
         </q-btn>
         <q-btn
@@ -199,9 +191,14 @@ import { useMainStore } from 'stores/main'
 import { LocalStorage } from 'quasar'
 import { useThemeStore } from 'stores/theme'
 import { StatusBar, Style } from '@capacitor/status-bar'
+import { NavigationBar } from '@hugotomazi/capacitor-navigation-bar'
 import { Capacitor } from '@capacitor/core'
+import HofsteeAvatar from 'src/components/Common/Badge/HofsteeAvatar.vue'
 
 export default {
+  components: {
+    HofsteeAvatar
+  },
   setup() {
     const themeStore = useThemeStore()
     const leftDrawerOpen = ref(false)
@@ -290,10 +287,17 @@ export default {
         // this.$q.addressbarColor.set('#000000')
         StatusBar.setBackgroundColor({ color: '#000000' })
         StatusBar.setStyle({ style: Style.Dark })
+        NavigationBar.setColor({
+          color: '#00000000',
+          darkButtons: false
+        })
       } else {
         // this.$q.addressbarColor.set('#f0f0f0')
         StatusBar.setBackgroundColor({ color: '#f0f0f0' })
         StatusBar.setStyle({ style: Style.Light })
+        NavigationBar.setTransparency({
+          isTransparent: true
+        })
       }
     },
     showHeader(arg, breadcrumbs) {

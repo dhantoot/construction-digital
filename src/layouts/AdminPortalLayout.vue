@@ -1,111 +1,11 @@
 <template>
   <q-layout
     view="lHh lpR lFf"
-    class="full-height no-scroll"
+    class="no-scroll"
     :style="{
       background: $q.dark.isActive ? 'black' : ''
     }"
   >
-    <q-header
-      v-if="$route.name !== 'Admin Login'"
-      height-hint="98"
-      :style="{
-        'border-bottom': $q.dark.isActive
-          ? '.1px solid #3a3a3a'
-          : '.1px solid rgb(198 198 198 / 50%)',
-        background: $q.dark.isActive ? 'black' : ''
-      }"
-      :class="[
-        $q.dark.isActive ? 'text-accent bg-black' : 'text-primary bg-light'
-      ]"
-    >
-      <q-toolbar class="dhan">
-        <q-toolbar-title>
-          {{ routeName }}
-        </q-toolbar-title>
-
-        <div class="row gap-10">
-          <q-toggle
-            v-model="isDark"
-            dense
-            checked-icon="las la-moon"
-            color="accent"
-            unchecked-icon="las la-sun"
-            label=""
-            @update:model-value="toggleMode"
-          />
-          <q-btn
-            v-if="
-              mainStore?.adminUser && authUser && $route.name !== 'Admin Login'
-            "
-            size="12px"
-            flat
-            round
-            color="accent"
-            icon="las la-bell"
-          />
-          <div
-            v-if="
-              mainStore?.adminUser && authUser && $route.name !== 'Admin Login'
-            "
-            class="clickable"
-          >
-            <HofsteeAvatar
-              :src="
-                obj?.avatar?.length > 0 ? `${obj.avatar}` : `default-user.jpeg`
-              "
-              size="32px"
-            />
-            <q-menu
-              style="border-radius: 10px"
-              :class="[
-                $q.dark.isActive
-                  ? 'bg-contrast text-accent no-shadow'
-                  : 'bg-light text-primary'
-              ]"
-              :offset="[5, 15]"
-            >
-              <template #activator="{ on }">
-                <q-btn flat dense icon="more_vert" v-on="on" />
-              </template>
-              <q-list style="min-width: 200px">
-                <q-item>
-                  <q-item-section>Dark Mode</q-item-section>
-                  <q-item-section side>
-                    <q-toggle
-                      v-model="isDark"
-                      dense
-                      checked-icon="las la-moon"
-                      color="text-accent"
-                      unchecked-icon="las la-sun"
-                      label=""
-                      @update:model-value="toggleMode"
-                    />
-                  </q-item-section>
-                </q-item>
-                <q-item v-ripple clickable>
-                  <q-item-section>My Profile</q-item-section>
-                  <q-item-section side>
-                    <q-icon name="las la-user" class="text-accent" />
-                  </q-item-section>
-                </q-item>
-                <q-item
-                  v-ripple
-                  clickable
-                  @click="openConfirmDialog('Confirm Logout', 'logout')"
-                >
-                  <q-item-section>Logout</q-item-section>
-                  <q-item-section side>
-                    <q-icon name="las la-sign-out-alt" class="text-accent" />
-                  </q-item-section>
-                </q-item>
-              </q-list>
-            </q-menu>
-          </div>
-        </div>
-      </q-toolbar>
-    </q-header>
-
     <q-drawer
       v-if="routeName !== 'Admin Login'"
       v-model="drawer"
@@ -352,14 +252,131 @@
     </q-drawer>
 
     <q-page-container
+      class="page-container"
       :style="{
         'background: black': $q.dark.isActive,
         'background: #f2f4f7': !$q.dark.isActive,
-        'height: 100vh': $q.screen.gt.sm,
-        'padding-bottom: 70px': !$q.screen.gt.sm
+        'height: 100vh': $q.screen.gt.sm
       }"
     >
+      <div class="row full-width mt-45 items-center">
+
+        <div
+          v-if="$route.name !== 'Admin Login'"
+          :style="{
+            background: $q.dark.isActive ? 'black' : ''
+          }"
+          :class="[
+            $q.dark.isActive ? 'text-accent bg-black' : 'text-primary bg-light'
+          ]"
+          class="full-width"
+        >
+          <!-- Replaces q-toolbar: uses 'row' and 'items-center' for alignment -->
+          <div class="row justify-between full-width items-center">
+            <!-- Replaces q-toolbar-title, uses 'col' or margins for spacing -->
+            <div class="column items-center justify-center mx-8">
+              <strong class="caption text-h6">{{ routeName }}</strong>
+            </div>
+
+            <div class="row gap-10">
+              <q-toggle
+                v-model="isDark"
+                dense
+                checked-icon="las la-moon"
+                color="accent"
+                unchecked-icon="las la-sun"
+                label=""
+                @update:model-value="toggleMode"
+              />
+              <q-btn
+                v-if="
+                  mainStore?.adminUser &&
+                  authUser &&
+                  $route.name !== 'Admin Login'
+                "
+                size="12px"
+                flat
+                round
+                color="accent"
+                icon="las la-bell"
+              />
+              <div
+                v-if="
+                  mainStore?.adminUser &&
+                  authUser &&
+                  $route.name !== 'Admin Login'
+                "
+                class="clickable mr-5"
+              >
+                <q-avatar>
+                  <HofsteeAvatar
+                    :src="
+                      obj?.avatar?.length > 0
+                        ? `${obj.avatar}`
+                        : `default-user.jpeg`
+                    "
+                    size="35px"
+                  />
+                </q-avatar>
+                <q-menu
+                  style="border-radius: 10px"
+                  :class="[
+                    $q.dark.isActive
+                      ? 'bg-contrast text-accent no-shadow'
+                      : 'bg-light text-primary'
+                  ]"
+                  :offset="[5, 15]"
+                >
+                  <!-- ... q-list items remain the same ... -->
+                  <template #activator="{ on }">
+                    <q-btn flat dense icon="more_vert" v-on="on" />
+                  </template>
+                  <q-list style="min-width: 200px">
+                    <q-item>
+                      <q-item-section>Dark Mode</q-item-section>
+                      <q-item-section side>
+                        <q-toggle
+                          v-model="isDark"
+                          dense
+                          checked-icon="las la-moon"
+                          color="text-accent"
+                          unchecked-icon="las la-sun"
+                          label=""
+                          @update:model-value="toggleMode"
+                        />
+                      </q-item-section>
+                    </q-item>
+                    <q-item v-ripple clickable>
+                      <q-item-section>My Profile</q-item-section>
+                      <q-item-section side>
+                        <q-icon name="las la-user" class="text-accent" />
+                      </q-item-section>
+                    </q-item>
+                    <q-item
+                      v-ripple
+                      clickable
+                      @click="openConfirmDialog('Confirm Logout', 'logout')"
+                    >
+                      <q-item-section>Logout</q-item-section>
+                      <q-item-section side>
+                        <q-icon
+                          name="las la-sign-out-alt"
+                          class="text-accent"
+                        />
+                      </q-item-section>
+                    </q-item>
+                  </q-list>
+                </q-menu>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
       <router-view @emit-from-child="emitFromChild" />
+
     </q-page-container>
 
     <div
@@ -511,6 +528,7 @@ import { useMainStore } from 'stores/main'
 import { LocalStorage } from 'quasar'
 import { Capacitor } from '@capacitor/core'
 import { StatusBar, Style } from '@capacitor/status-bar'
+import { NavigationBar } from '@hugotomazi/capacitor-navigation-bar'
 import HofsteeAvatar from 'src/components/Common/Badge/HofsteeAvatar.vue'
 
 export default {
@@ -580,10 +598,17 @@ export default {
         // this.$q.addressbarColor.set('#000000')
         StatusBar.setBackgroundColor({ color: '#000000' })
         StatusBar.setStyle({ style: Style.Dark })
+        NavigationBar.setColor({
+          color: '#00000000',
+          darkButtons: false
+        })
       } else {
         // this.$q.addressbarColor.set('#f0f0f0')
         StatusBar.setBackgroundColor({ color: '#f0f0f0' })
         StatusBar.setStyle({ style: Style.Light })
+        NavigationBar.setTransparency({
+          isTransparent: true
+        })
       }
     },
     openConfirmDialog(confirmMsg, confirmCallbackFn) {

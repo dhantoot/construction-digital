@@ -82,7 +82,10 @@
             </q-btn>
           </div>
 
-          <div v-if="false" class="row justify-between full-width items-center q-mb-xl gap-10">
+          <div
+            v-if="false"
+            class="row justify-between full-width items-center q-mb-xl gap-10"
+          >
             <q-input
               v-model="section"
               filled
@@ -236,21 +239,27 @@
             </q-card-section>
 
             <q-card-section>
-              <div>
-                <strong>Section:</strong>
-                {{ props.row.section }}
-              </div>
-              <div>
-                <strong>Contract Price:</strong>
-                {{ props.row.contractPrice }}
-              </div>
-              <div>
-                <strong>Weight:</strong>
-                {{ props.row.weight }}
-              </div>
-              <div>
-                <strong>Duration:</strong>
-                {{ props.row.duration }} days
+              <div class="row full-width justify-between">
+                <div>
+                  <div>
+                    <strong>Section:</strong>
+                    {{ props.row.section }}
+                  </div>
+                  <div>
+                    <strong>Weight:</strong>
+                    {{ props.row.weight }}
+                  </div>
+                </div>
+                <div>
+                  <div>
+                    <strong>Contract Price:</strong>
+                    {{ props.row.contractPrice }}
+                  </div>
+                  <div>
+                    <strong>Duration:</strong>
+                    {{ props.row.duration }} days
+                  </div>
+                </div>
               </div>
             </q-card-section>
           </q-card>

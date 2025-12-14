@@ -142,7 +142,7 @@
     </div>
   </div>
 
-  <div>
+  <div :style="[$q.screen.lt.sm ? 'padding-bottom: 90px;' : '']">
     <div>
       <div
         v-for="item of projectListMapped.filter(e => e.groupedData)"

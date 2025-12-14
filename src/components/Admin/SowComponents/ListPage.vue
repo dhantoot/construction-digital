@@ -1,8 +1,7 @@
 <template>
-  <q-card class="round-panel full-height full-width no-shadow px-10 pt-10"
-     :class="[
-        $q.screen.lt.sm ? 'transparent' : ''
-     ]"
+  <q-card
+    class="round-panel full-height full-width no-shadow px-10 pt-10"
+    :class="[$q.screen.lt.sm ? 'transparent' : '']"
   >
     <div
       class="row full-width"

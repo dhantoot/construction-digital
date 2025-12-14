@@ -32,7 +32,7 @@
           @keydown.enter.prevent="login"
         >
           <template #prepend>
-            <UserIcon size="16" />
+            <ShieldUser size="16" />
           </template>
         </q-input>
 
@@ -57,49 +57,50 @@
             <EyeClosed v-if="isPwd" size="16" @click="isPwd = !isPwd" />
           </template>
         </q-input>
-
       </q-card-section>
 
       <q-card-section>
         <div class="text-subtitle2 row justify-between items-center">
-
           <q-btn
-              dense
-              padding="xs lg"
-              label="Clear"
-              flat
-              no-caps
-              class="pull-right round-btn text-grey text-caption ghost"
+            dense
+            padding="xs lg"
+            label="Clear"
+            flat
+            no-caps
+            class="pull-right round-btn text-grey-9 text-caption ghost"
           />
 
           <q-btn
-              dense
-              padding="xs lg"
-              label="Switch to mobile"
-              color="gray"
-              flat
-              no-caps
-              class="pull-right round-btn text-grey text-caption ghost"
-              @click="$router.push('/login')"
-          />
+            dense
+            padding="xs lg"
+            flat
+            no-caps
+            class="pull-right round-btn text-grey-9 text-caption ghost"
+            @click="$router.push('/login')"
+          >
+            <template #default>
+              <div class="row justify-between items-center gap-10">
+                <Smartphone size="16" />
+                Switch to Mobile
+              </div>
+            </template>
+          </q-btn>
 
           <q-btn
-              dense
-              padding="xs lg"
-              label="Register"
-              flat
-              no-caps
-              class="pull-right round-btn text-grey text-caption ghost"
-              @click="register"
+            dense
+            padding="xs lg"
+            label="Register"
+            flat
+            no-caps
+            class="pull-right round-btn text-grey-9 text-caption ghost"
+            @click="register"
           />
-
         </div>
       </q-card-section>
 
       <q-card-actions align="center">
-
         <q-btn
-          padding="md xl"
+          padding="sm xl"
           color="primary"
           class="text-capitalize bg-info round-btn"
           :loading="loadingSubmit"
@@ -110,16 +111,18 @@
           @click="login"
         >
           <template #default>
-            <CheckIcon class="q-mr-sm" />
-            <span class="text-capitalize">Sign In</span>
+            <div class="full-width row justify-between items-center">
+              <ShieldUser size="22" />
+              <span class="text-capitalize text-h6">Sign In</span>
+              <LogIn size="22" />
+            </div>
           </template>
           <template #loading>
             <q-spinner-ios class="on-left" />
-            <small>Logging in..</small>
+            Logging in..
           </template>
         </q-btn>
       </q-card-actions>
-
     </q-card>
   </div>
 </template>

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="row hide-scrollbar q-pa-md"
+    class="row hide-scrollbar q-pa-sm"
     :style="{ height: $q.screen.lt.sm ? 'auto' : '94.5vh;' }"
   >
     <div class="row q-col-gutter-y-md full-width">
@@ -180,7 +180,9 @@
                     <q-card
                       :class="[$q.dark.isActive ? 'bg-grey-10 text-white' : '']"
                       :flat="$q.dark.isActive"
-                      :style="$q.dark.isActive ? '' : 'background: rgb(252 252 252)'"
+                      :style="
+                        $q.dark.isActive ? '' : 'background: rgb(252 252 252)'
+                      "
                     >
                       <q-card-section>
                         <div class="text-subtitle1">{{ item.title }}</div>
@@ -213,7 +215,7 @@
       >
         <div class="column q-gutter-md full-height justify-start items-start">
           <!-- Top right card -->
-          <div class="row full-width pl-10" v-if="$q.screen.gt.sm">
+          <div v-if="$q.screen.gt.sm" class="row full-width pl-10">
             <HofsteeCard bordered flat class="full-width">
               <template #header>Statistics</template>
               <template #body>
@@ -282,7 +284,12 @@
 
           <!-- Bottom right card -->
           <div class="row full-width" :class="[$q.screen.lt.sm ? '' : 'pl-10']">
-            <q-card flat bordered class="full-width" :class="[$q.screen.lt.sm ? 'mb-70' : 'px-10']">
+            <q-card
+              flat
+              bordered
+              class="full-width"
+              :class="[$q.screen.lt.sm ? 'mb-70' : 'px-10']"
+            >
               <FullCalendar
                 :options="calendarOptions"
                 style="max-height: 70.5vh; width: 100%"
@@ -348,7 +355,6 @@
             </q-card>
           </div>
         </div>
-
       </div>
     </div>
   </div>
@@ -568,7 +574,7 @@ export default {
     this.getProjectsLoader = true
     await this.getProjectByUser()
     await this.getTodoList()
-    nextTick(async() => {
+    nextTick(async () => {
       await this.getProjects()
     })
   },

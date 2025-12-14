@@ -1,17 +1,16 @@
 <template>
   <!-- User Login -->
   <div
-      class="row hide-scrollbar items-center justify-center"
-      :style="`height: 100vh;`"
+    class="row hide-scrollbar items-center justify-center"
+    :style="`height: 100vh;`"
   >
     <q-card
-        flat
-        class="q-ma-sm no-shadow"
-        :class="[
+      flat
+      class="q-ma-sm no-shadow"
+      :class="[
         $q.screen.gt.xs ? 'width-px-500' : 'width-px-400 bg-transparent'
       ]"
     >
-
       <q-card-section class="">
         <div class="text-h6">User Login</div>
         <div class="text-subtitle2 row justify-between">
@@ -20,72 +19,75 @@
       </q-card-section>
 
       <q-card-section class="column gap-10">
-       <q-input
-         ref="emailRef"
-         v-model="email"
-         outline
-         :dense="true"
-         placeholder="Email / Username"
-         :rules="usernameRules"
-         color="positive"
-         input-class="text-primary"
-         filled
-         class="full-width"
-         @keyup.enter.prevent="login"
-       >
-         <template #prepend>
-           <UserIcon size="16" />
-         </template>
-       </q-input>
+        <q-input
+          ref="emailRef"
+          v-model="email"
+          outline
+          :dense="true"
+          placeholder="Email / Username"
+          :rules="usernameRules"
+          color="positive"
+          input-class="text-primary"
+          filled
+          class="full-width"
+          @keyup.enter.prevent="login"
+        >
+          <template #prepend>
+            <User size="16" />
+          </template>
+        </q-input>
 
-       <q-input
-         ref="passwordRef"
-         v-model="password"
-         :type="isPwd ? 'password' : 'text'"
-         :dense="true"
-         outline
-         placeholder="Password"
-         :rules="passwordRules"
-         color="positive"
-         input-class="text-primary"
-         filled
-         class="full-width"
-         @keyup.enter="login"
-       >
-         <template #prepend>
-           <LockIcon size="16" />
-         </template>
-         <template #append>
-           <EyeIcon v-if="!isPwd" size="16" @click="isPwd = !isPwd" />
-           <EyeClosed v-if="isPwd" size="16" @click="isPwd = !isPwd" />
-         </template>
-       </q-input>
-
+        <q-input
+          ref="passwordRef"
+          v-model="password"
+          :type="isPwd ? 'password' : 'text'"
+          :dense="true"
+          outline
+          placeholder="Password"
+          :rules="passwordRules"
+          color="positive"
+          input-class="text-primary"
+          filled
+          class="full-width"
+          @keyup.enter="login"
+        >
+          <template #prepend>
+            <LockIcon size="16" />
+          </template>
+          <template #append>
+            <EyeIcon v-if="!isPwd" size="16" @click="isPwd = !isPwd" />
+            <EyeClosed v-if="isPwd" size="16" @click="isPwd = !isPwd" />
+          </template>
+        </q-input>
       </q-card-section>
 
       <q-card-section>
         <div class="text-subtitle2 row justify-between items-center">
-
           <q-btn
             dense
             padding="xs lg"
             label="Clear"
             flat
             no-caps
-            class="pull-right round-btn text-grey text-caption ghost"
+            class="pull-right round-btn text-grey-9 text-caption ghost"
             @click="reset"
           />
 
           <q-btn
-              dense
-              padding="xs lg"
-              label="Switch to admin"
-              color="gray"
-              flat
-              no-caps
-              class="pull-right round-btn text-grey text-caption ghost"
-              @click="goToAdminView"
-          />
+            dense
+            padding="xs lg"
+            flat
+            no-caps
+            class="pull-right round-btn text-grey-9 text-caption ghost"
+            @click="goToAdminView"
+          >
+            <template #default>
+              <div class="row justify-between items-center gap-10">
+                <LaptopMinimal size="16" />
+                Switch to Desktop
+              </div>
+            </template>
+          </q-btn>
 
           <q-btn
             dense
@@ -93,37 +95,39 @@
             label="Register"
             flat
             no-caps
-            class="pull-right round-btn text-grey text-caption ghost"
+            class="pull-right round-btn text-grey-9 text-caption ghost"
             @click="register"
           />
-
         </div>
       </q-card-section>
 
       <q-card-actions align="center">
-
         <q-btn
-            padding="md xl"
-            color="primary"
-            class="text-capitalize bg-info round-btn"
-            :loading="loading"
-            :disable="$isFalsyString(email) || $isFalsyString(password) || loading"
-            :style="{
-              width: '96%'
-            }"
-            @click="login"
+          padding="sm xl"
+          color="primary"
+          class="text-capitalize bg-info round-btn"
+          :loading="loading"
+          :disable="
+            $isFalsyString(email) || $isFalsyString(password) || loading
+          "
+          :style="{
+            width: '96%'
+          }"
+          @click="login"
         >
           <template #default>
-            <CheckIcon class="q-mr-sm" />
-            <span class="text-capitalize">Sign In</span>
+            <div class="full-width row justify-between items-center">
+              <User size="22" />
+              <span class="text-capitalize text-h6">Sign In</span>
+              <LogIn size="22" />
+            </div>
           </template>
           <template #loading>
             <q-spinner-ios class="on-left" />
-            <small>Logging in..</small>
+            Logging in..
           </template>
         </q-btn>
       </q-card-actions>
-
     </q-card>
   </div>
 </template>

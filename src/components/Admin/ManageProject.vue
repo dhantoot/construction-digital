@@ -4,7 +4,7 @@
     :style="{ height: $q.screen.lt.sm ? 'auto' : '' }"
   >
     <div
-      class="row full-width full-height q-pa-sm"
+      class="row full-width full-height"
       :style="[$q.screen.lt.sm ? 'padding-bottom: 90px;' : '']"
     >
       <div
@@ -300,7 +300,6 @@
           </div>
 
           <div class="row full-width scroll">
-
             <q-table
               v-model:selected="selected"
               flat
@@ -408,22 +407,35 @@
                   <q-separator />
 
                   <q-card-section>
-                    <div class="text-subtitle2">
-                      <b>Budget:</b>
-                      {{ props.row.budget }}
+                    <div class="full-width row justify-between">
+                      <div>
+
+                        <div class="text-subtitle2">
+                          <b>Budget:</b>
+                          {{ props.row.budget }}
+                        </div>
+
+                        <div>
+                          <b>Created:</b>
+                          <span v-formatdate v-html="props.row.dateCreated"></span>
+                        </div>
+
+                      </div>
+
+                      <div>
+                        <div>
+                          <b>From:</b>
+                          <span v-formatdate v-html="props.row.dateFrom"></span>
+                        </div>
+                        <div>
+                          <b>To:</b>
+                          <span v-formatdate v-html="props.row.dateTo"></span>
+                        </div>
+
+                      </div>
                     </div>
-                    <div>
-                      <b>From:</b>
-                      <span v-formatdate v-html="props.row.dateFrom"></span>
-                    </div>
-                    <div>
-                      <b>To:</b>
-                      <span v-formatdate v-html="props.row.dateTo"></span>
-                    </div>
-                    <div>
-                      <b>Created:</b>
-                      <span v-formatdate v-html="props.row.dateCreated"></span>
-                    </div>
+
+
                   </q-card-section>
 
                   <q-card-actions align="right">
@@ -441,15 +453,12 @@
                   </q-card-actions>
                 </q-card>
               </template>
-
             </q-table>
-
           </div>
 
           <q-inner-loading :showing="rowLoading">
             <q-spinner-ios size="50px" color="secondary" />
           </q-inner-loading>
-
         </q-card>
       </div>
     </div>

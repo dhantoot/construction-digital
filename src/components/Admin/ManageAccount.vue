@@ -4,10 +4,13 @@
     :style="{ height: $q.screen.lt.sm ? 'auto' : '' }"
   >
     <div
-      class="full-height row full-width full-height q-pa-sm"
+      class="full-height row full-width full-height"
       :style="[$q.screen.lt.sm ? 'padding-bottom: 90px;' : '']"
     >
-      <q-card class="full-height no-shadow round-panel full-width px-10 pt-10" :class="[$q.screen.lt.sm ? 'bg-transparent' : '']">
+      <q-card
+        class="full-height no-shadow round-panel full-width px-10 pt-10"
+        :class="[$q.screen.lt.sm ? 'bg-transparent' : '']"
+      >
         <div
           class="row full-width"
           :class="[
@@ -155,32 +158,36 @@
               <q-separator />
 
               <q-card-section class="q-pt-sm">
-                <div>
-                  <strong>UID:</strong>
-                  {{ props.row.uid }}
-                </div>
-                <div>
-                  <strong>Role:</strong>
-                  {{ props.row.role }}
-                </div>
-                <div>
-                  <strong>Position:</strong>
-                  {{ props.row.position }}
-                </div>
-                <div>
-                  <strong>Phone:</strong>
-                  {{ props.row.phone_number }}
-                </div>
+<!--                <div>-->
+<!--                  <strong>UID:</strong>-->
+<!--                  {{ props.row.uid }}-->
+<!--                </div>-->
+                <div class="row full-width justify-between items-start">
+                  <div>
+                    <div>
+                      <strong>Role:</strong>
+                      {{ props.row.role }}
+                    </div>
+                    <div>
+                      <strong>Position:</strong>
+                      {{ props.row.position }}
+                    </div>
+                    <div>
+                      <strong>Phone:</strong>
+                      {{ props.row.phone_number }}
+                    </div>
+                  </div>
 
-                <div class="q-mt-sm">
-                  <q-chip
-                    size="sm"
-                    :icon="getStatusIcon(props.row.isActive)"
-                    :color="getStatusColor(props.row.isActive)"
-                    text-color="white"
-                  >
-                    {{ props.row.isActive ? 'Active' : 'Inactive' }}
-                  </q-chip>
+                  <div>
+                    <q-chip
+                        size="sm"
+                        :icon="getStatusIcon(props.row.isActive)"
+                        :color="getStatusColor(props.row.isActive)"
+                        text-color="white"
+                    >
+                      {{ props.row.isActive ? 'Active' : 'Inactive' }}
+                    </q-chip>
+                  </div>
                 </div>
               </q-card-section>
             </q-card>

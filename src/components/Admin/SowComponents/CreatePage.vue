@@ -1,7 +1,9 @@
 <template>
   <div class="row full-width full-height" :class="[$q.screen.lt.sm ? '' : '']">
-    <q-card class="row no-shadow round-panel full-width" :class="[$q.screen.lt.sm ? 'bg-transparent px-10' : 'p-10']">
-
+    <q-card
+      class="row no-shadow round-panel full-width"
+      :class="[$q.screen.lt.sm ? 'bg-transparent px-10' : 'p-10']"
+    >
       <div class="row">
         <div class="row full-width justify-between">
           <span class="text-h6">Create a New Template</span>
@@ -62,48 +64,47 @@
       </div>
 
       <div class="row py-20 full-width justify-start gap-20">
-          <q-btn
-            rounded
-            size="sm"
-            icon="las la-arrow-left"
-            padding="sm xl"
-            color="warning"
-            label="Back"
-            class="text-capitalize bg-primary"
-            @click="$router.push('/manage-sow')"
-          >
-          </q-btn>
-          <q-btn
-            rounded
-            size="sm"
-            icon="las la-plus"
-            padding="sm xl"
-            color="info"
-            label="Add"
-            class="text-capitalize bg-primary"
-            :loading="loadingSubmit"
-            :disable="
-              loadingSubmit ||
-              !title ||
-              !section ||
-              !sowCategory ||
-              !sowDescription ||
-              !contractPrice ||
-              !weight ||
-              !duration
-            "
-            @click="addToList"
-          >
-            <template #loading>
-              <q-spinner-ios />
-            </template>
-          </q-btn>
-        </div>
+        <q-btn
+          rounded
+          size="sm"
+          icon="las la-arrow-left"
+          padding="sm xl"
+          color="warning"
+          label="Back"
+          class="text-capitalize bg-primary"
+          @click="$router.push('/manage-sow')"
+        >
+        </q-btn>
+        <q-btn
+          rounded
+          size="sm"
+          icon="las la-plus"
+          padding="sm xl"
+          color="info"
+          label="Add"
+          class="text-capitalize bg-primary"
+          :loading="loadingSubmit"
+          :disable="
+            loadingSubmit ||
+            !title ||
+            !section ||
+            !sowCategory ||
+            !sowDescription ||
+            !contractPrice ||
+            !weight ||
+            !duration
+          "
+          @click="addToList"
+        >
+          <template #loading>
+            <q-spinner-ios />
+          </template>
+        </q-btn>
+      </div>
 
       <q-inner-loading :showing="visible">
         <q-spinner-ios size="50px" color="secondary" />
       </q-inner-loading>
-
     </q-card>
   </div>
 
