@@ -6,6 +6,7 @@
     <div
       class="row full-width full-height"
       :style="[$q.screen.lt.sm ? 'padding-bottom: 90px;' : '']"
+      :class="$isCapacitorMode || $q.screen.lt.sm ? '' : 'p-10'"
     >
       <div
         v-if="$q.screen.gt.sm"
@@ -272,6 +273,7 @@
                 icon="check"
                 color="positive"
                 text-color="white"
+                outline
               >
                 {{ rows.filter(f => f.isActivated == true).length }} Activated
               </q-chip>
@@ -280,6 +282,7 @@
                 icon="close"
                 color="negative"
                 text-color="white"
+                outline
               >
                 {{ rows.filter(f => f.isActivated == false).length }} Not
                 Activated
@@ -409,7 +412,6 @@
                   <q-card-section>
                     <div class="full-width row justify-between">
                       <div>
-
                         <div class="text-subtitle2">
                           <b>Budget:</b>
                           {{ props.row.budget }}
@@ -417,9 +419,11 @@
 
                         <div>
                           <b>Created:</b>
-                          <span v-formatdate v-html="props.row.dateCreated"></span>
+                          <span
+                            v-formatdate
+                            v-html="props.row.dateCreated"
+                          ></span>
                         </div>
-
                       </div>
 
                       <div>
@@ -431,11 +435,8 @@
                           <b>To:</b>
                           <span v-formatdate v-html="props.row.dateTo"></span>
                         </div>
-
                       </div>
                     </div>
-
-
                   </q-card-section>
 
                   <q-card-actions align="right">

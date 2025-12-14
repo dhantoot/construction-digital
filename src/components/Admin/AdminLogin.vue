@@ -100,7 +100,7 @@
 
       <q-card-actions align="center">
         <q-btn
-          padding="sm xl"
+          padding="sm sm"
           color="primary"
           class="text-capitalize bg-info round-btn"
           :loading="loadingSubmit"
@@ -112,9 +112,9 @@
         >
           <template #default>
             <div class="full-width row justify-between items-center">
-              <ShieldUser size="22" />
+              <ShieldUser size="20" />
               <span class="text-capitalize text-h6">Sign In</span>
-              <LogIn size="22" />
+              <LogIn size="20" />
             </div>
           </template>
           <template #loading>

@@ -14,7 +14,7 @@
         'height: 100vh': $q.screen.gt.sm
       }"
     >
-      <div class="row full-width mt-45 items-center">
+      <div class="row full-width items-center" :class="$isCapacitorMode ? 'mt-45' : ''">
         <div
           v-if="$route.name !== 'mobile.userlogin'"
           :style="{
@@ -93,12 +93,10 @@
               </div>
             </div>
           </div>
-
         </div>
       </div>
 
       <router-view @emit-from-child="emitFromChild" />
-
     </q-page-container>
 
     <div

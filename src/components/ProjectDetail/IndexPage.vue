@@ -1,5 +1,8 @@
 <template>
-  <div class="full-height" :style="[$q.screen.lt.sm ? 'padding-bottom: 90px;' : '']">
+  <div
+    class="full-height"
+    :style="[$q.screen.lt.sm ? 'padding-bottom: 90px;' : '']"
+  >
     <router-view />
   </div>
   <!-- <q-footer bordered class="text-accent">

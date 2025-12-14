@@ -6,6 +6,7 @@
     <div
       class="full-height row full-width full-height"
       :style="[$q.screen.lt.sm ? 'padding-bottom: 90px;' : '']"
+      :class="$isCapacitorMode || $q.screen.lt.sm ? '' : 'p-10'"
     >
       <q-card
         class="full-height no-shadow round-panel full-width px-10 pt-10"
@@ -158,10 +159,6 @@
               <q-separator />
 
               <q-card-section class="q-pt-sm">
-<!--                <div>-->
-<!--                  <strong>UID:</strong>-->
-<!--                  {{ props.row.uid }}-->
-<!--                </div>-->
                 <div class="row full-width justify-between items-start">
                   <div>
                     <div>
@@ -180,10 +177,11 @@
 
                   <div>
                     <q-chip
-                        size="sm"
-                        :icon="getStatusIcon(props.row.isActive)"
-                        :color="getStatusColor(props.row.isActive)"
-                        text-color="white"
+                      size="sm"
+                      :icon="getStatusIcon(props.row.isActive)"
+                      :color="getStatusColor(props.row.isActive)"
+                      text-color="white"
+                      outline
                     >
                       {{ props.row.isActive ? 'Active' : 'Inactive' }}
                     </q-chip>

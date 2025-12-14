@@ -12,7 +12,7 @@
       <div class="row gap-10">
         <q-btn
           rounded
-          color="positive"
+          :color="!selected.length ? 'grey' : 'positive'"
           size="sm"
           :disable="!selected.length"
           label="View"
@@ -23,7 +23,7 @@
 
         <q-btn
           rounded
-          color="negative"
+          :color="!selected.length ? 'grey' : 'negative'"
           size="sm"
           :disable="!selected.length"
           label="Delete"

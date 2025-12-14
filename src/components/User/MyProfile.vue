@@ -2,10 +2,10 @@
   <div>
     <div class="row full-width q-px-lg q-py-lg absolute">
       <div
-        class="row full-width text-h5 q-pb-md"
+        class="row full-width text-h6 q-pb-md justify-center"
         :class="[$q.dark.isActive ? 'accent' : 'primary']"
       >
-        Account
+        Hello {{ obj.firstName }}
       </div>
       <div class="row full-width q-py-sm justify-center">
         <q-avatar size="80px">
@@ -32,14 +32,8 @@
           filled
         >
           <template #prepend>
-            <!-- <q-icon name="las la-user" :class="[$q.dark.isActive ? 'accent' : 'primary']"/> -->
-            <UserIcon />
+            <UserIcon size="16" />
           </template>
-
-          <!-- <template v-slot:label>
-            <span class="text-weight-bold text-deep-orange">You</span>
-            can customize the <span class="q-px-sm bg-deep-orange text-white text-italic rounded-borders">label</span>
-          </template> -->
         </q-input>
       </div>
       <div class="row full-width q-py-sm justify-start">
@@ -58,14 +52,8 @@
           filled
         >
           <template #prepend>
-            <!-- <q-icon name="las la-user" :class="[$q.dark.isActive ? 'accent' : 'primary']"/> -->
-            <UserIcon />
+            <UserIcon size="16" />
           </template>
-
-          <!-- <template v-slot:label>
-            <span class="text-weight-bold text-deep-orange">You</span>
-            can customize the <span class="q-px-sm bg-deep-orange text-white text-italic rounded-borders">label</span>
-          </template> -->
         </q-input>
       </div>
       <div class="row full-width q-py-sm justify-start">
@@ -84,16 +72,8 @@
           filled
         >
           <template #prepend>
-            <q-icon
-              name="las la-phone"
-              :class="[$q.dark.isActive ? 'accent' : 'primary']"
-            />
+            <PhoneIcon size="16" />
           </template>
-
-          <!-- <template v-slot:label>
-            <span class="text-weight-bold text-deep-orange">You</span>
-            can customize the <span class="q-px-sm bg-deep-orange text-white text-italic rounded-borders">label</span>
-          </template> -->
         </q-input>
       </div>
       <div class="row full-width q-py-sm justify-start">
@@ -112,16 +92,8 @@
           filled
         >
           <template #prepend>
-            <q-icon
-              name="las la-envelope"
-              :class="[$q.dark.isActive ? 'accent' : 'primary']"
-            />
+            <At-sign size="16" />
           </template>
-
-          <!-- <template v-slot:label>
-            <span class="text-weight-bold text-deep-orange">You</span>
-            can customize the <span class="q-px-sm bg-deep-orange text-white text-italic rounded-borders">label</span>
-          </template> -->
         </q-input>
       </div>
 

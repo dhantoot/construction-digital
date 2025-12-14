@@ -6,6 +6,7 @@
     <div
       class="column full-width full-height gap-10"
       :style="[$q.screen.lt.sm ? 'padding-bottom: 90px;' : '']"
+      :class="$isCapacitorMode || $q.screen.lt.sm ? '' : 'p-10'"
     >
       <q-card
         class="full-height round-panel full-width no-shadow px-10"
@@ -263,13 +264,16 @@
               <q-card class="q-ma-sm full-width no-shadow" :style="style">
                 <q-card-section>
                   <div class="text-h6">{{ props.row.projectName }}</div>
-                  <div class="text-caption text-bold row justify-between items-center">
+                  <div
+                    class="text-caption text-bold row justify-between items-center"
+                  >
                     {{ props.row.invitee }}
                     <q-chip
                       size="sm"
                       :icon="getStatusIcon(props.row.status)"
                       :color="getStatusColor(props.row.status)"
                       text-color="white"
+                      outline
                     >
                       {{ props.row.status }}
                     </q-chip>
@@ -278,19 +282,17 @@
 
                 <q-separator />
 
-                <q-card-section class="q-pt-sm">
+                <q-card-section class="q-pt-sm row justify-between">
                   <div>
-                    <strong>Sent:</strong>
-                    {{ props.row.dateSent }}
+                    <div>
+                      <strong>Sent:</strong>
+                      {{ props.row.dateSent }}
+                    </div>
+                    <div>
+                      <strong>Responded:</strong>
+                      {{ props.row.dateResponded }}
+                    </div>
                   </div>
-                  <div>
-                    <strong>Responded:</strong>
-                    {{ props.row.dateResponded }}
-                  </div>
-<!--                  <div>-->
-<!--                    <strong>Invitee:</strong>-->
-<!--                    {{ props.row.invitee }}-->
-<!--                  </div>-->
                   <div>
                     <strong>User Title:</strong>
                     {{ props.row.userTitle }}
