@@ -158,6 +158,7 @@
             <q-card-section>{{ item.title }}</q-card-section>
             <q-card-section class="p-0">
               <apexchart
+                :key="`${item.title}-${getProjectsLoader}`"
                 type="line"
                 height="350"
                 :options="item.projectTaskCompleted"
@@ -777,7 +778,7 @@ export default {
     // this.$emit('showHeader', true, [])
     this.getProjectsLoader = true
     await this.getProjectByUser()
-    await this.getTodoList()
+    // await this.getTodoList()
     await this.getProjects()
   },
   beforeUpdate() {
@@ -872,7 +873,7 @@ export default {
           if (!project) {
             return false
           }
-          this.getTodoList(project)
+          await this.getTodoList(project)
         })
         this.getProjectsLoader = false
       })

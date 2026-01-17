@@ -64,11 +64,17 @@
           <q-btn
             dense
             padding="xs lg"
-            label="Clear"
+            :label="$q.screen.lt.sm ? '' : 'Clear'"
             flat
             no-caps
             class="pull-right round-btn text-grey-9 text-caption ghost"
-          />
+          >
+            <template #default v-if="$q.screen.lt.sm">
+              <div class="row justify-between items-center gap-10">
+                <X size="16" />
+              </div>
+            </template>
+          </q-btn>
 
           <q-btn
             dense
@@ -89,12 +95,18 @@
           <q-btn
             dense
             padding="xs lg"
-            label="Register"
+            :label="$q.screen.lt.sm ? '' : 'Register'"
             flat
             no-caps
             class="pull-right round-btn text-grey-9 text-caption ghost"
             @click="register"
-          />
+          >
+            <template #default v-if="$q.screen.lt.sm">
+              <div class="row justify-between items-center gap-10">
+                <PencilLine size="16" />
+              </div>
+            </template>
+          </q-btn>
         </div>
       </q-card-section>
 
@@ -111,7 +123,7 @@
           @click="login"
         >
           <template #default>
-            <div class="full-width row justify-between items-center">
+            <div class="px-5 full-width row justify-between items-center">
               <ShieldUser size="20" />
               <span class="text-capitalize text-h6">Sign In</span>
               <LogIn size="20" />

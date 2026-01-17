@@ -31,7 +31,7 @@
                       />
                     </template>
                     <template #header>Hello There</template>
-                    <template #body>Lorem ipsum dolor set ewmit</template>
+                    <template #body>Lorem ipsum dolor set emit</template>
                   </HofsteeAlert>
 
                   <HofsteeAlert
@@ -51,7 +51,7 @@
                       />
                     </template>
                     <template #header>Hello There</template>
-                    <template #body>Lorem ipsum dolor set ewmit</template>
+                    <template #body>Lorem ipsum dolor set emit</template>
                   </HofsteeAlert>
 
                   <HofsteeAlert
@@ -67,7 +67,7 @@
                       <q-icon name="las la-stop-circle" color="red" size="lg" />
                     </template>
                     <template #header>Hello There</template>
-                    <template #body>Lorem ipsum dolor set ewmit</template>
+                    <template #body>Lorem ipsum dolor set emit</template>
                   </HofsteeAlert>
                 </div>
               </template>
@@ -147,7 +147,7 @@
 
           <div class="col-12 col-lg-4">
             <HofsteeCard class="full-height" bordered flat>
-              <template #header>Todays Meeting {{ selectedDate }}</template>
+              <template #header>Today's Meeting {{ selectedDate }}</template>
               <template #body-loader>
                 <q-inner-loading :showing="loading3">
                   <q-spinner-ios
@@ -175,7 +175,8 @@
                   <div
                     v-for="item of projectListMapped.filter(e => e.groupedData)"
                     :key="item"
-                    class="col col-sm-12 col-xs-12"
+                    class="col col-12 col-sm-12 col-xs-12"
+                    style="width: 100%"
                   >
                     <q-card
                       :class="[$q.dark.isActive ? 'bg-grey-10 text-white' : '']"
@@ -188,12 +189,17 @@
                         <div class="text-subtitle1">{{ item.title }}</div>
                       </q-card-section>
                       <q-card-section class="q-pa-none">
-                        <apexchart
-                          type="line"
-                          height="100%"
-                          :options="item.projectTaskCompleted"
-                          :series="item.projectTaskCompletedValue"
-                        />
+                        <div style="display: block; width: 100%">
+                          <apexchart
+                            v-if="isLoaded"
+                            :key="`${item.title}-${getProjectsLoader}`"
+                            type="line"
+                            height="350"
+                            width="100%"
+                            :options="item.projectTaskCompleted"
+                            :series="item.projectTaskCompletedValue"
+                          />
+                        </div>
                       </q-card-section>
                     </q-card>
                   </div>
@@ -246,7 +252,7 @@
                       />
                     </template>
                     <template #header>12 Active</template>
-                    <template #body>Lorem ipsum dolor set ewmit</template>
+                    <template #body>Lorem ipsum dolor set emit</template>
                   </HofsteeAlert>
 
                   <HofsteeAlert
@@ -266,7 +272,7 @@
                       />
                     </template>
                     <template #header>12 Pending</template>
-                    <template #body>Lorem ipsum dolor set ewmit</template>
+                    <template #body>Lorem ipsum dolor set emit</template>
                   </HofsteeAlert>
                 </div>
               </template>
@@ -361,7 +367,7 @@
 </template>
 
 <script>
-import { nextTick, ref } from 'vue'
+import { ref, nextTick } from 'vue'
 import { LocalStorage, date as dateFormatter } from 'quasar'
 import { useMainStore } from 'stores/main'
 import { signInWithEmailAndPassword, getAuth } from 'firebase/auth'
@@ -408,6 +414,7 @@ export default {
 
     // height: 50px; width: 40px;border-bottom-left-radius: 6px;border-bottom-right-radius: 6px;
     return {
+      isLoaded: ref(false),
       getProjectsLoader: ref(false),
       todoList: ref([]),
       projectIds: ref([]),
@@ -458,6 +465,8 @@ export default {
       },
       projectTaskCompleted: {
         chart: {
+          redrawOnParentResize: true,
+          redrawOnWindowResize: true,
           height: 350,
           type: 'line',
           toolbar: {
@@ -549,6 +558,9 @@ export default {
   computed: {
     test: function () {
       return "I'm computed hook"
+    },
+    apexChart1Width: function () {
+      return '100%'
     }
   },
   watch: {
@@ -572,10 +584,13 @@ export default {
     this.showTextLoading('loading4')
     this.$emit('emitFromChild')
     this.getProjectsLoader = true
-    await this.getProjectByUser()
-    await this.getTodoList()
-    nextTick(async () => {
-      await this.getProjects()
+    await this.getProjects()
+    this.apexChart1Width = '100%'
+    nextTick(() => {
+      // A small delay ensures Quasar's layout engine has finished
+      setTimeout(() => {
+        this.isLoaded = true
+      }, 50)
     })
   },
   beforeUpdate() {
@@ -648,28 +663,8 @@ export default {
           })
         })
     },
-    handleEventMount(info) {
-      info.el.style.backgroundColor = 'transparent'
-      info.el.style.border = 'none'
-      info.el.style.color = 'black'
-    },
     getEventClass() {
       return ['my-custom-event']
-    },
-    async getProjectByUser() {
-      const userDetails = LocalStorage.getItem('authUser')
-      const { email } = userDetails
-      const invites = this.$fbref(this.$fbdb, 'invites')
-      this.$fbonValue(invites, snapshot => {
-        const data = snapshot.val()
-        if (this.$isFalsyString(data)) {
-          return
-        }
-        const data_ = Object.values(data)
-        this.projectIds = data_
-          .filter(e => e.invitee === email)
-          .map(e => e.projectId)
-      })
     },
     async getTodoList(project) {
       if (!project) {
@@ -788,6 +783,7 @@ export default {
 
         if (role === 'constructor') {
           data_ = data_.filter(project => this.projectIds.includes(project.id))
+          console.log('filtered data_', data_)
         }
 
         this.projectListMapped = data_
@@ -797,6 +793,8 @@ export default {
             isActivated: e.isActivated
           }))
           .filter(e => e.isActivated)
+
+        console.log('this.projectListMapped', this.projectListMapped)
 
         this.projectListMapped.forEach(async project => {
           if (!project) {
@@ -857,5 +855,9 @@ export default {
   height: 25px;
   padding: 2px;
   font-size: 12px;
+}
+.apexcharts-canvas,
+.apexcharts-canvas svg {
+  width: 100% !important;
 }
 </style>
