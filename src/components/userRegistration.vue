@@ -1,29 +1,211 @@
 <template>
-  <div class="row full-width justify-center absolute">
-    <div class="col text-center" style="max-width: 600px">
-      <q-inner-loading :showing="visible">
-        <q-spinner-ios size="50px" color="secondary" />
-      </q-inner-loading>
-      <div class="col-4 q-mt-xs q-mb-md q-pt-md">
-        <q-icon
-          name="las la-user-circle"
-          size="100px"
-          class="q-pa-xs"
-          color="primary"
-        />
-        <p class="text-h2 q-mb-xl text-primary">Register</p>
-      </div>
-      <div class="col-2 q-mt-md q-mb-sm">
-        <q-separator class="q-ml-xl q-mr-xl" color="primary" inset />
-      </div>
-      <div class="col-6">
+  <!--  <div class="row full-width justify-center absolute">-->
+  <!--    <div class="col text-center" style="max-width: 600px">-->
+  <!--      <q-inner-loading :showing="visible">-->
+  <!--        <q-spinner-ios size="50px" color="secondary" />-->
+  <!--      </q-inner-loading>-->
+
+  <!--      <div class="col-4 q-mt-xs q-mb-md q-pt-md">-->
+  <!--        <q-icon-->
+  <!--          name="las la-user-circle"-->
+  <!--          size="100px"-->
+  <!--          class="q-pa-xs"-->
+  <!--          color="primary"-->
+  <!--        />-->
+  <!--        <p class="text-h2 q-mb-xl text-primary">Register</p>-->
+  <!--      </div>-->
+
+  <!--      <div class="col-2 q-mt-md q-mb-sm">-->
+  <!--        <q-separator class="q-ml-xl q-mr-xl" color="primary" inset />-->
+  <!--      </div>-->
+
+  <!--      <div class="col-6">-->
+  <!--        <p-->
+  <!--          class="q-mt-xs"-->
+  <!--          :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"-->
+  <!--        >-->
+  <!--          Choose role to register-->
+  <!--        </p>-->
+  <!--        <div class="row justify-center">-->
+  <!--          <div class="column justify-center items-start q-px-md">-->
+  <!--            <q-radio-->
+  <!--              v-model="role"-->
+  <!--              checked-icon="task_alt"-->
+  <!--              unchecked-icon="panorama_fish_eye"-->
+  <!--              val="constructor"-->
+  <!--              label="Constructor"-->
+  <!--              :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"-->
+  <!--              color="primary"-->
+  <!--              keep-color-->
+  <!--            />-->
+  <!--            <q-radio-->
+  <!--              v-model="role"-->
+  <!--              checked-icon="task_alt"-->
+  <!--              unchecked-icon="panorama_fish_eye"-->
+  <!--              val="client"-->
+  <!--              label="Home Owner"-->
+  <!--              :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"-->
+  <!--              color="primary"-->
+  <!--              keep-color-->
+  <!--            />-->
+  <!--          </div>-->
+  <!--          <div class="column justify-center items-start q-px-md">-->
+  <!--            <q-radio-->
+  <!--              v-model="role"-->
+  <!--              checked-icon="task_alt"-->
+  <!--              unchecked-icon="panorama_fish_eye"-->
+  <!--              val="agent"-->
+  <!--              label="Agent"-->
+  <!--              :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"-->
+  <!--              color="primary"-->
+  <!--              keep-color-->
+  <!--            />-->
+  <!--            <q-radio-->
+  <!--              v-model="role"-->
+  <!--              :disable="true"-->
+  <!--              checked-icon="task_alt"-->
+  <!--              unchecked-icon="panorama_fish_eye"-->
+  <!--              val="admin"-->
+  <!--              label="Admin"-->
+  <!--              :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"-->
+  <!--              color="primary"-->
+  <!--              keep-color-->
+  <!--            />-->
+  <!--          </div>-->
+  <!--        </div>-->
+  <!--      </div>-->
+
+  <!--      <div class="col-2 q-pa-xl q-gutter-y-sm">-->
+  <!--        <q-input-->
+  <!--          ref="regemailRef"-->
+  <!--          v-model="regemail"-->
+  <!--          :dense="true"-->
+  <!--          filled-->
+  <!--          class="col-12"-->
+  <!--          outline-->
+  <!--          placeholder="Email"-->
+  <!--          :rules="regemailRules"-->
+  <!--          :input-class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"-->
+  <!--        >-->
+  <!--          <template #prepend>-->
+  <!--            <MailIcon size="16" />-->
+  <!--          </template>-->
+  <!--        </q-input>-->
+  <!--        <q-input-->
+  <!--          ref="regpasswordRef"-->
+  <!--          v-model="regpassword"-->
+  <!--          :autocomplete="false"-->
+  <!--          :type="isPwd1 ? 'password' : 'text'"-->
+  <!--          :dense="true"-->
+  <!--          filled-->
+  <!--          outline-->
+  <!--          placeholder="Password"-->
+  <!--          :rules="regpasswordRules"-->
+  <!--          :input-class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"-->
+  <!--        >-->
+  <!--          <template #prepend>-->
+  <!--            <LockIcon size="16" />-->
+  <!--          </template>-->
+  <!--          <template #append>-->
+  <!--            <EyeIcon v-if="!isPwd1" size="16" @click="isPwd1 = !isPwd1" />-->
+  <!--            <EyeClosed v-if="isPwd1" size="16" @click="isPwd1 = !isPwd1" />-->
+  <!--          </template>-->
+  <!--        </q-input>-->
+  <!--        <q-input-->
+  <!--          ref="regverifiedpassRef"-->
+  <!--          v-model="regverifiedpass"-->
+  <!--          autocomplete="off"-->
+  <!--          :type="isPwd2 ? 'password' : 'text'"-->
+  <!--          :dense="true"-->
+  <!--          filled-->
+  <!--          outline-->
+  <!--          placeholder="Confirm Password"-->
+  <!--          :rules="regverifiedpassRules"-->
+  <!--          :input-class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"-->
+  <!--          @keyup.enter="register"-->
+  <!--        >-->
+  <!--          <template #prepend>-->
+  <!--            <LockKeyholeIcon size="16" />-->
+  <!--          </template>-->
+  <!--          <template #append>-->
+  <!--            <EyeIcon v-if="!isPwd2" size="16" @click="isPwd2 = !isPwd2" />-->
+  <!--            <EyeClosed v-if="isPwd2" size="16" @click="isPwd2 = !isPwd2" />-->
+  <!--          </template>-->
+  <!--        </q-input>-->
+  <!--        <q-btn-->
+  <!--          label="Clear"-->
+  <!--          type="reset"-->
+  <!--          :color="[$q.dark.isActive ? 'accent' : 'grey']"-->
+  <!--          flat-->
+  <!--          class="text-capitalize pull-right text-weight-light round-btn"-->
+  <!--          style="float: left"-->
+  <!--          @click="reset"-->
+  <!--        />-->
+  <!--        <q-btn-->
+  <!--          label="Back to login"-->
+  <!--          :color="[$q.dark.isActive ? 'accent' : 'grey']"-->
+  <!--          flat-->
+  <!--          no-caps-->
+  <!--          class="pull-right text-weight-light round-btn"-->
+  <!--          style="float: right"-->
+  <!--          @click="$router.push('/login')"-->
+  <!--        />-->
+  <!--      </div>-->
+
+  <!--      <div class="col-2 q-py-xs q-px-xl q-mt-xs">-->
+  <!--        <q-btn-->
+  <!--          size="lg"-->
+  <!--          :color="[$q.dark.isActive ? 'accent' : 'primary']"-->
+  <!--          label="Register"-->
+  <!--          class="text-capitalize full-width round-btn"-->
+  <!--          :loading="registerLoader"-->
+  <!--          :disable="registerLoader"-->
+  <!--          @click="register"-->
+  <!--        >-->
+  <!--          <template #loading>-->
+  <!--            <q-spinner-ios class="on-left" />-->
+  <!--            <small>Creating account..</small>-->
+  <!--          </template>-->
+  <!--        </q-btn>-->
+  <!--      </div>-->
+  <!--    </div>-->
+  <!--  </div>-->
+
+  <div
+    class="row hide-scrollbar items-center justify-center"
+    :style="`height: 100vh;`"
+  >
+    <q-card
+      flat
+      class="q-ma-sm no-shadow"
+      :class="[
+        $q.screen.gt.xs ? 'width-px-500' : 'width-px-400 bg-transparent'
+      ]"
+    >
+      <q-card-section class="absolute">
+        <q-inner-loading :showing="visible">
+          <q-spinner-ios size="50px" color="secondary" />
+        </q-inner-loading>
+      </q-card-section>
+
+      <q-card-section class="">
+        <div class="text-h6">
+          <Form size="20" />
+          Register
+        </div>
+        <div class="text-subtitle2 row justify-between">
+          <div>Please input your information here</div>
+        </div>
+      </q-card-section>
+
+      <q-card-section class="column gap-2">
         <p
           class="q-mt-xs"
           :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
         >
           Choose role to register
         </p>
-        <div class="row justify-center">
+        <div class="row justify-start">
           <div class="column justify-center items-start q-px-md">
             <q-radio
               v-model="role"
@@ -70,8 +252,9 @@
             />
           </div>
         </div>
-      </div>
-      <div class="col-2 q-pa-xl q-gutter-y-sm">
+      </q-card-section>
+
+      <q-card-section class="column gap-2">
         <q-input
           ref="regemailRef"
           v-model="regemail"
@@ -128,48 +311,95 @@
             <EyeClosed v-if="isPwd2" size="16" @click="isPwd2 = !isPwd2" />
           </template>
         </q-input>
+        <!--        <q-btn-->
+        <!--            label="Clear"-->
+        <!--            type="reset"-->
+        <!--            :color="[$q.dark.isActive ? 'accent' : 'grey']"-->
+        <!--            flat-->
+        <!--            class="text-capitalize pull-right text-weight-light round-btn"-->
+        <!--            style="float: left"-->
+        <!--            @click="reset"-->
+        <!--        />-->
+        <!--        <q-btn-->
+        <!--          label="Back to login"-->
+        <!--          :color="[$q.dark.isActive ? 'accent' : 'grey']"-->
+        <!--          flat-->
+        <!--          no-caps-->
+        <!--          class="pull-right text-weight-light round-btn"-->
+        <!--          style="float: right"-->
+        <!--          @click="$router.push('/login')"-->
+        <!--        />-->
+      </q-card-section>
+
+      <q-card-section class="">
+        <div class="text-subtitle2 row justify-between items-center">
+          <q-btn
+            dense
+            padding="xs lg"
+            :label="$q.screen.lt.sm ? '' : 'Clear'"
+            flat
+            no-caps
+            class="pull-right round-btn text-grey-9 text-caption ghost"
+            @click="reset"
+          >
+            <template v-if="$q.screen.lt.sm" #default>
+              <div class="row justify-between items-center gap-10">
+                <X size="16" />
+              </div>
+            </template>
+          </q-btn>
+
+          <q-btn
+            dense
+            padding="xs lg"
+            :label="$q.screen.lt.sm ? '' : 'Back to login'"
+            flat
+            no-caps
+            class="pull-right round-btn text-grey-9 text-caption ghost"
+            @click="$router.push('/login')"
+          >
+            <template v-if="$q.screen.lt.sm" #default>
+              <div class="row justify-between items-center gap-10">
+                <Back size="16" />
+              </div>
+            </template>
+          </q-btn>
+        </div>
+      </q-card-section>
+
+      <q-card-actions class="mb-4" align="center">
         <q-btn
-          label="Clear"
-          type="reset"
-          :color="[$q.dark.isActive ? 'accent' : 'grey']"
-          flat
-          class="text-capitalize pull-right text-weight-light round-btn"
-          style="float: left"
-          @click="reset"
-        />
-        <q-btn
-          label="Back to login"
-          :color="[$q.dark.isActive ? 'accent' : 'grey']"
-          flat
-          no-caps
-          class="pull-right text-weight-light round-btn"
-          style="float: right"
-          @click="$router.push('/login')"
-        />
-      </div>
-      <div class="col-2 q-py-xs q-px-xl q-mt-xs">
-        <q-btn
-          size="lg"
-          :color="[$q.dark.isActive ? 'accent' : 'primary']"
-          label="Register"
-          class="text-capitalize full-width round-btn"
-          :loading="registerLoader"
-          :disable="registerLoader"
+          padding="sm sm"
+          color="primary"
+          class="text-capitalize bg-info round-btn"
+          :loading="loadingSubmit"
+          :disable="loadingSubmit || !username || !password"
+          :style="{
+            width: '96%'
+          }"
           @click="register"
         >
+          <template #default>
+            <div class="px-5 full-width row justify-between items-center">
+              <ShieldUser size="20" />
+              <span class="text-capitalize text-h6">Register</span>
+              <Form size="20" />
+            </div>
+          </template>
           <template #loading>
             <q-spinner-ios class="on-left" />
-            <small>Creating account..</small>
+            Logging in..
           </template>
         </q-btn>
-      </div>
-    </div>
+      </q-card-actions>
+    </q-card>
   </div>
 </template>
 <script>
 import { ref } from 'vue'
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
 import { useMainStore } from 'stores/main'
+import { LocalStorage } from 'quasar'
 
 // Don't forget to specify which animations
 // you are using in quasar.config file > animations.
@@ -186,7 +416,7 @@ export default {
       default: 0
     }
   },
-  emits: ['showHeader'],
+  emits: ['showHeader', 'emitFromChild'],
   setup() {
     const visible = ref(false)
     const question = ref('')
@@ -266,7 +496,11 @@ export default {
     // console.log('beforeMount')
   },
   mounted() {
+    console.log('mounted')
     this.mainStore.showNav = false
+    this.showHeader = false
+    this.$emit('emitFromChild')
+    LocalStorage.setItem('showNav', false)
     console.log(this.$route.query)
     const { e, clientId, agentId, pid } = this.$route.query
     this.regemail = e

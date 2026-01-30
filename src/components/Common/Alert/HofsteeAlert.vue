@@ -5,7 +5,7 @@
         <slot name="icon" />
       </div>
       <div class="column width-80">
-        <div><slot name="header" /></div>
+        <div class="text-bold"><slot name="header" /></div>
         <div><slot name="body" /></div>
       </div>
     </div>

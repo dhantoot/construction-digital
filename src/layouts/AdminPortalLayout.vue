@@ -28,7 +28,6 @@
                 <q-btn
                   to="/admin-portal"
                   flat
-                  icon="las la-play"
                   class="q-px-sm text-red"
                   style="border-radius: 8px"
                   :style="{
@@ -40,13 +39,18 @@
                         : ''
                   }"
                   @click="activeBtn = 0"
-                />
+                >
+                  <template #default>
+                    <div class="row justify-between items-center gap-10">
+                      <Play size="20" />
+                    </div>
+                  </template>
+                </q-btn>
               </div>
               <div class="py-5 mt-10">
                 <q-btn
                   to="/manage-sow"
                   flat
-                  icon="las la-tools"
                   class="q-px-sm"
                   style="border-radius: 8px"
                   :style="{
@@ -59,13 +63,18 @@
                   }"
                   :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
                   @click="activeBtn = 1"
-                />
+                >
+                  <template #default>
+                    <div class="row justify-between items-center gap-10">
+                      <PencilRuler size="20" />
+                    </div>
+                  </template>
+                </q-btn>
               </div>
               <div class="py-5">
                 <q-btn
                   to="/manage-projects"
                   flat
-                  icon="las la-folder-open"
                   class="q-px-sm"
                   style="border-radius: 8px"
                   :style="{
@@ -78,13 +87,18 @@
                   }"
                   :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
                   @click="activeBtn = 2"
-                />
+                >
+                  <template #default>
+                    <div class="row justify-between items-center gap-10">
+                      <FolderPlus size="20" />
+                    </div>
+                  </template>
+                </q-btn>
               </div>
               <div class="py-5">
                 <q-btn
                   to="/manage-invites"
                   flat
-                  icon="lab la-telegram-plane"
                   class="q-px-sm"
                   style="border-radius: 8px"
                   :style="{
@@ -97,7 +111,13 @@
                   }"
                   :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
                   @click="activeBtn = 3"
-                />
+                >
+                  <template #default>
+                    <div class="row justify-between items-center gap-10">
+                      <Send size="20" />
+                    </div>
+                  </template>
+                </q-btn>
               </div>
               <div class="py-5 full-width q-px-md">
                 <q-separator style="border-bottom: 0.1px solid #3a3a3a" />
@@ -106,7 +126,6 @@
                 <q-btn
                   to="/manage-accounts"
                   flat
-                  icon="las la-user-tag"
                   class="q-px-sm"
                   style="border-radius: 8px"
                   :style="{
@@ -119,13 +138,18 @@
                   }"
                   :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
                   @click="activeBtn = 4"
-                />
+                >
+                  <template #default>
+                    <div class="row justify-between items-center gap-10">
+                      <Users size="20" />
+                    </div>
+                  </template>
+                </q-btn>
               </div>
               <div class="py-5">
                 <q-btn
                   to="/whats-new"
                   flat
-                  icon="las la-bell"
                   class="q-px-sm"
                   style="border-radius: 8px"
                   :style="{
@@ -138,12 +162,17 @@
                   }"
                   :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
                   @click="activeBtn = 5"
-                />
+                >
+                  <template #default>
+                    <div class="row justify-between items-center gap-10">
+                      <BellRing size="20" />
+                    </div>
+                  </template>
+                </q-btn>
               </div>
               <div class="py-5">
                 <q-btn
                   flat
-                  icon="las la-comments"
                   class="q-px-sm"
                   style="border-radius: 8px"
                   :style="{
@@ -156,7 +185,13 @@
                   }"
                   :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
                   @click="activeBtn = 6"
-                />
+                >
+                  <template #default>
+                    <div class="row justify-between items-center gap-10">
+                      <MessageCircleMore size="20" />
+                    </div>
+                  </template>
+                </q-btn>
               </div>
             </div>
           </div>
@@ -165,7 +200,6 @@
               <div class="py-5">
                 <q-btn
                   flat
-                  icon="las la-headset"
                   class="q-px-sm"
                   style="border-radius: 8px"
                   :style="{
@@ -178,12 +212,17 @@
                   }"
                   :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
                   @click="activeBtn = 7"
-                />
+                >
+                  <template #default>
+                    <div class="row justify-between items-center gap-10">
+                      <Headset size="20" />
+                    </div>
+                  </template>
+                </q-btn>
               </div>
               <div class="py-5">
                 <q-btn
                   flat
-                  icon="las la-cog"
                   class="q-px-sm"
                   style="border-radius: 8px"
                   :style="{
@@ -196,12 +235,17 @@
                   }"
                   :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
                   @click="activeBtn = 8"
-                />
+                >
+                  <template #default>
+                    <div class="row justify-between items-center gap-10">
+                      <Cog size="20" />
+                    </div>
+                  </template>
+                </q-btn>
               </div>
               <div class="py-5">
                 <q-btn
                   flat
-                  icon="las la-user-circle"
                   class="q-px-sm"
                   style="border-radius: 8px"
                   :style="{
@@ -214,7 +258,13 @@
                   }"
                   :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
                   @click="activeBtn = 9"
-                />
+                >
+                  <template #default>
+                    <div class="row justify-between items-center gap-10">
+                      <CircleUser size="20" />
+                    </div>
+                  </template>
+                </q-btn>
               </div>
               <div class="py-5 full-width q-px-md">
                 <q-separator style="border-bottom: 0.1px solid #3a3a3a" />
@@ -222,12 +272,17 @@
               <div class="py-10">
                 <q-btn
                   square
-                  icon="las la-sign-out-alt"
                   class="q-px-sm"
                   style="border-radius: 8px"
                   :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
                   @click="openConfirmDialog('Confirm Logout', 'logout')"
-                />
+                >
+                  <template #default>
+                    <div class="row justify-between items-center gap-10">
+                      <LogOut size="20" />
+                    </div>
+                  </template>
+                </q-btn>
               </div>
             </div>
           </div>
@@ -259,7 +314,10 @@
         'height: 100vh': $q.screen.gt.sm
       }"
     >
-      <div class="row full-width items-center" :class="$isCapacitorMode ? 'mt-45' : ''">
+      <div
+        class="row full-width items-center"
+        :class="$isCapacitorMode ? 'mt-45' : ''"
+      >
         <div
           v-if="$route.name !== 'Admin Login'"
           :style="{

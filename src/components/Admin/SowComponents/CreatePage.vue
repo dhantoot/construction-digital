@@ -67,21 +67,22 @@
         <q-btn
           rounded
           size="sm"
-          icon="las la-arrow-left"
           padding="sm xl"
           color="warning"
-          label="Back"
           class="text-capitalize bg-primary"
           @click="$router.push('/manage-sow')"
         >
+          <template #default>
+            <div class="row justify-between items-center gap-10">
+              <ChevronLeft size="19"/> Back
+            </div>
+          </template>
         </q-btn>
         <q-btn
           rounded
           size="sm"
-          icon="las la-plus"
           padding="sm xl"
           color="info"
-          label="Add"
           class="text-capitalize bg-primary"
           :loading="loadingSubmit"
           :disable="
@@ -96,6 +97,11 @@
           "
           @click="addToList"
         >
+          <template #default>
+            <div class="row justify-between items-center gap-10">
+              <Plus size="16"/> Add
+            </div>
+          </template>
           <template #loading>
             <q-spinner-ios />
           </template>

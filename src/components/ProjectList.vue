@@ -1,5 +1,8 @@
 <template>
-  <div class="column gap-10 q-pa-sm" :style="[$q.screen.lt.sm ? 'padding-bottom: 90px;' : '']">
+  <div
+    class="column gap-10 q-pa-sm"
+    :style="[$q.screen.lt.sm ? 'padding-bottom: 90px;' : '']"
+  >
     <div class="row justify-center items-center">
       <q-input
         v-model="text"

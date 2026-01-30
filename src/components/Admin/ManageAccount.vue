@@ -25,8 +25,6 @@
               color="positive"
               size="sm"
               :disable="!selected.length"
-              :label="selected[0].isActive ? 'Deactivate' : 'Activate'"
-              icon="las la-power-off"
               no-caps
               @click="
                 openConfirmDialog(
@@ -34,7 +32,13 @@
                   'updateAccountStatus'
                 )
               "
-            ></q-btn>
+            >
+              <template #default>
+                <div class="row justify-between items-center gap-10">
+                  <Power size="16"/> {{ selected[0].isActive ? 'Deactivate' : 'Activate' }}
+                </div>
+              </template>
+            </q-btn>
 
             <q-btn
               v-if="selected[0]"
@@ -42,8 +46,6 @@
               color="negative"
               size="sm"
               :disable="!selected.length"
-              label="Delete"
-              icon="las la-trash-alt"
               no-caps
               @click="
                 openConfirmDialog(
@@ -51,7 +53,13 @@
                   'deleteAccount'
                 )
               "
-            ></q-btn>
+            >
+              <template #default>
+                <div class="row justify-between items-center gap-10">
+                  <Trash2 size="16"/>Delete
+                </div>
+              </template>
+            </q-btn>
           </div>
 
           <q-btn
@@ -59,10 +67,15 @@
             rounded
             color="info"
             size="sm"
-            label="New"
-            icon="las la-user-tie"
             @click="createTemplate"
-          ></q-btn>
+          >
+            <template #default>
+              <div class="row justify-between items-center gap-10">
+                <UserPlus size="16"/> New
+              </div>
+            </template>
+
+          </q-btn>
         </div>
 
         <q-table

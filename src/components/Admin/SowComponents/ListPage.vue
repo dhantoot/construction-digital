@@ -15,19 +15,21 @@
           :color="!selected.length ? 'grey' : 'positive'"
           size="sm"
           :disable="!selected.length"
-          label="View"
-          icon="las la-eye"
           no-caps
           @click="gotoTemplateDetail(selected[0].id)"
-        ></q-btn>
+        >
+          <template #default>
+            <div class="row justify-between items-center gap-10">
+              <ScanEye size="16"/>View
+            </div>
+          </template>
+        </q-btn>
 
         <q-btn
           rounded
           :color="!selected.length ? 'grey' : 'negative'"
           size="sm"
           :disable="!selected.length"
-          label="Delete"
-          icon="las la-trash-alt"
           no-caps
           @click="
             openConfirmDialog(
@@ -35,18 +37,28 @@
               'deleteAccount'
             )
           "
-        ></q-btn>
+        >
+          <template #default>
+            <div class="row justify-between items-center gap-10">
+              <Trash2 size="16"/>Delete
+            </div>
+          </template>
+        </q-btn>
       </div>
 
       <q-btn
         rounded
         color="info"
         size="sm"
-        label="New"
         no-caps
-        icon="las la-plus"
         @click="createTemplate"
-      ></q-btn>
+      >
+        <template #default>
+          <div class="row justify-between items-center gap-10">
+            <Plus size="16"/>New
+          </div>
+        </template>
+      </q-btn>
     </div>
     <q-table
       v-model:selected="selected"

@@ -72,7 +72,7 @@
             class="pull-right round-btn text-grey-9 text-caption ghost"
             @click="reset"
           >
-            <template #default v-if="$q.screen.lt.sm">
+            <template v-if="$q.screen.lt.sm" #default>
               <div class="row justify-between items-center gap-10">
                 <X size="16" />
               </div>
@@ -104,7 +104,7 @@
             class="pull-right round-btn text-grey-9 text-caption ghost"
             @click="register"
           >
-            <template #default v-if="$q.screen.lt.sm">
+            <template v-if="$q.screen.lt.sm" #default>
               <div class="row justify-between items-center gap-10">
                 <PencilLine size="16" />
               </div>
@@ -113,7 +113,7 @@
         </div>
       </q-card-section>
 
-      <q-card-actions align="center">
+      <q-card-actions class="mb-4" align="center">
         <q-btn
           padding="sm sm"
           color="primary"

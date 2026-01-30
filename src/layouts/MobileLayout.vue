@@ -14,9 +14,14 @@
         'height: 100vh': $q.screen.gt.sm
       }"
     >
-      <div class="row full-width items-center" :class="$isCapacitorMode ? 'mt-45' : ''">
+      <div
+        class="row full-width items-center"
+        :class="$isCapacitorMode ? 'mt-45' : ''"
+      >
         <div
-          v-if="$route.name !== 'mobile.userlogin'"
+          v-if="
+            !['mobile.userlogin', 'mobile.login-register'].includes($route.name)
+          "
           :style="{
             background: $q.dark.isActive ? 'black' : ''
           }"

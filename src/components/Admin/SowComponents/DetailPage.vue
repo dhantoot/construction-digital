@@ -70,12 +70,15 @@
             <q-btn
               dense
               flat
-              icon="las la-arrow-left"
               padding="sm lg"
-              label="Back"
               class="text-capitalize round-btn"
               @click="$router.push('/manage-sow')"
             >
+              <template #default>
+                <div class="row justify-between items-center">
+                  <ChevronLeft size="19"/> Back
+                </div>
+              </template>
               <template #loading>
                 <q-spinner-ios />
               </template>
@@ -135,10 +138,8 @@
               :class="[$q.screen.lt.sm ? 'full-width' : '']"
             />
             <q-btn
-              icon="las la-plus"
               padding="sm xl"
               color="primary"
-              label="Add"
               class="text-capitalize bg-primary round-btn"
               :class="[$q.screen.lt.sm ? 'mt-20 full-width' : '']"
               :loading="loadingSubmit"
@@ -154,6 +155,11 @@
               "
               @click="addToList"
             >
+              <template #default>
+                <div class="row justify-between items-center">
+                  <Plus size="19"/> Add
+                </div>
+              </template>
               <template #loading>
                 <q-spinner-ios />
               </template>
@@ -167,36 +173,47 @@
             <q-btn
               size="sm"
               rounded
-              label="Back"
-              icon="las la-arrow-left"
               color="warning"
               no-caps
               class="round-btn"
               @click="$router.push('/manage-sow')"
-            ></q-btn>
+            >
+              <template #default>
+                <div class="row justify-between items-center gap-10">
+                  <ChevronLeft size="19"/> Back
+                </div>
+              </template>
+            </q-btn>
             <div class="row gap-10">
               <q-btn
                 size="sm"
                 rounded
-                label="Add Task"
-                icon="las la-plus"
                 color="info"
                 no-caps
                 class="round-btn"
                 @click="openAddTemplateDialog"
-              ></q-btn>
+              >
+                <template #default>
+                  <div class="row justify-between items-center gap-10">
+                    <Plus size="19"/> Add Task
+                  </div>
+                </template>
+              </q-btn>
               <q-btn
                 v-if="rows.length > 0"
                 size="sm"
                 rounded
-                icon="las la-edit"
                 color="positive"
-                label="Update"
                 class="text-capitalize bg-primary round-btn"
                 :loading="loadingSubmit"
                 :disable="loadingSubmit || rows.length < 1"
                 @click="updateTemplate"
               >
+                <template #default>
+                  <div class="row justify-between items-center gap-10">
+                    <SquarePen size="19"/> Update
+                  </div>
+                </template>
                 <template #loading>
                   <q-spinner-ios />
                 </template>
@@ -271,15 +288,18 @@
             <div class="text-subtitle2">Total Rows: {{ rows.length }}</div>
             <q-btn
               v-if="rows.length > 0"
-              icon="las la-edit"
               padding="sm xl"
               color="positive"
-              label="Update"
               class="text-capitalize bg-primary round-btn"
               :loading="loadingSubmit"
               :disable="loadingSubmit || rows.length < 1"
               @click="updateTemplate"
             >
+              <template #default>
+                <div class="row justify-between items-center gap-10">
+                  <SquarePen size="20"/> Update
+                </div>
+              </template>
               <template #loading>
                 <q-spinner-ios />
               </template>
@@ -297,10 +317,15 @@
       <q-card-section class="row items-center">
         <q-avatar
           size="sm"
-          icon="las la-plus"
           color="negative"
           text-color="white"
-        />
+        >
+          <template #default>
+            <div class="row justify-between items-center">
+              <Plus size="19"/>
+            </div>
+          </template>
+        </q-avatar>
         <span class="q-ml-sm text-h6">Add Task</span>
       </q-card-section>
 
@@ -374,18 +399,20 @@
           rounded
           size="sm"
           padding="sm xl"
-          icon="las la-times"
           class="text-capitalize"
-          label="Close"
           color="negative"
-        />
+        >
+          <template #default>
+            <div class="row justify-between items-center gap-10">
+              <X size="19"/> Close
+            </div>
+          </template>
+        </q-btn>
         <q-btn
           rounded
           size="sm"
           padding="sm xl"
-          icon="las la-check"
           class="text-capitalize"
-          label="Confirm"
           color="primary"
           :loading="loadingSubmit"
           :disable="
@@ -400,6 +427,11 @@
           "
           @click="addToList"
         >
+          <template #default>
+            <div class="row justify-between items-center gap-10">
+              <Check size="19"/> Confirm
+            </div>
+          </template>
           <template #loading>
             <q-spinner-ios />
           </template>

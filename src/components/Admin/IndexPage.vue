@@ -13,8 +13,13 @@
               <template #header>Reminders</template>
 
               <template #body>
-                <div class="column gap-10">
+                <div
+                  class="row gap-10 scroll"
+                  style="max-height: 185px; overflow-y: auto"
+                >
                   <HofsteeAlert
+                    v-for="item of reminders"
+                    :key="item.id"
                     :background-color="{
                       '#292727': $q.dark.isActive
                     }"
@@ -24,51 +29,65 @@
                     height="54px"
                   >
                     <template #icon>
-                      <q-icon
-                        name="las la-pause-circle"
-                        color="negative"
-                        size="lg"
-                      />
+                      <div class="">
+                        <BellRing class="" size="30" color="orange" />
+                      </div>
                     </template>
-                    <template #header>Hello There</template>
-                    <template #body>Lorem ipsum dolor set emit</template>
+                    <template #header>{{ item?.title }}</template>
+                    <template #body>{{ item?.description }}</template>
                   </HofsteeAlert>
 
-                  <HofsteeAlert
-                    :background-color="{
-                      '#292727': $q.dark.isActive
-                    }"
-                    border-radius="8px"
-                    border-color="green"
-                    border="0.1px solid"
-                    height="54px"
-                  >
-                    <template #icon>
-                      <q-icon
-                        name="las la-play-circle"
-                        color="green"
-                        size="lg"
-                      />
-                    </template>
-                    <template #header>Hello There</template>
-                    <template #body>Lorem ipsum dolor set emit</template>
-                  </HofsteeAlert>
+                  <!--                  <HofsteeAlert-->
+                  <!--                    :background-color="{-->
+                  <!--                      '#292727': $q.dark.isActive-->
+                  <!--                    }"-->
+                  <!--                    border-radius="8px"-->
+                  <!--                    border-color="green"-->
+                  <!--                    border="0.1px solid"-->
+                  <!--                    height="54px"-->
+                  <!--                  >-->
+                  <!--                    <template #icon>-->
+                  <!--                      <q-icon-->
+                  <!--                        name="las la-play-circle"-->
+                  <!--                        color="green"-->
+                  <!--                        size="lg"-->
+                  <!--                      />-->
+                  <!--                    </template>-->
+                  <!--                    <template #header>Hello There</template>-->
+                  <!--                    <template #body>Lorem ipsum dolor set emit</template>-->
+                  <!--                  </HofsteeAlert>-->
 
-                  <HofsteeAlert
-                    :background-color="{
-                      '#292727': $q.dark.isActive
-                    }"
-                    border-radius="8px"
-                    border-color="red"
-                    border="0.1px solid"
-                    height="54px"
-                  >
-                    <template #icon>
-                      <q-icon name="las la-stop-circle" color="red" size="lg" />
-                    </template>
-                    <template #header>Hello There</template>
-                    <template #body>Lorem ipsum dolor set emit</template>
-                  </HofsteeAlert>
+                  <!--                  <HofsteeAlert-->
+                  <!--                    :background-color="{-->
+                  <!--                      '#292727': $q.dark.isActive-->
+                  <!--                    }"-->
+                  <!--                    border-radius="8px"-->
+                  <!--                    border-color="red"-->
+                  <!--                    border="0.1px solid"-->
+                  <!--                    height="54px"-->
+                  <!--                  >-->
+                  <!--                    <template #icon>-->
+                  <!--                      <q-icon name="las la-stop-circle" color="red" size="lg" />-->
+                  <!--                    </template>-->
+                  <!--                    <template #header>Hello There</template>-->
+                  <!--                    <template #body>Lorem ipsum dolor set emit</template>-->
+                  <!--                  </HofsteeAlert>-->
+
+                  <!--                  <HofsteeAlert-->
+                  <!--                      :background-color="{-->
+                  <!--                      '#292727': $q.dark.isActive-->
+                  <!--                    }"-->
+                  <!--                      border-radius="8px"-->
+                  <!--                      border-color="red"-->
+                  <!--                      border="0.1px solid"-->
+                  <!--                      height="54px"-->
+                  <!--                  >-->
+                  <!--                    <template #icon>-->
+                  <!--                      <q-icon name="las la-stop-circle" color="red" size="lg" />-->
+                  <!--                    </template>-->
+                  <!--                    <template #header>Hello There</template>-->
+                  <!--                    <template #body>Lorem ipsum dolor set emit</template>-->
+                  <!--                  </HofsteeAlert>-->
                 </div>
               </template>
 
@@ -379,6 +398,7 @@ import interactionPlugin from '@fullcalendar/interaction'
 import HofsteeAlert from '../Common/Alert/HofsteeAlert.vue'
 import HofsteeCard from '../Common/Card/HofsteeCard.vue'
 import { date } from 'quasar'
+import moment from 'moment'
 
 const auth = getAuth()
 // Don't forget to specify which animations
@@ -445,7 +465,7 @@ export default {
               'event 1 - Lorem ipsum dolor set emit the day you said goodnight',
             start: '2025-03-29'
           },
-          { title: 'Nyx Birthday', start: '2025-05-20' },
+          { title: 'Nyx Birthday', start: '2026-01-30' },
           { title: 'Iya Birthday', start: '2025-03-25' },
           { title: 'Aunt birthday', start: '2025-04-20' },
           { title: 'Mass Event', start: '2025-04-23' }
@@ -552,7 +572,10 @@ export default {
         grid: {
           borderColor: '#f1f1f1'
         }
-      }
+      },
+      fetchingEvents: ref(false),
+      reminders: ref([]),
+      todaysTask: ref([])
     }
   },
   computed: {
@@ -586,6 +609,9 @@ export default {
     this.getProjectsLoader = true
     await this.getProjects()
     this.apexChart1Width = '100%'
+
+    await this.getEvents()
+
     nextTick(() => {
       // A small delay ensures Quasar's layout engine has finished
       setTimeout(() => {
@@ -803,6 +829,70 @@ export default {
           await this.getTodoList(project)
         })
         this.getProjectsLoader = false
+      })
+    },
+    async getEvents() {
+      // @todo: Fetch all event ids.
+      this.fetchingEvents = true
+
+      // 1. Define the range for Next Week
+      // const nextWeekStart = moment().add(1, 'weeks').startOf('isoWeek'); // Monday
+      const nextWeekEnd = moment().add(1, 'weeks').endOf('isoWeek') // Sunday
+      const tomorrow = moment().add(1, 'days')// tomorrow
+
+      const events = this.$fbref(
+        this.$fbdb,
+        `events/${'5c42d201-49e0-4424-aa8a-4c889ae1b3db'}`
+      )
+      this.$fbonValue(events, snapshot => {
+        const data = snapshot.val()
+        if (this.$isFalsyString(data)) {
+          this.calendarOptions.events = []
+          this.fetchingEvents = false
+          return
+        }
+        const data_ = Object.values(data)
+        console.log('data_', data_)
+        this.calendarOptions.events = data_
+
+        // 2. Filter the array
+        const nextWeekEvents = data_
+          .filter(event => {
+            // Check if the date is "isBetween" the range [inclusive]
+            return moment(event.start).isBetween(
+              tomorrow,
+              nextWeekEnd,
+              null,
+              '[]'
+            )
+          })
+          .sort((a, b) => {
+            // 2. Sort by recency (Soonest date first)
+            // Subtracting timestamps: smaller (sooner) comes first
+            return moment(a.start).valueOf() - moment(b.start).valueOf()
+          })
+
+        console.log(nextWeekEvents)
+        this.reminders = nextWeekEvents
+
+        const today = moment().startOf('day')
+
+        // 2. Filter for the exact match
+        const todaysEvents = data_
+          .filter(event => {
+            // We specify 'day' as the second argument to ignore time differences
+            return moment(event.start).isSame(today, 'day')
+          })
+          .sort((a, b) => {
+            // 2. Sort by recency (Soonest date first)
+            // Subtracting timestamps: smaller (sooner) comes first
+            return moment(a.start).valueOf() - moment(b.start).valueOf()
+          })
+
+        console.log(todaysEvents)
+        this.todaysTask = todaysEvents
+
+        this.fetchingEvents = false
       })
     }
   }

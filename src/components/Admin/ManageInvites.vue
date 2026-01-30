@@ -134,7 +134,6 @@
               <q-btn
                 padding="xs lg"
                 color="primary"
-                icon="las la-paper-plane"
                 style="height: 40px; width: 150px"
                 :class="{
                   'text-capitalize': true,
@@ -148,10 +147,14 @@
                   !userTitle
                 "
                 :loading="sendEmailLoader"
-                label="Send"
                 class="round-btn"
                 @click="sendInvitation"
               >
+                <template #default>
+                  <div class="row justify-between items-center gap-10">
+                    <SendHorizontal size="19"/> Send
+                  </div>
+                </template>
                 <template #loading>
                   <q-spinner-ios class="on-left" />
                   <small>Sending..</small>

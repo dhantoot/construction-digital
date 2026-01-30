@@ -14,8 +14,7 @@ export default boot(async ({ app }) => {
     } catch (e) {
       alert(e)
     }
-  }
-  else {
+  } else {
     app.config.globalProperties.$isCapacitorMode = false
   }
 })
