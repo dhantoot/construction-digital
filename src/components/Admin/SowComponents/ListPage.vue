@@ -100,10 +100,9 @@
         <div class="column full-width my-5">
           <HofsteeCard
             class="full-width full-height"
-            :background-color="bgColor"
           >
             <template #body>
-              <q-item class="row items-start">
+              <q-item class="row items-start" :class="$q.dark.isActive ? 'text-white' : 'text-primary'" >
                 <q-item-section side>
                   <q-checkbox
                     v-model="props.selected"
@@ -125,11 +124,13 @@
                 </q-item-section>
               </q-item>
             </template>
+
             <template #body-loader>
               <q-inner-loading :showing="loading1">
                 <q-spinner-ios size="50px" color="primary" />
               </q-inner-loading>
             </template>
+
           </HofsteeCard>
         </div>
       </template>

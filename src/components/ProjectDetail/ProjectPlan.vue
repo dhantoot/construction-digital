@@ -51,6 +51,7 @@
       <q-spinner-ios size="50px" color="secondary" />
     </q-inner-loading>
   </div>
+
   <q-dialog v-model="eventDialog" persistent>
     <q-card class="no-shadow" :class="[$q.dark.isActive ? 'dark' : '']">
       <div v-if="false" class="">
@@ -63,6 +64,7 @@
           }
         }}</pre>
       </div>
+
       <q-card-section class="column items-center full-width gap-10">
         <q-input
           v-model="eventName"
@@ -79,6 +81,7 @@
           class="full-width"
         />
       </q-card-section>
+
       <q-card-actions align="center" class="q-pa-md">
         <q-btn
           v-close-popup
@@ -111,8 +114,10 @@
           </div>
         </q-btn>
       </q-card-actions>
+
     </q-card>
   </q-dialog>
+
 </template>
 <script>
 import { ref } from 'vue'

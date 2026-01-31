@@ -243,8 +243,6 @@ export default {
             LocalStorage.set('authUser', adminUser)
             this.mainStore.adminUser = adminUser
             this.loadingSubmit = false
-            this.username = ''
-            this.password = ''
             this.$q.notify({
               icon: 'check_circle',
               color: 'green',
@@ -253,6 +251,8 @@ export default {
               classes: 'notify-custom-css'
             })
             this.$router.push('/admin-portal')
+            this.username = ''
+            this.password = ''
           } else {
             this.$q.notify({
               icon: 'cancel',

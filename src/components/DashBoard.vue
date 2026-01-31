@@ -821,14 +821,6 @@ export default {
         this.visible = false
       }, ms)
     },
-    showTextLoading2() {
-      const ms = Math.floor(Math.random() * (1000 - 500 + 100) + 200)
-      // console.log('loaded in ', ms, ' ms')
-      this.visible2 = true
-      setTimeout(() => {
-        this.visible2 = false
-      }, ms)
-    },
     async getProjects() {
       const projects = this.$fbref(this.$fbdb, 'projects')
       this.$fbonValue(projects, snapshot => {

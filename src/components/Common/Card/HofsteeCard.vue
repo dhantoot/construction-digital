@@ -9,7 +9,7 @@
       'no-border': noBorder
     }"
   >
-    <div class="">
+    <div class="text-bold">
       <slot name="header" />
     </div>
     <div class="pt-10 full-height">

@@ -10,7 +10,7 @@
         <div class="row q-col-gutter-md q-mb-md">
           <div class="col-12 col-sm-6 col-lg-4">
             <HofsteeCard class="full-height" bordered flat>
-              <template #header>Reminders</template>
+              <template #header>Event Reminders</template>
 
               <template #body>
                 <div
@@ -104,9 +104,9 @@
 
           <div class="col-12 col-sm-6 col-lg-4">
             <HofsteeCard class="full-height" bordered flat>
-              <template #header>Today's Task</template>
+              <template #header>Overall Projects</template>
               <template #body>
-                <div class="column gap-10 justify-evenly height-90">
+                <div class="column gap-10 justify-evenly height-90 pb-10">
                   <div class="row full-width gap-10">
                     <div class="col">
                       <q-card
@@ -115,7 +115,7 @@
                           $q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'
                         "
                       >
-                        Box I
+                        Active
                       </q-card>
                     </div>
                     <div class="col">
@@ -125,7 +125,7 @@
                           $q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'
                         "
                       >
-                        Box II
+                        On-hold
                       </q-card>
                     </div>
                   </div>
@@ -137,7 +137,7 @@
                           $q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'
                         "
                       >
-                        Box III
+                        Completed
                       </q-card>
                     </div>
                     <div class="col">
@@ -147,7 +147,7 @@
                           $q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'
                         "
                       >
-                        Box IV
+                        Archived
                       </q-card>
                     </div>
                   </div>
@@ -189,7 +189,7 @@
               style="border-radius: 8px"
             >
               <q-card-section>
-                <div class="text-small row q-mb-md">Projects</div>
+                <div class="text-bold row q-mb-md">Projects</div>
                 <div class="row gap-20 justify-between">
                   <div
                     v-for="item of projectListMapped.filter(e => e.groupedData)"
@@ -198,10 +198,12 @@
                     style="width: 100%"
                   >
                     <q-card
+                      class="no-shadow"
                       :class="[$q.dark.isActive ? 'bg-grey-10 text-white' : '']"
                       :flat="$q.dark.isActive"
+                      style="border: 0.1px solid rgb(137 145 149)"
                       :style="
-                        $q.dark.isActive ? '' : 'background: rgb(252 252 252)'
+                        $q.dark.isActive ? 'bg-dark' : 'background: rgb(240 240 240)'
                       "
                     >
                       <q-card-section>
@@ -236,11 +238,11 @@
       <!-- Right Section: 2 cards (top and bottom) -->
       <div
         class="col-12 col-md-3"
-        :class="[$q.screen.lt.md ? 'pl-15' : 'pl-20']"
+        :class="[$q.screen.lt.md ? 'pl-6' : 'pl-20']"
       >
-        <div class="column q-gutter-md full-height justify-start items-start">
+        <div class="row q-gutter-md justify-start items-start">
           <!-- Top right card -->
-          <div v-if="$q.screen.gt.sm" class="row full-width pl-10">
+          <div class="row full-width pl-10">
             <HofsteeCard bordered flat class="full-width">
               <template #header>Statistics</template>
               <template #body>
@@ -308,12 +310,12 @@
           </div>
 
           <!-- Bottom right card -->
-          <div class="row full-width" :class="[$q.screen.lt.sm ? '' : 'pl-10']">
+          <div class="row full-width pl-10">
             <q-card
               flat
               bordered
               class="full-width"
-              :class="[$q.screen.lt.sm ? 'mb-70' : 'px-10']"
+              :class="[$q.screen.lt.sm ? 'mb-70 px-10 pb-10' : 'px-10 pb-10']"
             >
               <FullCalendar
                 :options="calendarOptions"
@@ -720,7 +722,7 @@ export default {
           return list
         }, {})
         project.groupedData = groupedData || []
-        if (groupedData) {
+        if (project.groupedData) {
           const tmp = []
           for (const key in project.groupedData) {
             if (key !== 'undefined') {
@@ -738,10 +740,15 @@ export default {
           const xAxisBottomLabels = sortedGroupedData.map(e => {
             return date.formatDate(e.key, 'MMM DD, YYYY')
           })
-          project.projectTaskCompleted = { ...this.projectTaskCompleted }
-          Object.assign(project.projectTaskCompleted.xaxis, {
-            categories: xAxisBottomLabels
-          })
+          project.projectTaskCompleted = {
+            ...this.projectTaskCompleted,
+            xaxis: {
+              categories: xAxisBottomLabels
+            }
+          }
+          // Object.assign(project.projectTaskCompleted.xaxis, {
+          //   categories: xAxisBottomLabels
+          // })
           const obj = {
             name: 'Target Work',
             data: []
@@ -750,6 +757,7 @@ export default {
             name: 'Completed',
             data: []
           }
+          console.log('sortedGroupedData', sortedGroupedData)
           for (const item of sortedGroupedData) {
             obj.data.push(item.value.length || 0)
             completed.data.push(item.value.filter(e => e[2] === true).length) // TODO
@@ -786,49 +794,60 @@ export default {
     },
     async getProjects() {
       const projects = this.$fbref(this.$fbdb, 'projects')
-      this.$fbonValue(projects, snapshot => {
-        const data = snapshot.val()
-        if (this.$isFalsyString(data)) {
-          this.projectList = []
-          return
-        }
-        let data_ = Object.values(data)
-        this.projectList = data_
-
-        // map projects by user role
-        const userDetails = LocalStorage.getItem('authUser')
-        const { role, email } = userDetails
-
-        if (role === 'client') {
-          data_ = data_.filter(e => e.client?.map(f => f.email).includes(email))
-        }
-
-        if (role === 'agent') {
-          data_ = data_.filter(e => e.agent?.map(f => f.email).includes(email))
-        }
-
-        if (role === 'constructor') {
-          data_ = data_.filter(project => this.projectIds.includes(project.id))
-          console.log('filtered data_', data_)
-        }
-
-        this.projectListMapped = data_
-          .map(e => ({
-            id: e.id,
-            title: e.title,
-            isActivated: e.isActivated
-          }))
-          .filter(e => e.isActivated)
-
-        console.log('this.projectListMapped', this.projectListMapped)
-
-        this.projectListMapped.forEach(async project => {
-          if (!project) {
-            return false
+      this.$fbonValue(projects, async (snapshot) => {
+        try {
+          const data = snapshot.val()
+          console.log('data', data)
+          if (this.$isFalsyString(data)) {
+            this.projectList = []
+            return
           }
-          await this.getTodoList(project)
-        })
-        this.getProjectsLoader = false
+          let data_ = Object.values(data)
+          this.projectList = data_
+
+          // map projects by user role
+          const userDetails = LocalStorage.getItem('authUser')
+          const { role, email } = userDetails
+
+          if (role === 'client') {
+            data_ = data_.filter(e => e.client?.map(f => f.email).includes(email))
+          }
+
+          if (role === 'agent') {
+            data_ = data_.filter(e => e.agent?.map(f => f.email).includes(email))
+          }
+
+          if (role === 'constructor') {
+            data_ = data_.filter(project => this.projectIds.includes(project.id))
+          }
+
+          console.log('data_', data_)
+          this.projectListMapped = data_
+              .map(e => ({
+                id: e.id,
+                title: e.title,
+                isActivated: e.isActivated
+              }))
+              .filter(e => e.isActivated)
+
+          for (let project of this.projectListMapped) {
+            if (!project) {
+              return false
+            }
+            this.getTodoList(project)
+          }
+
+          // await Promise.all(
+          //     this.projectListMapped.map(project => {
+          //       this.getTodoList(project)
+          //     })
+          // )
+
+          this.getProjectsLoader = false
+        }
+        catch (e) {
+          console.error(e)
+        }
       })
     },
     async getEvents() {
@@ -949,5 +968,10 @@ export default {
 .apexcharts-canvas,
 .apexcharts-canvas svg {
   width: 100% !important;
+}
+:deep(.fc .fc-scroller-liquid-absolute) {
+  inset: 0px;
+  position: absolute;
+  overflow: hidden !important;
 }
 </style>

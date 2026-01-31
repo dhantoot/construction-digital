@@ -439,12 +439,12 @@
                     <div class="full-width row justify-between">
                       <div>
                         <div class="text-subtitle2">
-                          <b>Budget:</b>
+                          <b>Budget: </b>
                           {{ props.row.budget }}
                         </div>
 
                         <div>
-                          <b>Created:</b>
+                          <b>Created: </b>
                           <span
                             v-formatdate
                             v-html="props.row.dateCreated"
@@ -454,11 +454,11 @@
 
                       <div>
                         <div>
-                          <b>From:</b>
+                          <b>From: </b>
                           <span v-formatdate v-html="props.row.dateFrom"></span>
                         </div>
                         <div>
-                          <b>To:</b>
+                          <b>To: </b>
                           <span v-formatdate v-html="props.row.dateTo"></span>
                         </div>
                       </div>

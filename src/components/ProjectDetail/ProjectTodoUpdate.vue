@@ -45,7 +45,7 @@
         range
         class="full-width"
         :text-color="$q.dark.isActive ? 'accent' : 'primary'"
-        :flat="$q.dark.isActive"
+        flat
       />
 
       <div class="column q-mt-sm">
@@ -141,7 +141,7 @@
         :upload-progress-label="uploadProgressLabel"
         label="Upload Files"
         accept=".jpg, image/*"
-        class="full-width q-mb-xs"
+        class="full-width q-mb-xs no-shadow"
         multiple
         auto-upload
       >
@@ -165,13 +165,6 @@
               </template>
             </q-img>
           </div>
-          <!-- <q-list dense>
-            <q-item dense v-for="item of todoFiles" :key="item">
-              <q-item-section class="">
-                <q-img :src="item || 'broken-img.png'" style="max-height: 200px;" class="full-width" />
-              </q-item-section>
-            </q-item>
-          </q-list> -->
         </template>
       </q-uploader>
     </div>
@@ -181,7 +174,7 @@
           '#292727': $q.dark.isActive
         }"
         border-radius="8px"
-        :border-color="isCompleted ? 'green' : 'cancel'"
+        :border-color="isCompleted ? 'green' : 'warning'"
         border="0.1px solid"
         height="54px"
       >
@@ -191,6 +184,7 @@
             keep-color
             label="Completed"
             color="primary"
+            :class="$q.dark.isActive ? 'text-accent' : 'text-primary'"
           />
         </template>
       </HofsteeAlert>
@@ -241,18 +235,6 @@
       </div>
     </div>
   </div>
-
-  <!-- <div class="row full-width q-px-sm q-py-sm justify-between items-start absolute fixed-bottom"
-    style="margin-bottom:64px">
-    <div class="">
-      <q-btn :outline="!$q.dark.isActive" class="round-btn" color="primary" icon="las la-arrow-left"
-        @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}/todo`)" />
-    </div>
-    <div class="">
-      <q-btn @click="openConfirmDialog('Save changes?', 'updateTodo')" rounded color="primary" label="Update"
-        class="text-capitalize round-btn" :disable="!todoTitle || !todoDesc || confirmBtnLoader || !timeline?.from || !timeline?.to" icon="las la-edit" />
-    </div>
-  </div> -->
 
   <q-dialog v-model="confirm" persistent>
     <q-card class="no-shadow">
@@ -732,5 +714,29 @@ export default {
 
 :deep(.q-field__control:after) {
   display: none !important;
+}
+
+:deep(.q-uploader) {
+  border-radius: 4px;
+  vertical-align: top;
+  background: #3e3e4708;
+  position: relative;
+  width: 320px;
+  max-height: 320px;
+  //border: 1px solid #3e3e472e;
+  border: 1px solid #3e3e4708;
+}
+
+:deep(.q-date) {
+  display: inline-flex;
+  box-shadow:
+    0 1px 5px rgba(0, 0, 0, 0.2),
+    0 2px 2px rgba(0, 0, 0, 0.14),
+    0 3px 1px -2px rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  width: 290px;
+  min-width: 290px;
+  max-width: 100%;
+  background: #3e3e4708;
 }
 </style>

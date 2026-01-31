@@ -297,7 +297,7 @@
                     </div>
                   </div>
                   <div>
-                    <strong>User Title:</strong>
+                    <strong>Title:</strong>
                     {{ props.row.userTitle }}
                   </div>
                 </q-card-section>
@@ -306,7 +306,6 @@
                   <q-btn
                     v-if="props.row.status === 'Pending'"
                     size="sm"
-                    icon="las la-share"
                     padding="xs md"
                     class="text-capitalize text-secondary round-btn shadow"
                     text-color="primary"

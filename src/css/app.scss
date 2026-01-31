@@ -520,6 +520,12 @@ $weights: 100, 200, 300, 400, 500, 600, 700, 800, 900;
     display: none;
 }
 
+:deep(.fc .fc-scroller-liquid-absolute) {
+  inset: 0px;
+  position: absolute;
+  overflow: hidden;
+}
+
 .ghost {
   background: rgba(0, 0, 0, 0.05);
 }

@@ -90,7 +90,7 @@
             <template #default>
               <div class="row justify-between items-center gap-10">
                 <LaptopMinimal size="16" />
-                Switch to Desktop
+                Switch to Admin
               </div>
             </template>
           </q-btn>
