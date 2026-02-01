@@ -90,7 +90,7 @@
                 >
                   <template #default>
                     <div class="row justify-between items-center gap-10">
-                      <FolderPlus size="20" />
+                      <FolderKanbanIcon size="20" />
                     </div>
                   </template>
                 </q-btn>
@@ -332,7 +332,11 @@
           <div class="row justify-between full-width items-center">
             <!-- Replaces q-toolbar-title, uses 'col' or margins for spacing -->
             <div class="column items-center justify-center mx-8">
-              <strong class="caption text-h6">{{ routeName }}</strong>
+              <strong
+                class="caption"
+                :class="[$q.screen.lt.sm ? 'caption' : 'text-h6']"
+                >{{ routeName }}</strong
+              >
             </div>
 
             <div class="row gap-10">
@@ -473,7 +477,7 @@
           "
         >
           <div class="column justify-start items-center">
-            <WrenchIcon size="24" />
+            <PencilRuler size="24" />
           </div>
         </q-btn>
         <q-btn
@@ -518,7 +522,7 @@
           "
         >
           <div class="column justify-start items-center">
-            <UserSearchIcon size="24" />
+            <Users size="24" />
           </div>
         </q-btn>
       </div>
@@ -531,16 +535,16 @@
         'no-shadow': $q.dark.isActive
       }"
     >
-      <q-card-section class="row items-center">
-        <q-avatar size="sm">
+      <q-card-section class="row items-center q-pa-xs">
+        <q-avatar class="" size="sm">
           <template #default>
             <CircleAlertIcon size="20" />
           </template>
         </q-avatar>
-        <span class="q-ml-sm text-h6">{{ confirmMsg }}</span>
+        <span class="q-pa-sm text-h6">{{ confirmMsg }}</span>
       </q-card-section>
 
-      <q-card-actions align="right" class="q-pa-md">
+      <q-card-actions align="right" class="row full-width q-pa-sm">
         <q-btn
           v-close-popup
           padding="sm xl"
@@ -612,7 +616,8 @@ export default {
       miniState,
       isDark,
       drawerClick() {},
-      obj: ref({})
+      obj: ref({}),
+      activeTab: ref(false),
     }
   },
   computed: {

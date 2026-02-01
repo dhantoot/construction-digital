@@ -157,7 +157,7 @@
             >
               <template #default>
                 <div class="row justify-between items-center">
-                  <Plus size="19"/> Add
+                  <Plus size="16"/> Add
                 </div>
               </template>
               <template #loading>
@@ -187,7 +187,6 @@
             <div class="row gap-10">
               <q-btn
                 size="sm"
-                rounded
                 color="info"
                 no-caps
                 class="round-btn"
@@ -195,14 +194,13 @@
               >
                 <template #default>
                   <div class="row justify-between items-center gap-10">
-                    <Plus size="19"/> Add Task
+                    <Plus size="16"/> Add Task
                   </div>
                 </template>
               </q-btn>
               <q-btn
                 v-if="rows.length > 0"
                 size="sm"
-                rounded
                 color="positive"
                 class="text-capitalize bg-primary round-btn"
                 :loading="loadingSubmit"
@@ -211,7 +209,7 @@
               >
                 <template #default>
                   <div class="row justify-between items-center gap-10">
-                    <SquarePen size="19"/> Update
+                    <SquarePen size="16"/> Update
                   </div>
                 </template>
                 <template #loading>
@@ -249,8 +247,12 @@
         <template #item="props">
           <q-card class="q-ma-sm full-width no-shadow" :style="style">
             <q-card-section>
-              <div class="text-h6">{{ props.row.sowDescription }}</div>
-              <div class="text-subtitle2 text-grey">
+              <div class="text-h6" :class="{
+                'text-subtitle1': $q.screen.lt.sm
+              }">{{ props.row.sowDescription }}</div>
+              <div class="text-subtitle2 text-grey" :class="{
+                'text-caption': $q.screen.lt.sm
+              }">
                 {{ props.row.sowCategory }}
               </div>
             </q-card-section>
@@ -258,21 +260,29 @@
             <q-card-section>
               <div class="row full-width justify-between">
                 <div>
-                  <div>
+                  <div :class="{
+                    'text-caption': $q.screen.lt.sm
+                  }">
                     <strong>Section:</strong>
                     {{ props.row.section }}
                   </div>
-                  <div>
+                  <div :class="{
+                    'text-caption': $q.screen.lt.sm
+                  }">
                     <strong>Weight:</strong>
                     {{ props.row.weight }}
                   </div>
                 </div>
                 <div>
-                  <div>
+                  <div :class="{
+                    'text-caption': $q.screen.lt.sm
+                  }">
                     <strong>Contract Price:</strong>
                     {{ props.row.contractPrice }}
                   </div>
-                  <div>
+                  <div :class="{
+                    'text-caption': $q.screen.lt.sm
+                  }">
                     <strong>Duration:</strong>
                     {{ props.row.duration }} days
                   </div>
@@ -396,10 +406,9 @@
       >
         <q-btn
           v-close-popup
-          rounded
           size="sm"
           padding="sm xl"
-          class="text-capitalize"
+          class="round-btn text-capitalize"
           color="negative"
         >
           <template #default>
@@ -409,10 +418,9 @@
           </template>
         </q-btn>
         <q-btn
-          rounded
           size="sm"
           padding="sm xl"
-          class="text-capitalize"
+          class="round-btn text-capitalize"
           color="primary"
           :loading="loadingSubmit"
           :disable="

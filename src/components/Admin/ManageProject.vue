@@ -73,23 +73,17 @@
               :dense="true"
               align="justify"
             >
-              <q-tab
-                class="text-orange text-capitalize"
-                name="upload"
-              >
+              <q-tab class="text-orange text-capitalize" name="upload">
                 <template #default>
                   <div class="row justify-between items-center gap-10">
-                    <CloudUpload size="19"/> Upload
+                    <CloudUpload size="19" /> Upload
                   </div>
                 </template>
               </q-tab>
-              <q-tab
-                class="text-negative text-capitalize"
-                name="capture"
-              >
+              <q-tab class="text-negative text-capitalize" name="capture">
                 <template #default>
                   <div class="row justify-between items-center gap-10">
-                    <Camera size="19"/> Capture
+                    <Camera size="19" /> Capture
                   </div>
                 </template>
               </q-tab>
@@ -106,12 +100,14 @@
               >
                 <template #append>
                   <div class="row full-width">
-                    <label class="text-caption text-grey-7">Choose File..</label>
+                    <label class="text-caption text-grey-7"
+                      >Choose File..</label
+                    >
                   </div>
                 </template>
                 <template #prepend>
                   <div class="row full-width">
-                    <Plus size="19"/>
+                    <Plus size="19" />
                   </div>
                 </template>
               </q-file>
@@ -128,9 +124,9 @@
                 @click="captureImage"
               >
                 <template #default>
-                 <div class="row full-width justify-between items-center px-8">
-                    <Plus size="19"/>
-                   <label class="text-caption text-grey-7">Open Camera</label>
+                  <div class="row full-width justify-between items-center px-8">
+                    <Plus size="19" />
+                    <label class="text-caption text-grey-7">Open Camera</label>
                   </div>
                 </template>
               </q-btn>
@@ -243,7 +239,7 @@
               >
                 <template #default>
                   <div class="row justify-between items-center gap-10">
-                    <ListRestart size="19"/> Reset
+                    <ListRestart size="19" /> Reset
                   </div>
                 </template>
               </q-btn>
@@ -267,7 +263,8 @@
               >
                 <template #default>
                   <div class="row justify-between items-center gap-10">
-                    <Check size="19"/> {{ selected.length ? 'Update' : 'Submit' }}
+                    <Check size="19" />
+                    {{ selected.length ? 'Update' : 'Submit' }}
                   </div>
                 </template>
                 <template #loading>
@@ -412,7 +409,12 @@
                     </q-item-section>
 
                     <q-item-section>
-                      <q-item-label class="text-h6">
+                      <q-item-label
+                        class="text-h6"
+                        :class="{
+                          'text-subtitle1': $q.screen.lt.sm
+                        }"
+                      >
                         {{ props.row.title }}
                       </q-item-label>
                       <q-item-label caption>
@@ -438,12 +440,21 @@
                   <q-card-section>
                     <div class="full-width row justify-between">
                       <div>
-                        <div class="text-subtitle2">
+                        <div
+                          class="text-subtitle2"
+                          :class="{
+                            'text-caption': $q.screen.lt.sm
+                          }"
+                        >
                           <b>Budget: </b>
                           {{ props.row.budget }}
                         </div>
 
-                        <div>
+                        <div
+                          :class="{
+                            'text-caption': $q.screen.lt.sm
+                          }"
+                        >
                           <b>Created: </b>
                           <span
                             v-formatdate
@@ -453,11 +464,19 @@
                       </div>
 
                       <div>
-                        <div>
+                        <div
+                          :class="{
+                            'text-caption': $q.screen.lt.sm
+                          }"
+                        >
                           <b>From: </b>
                           <span v-formatdate v-html="props.row.dateFrom"></span>
                         </div>
-                        <div>
+                        <div
+                          :class="{
+                            'text-caption': $q.screen.lt.sm
+                          }"
+                        >
                           <b>To: </b>
                           <span v-formatdate v-html="props.row.dateTo"></span>
                         </div>

@@ -152,7 +152,7 @@
               >
                 <template #default>
                   <div class="row justify-between items-center gap-10">
-                    <SendHorizontal size="19"/> Send
+                    <SendHorizontal size="19" /> Send
                   </div>
                 </template>
                 <template #loading>
@@ -266,9 +266,11 @@
             <template #item="props">
               <q-card class="q-ma-sm full-width no-shadow" :style="style">
                 <q-card-section>
-                  <div class="text-h6">{{ props.row.projectName }}</div>
+                  <div class="text-h6" :class="{
+                        'text-subtitle1': $q.screen.lt.sm
+                      }">{{ props.row.projectName }}</div>
                   <div
-                    class="text-caption text-bold row justify-between items-center"
+                    class="text-caption row justify-between items-center"
                   >
                     {{ props.row.invitee }}
                     <q-chip
@@ -287,16 +289,22 @@
 
                 <q-card-section class="q-pt-sm row justify-between">
                   <div>
-                    <div>
+                    <div :class="{
+                    'text-caption': $q.screen.lt.sm
+                    }">
                       <strong>Sent:</strong>
                       {{ props.row.dateSent }}
                     </div>
-                    <div>
+                    <div :class="{
+                    'text-caption': $q.screen.lt.sm
+                    }">
                       <strong>Responded:</strong>
                       {{ props.row.dateResponded }}
                     </div>
                   </div>
-                  <div>
+                  <div :class="{
+                    'text-caption': $q.screen.lt.sm
+                    }">
                     <strong>Title:</strong>
                     {{ props.row.userTitle }}
                   </div>

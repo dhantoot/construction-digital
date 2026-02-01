@@ -156,7 +156,7 @@
                   <img :src="props.row.avatar" />
                 </q-avatar>
                 <div class="col">
-                  <div class="text-weight-bold">
+                  <div class="text-subtitle1">
                     {{ props.row.firstName }} {{ props.row.lastName }}
                   </div>
                   <div class="text-caption text-grey">
@@ -174,15 +174,21 @@
               <q-card-section class="q-pt-sm">
                 <div class="row full-width justify-between items-start">
                   <div>
-                    <div>
+                    <div :class="{
+                    'text-caption': $q.screen.lt.sm
+                    }">
                       <strong>Role:</strong>
                       {{ props.row.role }}
                     </div>
-                    <div>
+                    <div :class="{
+                    'text-caption': $q.screen.lt.sm
+                    }">
                       <strong>Position:</strong>
                       {{ props.row.position }}
                     </div>
-                    <div>
+                    <div :class="{
+                    'text-caption': $q.screen.lt.sm
+                    }">
                       <strong>Phone:</strong>
                       {{ props.row.phone_number }}
                     </div>
@@ -225,10 +231,9 @@
       <q-card-actions align="right" class="q-pa-md">
         <q-btn
           v-close-popup
-          rounded
           size="sm"
           padding="sm xl"
-          class="text-capitalize"
+          class="round-btn text-capitalize"
           color="negative"
         >
           <template #default>
@@ -237,10 +242,9 @@
           </template>
         </q-btn>
         <q-btn
-          rounded
           size="sm"
           padding="sm xl"
-          class="text-capitalize"
+          class="round-btn text-capitalize"
           color="info"
           :loading="actionAccountLoader"
           :disable="actionAccountLoader"

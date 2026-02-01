@@ -52,8 +52,11 @@
     </q-inner-loading>
   </div>
 
-  <q-dialog v-model="eventDialog" persistent>
-    <q-card class="no-shadow" :class="[$q.dark.isActive ? 'dark' : '']">
+  <q-dialog v-model="eventDialog" persistent :class="[$q.screen.lt.sm ? 'row full-width' : '']">
+    <q-card class="row full-width no-shadow" :class="[
+        $q.dark.isActive ? 'dark' : '',
+        $q.screen.lt.sm ? 'row full-width' : ''
+        ]">
       <div v-if="false" class="">
         <pre>{{
           {
@@ -80,44 +83,121 @@
           placeholder="Event Description"
           class="full-width"
         />
+
+        <q-select
+            class="full-width"
+            dense
+            filled
+            v-model="eventType"
+            :options="eventOptions"
+            placeholder="Event Type"
+            behavior="menu"
+            :popup-content-class="[
+              $q.dark.isActive
+                ? 'popupSelectContent bg-contrast no-shadow'
+                : 'popupSelectContent'
+            ]"
+        />
+        <div class="row full-width justify-end">
+          <q-toggle
+              v-model="isWholeDay"
+              dense
+              checked-icon="check"
+              color="positive"
+              unchecked-icon="clear"
+              label="&nbsp;&nbsp;Whole day"
+          />
+        </div>
+        <div v-if="!isWholeDay" class="row full-width justify-between gap-5">
+          <q-input
+              v-model="startTimeWithSeconds"
+              :dense="true"
+              filled
+              mask="time"
+              :rules="['time']"
+              class="col"
+              placeholder="Time start"
+          >
+            <template #append>
+              <q-icon name="access_time" class="cursor-pointer">
+                <q-popup-proxy
+                    cover
+                    transition-show="scale"
+                    transition-hide="scale"
+                >
+                  <q-time v-model="startTimeWithSeconds" format24h>
+                    <div class="row items-center justify-end">
+                      <q-btn v-close-popup label="Close" color="primary" flat />
+                    </div>
+                  </q-time>
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
+          <q-input
+              v-model="endTimeWithSeconds"
+              :dense="true"
+              filled
+              mask="time"
+              :rules="['time']"
+              class="col"
+          >
+            <template #append>
+              <q-icon name="access_time" class="cursor-pointer">
+                <q-popup-proxy
+                    cover
+                    transition-show="scale"
+                    transition-hide="scale"
+                >
+                  <q-time v-model="endTimeWithSeconds" format24h>
+                    <div class="row items-center justify-end">
+                      <q-btn v-close-popup label="Close" color="primary" flat />
+                    </div>
+                  </q-time>
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
+        </div>
+
       </q-card-section>
 
-      <q-card-actions align="center" class="q-pa-md">
-        <q-btn
-          v-close-popup
-          padding="sm lg"
-          class="round-btn text-capitalize"
-          color="negative"
-          @click="closeEventModal"
-        >
-          <div class="row full-width gap-5 items-center">
-            <XIcon size="20" />
-            Cancel
-          </div>
-        </q-btn>
+      <q-card-actions align="center" class="q-pa-md full-width">
+        <div class="row full-width justify-between">
+          <q-btn
+              v-close-popup
+              padding="sm lg"
+              class="round-btn text-capitalize"
+              color="negative"
+              @click="closeEventModal"
+          >
+            <div class="row full-width gap-5 items-center">
+              <XIcon size="20" />
+              Cancel
+            </div>
+          </q-btn>
 
-        <q-btn
-          padding="sm lg"
-          class="round-btn text-capitalize"
-          color="primary"
-          :loading="actionAccountLoader"
-          :disable="actionAccountLoader"
-          @click="upsertEvent()"
-        >
-          <template #loading>
-            <q-spinner-ios />
-          </template>
+          <q-btn
+              padding="sm lg"
+              class="round-btn text-capitalize"
+              color="primary"
+              :loading="actionAccountLoader"
+              :disable="actionAccountLoader"
+              @click="upsertEvent()"
+          >
+            <template #loading>
+              <q-spinner-ios />
+            </template>
 
-          <div class="row full-width gap-5 items-center">
-            <CheckIcon size="20" />
-            {{ actionMode === 1 ? 'Save' : 'Update' }}
-          </div>
-        </q-btn>
+            <div class="row full-width gap-5 items-center">
+              <CheckIcon size="20" />
+              {{ actionMode === 1 ? 'Save' : 'Update' }}
+            </div>
+          </q-btn>
+        </div>
       </q-card-actions>
-
     </q-card>
   </q-dialog>
-
 </template>
 <script>
 import { ref } from 'vue'
@@ -130,8 +210,8 @@ import HofsteeDialog from '../Common/Dialog/HofsteeDialog.vue'
 import HofsteeEventDialog from '../Common/Dialog/HofsteeEventDialog.vue'
 import { useMainStore } from 'stores/main'
 
-// Don't forget to specify which animations
-// you are using in quasar.config file > animations.
+//Remember to specify which animations
+// you are using quasar.config file > animations.
 // Alternatively, if using UMD, load animate.css from CDN.
 export default {
   title: 'ProjectPlan',
@@ -153,6 +233,9 @@ export default {
     console.log({ props })
     const timeStamp = Date.now()
     const todaysDate = date.formatDate(timeStamp, 'YYYY-MM-DD')
+    // const todaysDateWithTime = date.formatDate(timeStamp, 'YYYY-MM-DD HH:mm')
+    const simpleTime = date.formatDate(timeStamp, 'HH:mm:ss')
+    console.log('simpleTime', simpleTime)
     const visible = ref(false)
     const eventDialog = ref(false)
     const question = ref('')
@@ -160,6 +243,10 @@ export default {
     const clickInfo = ref(null)
     const eventName = ref('')
     const eventDescription = ref('')
+    const eventType = ref('Reminder')
+    const isWholeDay = ref(true)
+    const startTimeWithSeconds = ref(simpleTime)
+    const endTimeWithSeconds = ref(simpleTime)
     const calendarOptions = ref({
       plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
       headerToolbar: {
@@ -193,6 +280,10 @@ export default {
 
       eventName.value = clickInfo_.event.title
       eventDescription.value = clickInfo_.event?.extendedProps.description
+      eventType.value = clickInfo_.event?.extendedProps.eventType
+      isWholeDay.value = clickInfo_.event?.extendedProps.isWholeDay
+      startTimeWithSeconds.value = clickInfo_.event?.extendedProps.startTimeWithSeconds
+      endTimeWithSeconds.value = clickInfo_.event?.extendedProps.endTimeWithSeconds
     }
 
     Object.assign(calendarOptions.value, {
@@ -201,6 +292,7 @@ export default {
     })
 
     return {
+      simpleTime,
       mainStore,
       todaysDate,
       actionMode,
@@ -220,7 +312,12 @@ export default {
         // access setup variables here w/o using 'this'
         // console.log('initFunction called', visible.value)
       },
-      date: ref('2019/02/01')
+      date: ref('2019/02/01'),
+      startTimeWithSeconds,
+      endTimeWithSeconds,
+      isWholeDay,
+      eventType,
+      eventOptions: ref(['Meeting', 'Task', 'Reminder'])
     }
   },
   computed: {
@@ -289,6 +386,10 @@ export default {
         this.eventDialog = false
         this.eventName = ''
         this.eventDescription = ''
+        this.eventType = 'Reminder'
+        this.startTimeWithSeconds = this.simpleTime
+        this.endTimeWithSeconds = this.simpleTime
+        this.isWholeDay = true
       } else {
         const found = this.calendarOptions.events.find(
           e => e.id === this.clickInfo.id
@@ -297,7 +398,11 @@ export default {
           id: found?.id,
           start: found?.start,
           title: this.eventName,
-          description: this.eventDescription
+          description: this.eventDescription,
+          eventType: this.eventType,
+          startTimeWithSeconds: this.startTimeWithSeconds,
+          endTimeWithSeconds: this.endTimeWithSeconds,
+          isWholeDay: this.isWholeDay,
         })
         this.eventDialog = false
         this.eventName = ''
@@ -309,6 +414,10 @@ export default {
       this.eventDialog = false
       this.eventName = ''
       this.eventDescription = ''
+      this.eventType = 'Reminder'
+      this.startTimeWithSeconds = this.simpleTime
+      this.endTimeWithSeconds = this.simpleTime
+      this.isWholeDay = true
     },
     async getEvents() {
       this.fetchingEvents = true
@@ -336,7 +445,11 @@ export default {
         id: generatedUid,
         title: this.eventName,
         description: this.eventDescription,
-        start: this.selectInfo.dateStr
+        start: this.selectInfo.dateStr,
+        eventType: this.eventType,
+        startTimeWithSeconds: this.startTimeWithSeconds,
+        endTimeWithSeconds: this.endTimeWithSeconds,
+        isWholeDay: this.isWholeDay,
       }
       const updates = {}
       updates[`events/${this.$route.params.projectId}/${generatedUid}/`] =

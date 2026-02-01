@@ -65,11 +65,10 @@
 
       <div class="row py-20 full-width justify-start gap-20">
         <q-btn
-          rounded
           size="sm"
           padding="sm xl"
           color="warning"
-          class="text-capitalize bg-primary"
+          class="round-btn text-capitalize bg-primary"
           @click="$router.push('/manage-sow')"
         >
           <template #default>
@@ -79,11 +78,10 @@
           </template>
         </q-btn>
         <q-btn
-          rounded
           size="sm"
           padding="sm xl"
           color="info"
-          class="text-capitalize bg-primary"
+          class="round-btn  text-capitalize bg-primary"
           :loading="loadingSubmit"
           :disable="
             loadingSubmit ||
@@ -128,10 +126,9 @@
       <q-card-actions align="right" class="q-pa-md">
         <q-btn
           v-close-popup
-          rounded
           size="sm"
           padding="sm xl"
-          class="text-capitalize"
+          class="round-btn text-capitalize"
           color="negative"
         >
           <template #default>
@@ -140,10 +137,9 @@
           </template>
         </q-btn>
         <q-btn
-          rounded
           size="sm"
           padding="sm xl"
-          class="text-capitalize"
+          class="round-btn text-capitalize"
           color="primary"
           :loading="actionAccountLoader"
           :disable="actionAccountLoader"

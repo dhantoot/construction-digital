@@ -20,18 +20,6 @@
       </q-icon>
     </div>
     <div class="row">
-      <!-- <q-input dark standout="bg-transparent" input-class="text-right text-accent" v-model="text" :dense="dense" :style="{
-        width: '100%'
-      }">
-        <template v-slot:prepend>
-          <q-icon color="accent" name="las la-arrow-left"
-            @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)" />
-        </template>
-        <template v-slot:append>
-          <q-icon v-if="text === ''" name="las la-search" class="text-accent" />
-          <q-icon v-else name="clear" class="cursor-pointer text-black" @click="text = ''" />
-        </template>
-      </q-input> -->
       <q-input
         v-model="text"
         standout="bg-transparent"
@@ -80,10 +68,6 @@
           </template>
         </q-img>
       </div>
-      <!-- <q-page-sticky position="bottom-left" :offset="[18, 18]">
-        <q-btn class="round-btn" color="primary" icon="las la-arrow-left"
-          @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)" />
-      </q-page-sticky> -->
     </div>
   </div>
 </template>
@@ -91,8 +75,8 @@
 import { ref } from 'vue'
 import { useMainStore } from 'stores/main'
 
-// Don't forget to specify which animations
-// you are using in quasar.config file > animations.
+// Remember to specify which animations
+// you are using quasar.config file > animations.
 // Alternatively, if using UMD, load animate.css from CDN.
 export default {
   title: 'ProjectFiles',

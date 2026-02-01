@@ -33,8 +33,8 @@
           no-caps
           @click="
             openConfirmDialog(
-              'Would you like to delete this account?',
-              'deleteAccount'
+              'Would you like to delete this sow?',
+              'deleteSow'
             )
           "
         >
@@ -153,10 +153,9 @@
       <q-card-actions align="right" class="q-pa-md">
         <q-btn
           v-close-popup
-          rounded
           size="sm"
           padding="sm xl"
-          class="text-capitalize"
+          class="round-btn text-capitalize q-px-sm"
           color="negative"
         >
           <template #default>
@@ -164,18 +163,19 @@
             <span class="text-capitalize">Close</span>
           </template>
         </q-btn>
+
         <q-btn
-          rounded
           size="sm"
           padding="sm xl"
-          class="text-capitalize"
+          class="round-btn text-capitalize q-px-sm"
           color="primary"
           :loading="actionAccountLoader"
           :disable="actionAccountLoader"
           @click="callConfirmFn()"
         >
           <template #loading>
-            <q-spinner-ios />
+            <q-spinner-ios class="on-left" />
+            <small>Deleting..</small>
           </template>
 
           <template #default>
@@ -373,7 +373,7 @@ export default {
           this.confirm = false
         })
     },
-    async deleteAccount() {
+    async deleteSow() {
       console.log('deleting account..')
       this.actionAccountLoader = true
       setTimeout(() => {

@@ -8,9 +8,183 @@
       <div class="col-12 col-md-9">
         <!-- Top 3 cards -->
         <div class="row q-col-gutter-md q-mb-md">
+          <!-- Today's Meeting  -->
+          <div class="col-12 col-lg-4">
+            <HofsteeCard class="full-height" bordered flat>
+              <template #header>Today's Meeting</template>
+              <template #body>
+                <div
+                  class="row gap-10 scroll"
+                  style="max-height: 185px; overflow-y: auto"
+                >
+                  <HofsteeAlert
+                    v-for="item of todaysMeeting"
+                    :key="item.id"
+                    :background-color="{
+                      '#292727': $q.dark.isActive
+                    }"
+                    border-radius="8px"
+                    border-color="cancel"
+                    border="0.1px solid"
+                    height="54px"
+                  >
+                    <template #icon>
+                      <div class="">
+                        <PhoneIncoming
+                          v-if="item.eventType === 'Meeting'"
+                          class=""
+                          size="30"
+                          color="red"
+                        />
+                      </div>
+                    </template>
+                    <template #header>{{ item?.title }}</template>
+                    <template #body>{{ item?.description }}</template>
+                  </HofsteeAlert>
+                </div>
+              </template>
+              <template #body-loader>
+                <q-inner-loading :showing="loading2">
+                  <q-spinner-ios
+                    size="50px"
+                    :color="$q.dark.isActive ? 'accent' : 'primary'"
+                  />
+                </q-inner-loading>
+              </template>
+            </HofsteeCard>
+          </div>
+
+          <!-- Today's Task -->
+          <div class="col-12 col-sm-6 col-lg-4">
+            <!--            <HofsteeCard class="full-height" bordered flat>-->
+            <!--              <template #header>Overall Projects</template>-->
+            <!--              <template #body>-->
+            <!--                <div class="column gap-10 justify-evenly height-90 pb-10">-->
+            <!--                  <div class="row full-width gap-10">-->
+            <!--                    <div class="col">-->
+            <!--                      <q-card-->
+            <!--                          flat-->
+            <!--                          :style="-->
+            <!--                          $q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'-->
+            <!--                        "-->
+            <!--                      >-->
+            <!--                        Active-->
+            <!--                      </q-card>-->
+            <!--                    </div>-->
+            <!--                    <div class="col">-->
+            <!--                      <q-card-->
+            <!--                          flat-->
+            <!--                          :style="-->
+            <!--                          $q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'-->
+            <!--                        "-->
+            <!--                      >-->
+            <!--                        On-hold-->
+            <!--                      </q-card>-->
+            <!--                    </div>-->
+            <!--                  </div>-->
+            <!--                  <div class="row full-width gap-10">-->
+            <!--                    <div class="col">-->
+            <!--                      <q-card-->
+            <!--                          flat-->
+            <!--                          :style="-->
+            <!--                          $q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'-->
+            <!--                        "-->
+            <!--                      >-->
+            <!--                        Completed-->
+            <!--                      </q-card>-->
+            <!--                    </div>-->
+            <!--                    <div class="col">-->
+            <!--                      <q-card-->
+            <!--                          flat-->
+            <!--                          :style="-->
+            <!--                          $q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'-->
+            <!--                        "-->
+            <!--                      >-->
+            <!--                        Archived-->
+            <!--                      </q-card>-->
+            <!--                    </div>-->
+            <!--                  </div>-->
+            <!--                </div>-->
+            <!--              </template>-->
+            <!--              <template #body-loader>-->
+            <!--                <q-inner-loading :showing="loading2">-->
+            <!--                  <q-spinner-ios-->
+            <!--                      size="50px"-->
+            <!--                      :color="$q.dark.isActive ? 'accent' : 'primary'"-->
+            <!--                  />-->
+            <!--                </q-inner-loading>-->
+            <!--              </template>-->
+            <!--            </HofsteeCard>-->
+
+            <HofsteeCard class="full-height" bordered flat>
+              <template #header>Today's Task</template>
+              <template #body>
+                <div
+                  class="row gap-10 scroll"
+                  style="max-height: 185px; overflow-y: auto"
+                >
+                  <HofsteeAlert
+                    v-for="item of todaysTask"
+                    :key="item.id"
+                    :background-color="{
+                      '#292727': $q.dark.isActive
+                    }"
+                    border-radius="8px"
+                    border-color="cancel"
+                    border="0.1px solid"
+                    height="54px"
+                  >
+                    <template #icon>
+                      <div class="">
+                        <NotebookPen
+                          v-if="item.eventType === 'Task'"
+                          class=""
+                          size="30"
+                          color="green"
+                        />
+                      </div>
+                    </template>
+                    <template #header>{{ item?.title }}</template>
+                    <template #body>{{ item?.description }}</template>
+                  </HofsteeAlert>
+                </div>
+              </template>
+              <template #body-loader>
+                <q-inner-loading :showing="loading2">
+                  <q-spinner-ios
+                    size="50px"
+                    :color="$q.dark.isActive ? 'accent' : 'primary'"
+                  />
+                </q-inner-loading>
+              </template>
+            </HofsteeCard>
+          </div>
+
+          <!-- Upcoming Event Reminders -->
           <div class="col-12 col-sm-6 col-lg-4">
             <HofsteeCard class="full-height" bordered flat>
-              <template #header>Event Reminders</template>
+              <template #header>
+                <div class="row items-center full-width gap-10">
+                  Event Reminders
+                  <div>
+                    <CircleQuestionMark
+                      size="15"
+                      color=""
+                      class="text-caption text-negative"
+                    >
+                    </CircleQuestionMark>
+                    <q-tooltip
+                      anchor="top middle"
+                      self="bottom middle"
+                      :offset="[10, 10]"
+                    >
+                      <span class="text-caption"
+                        >tomorow until friday next week</span
+                      >
+                    </q-tooltip>
+                  </div>
+                </div>
+              </template>
 
               <template #body>
                 <div
@@ -30,64 +204,29 @@
                   >
                     <template #icon>
                       <div class="">
-                        <BellRing class="" size="30" color="orange" />
+                        <BellRing
+                          v-if="item.eventType === 'Reminder'"
+                          class=""
+                          size="30"
+                          color="orange"
+                        />
+                        <PhoneIncoming
+                          v-if="item.eventType === 'Meeting'"
+                          class=""
+                          size="30"
+                          color="red"
+                        />
+                        <NotebookPen
+                          v-if="item.eventType === 'Task'"
+                          class=""
+                          size="30"
+                          color="green"
+                        />
                       </div>
                     </template>
                     <template #header>{{ item?.title }}</template>
                     <template #body>{{ item?.description }}</template>
                   </HofsteeAlert>
-
-                  <!--                  <HofsteeAlert-->
-                  <!--                    :background-color="{-->
-                  <!--                      '#292727': $q.dark.isActive-->
-                  <!--                    }"-->
-                  <!--                    border-radius="8px"-->
-                  <!--                    border-color="green"-->
-                  <!--                    border="0.1px solid"-->
-                  <!--                    height="54px"-->
-                  <!--                  >-->
-                  <!--                    <template #icon>-->
-                  <!--                      <q-icon-->
-                  <!--                        name="las la-play-circle"-->
-                  <!--                        color="green"-->
-                  <!--                        size="lg"-->
-                  <!--                      />-->
-                  <!--                    </template>-->
-                  <!--                    <template #header>Hello There</template>-->
-                  <!--                    <template #body>Lorem ipsum dolor set emit</template>-->
-                  <!--                  </HofsteeAlert>-->
-
-                  <!--                  <HofsteeAlert-->
-                  <!--                    :background-color="{-->
-                  <!--                      '#292727': $q.dark.isActive-->
-                  <!--                    }"-->
-                  <!--                    border-radius="8px"-->
-                  <!--                    border-color="red"-->
-                  <!--                    border="0.1px solid"-->
-                  <!--                    height="54px"-->
-                  <!--                  >-->
-                  <!--                    <template #icon>-->
-                  <!--                      <q-icon name="las la-stop-circle" color="red" size="lg" />-->
-                  <!--                    </template>-->
-                  <!--                    <template #header>Hello There</template>-->
-                  <!--                    <template #body>Lorem ipsum dolor set emit</template>-->
-                  <!--                  </HofsteeAlert>-->
-
-                  <!--                  <HofsteeAlert-->
-                  <!--                      :background-color="{-->
-                  <!--                      '#292727': $q.dark.isActive-->
-                  <!--                    }"-->
-                  <!--                      border-radius="8px"-->
-                  <!--                      border-color="red"-->
-                  <!--                      border="0.1px solid"-->
-                  <!--                      height="54px"-->
-                  <!--                  >-->
-                  <!--                    <template #icon>-->
-                  <!--                      <q-icon name="las la-stop-circle" color="red" size="lg" />-->
-                  <!--                    </template>-->
-                  <!--                    <template #header>Hello There</template>-->
-                  <!--                    <template #body>Lorem ipsum dolor set emit</template>-->
-                  <!--                  </HofsteeAlert>-->
                 </div>
               </template>
 
@@ -101,86 +240,10 @@
               </template>
             </HofsteeCard>
           </div>
-
-          <div class="col-12 col-sm-6 col-lg-4">
-            <HofsteeCard class="full-height" bordered flat>
-              <template #header>Overall Projects</template>
-              <template #body>
-                <div class="column gap-10 justify-evenly height-90 pb-10">
-                  <div class="row full-width gap-10">
-                    <div class="col">
-                      <q-card
-                        flat
-                        :style="
-                          $q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'
-                        "
-                      >
-                        Active
-                      </q-card>
-                    </div>
-                    <div class="col">
-                      <q-card
-                        flat
-                        :style="
-                          $q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'
-                        "
-                      >
-                        On-hold
-                      </q-card>
-                    </div>
-                  </div>
-                  <div class="row full-width gap-10">
-                    <div class="col">
-                      <q-card
-                        flat
-                        :style="
-                          $q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'
-                        "
-                      >
-                        Completed
-                      </q-card>
-                    </div>
-                    <div class="col">
-                      <q-card
-                        flat
-                        :style="
-                          $q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'
-                        "
-                      >
-                        Archived
-                      </q-card>
-                    </div>
-                  </div>
-                </div>
-              </template>
-              <template #body-loader>
-                <q-inner-loading :showing="loading2">
-                  <q-spinner-ios
-                    size="50px"
-                    :color="$q.dark.isActive ? 'accent' : 'primary'"
-                  />
-                </q-inner-loading>
-              </template>
-            </HofsteeCard>
-          </div>
-
-          <div class="col-12 col-lg-4">
-            <HofsteeCard class="full-height" bordered flat>
-              <template #header>Today's Meeting {{ selectedDate }}</template>
-              <template #body-loader>
-                <q-inner-loading :showing="loading3">
-                  <q-spinner-ios
-                    size="50px"
-                    :color="$q.dark.isActive ? 'accent' : 'primary'"
-                  />
-                </q-inner-loading>
-              </template>
-            </HofsteeCard>
-          </div>
         </div>
 
         <!-- Bottom 1 card (full width) -->
-        <div class="row q-mt-md">
+        <div class="row q-mt-md full-width">
           <div class="col-12">
             <q-card
               flat
@@ -188,28 +251,57 @@
               class="row full-width"
               style="border-radius: 8px"
             >
-              <q-card-section>
-                <div class="text-bold row q-mb-md">Projects</div>
-                <div class="row gap-20 justify-between">
+              <q-card-section class="full-width">
+                <div class="row q-mb-md justify-between full-width">
+                  <div class="text-bold row q-mb-md">Projects</div>
+                    <q-select
+                        v-model="selectedProject"
+                        behavior="menu"
+                        :style="$q.screen.gt.sm ? 'width:250px' : 'width: 100%'"
+                        :popup-content-class="[
+                          $q.dark.isActive
+                            ? 'popupSelectContent bg-contrast no-shadow'
+                            : 'popupSelectContent'
+                        ]"
+                        filled
+                        input-debounce="0"
+                        :label="'Select'"
+                        :dense="true"
+                        option-label="title"
+                        option-value="id"
+                        :options="mappedProject"
+                        :loading="false"
+                    >
+                      <template #loading>
+                        <div class="row justify-center">
+                          <q-spinner-ios />
+                        </div>
+                      </template>
+                    </q-select>
+                </div>
+
+                <div class="row gap-20 justify-between full-width">
                   <div
-                    v-for="item of projectListMapped.filter(e => e.groupedData)"
+                    v-for="item of projectListMapped.filter(e => e.groupedData).filter(e => e.id == selectedProject?.id)"
                     :key="item"
-                    class="col col-12 col-sm-12 col-xs-12"
+                    class="col col-12 col-sm-12 col-xs-12 full-width"
                     style="width: 100%"
                   >
                     <q-card
-                      class="no-shadow"
+                      class="no-shadow full-width"
                       :class="[$q.dark.isActive ? 'bg-grey-10 text-white' : '']"
                       :flat="$q.dark.isActive"
                       style="border: 0.1px solid rgb(137 145 149)"
                       :style="
-                        $q.dark.isActive ? 'bg-dark' : 'background: rgb(240 240 240)'
+                        $q.dark.isActive
+                          ? 'bg-dark'
+                          : 'background: rgb(240 240 240)'
                       "
                     >
                       <q-card-section>
                         <div class="text-subtitle1">{{ item.title }}</div>
                       </q-card-section>
-                      <q-card-section class="q-pa-none">
+                      <q-card-section class="q-pa-none full-width">
                         <div style="display: block; width: 100%">
                           <apexchart
                             v-if="isLoaded"
@@ -303,6 +395,69 @@
                   <q-spinner-ios
                     size="50px"
                     :color="$q.dark.isActive ? 'accent' : 'primary'"
+                  />
+                </q-inner-loading>
+              </template>
+            </HofsteeCard>
+          </div>
+
+          <!-- Middle right card -->
+          <div class="row full-width pl-10">
+            <HofsteeCard class="full-height full-width" bordered flat>
+              <template #header>Overall Projects</template>
+              <template #body>
+                <div class="column gap-10 justify-evenly height-90 pb-10">
+                  <div class="row full-width gap-10">
+                    <div class="col">
+                      <q-card
+                          flat
+                          :style="
+                          $q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'
+                        "
+                      >
+                        Active
+                      </q-card>
+                    </div>
+                    <div class="col">
+                      <q-card
+                          flat
+                          :style="
+                          $q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'
+                        "
+                      >
+                        On-hold
+                      </q-card>
+                    </div>
+                  </div>
+                  <div class="row full-width gap-10">
+                    <div class="col">
+                      <q-card
+                          flat
+                          :style="
+                          $q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'
+                        "
+                      >
+                        Completed
+                      </q-card>
+                    </div>
+                    <div class="col">
+                      <q-card
+                          flat
+                          :style="
+                          $q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'
+                        "
+                      >
+                        Archived
+                      </q-card>
+                    </div>
+                  </div>
+                </div>
+              </template>
+              <template #body-loader>
+                <q-inner-loading :showing="loading2">
+                  <q-spinner-ios
+                      size="50px"
+                      :color="$q.dark.isActive ? 'accent' : 'primary'"
                   />
                 </q-inner-loading>
               </template>
@@ -577,7 +732,9 @@ export default {
       },
       fetchingEvents: ref(false),
       reminders: ref([]),
-      todaysTask: ref([])
+      todaysTask: ref([]),
+      todaysMeeting: ref([]),
+      selectedProject: ref(null)
     }
   },
   computed: {
@@ -586,6 +743,19 @@ export default {
     },
     apexChart1Width: function () {
       return '100%'
+    },
+    filteredProject: function () {
+      return this.projectListMapped.filter(item => item.id = this.selectedProject.id)
+    },
+    mappedProject: function () {
+      return this.projectListMapped.map(item =>{
+        return {
+          id: item.id,
+          value: item.id,
+          label: item.title,
+          title: item.title,
+        }
+      })
     }
   },
   watch: {
@@ -794,7 +964,7 @@ export default {
     },
     async getProjects() {
       const projects = this.$fbref(this.$fbdb, 'projects')
-      this.$fbonValue(projects, async (snapshot) => {
+      this.$fbonValue(projects, async snapshot => {
         try {
           const data = snapshot.val()
           console.log('data', data)
@@ -810,25 +980,33 @@ export default {
           const { role, email } = userDetails
 
           if (role === 'client') {
-            data_ = data_.filter(e => e.client?.map(f => f.email).includes(email))
+            data_ = data_.filter(e =>
+              e.client?.map(f => f.email).includes(email)
+            )
           }
 
           if (role === 'agent') {
-            data_ = data_.filter(e => e.agent?.map(f => f.email).includes(email))
+            data_ = data_.filter(e =>
+              e.agent?.map(f => f.email).includes(email)
+            )
           }
 
           if (role === 'constructor') {
-            data_ = data_.filter(project => this.projectIds.includes(project.id))
+            data_ = data_.filter(project =>
+              this.projectIds.includes(project.id)
+            )
           }
 
           console.log('data_', data_)
           this.projectListMapped = data_
-              .map(e => ({
-                id: e.id,
-                title: e.title,
-                isActivated: e.isActivated
-              }))
-              .filter(e => e.isActivated)
+            .map(e => ({
+              id: e.id,
+              title: e.title,
+              isActivated: e.isActivated
+            }))
+            .filter(e => e.isActivated)
+
+          this.selectedProject = this.projectListMapped[0] || null
 
           for (let project of this.projectListMapped) {
             if (!project) {
@@ -844,8 +1022,7 @@ export default {
           // )
 
           this.getProjectsLoader = false
-        }
-        catch (e) {
+        } catch (e) {
           console.error(e)
         }
       })
@@ -857,7 +1034,7 @@ export default {
       // 1. Define the range for Next Week
       // const nextWeekStart = moment().add(1, 'weeks').startOf('isoWeek'); // Monday
       const nextWeekEnd = moment().add(1, 'weeks').endOf('isoWeek') // Sunday
-      const tomorrow = moment().add(1, 'days')// tomorrow
+      const tomorrow = moment().add(0, 'days') // tomorrow
 
       const events = this.$fbref(
         this.$fbdb,
@@ -891,7 +1068,7 @@ export default {
             return moment(a.start).valueOf() - moment(b.start).valueOf()
           })
 
-        console.log(nextWeekEvents)
+        console.log('nextWeekEvents', nextWeekEvents)
         this.reminders = nextWeekEvents
 
         const today = moment().startOf('day')
@@ -908,8 +1085,17 @@ export default {
             return moment(a.start).valueOf() - moment(b.start).valueOf()
           })
 
-        console.log(todaysEvents)
-        this.todaysTask = todaysEvents
+        console.log('Todays Event', todaysEvents)
+
+        this.todaysTask = todaysEvents.filter(event => {
+          return event.eventType === 'Task'
+        })
+        console.log('this.todaysTask', this.todaysTask)
+
+        this.todaysMeeting = todaysEvents.filter(event => {
+          return event.eventType === 'Meeting'
+        })
+        console.log('this.todaysMeeting', this.todaysMeeting)
 
         this.fetchingEvents = false
       })
@@ -973,5 +1159,8 @@ export default {
   inset: 0px;
   position: absolute;
   overflow: hidden !important;
+}
+:deep(.q-field__control:after) {
+  display: none !important;
 }
 </style>
