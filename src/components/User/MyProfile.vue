@@ -98,81 +98,129 @@
       </div>
 
       <div class="row full-width q-py-sm justify-between">
+<!--        <q-tabs-->
+<!--          v-model="tab"-->
+<!--          class="bg-white-4 full-width"-->
+<!--          :dense="true"-->
+<!--          align="justify"-->
+<!--        >-->
+<!--          <q-tab-->
+<!--            class="text-capitalize"-->
+<!--            :class="[$q.dark.isActive ? 'primary' : 'primary']"-->
+<!--            name="upload"-->
+<!--            icon="las la-upload"-->
+<!--            label="Upload"-->
+<!--          />-->
+<!--          <q-tab-->
+<!--            class="text-capitalize"-->
+<!--            :class="[$q.dark.isActive ? 'primary' : 'primary']"-->
+<!--            name="capture"-->
+<!--            icon="las la-camera"-->
+<!--            label="Capture"-->
+<!--          />-->
+<!--        </q-tabs>-->
+<!--        <div v-if="tab === 'upload'" class="full-width q-pt-xs">-->
+<!--          <q-file-->
+<!--            v-model="obj.file"-->
+<!--            :dense="true"-->
+<!--            label-color="accent"-->
+<!--            filled-->
+<!--            label="Choose File"-->
+<!--            accept=".jpg, image/*"-->
+<!--            :bg-color="[$q.dark.isActive ? 'primary' : 'primary']"-->
+<!--            class="round-btn"-->
+<!--            :disable="loadingSubmit"-->
+<!--          >-->
+<!--            <template #prepend>-->
+<!--              <q-icon name="cloud_upload" color="accent" />-->
+<!--            </template>-->
+<!--          </q-file>-->
+<!--        </div>-->
+<!--        <div v-if="tab === 'capture'" class="full-width q-pt-xs">-->
+<!--          <q-btn-->
+<!--            dense-->
+<!--            align="left"-->
+<!--            class="text-capitalize full-width no-shadow"-->
+<!--            text-color="accent"-->
+<!--            :color="[$q.dark.isActive ? 'primary' : 'primary']"-->
+<!--            icon="las la-camera"-->
+<!--            label="Open camera"-->
+<!--            :disable="!deviceIsReady"-->
+<!--            style="height: 40px"-->
+<!--            @click="captureImage"-->
+<!--          />-->
+<!--        </div>-->
+
+        <!-- New implem -->
         <q-tabs
-          v-model="tab"
-          class="bg-white-4 full-width"
-          :dense="true"
-          align="justify"
+            v-model="tab"
+            class="bg-white-4 full-width"
+            :dense="true"
+            align="justify-between"
         >
-          <q-tab
-            class="text-capitalize"
-            :class="[$q.dark.isActive ? 'primary' : 'primary']"
-            name="upload"
-            icon="las la-upload"
-            label="Upload"
-          />
-          <q-tab
-            class="text-capitalize"
-            :class="[$q.dark.isActive ? 'primary' : 'primary']"
-            name="capture"
-            icon="las la-camera"
-            label="Capture"
-          />
+          <q-tab class="text-orange text-capitalize" name="upload">
+            <template #default>
+              <div class="row justify-between items-center gap-10">
+                <CloudUpload size="19" /> Upload
+              </div>
+            </template>
+          </q-tab>
+          <q-tab class="text-negative text-capitalize" name="capture">
+            <template #default>
+              <div class="row justify-between items-center gap-10">
+                <Camera size="19" /> Capture
+              </div>
+            </template>
+          </q-tab>
         </q-tabs>
         <div v-if="tab === 'upload'" class="full-width q-pt-xs">
           <q-file
-            v-model="obj.file"
-            :dense="true"
-            label-color="accent"
-            filled
-            label="Choose File"
-            accept=".jpg, image/*"
-            :bg-color="[$q.dark.isActive ? 'primary' : 'primary']"
-            class="round-btn"
-            :disable="loadingSubmit"
+              v-model="obj.file"
+              :dense="true"
+              label-color="primary"
+              filled
+              accept=".jpg, image/*"
+              class="shadow-2 no-border no-box-shadow"
+              :disable="loadingSubmit"
+              :input-class="[$q.dark.isActive ? 'accent' : 'primary']"
           >
+            <template #append>
+              <div class="row full-width">
+                <label class="text-caption text-grey-7"
+                >Choose File..</label
+                >
+              </div>
+            </template>
             <template #prepend>
-              <q-icon name="cloud_upload" color="accent" />
+              <div class="row full-width">
+                <Plus size="19" />
+              </div>
             </template>
           </q-file>
         </div>
         <div v-if="tab === 'capture'" class="full-width q-pt-xs">
           <q-btn
-            dense
-            align="left"
-            class="text-capitalize full-width no-shadow"
-            text-color="accent"
-            :color="[$q.dark.isActive ? 'primary' : 'primary']"
-            icon="las la-camera"
-            label="Open camera"
-            :disable="!deviceIsReady"
-            style="height: 40px"
-            @click="captureImage"
-          />
+              dense
+              flat
+              align="left"
+              class="text-capitalize full-width no-border no-box-shadow no-shadow"
+              :style="$q.dark.isActive ? 'background:#121212' : 'background:#e4e4e4'"
+              text-color="primary"
+              :disable="deviceIsReady"
+              style="height: 40px"
+              @click="captureImage"
+          >
+            <template #default>
+              <div class="row full-width justify-between items-center px-8">
+                <Plus size="19" />
+                <label class="text-caption text-grey-7">Open Camera</label>
+              </div>
+            </template>
+          </q-btn>
         </div>
       </div>
+
     </div>
-    <!-- <div class="row full-width q-px-lg q-py-sm justify-between items-start absolute fixed-bottom" style="margin-bottom:70px">
-      <div>
-        <q-btn label="Back" class="text-capitalize q-ml-none round-btn" color="negative" icon="las la-arrow-left" @click="this.$router.push(`/projects`)"/>
-      </div>
-      <div>
-        <q-btn
-          @click="uploadFile()"
-          color="info"
-          label="Update"
-          class="text-capitalize full-width text-accent round-btn"
-          :loading="loadingSubmit"
-          :disable="loadingSubmit"
-          icon="las la-edit"
-        >
-          <template v-slot:loading>
-            <q-spinner-ios class="on-left"/>
-            <small>Updating..</small>
-          </template>
-        </q-btn>
-      </div>
-    </div> -->
 
     <div v-if="routeName == 'mobile.my-profile'" class="bottom-nav-container">
       <div

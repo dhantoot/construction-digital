@@ -35,7 +35,8 @@
             >
               <template #default>
                 <div class="row justify-between items-center gap-10">
-                  <Power size="16"/> {{ selected[0].isActive ? 'Deactivate' : 'Activate' }}
+                  <Power size="16" />
+                  {{ selected[0].isActive ? 'Deactivate' : 'Activate' }}
                 </div>
               </template>
             </q-btn>
@@ -56,25 +57,18 @@
             >
               <template #default>
                 <div class="row justify-between items-center gap-10">
-                  <Trash2 size="16"/>Delete
+                  <Trash2 size="16" />Delete
                 </div>
               </template>
             </q-btn>
           </div>
 
-          <q-btn
-            no-caps
-            rounded
-            color="info"
-            size="sm"
-            @click="createTemplate"
-          >
+          <q-btn no-caps rounded color="info" size="sm" @click="createTemplate">
             <template #default>
               <div class="row justify-between items-center gap-10">
-                <UserPlus size="16"/> New
+                <UserPlus size="16" /> New
               </div>
             </template>
-
           </q-btn>
         </div>
 
@@ -174,21 +168,27 @@
               <q-card-section class="q-pt-sm">
                 <div class="row full-width justify-between items-start">
                   <div>
-                    <div :class="{
-                    'text-caption': $q.screen.lt.sm
-                    }">
+                    <div
+                      :class="{
+                        'text-caption': $q.screen.lt.sm
+                      }"
+                    >
                       <strong>Role:</strong>
                       {{ props.row.role }}
                     </div>
-                    <div :class="{
-                    'text-caption': $q.screen.lt.sm
-                    }">
+                    <div
+                      :class="{
+                        'text-caption': $q.screen.lt.sm
+                      }"
+                    >
                       <strong>Position:</strong>
                       {{ props.row.position }}
                     </div>
-                    <div :class="{
-                    'text-caption': $q.screen.lt.sm
-                    }">
+                    <div
+                      :class="{
+                        'text-caption': $q.screen.lt.sm
+                      }"
+                    >
                       <strong>Phone:</strong>
                       {{ props.row.phone_number }}
                     </div>

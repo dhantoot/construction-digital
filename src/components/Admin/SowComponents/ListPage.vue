@@ -20,7 +20,7 @@
         >
           <template #default>
             <div class="row justify-between items-center gap-10">
-              <ScanEye size="16"/>View
+              <ScanEye size="16" />View
             </div>
           </template>
         </q-btn>
@@ -32,30 +32,21 @@
           :disable="!selected.length"
           no-caps
           @click="
-            openConfirmDialog(
-              'Would you like to delete this sow?',
-              'deleteSow'
-            )
+            openConfirmDialog('Would you like to delete this sow?', 'deleteSow')
           "
         >
           <template #default>
             <div class="row justify-between items-center gap-10">
-              <Trash2 size="16"/>Delete
+              <Trash2 size="16" />Delete
             </div>
           </template>
         </q-btn>
       </div>
 
-      <q-btn
-        rounded
-        color="info"
-        size="sm"
-        no-caps
-        @click="createTemplate"
-      >
+      <q-btn rounded color="info" size="sm" no-caps @click="createTemplate">
         <template #default>
           <div class="row justify-between items-center gap-10">
-            <Plus size="16"/>New
+            <Plus size="16" />New
           </div>
         </template>
       </q-btn>
@@ -98,11 +89,12 @@
 
       <template #item="props">
         <div class="column full-width my-5">
-          <HofsteeCard
-            class="full-width full-height"
-          >
+          <HofsteeCard class="full-width full-height">
             <template #body>
-              <q-item class="row items-start" :class="$q.dark.isActive ? 'text-white' : 'text-primary'" >
+              <q-item
+                class="row items-start"
+                :class="$q.dark.isActive ? 'text-white' : 'text-primary'"
+              >
                 <q-item-section side>
                   <q-checkbox
                     v-model="props.selected"
@@ -130,7 +122,6 @@
                 <q-spinner-ios size="50px" color="primary" />
               </q-inner-loading>
             </template>
-
           </HofsteeCard>
         </div>
       </template>

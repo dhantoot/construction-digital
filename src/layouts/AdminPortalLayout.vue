@@ -617,7 +617,7 @@ export default {
       isDark,
       drawerClick() {},
       obj: ref({}),
-      activeTab: ref(false),
+      activeTab: ref(false)
     }
   },
   computed: {

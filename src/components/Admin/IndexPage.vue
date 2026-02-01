@@ -254,35 +254,37 @@
               <q-card-section class="full-width">
                 <div class="row q-mb-md justify-between full-width">
                   <div class="text-bold row q-mb-md">Projects</div>
-                    <q-select
-                        v-model="selectedProject"
-                        behavior="menu"
-                        :style="$q.screen.gt.sm ? 'width:250px' : 'width: 100%'"
-                        :popup-content-class="[
-                          $q.dark.isActive
-                            ? 'popupSelectContent bg-contrast no-shadow'
-                            : 'popupSelectContent'
-                        ]"
-                        filled
-                        input-debounce="0"
-                        :label="'Select'"
-                        :dense="true"
-                        option-label="title"
-                        option-value="id"
-                        :options="mappedProject"
-                        :loading="false"
-                    >
-                      <template #loading>
-                        <div class="row justify-center">
-                          <q-spinner-ios />
-                        </div>
-                      </template>
-                    </q-select>
+                  <q-select
+                    v-model="selectedProject"
+                    behavior="menu"
+                    :style="$q.screen.gt.sm ? 'width:250px' : 'width: 100%'"
+                    :popup-content-class="[
+                      $q.dark.isActive
+                        ? 'popupSelectContent bg-contrast no-shadow'
+                        : 'popupSelectContent'
+                    ]"
+                    filled
+                    input-debounce="0"
+                    :label="'Select'"
+                    :dense="true"
+                    option-label="title"
+                    option-value="id"
+                    :options="mappedProject"
+                    :loading="false"
+                  >
+                    <template #loading>
+                      <div class="row justify-center">
+                        <q-spinner-ios />
+                      </div>
+                    </template>
+                  </q-select>
                 </div>
 
                 <div class="row gap-20 justify-between full-width">
                   <div
-                    v-for="item of projectListMapped.filter(e => e.groupedData).filter(e => e.id == selectedProject?.id)"
+                    v-for="item of projectListMapped
+                      .filter(e => e.groupedData)
+                      .filter(e => e.id == selectedProject?.id)"
                     :key="item"
                     class="col col-12 col-sm-12 col-xs-12 full-width"
                     style="width: 100%"
@@ -291,7 +293,6 @@
                       class="no-shadow full-width"
                       :class="[$q.dark.isActive ? 'bg-grey-10 text-white' : '']"
                       :flat="$q.dark.isActive"
-                      style="border: 0.1px solid rgb(137 145 149)"
                       :style="
                         $q.dark.isActive
                           ? 'bg-dark'
@@ -410,8 +411,8 @@
                   <div class="row full-width gap-10">
                     <div class="col">
                       <q-card
-                          flat
-                          :style="
+                        flat
+                        :style="
                           $q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'
                         "
                       >
@@ -420,8 +421,8 @@
                     </div>
                     <div class="col">
                       <q-card
-                          flat
-                          :style="
+                        flat
+                        :style="
                           $q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'
                         "
                       >
@@ -432,8 +433,8 @@
                   <div class="row full-width gap-10">
                     <div class="col">
                       <q-card
-                          flat
-                          :style="
+                        flat
+                        :style="
                           $q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'
                         "
                       >
@@ -442,8 +443,8 @@
                     </div>
                     <div class="col">
                       <q-card
-                          flat
-                          :style="
+                        flat
+                        :style="
                           $q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'
                         "
                       >
@@ -456,8 +457,8 @@
               <template #body-loader>
                 <q-inner-loading :showing="loading2">
                   <q-spinner-ios
-                      size="50px"
-                      :color="$q.dark.isActive ? 'accent' : 'primary'"
+                    size="50px"
+                    :color="$q.dark.isActive ? 'accent' : 'primary'"
                   />
                 </q-inner-loading>
               </template>
@@ -745,15 +746,17 @@ export default {
       return '100%'
     },
     filteredProject: function () {
-      return this.projectListMapped.filter(item => item.id = this.selectedProject.id)
+      return this.projectListMapped.filter(
+        item => (item.id = this.selectedProject.id)
+      )
     },
     mappedProject: function () {
-      return this.projectListMapped.map(item =>{
+      return this.projectListMapped.map(item => {
         return {
           id: item.id,
           value: item.id,
           label: item.title,
-          title: item.title,
+          title: item.title
         }
       })
     }

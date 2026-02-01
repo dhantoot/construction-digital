@@ -73,7 +73,7 @@
         >
           <template #default>
             <div class="row justify-between items-center gap-10">
-              <ChevronLeft size="19"/> Back
+              <ChevronLeft size="19" /> Back
             </div>
           </template>
         </q-btn>
@@ -81,7 +81,7 @@
           size="sm"
           padding="sm xl"
           color="info"
-          class="round-btn  text-capitalize bg-primary"
+          class="round-btn text-capitalize bg-primary"
           :loading="loadingSubmit"
           :disable="
             loadingSubmit ||
@@ -97,7 +97,7 @@
         >
           <template #default>
             <div class="row justify-between items-center gap-10">
-              <Plus size="16"/> Add
+              <Plus size="16" /> Add
             </div>
           </template>
           <template #loading>

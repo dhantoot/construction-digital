@@ -141,7 +141,7 @@
           @click="activatePage('projects')"
         >
           <div class="column justify-start items-center">
-            <ListIcon size="24" />
+            <FolderKanbanIcon size="24" />
           </div>
         </q-btn>
         <q-btn

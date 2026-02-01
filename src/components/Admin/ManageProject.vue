@@ -117,11 +117,12 @@
                 dense
                 flat
                 align="left"
-                class="text-capitalize full-width no-border no-box-shadow no-shadow bg-grey-2"
+                class="text-capitalize full-width no-border no-box-shadow no-shadow"
                 text-color="primary"
                 :disable="deviceIsReady"
                 style="height: 40px"
                 @click="captureImage"
+                :style="$q.dark.isActive ? 'background:rgb(33 33 33)' : 'background:#e4e4e4'"
               >
                 <template #default>
                   <div class="row full-width justify-between items-center px-8">
@@ -568,55 +569,123 @@
             filled
             type="textarea"
           />
+<!--          <q-tabs-->
+<!--            v-model="tab"-->
+<!--            class="bg-white-4 full-width"-->
+<!--            :dense="true"-->
+<!--            align="justify"-->
+<!--          >-->
+<!--            <q-tab-->
+<!--              class="text-orange text-capitalize"-->
+<!--              name="upload"-->
+<!--              icon="las la-upload"-->
+<!--              label="Upload"-->
+<!--            />-->
+<!--            <q-tab-->
+<!--              class="text-negative text-capitalize"-->
+<!--              name="capture"-->
+<!--              icon="las la-camera"-->
+<!--              label="Capture"-->
+<!--            />-->
+<!--          </q-tabs>-->
+<!--          <div v-if="tab === 'upload'" class="full-width q-pt-xs">-->
+<!--            <q-file-->
+<!--              v-model="file"-->
+<!--              :dense="true"-->
+<!--              label-color="primary"-->
+<!--              filled-->
+<!--              label="Choose File"-->
+<!--              multiple-->
+<!--              accept=".jpg, image/*"-->
+<!--              class="shadow-2"-->
+<!--            >-->
+<!--              <template #prepend>-->
+<!--                <q-icon name="cloud_upload" color="primary" />-->
+<!--              </template>-->
+<!--            </q-file>-->
+<!--          </div>-->
+<!--          <div v-if="tab === 'capture'" class="full-width q-pl-sm q-pt-xs">-->
+<!--            <q-btn-->
+<!--              dense-->
+<!--              align="left"-->
+<!--              class="text-capitalize full-width no-shadow round-btn"-->
+<!--              text-color="primary"-->
+<!--              color="grey-2"-->
+<!--              icon="las la-camera"-->
+<!--              label="Open camera"-->
+<!--              :disable="deviceIsReady"-->
+<!--              style="height: 40px"-->
+<!--              @click="captureImage"-->
+<!--            />-->
+<!--          </div>-->
+
           <q-tabs
-            v-model="tab"
-            class="bg-white-4 full-width"
-            :dense="true"
-            align="justify"
+              v-model="tab"
+              class="bg-white-4 full-width"
+              :dense="true"
+              align="justify"
           >
-            <q-tab
-              class="text-orange text-capitalize"
-              name="upload"
-              icon="las la-upload"
-              label="Upload"
-            />
-            <q-tab
-              class="text-negative text-capitalize"
-              name="capture"
-              icon="las la-camera"
-              label="Capture"
-            />
+            <q-tab class="text-orange text-capitalize" name="upload">
+              <template #default>
+                <div class="row justify-between items-center gap-10">
+                  <CloudUpload size="19" /> Upload
+                </div>
+              </template>
+            </q-tab>
+            <q-tab class="text-negative text-capitalize" name="capture">
+              <template #default>
+                <div class="row justify-between items-center gap-10">
+                  <Camera size="19" /> Capture
+                </div>
+              </template>
+            </q-tab>
           </q-tabs>
           <div v-if="tab === 'upload'" class="full-width q-pt-xs">
             <q-file
-              v-model="file"
-              :dense="true"
-              label-color="primary"
-              filled
-              label="Choose File"
-              multiple
-              accept=".jpg, image/*"
-              class="shadow-2"
+                v-model="file"
+                :dense="true"
+                label-color="primary"
+                filled
+                multiple
+                accept=".jpg, image/*"
+                class="shadow-2 no-border no-box-shadow"
             >
+              <template #append>
+                <div class="row full-width">
+                  <label class="text-caption text-grey-7"
+                  >Choose File..</label
+                  >
+                </div>
+              </template>
               <template #prepend>
-                <q-icon name="cloud_upload" color="primary" />
+                <div class="row full-width">
+                  <Plus size="19" />
+                </div>
               </template>
             </q-file>
           </div>
-          <div v-if="tab === 'capture'" class="full-width q-pl-sm q-pt-xs">
+          <div v-if="tab === 'capture'" class="full-width q-pt-xs">
             <q-btn
-              dense
-              align="left"
-              class="text-capitalize full-width no-shadow round-btn"
-              text-color="primary"
-              color="grey-2"
-              icon="las la-camera"
-              label="Open camera"
-              :disable="deviceIsReady"
-              style="height: 40px"
-              @click="captureImage"
-            />
+                dense
+                flat
+                align="left"
+                class="text-capitalize full-width no-border no-box-shadow no-shadow"
+                text-color="primary"
+                :disable="deviceIsReady"
+                style="height: 40px"
+                @click="captureImage"
+                :style="$q.dark.isActive ? 'background:rgb(33 33 33)' : 'background:#e4e4e4'"
+            >
+              <template #default>
+                <div class="row full-width justify-between items-center px-8">
+                  <Plus size="19" />
+                  <label class="text-caption text-grey-7">Open Camera</label>
+                </div>
+              </template>
+            </q-btn>
           </div>
+
+
           <div class="q-py-sm full-width">
             <q-toggle
               v-model="isActivated"

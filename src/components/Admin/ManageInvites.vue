@@ -266,12 +266,15 @@
             <template #item="props">
               <q-card class="q-ma-sm full-width no-shadow" :style="style">
                 <q-card-section>
-                  <div class="text-h6" :class="{
-                        'text-subtitle1': $q.screen.lt.sm
-                      }">{{ props.row.projectName }}</div>
                   <div
-                    class="text-caption row justify-between items-center"
+                    class="text-h6"
+                    :class="{
+                      'text-subtitle1': $q.screen.lt.sm
+                    }"
                   >
+                    {{ props.row.projectName }}
+                  </div>
+                  <div class="text-caption row justify-between items-center">
                     {{ props.row.invitee }}
                     <q-chip
                       size="sm"
@@ -289,22 +292,28 @@
 
                 <q-card-section class="q-pt-sm row justify-between">
                   <div>
-                    <div :class="{
-                    'text-caption': $q.screen.lt.sm
-                    }">
+                    <div
+                      :class="{
+                        'text-caption': $q.screen.lt.sm
+                      }"
+                    >
                       <strong>Sent:</strong>
                       {{ props.row.dateSent }}
                     </div>
-                    <div :class="{
-                    'text-caption': $q.screen.lt.sm
-                    }">
+                    <div
+                      :class="{
+                        'text-caption': $q.screen.lt.sm
+                      }"
+                    >
                       <strong>Responded:</strong>
                       {{ props.row.dateResponded }}
                     </div>
                   </div>
-                  <div :class="{
-                    'text-caption': $q.screen.lt.sm
-                    }">
+                  <div
+                    :class="{
+                      'text-caption': $q.screen.lt.sm
+                    }"
+                  >
                     <strong>Title:</strong>
                     {{ props.row.userTitle }}
                   </div>

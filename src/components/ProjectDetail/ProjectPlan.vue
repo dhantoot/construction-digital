@@ -52,11 +52,18 @@
     </q-inner-loading>
   </div>
 
-  <q-dialog v-model="eventDialog" persistent :class="[$q.screen.lt.sm ? 'row full-width' : '']">
-    <q-card class="row full-width no-shadow" :class="[
+  <q-dialog
+    v-model="eventDialog"
+    persistent
+    :class="[$q.screen.lt.sm ? 'row full-width' : '']"
+  >
+    <q-card
+      class="row full-width no-shadow"
+      :class="[
         $q.dark.isActive ? 'dark' : '',
         $q.screen.lt.sm ? 'row full-width' : ''
-        ]">
+      ]"
+    >
       <div v-if="false" class="">
         <pre>{{
           {
@@ -85,45 +92,45 @@
         />
 
         <q-select
-            class="full-width"
-            dense
-            filled
-            v-model="eventType"
-            :options="eventOptions"
-            placeholder="Event Type"
-            behavior="menu"
-            :popup-content-class="[
-              $q.dark.isActive
-                ? 'popupSelectContent bg-contrast no-shadow'
-                : 'popupSelectContent'
-            ]"
+          v-model="eventType"
+          class="full-width"
+          dense
+          filled
+          :options="eventOptions"
+          placeholder="Event Type"
+          behavior="menu"
+          :popup-content-class="[
+            $q.dark.isActive
+              ? 'popupSelectContent bg-contrast no-shadow'
+              : 'popupSelectContent'
+          ]"
         />
         <div class="row full-width justify-end">
           <q-toggle
-              v-model="isWholeDay"
-              dense
-              checked-icon="check"
-              color="positive"
-              unchecked-icon="clear"
-              label="&nbsp;&nbsp;Whole day"
+            v-model="isWholeDay"
+            dense
+            checked-icon="check"
+            color="positive"
+            unchecked-icon="clear"
+            label="&nbsp;&nbsp;Whole day"
           />
         </div>
         <div v-if="!isWholeDay" class="row full-width justify-between gap-5">
           <q-input
-              v-model="startTimeWithSeconds"
-              :dense="true"
-              filled
-              mask="time"
-              :rules="['time']"
-              class="col"
-              placeholder="Time start"
+            v-model="startTimeWithSeconds"
+            :dense="true"
+            filled
+            mask="time"
+            :rules="['time']"
+            class="col"
+            placeholder="Time start"
           >
             <template #append>
               <q-icon name="access_time" class="cursor-pointer">
                 <q-popup-proxy
-                    cover
-                    transition-show="scale"
-                    transition-hide="scale"
+                  cover
+                  transition-show="scale"
+                  transition-hide="scale"
                 >
                   <q-time v-model="startTimeWithSeconds" format24h>
                     <div class="row items-center justify-end">
@@ -135,19 +142,19 @@
             </template>
           </q-input>
           <q-input
-              v-model="endTimeWithSeconds"
-              :dense="true"
-              filled
-              mask="time"
-              :rules="['time']"
-              class="col"
+            v-model="endTimeWithSeconds"
+            :dense="true"
+            filled
+            mask="time"
+            :rules="['time']"
+            class="col"
           >
             <template #append>
               <q-icon name="access_time" class="cursor-pointer">
                 <q-popup-proxy
-                    cover
-                    transition-show="scale"
-                    transition-hide="scale"
+                  cover
+                  transition-show="scale"
+                  transition-hide="scale"
                 >
                   <q-time v-model="endTimeWithSeconds" format24h>
                     <div class="row items-center justify-end">
@@ -159,17 +166,16 @@
             </template>
           </q-input>
         </div>
-
       </q-card-section>
 
       <q-card-actions align="center" class="q-pa-md full-width">
         <div class="row full-width justify-between">
           <q-btn
-              v-close-popup
-              padding="sm lg"
-              class="round-btn text-capitalize"
-              color="negative"
-              @click="closeEventModal"
+            v-close-popup
+            padding="sm lg"
+            class="round-btn text-capitalize"
+            color="negative"
+            @click="closeEventModal"
           >
             <div class="row full-width gap-5 items-center">
               <XIcon size="20" />
@@ -178,12 +184,12 @@
           </q-btn>
 
           <q-btn
-              padding="sm lg"
-              class="round-btn text-capitalize"
-              color="primary"
-              :loading="actionAccountLoader"
-              :disable="actionAccountLoader"
-              @click="upsertEvent()"
+            padding="sm lg"
+            class="round-btn text-capitalize"
+            color="primary"
+            :loading="actionAccountLoader"
+            :disable="actionAccountLoader"
+            @click="upsertEvent()"
           >
             <template #loading>
               <q-spinner-ios />
@@ -282,8 +288,10 @@ export default {
       eventDescription.value = clickInfo_.event?.extendedProps.description
       eventType.value = clickInfo_.event?.extendedProps.eventType
       isWholeDay.value = clickInfo_.event?.extendedProps.isWholeDay
-      startTimeWithSeconds.value = clickInfo_.event?.extendedProps.startTimeWithSeconds
-      endTimeWithSeconds.value = clickInfo_.event?.extendedProps.endTimeWithSeconds
+      startTimeWithSeconds.value =
+        clickInfo_.event?.extendedProps.startTimeWithSeconds
+      endTimeWithSeconds.value =
+        clickInfo_.event?.extendedProps.endTimeWithSeconds
     }
 
     Object.assign(calendarOptions.value, {
@@ -402,7 +410,7 @@ export default {
           eventType: this.eventType,
           startTimeWithSeconds: this.startTimeWithSeconds,
           endTimeWithSeconds: this.endTimeWithSeconds,
-          isWholeDay: this.isWholeDay,
+          isWholeDay: this.isWholeDay
         })
         this.eventDialog = false
         this.eventName = ''
@@ -449,7 +457,7 @@ export default {
         eventType: this.eventType,
         startTimeWithSeconds: this.startTimeWithSeconds,
         endTimeWithSeconds: this.endTimeWithSeconds,
-        isWholeDay: this.isWholeDay,
+        isWholeDay: this.isWholeDay
       }
       const updates = {}
       updates[`events/${this.$route.params.projectId}/${generatedUid}/`] =

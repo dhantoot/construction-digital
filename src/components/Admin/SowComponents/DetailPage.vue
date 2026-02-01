@@ -76,7 +76,7 @@
             >
               <template #default>
                 <div class="row justify-between items-center">
-                  <ChevronLeft size="19"/> Back
+                  <ChevronLeft size="19" /> Back
                 </div>
               </template>
               <template #loading>
@@ -157,7 +157,7 @@
             >
               <template #default>
                 <div class="row justify-between items-center">
-                  <Plus size="16"/> Add
+                  <Plus size="16" /> Add
                 </div>
               </template>
               <template #loading>
@@ -180,7 +180,7 @@
             >
               <template #default>
                 <div class="row justify-between items-center gap-10">
-                  <ChevronLeft size="19"/> Back
+                  <ChevronLeft size="19" /> Back
                 </div>
               </template>
             </q-btn>
@@ -194,7 +194,7 @@
               >
                 <template #default>
                   <div class="row justify-between items-center gap-10">
-                    <Plus size="16"/> Add Task
+                    <Plus size="16" /> Add Task
                   </div>
                 </template>
               </q-btn>
@@ -209,7 +209,7 @@
               >
                 <template #default>
                   <div class="row justify-between items-center gap-10">
-                    <SquarePen size="16"/> Update
+                    <SquarePen size="16" /> Update
                   </div>
                 </template>
                 <template #loading>
@@ -247,12 +247,20 @@
         <template #item="props">
           <q-card class="q-ma-sm full-width no-shadow" :style="style">
             <q-card-section>
-              <div class="text-h6" :class="{
-                'text-subtitle1': $q.screen.lt.sm
-              }">{{ props.row.sowDescription }}</div>
-              <div class="text-subtitle2 text-grey" :class="{
-                'text-caption': $q.screen.lt.sm
-              }">
+              <div
+                class="text-h6"
+                :class="{
+                  'text-subtitle1': $q.screen.lt.sm
+                }"
+              >
+                {{ props.row.sowDescription }}
+              </div>
+              <div
+                class="text-subtitle2 text-grey"
+                :class="{
+                  'text-caption': $q.screen.lt.sm
+                }"
+              >
                 {{ props.row.sowCategory }}
               </div>
             </q-card-section>
@@ -260,29 +268,37 @@
             <q-card-section>
               <div class="row full-width justify-between">
                 <div>
-                  <div :class="{
-                    'text-caption': $q.screen.lt.sm
-                  }">
+                  <div
+                    :class="{
+                      'text-caption': $q.screen.lt.sm
+                    }"
+                  >
                     <strong>Section:</strong>
                     {{ props.row.section }}
                   </div>
-                  <div :class="{
-                    'text-caption': $q.screen.lt.sm
-                  }">
+                  <div
+                    :class="{
+                      'text-caption': $q.screen.lt.sm
+                    }"
+                  >
                     <strong>Weight:</strong>
                     {{ props.row.weight }}
                   </div>
                 </div>
                 <div>
-                  <div :class="{
-                    'text-caption': $q.screen.lt.sm
-                  }">
+                  <div
+                    :class="{
+                      'text-caption': $q.screen.lt.sm
+                    }"
+                  >
                     <strong>Contract Price:</strong>
                     {{ props.row.contractPrice }}
                   </div>
-                  <div :class="{
-                    'text-caption': $q.screen.lt.sm
-                  }">
+                  <div
+                    :class="{
+                      'text-caption': $q.screen.lt.sm
+                    }"
+                  >
                     <strong>Duration:</strong>
                     {{ props.row.duration }} days
                   </div>
@@ -307,7 +323,7 @@
             >
               <template #default>
                 <div class="row justify-between items-center gap-10">
-                  <SquarePen size="20"/> Update
+                  <SquarePen size="20" /> Update
                 </div>
               </template>
               <template #loading>
@@ -325,14 +341,10 @@
   <q-dialog v-model="addTemplateDialog" persistent>
     <q-card class="no-shadow">
       <q-card-section class="row items-center">
-        <q-avatar
-          size="sm"
-          color="negative"
-          text-color="white"
-        >
+        <q-avatar size="sm" color="negative" text-color="white">
           <template #default>
             <div class="row justify-between items-center">
-              <Plus size="19"/>
+              <Plus size="19" />
             </div>
           </template>
         </q-avatar>
@@ -413,7 +425,7 @@
         >
           <template #default>
             <div class="row justify-between items-center gap-10">
-              <X size="19"/> Close
+              <X size="19" /> Close
             </div>
           </template>
         </q-btn>
@@ -437,7 +449,7 @@
         >
           <template #default>
             <div class="row justify-between items-center gap-10">
-              <Check size="19"/> Confirm
+              <Check size="19" /> Confirm
             </div>
           </template>
           <template #loading>
