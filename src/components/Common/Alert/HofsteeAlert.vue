@@ -1,12 +1,19 @@
 <template>
   <div class="p-5" :style="style">
-    <div class="row gap-10 items-center">
+    <div class="row items-center full-width no-wrap">
+      <!-- Icon -->
       <div class="column col-auto justify-center">
         <slot name="icon" />
       </div>
-      <div class="column width-80">
-        <div class="text-bold"><slot name="header" /></div>
-        <div><slot name="body" /></div>
+
+      <!-- Text content -->
+      <div class="column col q-pl-sm">
+        <div class="text-bold" :class="$q.dark.isActive ? 'text-accent' : ''">
+          <slot name="header" />
+        </div>
+        <div :class="$q.dark.isActive ? 'text-accent' : ''">
+          <slot name="body"/>
+        </div>
       </div>
     </div>
   </div>
@@ -17,16 +24,18 @@ import { ref } from 'vue'
 
 const theme = {
   cancel: '#ffa500',
-  negative: '#82401D',
-  secondary: '#273C41',
-  primary: '#14252C',
-  info: '#45575B',
-  accent: '#f0f2f5',
-  warning: '#CCD0CF',
-  positive: '#A3A39B',
+  negative: '#ce6025',
+  secondary: '#284239',
+  primary: '#3e3e47',
+  info: '#1f3957',
+  accent: '#c0c1c3',
+  warning: '#e0b269',
+  positive: '#05807c',
   green: '#008000',
-  red: '#ff0000'
+  red: '#ff0000',
 }
+
+
 
 export default {
   props: {

@@ -9,8 +9,11 @@
       'no-border': noBorder
     }"
   >
-    <div class="text-bold">
+    <div class="text-weight-bold text-body2">
       <slot name="header" />
+    </div>
+    <div class="text-body2">
+      <slot name="subHeader" />
     </div>
     <div class="pt-10 full-height">
       <slot name="body" />
@@ -35,7 +38,7 @@ export default {
     border: {
       type: String,
       required: true,
-      default: '.1px solid rgb(198 198 198, 0.5)'
+      default: '.1px solid rgb(198 198 198, 0.2)'
     },
     height: {
       type: String,

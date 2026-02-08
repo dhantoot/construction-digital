@@ -539,3 +539,14 @@ $weights: 100, 200, 300, 400, 500, 600, 700, 800, 900;
 //  padding-top: env(safe-area-inset-top) !important;
 //  padding-bottom: env(safe-area-inset-bottom) !important;
 //}
+
+.q-table tbody td {
+  font-size: 16px;
+}
+
+.q-table th {
+  font-weight: 500;
+  font-size: 16px;
+  -webkit-user-select: none;
+  user-select: none;
+}

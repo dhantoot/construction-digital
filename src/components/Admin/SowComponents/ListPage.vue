@@ -68,7 +68,7 @@
       :hide-pagination="$q.screen.lt.sm"
     >
       <template #body="props">
-        <q-tr :props="props" :selected="props.selected">
+        <q-tr :props="props" :selected="props.selected" class="text-subtitle1">
           <q-td auto-width>
             <q-checkbox
               v-model="props.selected"

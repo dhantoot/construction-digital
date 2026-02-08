@@ -32,18 +32,23 @@
                   style="border-radius: 8px"
                   :style="{
                     background:
-                      activeBtn == 0
+                      activeBtn == 0 || hoveredBtn == 0
                         ? $q.dark.isActive
                           ? '#1e1f1f'
                           : '#e0e2e5'
                         : ''
                   }"
                   @click="activeBtn = 0"
+                  @mouseover="hoveredBtn = 0"
+                  @mouseleave="hoveredBtn = null"
                 >
                   <template #default>
                     <div class="row justify-between items-center gap-10">
                       <Play size="20" />
                     </div>
+                    <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
+                    Dashboard
+                  </q-tooltip>
                   </template>
                 </q-btn>
               </div>
@@ -55,7 +60,7 @@
                   style="border-radius: 8px"
                   :style="{
                     background:
-                      activeBtn == 1
+                      activeBtn == 1 || hoveredBtn == 1
                         ? $q.dark.isActive
                           ? '#1e1f1f'
                           : '#e0e2e5'
@@ -63,11 +68,16 @@
                   }"
                   :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
                   @click="activeBtn = 1"
+                  @mouseover="hoveredBtn = 1"
+                  @mouseleave="hoveredBtn = null"
                 >
                   <template #default>
                     <div class="row justify-between items-center gap-10">
                       <PencilRuler size="20" />
                     </div>
+                    <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
+                    Manage SOW
+                  </q-tooltip>
                   </template>
                 </q-btn>
               </div>
@@ -79,7 +89,7 @@
                   style="border-radius: 8px"
                   :style="{
                     background:
-                      activeBtn == 2
+                      activeBtn == 2 || hoveredBtn == 2
                         ? $q.dark.isActive
                           ? '#1e1f1f'
                           : '#e0e2e5'
@@ -87,11 +97,16 @@
                   }"
                   :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
                   @click="activeBtn = 2"
+                  @mouseover="hoveredBtn = 2"
+                  @mouseleave="hoveredBtn = null"
                 >
                   <template #default>
                     <div class="row justify-between items-center gap-10">
                       <FolderKanbanIcon size="20" />
                     </div>
+                    <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
+                    Manage Projects
+                  </q-tooltip>
                   </template>
                 </q-btn>
               </div>
@@ -103,7 +118,7 @@
                   style="border-radius: 8px"
                   :style="{
                     background:
-                      activeBtn == 3
+                      activeBtn == 3 || hoveredBtn == 3
                         ? $q.dark.isActive
                           ? '#1e1f1f'
                           : '#e0e2e5'
@@ -111,11 +126,16 @@
                   }"
                   :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
                   @click="activeBtn = 3"
+                  @mouseover="hoveredBtn = 3"
+                  @mouseleave="hoveredBtn = null"
                 >
                   <template #default>
                     <div class="row justify-between items-center gap-10">
                       <Send size="20" />
                     </div>
+                    <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
+                    Manage Invites
+                  </q-tooltip>
                   </template>
                 </q-btn>
               </div>
@@ -130,7 +150,7 @@
                   style="border-radius: 8px"
                   :style="{
                     background:
-                      activeBtn == 4
+                      activeBtn == 4 || hoveredBtn == 4
                         ? $q.dark.isActive
                           ? '#1e1f1f'
                           : '#e0e2e5'
@@ -138,11 +158,16 @@
                   }"
                   :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
                   @click="activeBtn = 4"
+                  @mouseover="hoveredBtn = 4"
+                  @mouseleave="hoveredBtn = null"
                 >
                   <template #default>
                     <div class="row justify-between items-center gap-10">
                       <Users size="20" />
                     </div>
+                     <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
+                    Manage Accounts
+                  </q-tooltip>
                   </template>
                 </q-btn>
               </div>
@@ -154,7 +179,7 @@
                   style="border-radius: 8px"
                   :style="{
                     background:
-                      activeBtn == 5
+                      activeBtn == 5 || hoveredBtn == 5
                         ? $q.dark.isActive
                           ? '#1e1f1f'
                           : '#e0e2e5'
@@ -162,11 +187,16 @@
                   }"
                   :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
                   @click="activeBtn = 5"
+                  @mouseover="hoveredBtn = 5"
+                  @mouseleave="hoveredBtn = null"
                 >
                   <template #default>
                     <div class="row justify-between items-center gap-10">
                       <BellRing size="20" />
                     </div>
+                     <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
+                    What's New
+                  </q-tooltip>
                   </template>
                 </q-btn>
               </div>
@@ -177,7 +207,7 @@
                   style="border-radius: 8px"
                   :style="{
                     background:
-                      activeBtn == 6
+                      activeBtn == 6 || hoveredBtn == 6
                         ? $q.dark.isActive
                           ? '#1e1f1f'
                           : '#e0e2e5'
@@ -185,11 +215,16 @@
                   }"
                   :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
                   @click="activeBtn = 6"
+                  @mouseover="hoveredBtn = 6"
+                  @mouseleave="hoveredBtn = null"
                 >
                   <template #default>
                     <div class="row justify-between items-center gap-10">
                       <MessageCircleMore size="20" />
                     </div>
+                    <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
+                    Messages
+                  </q-tooltip>
                   </template>
                 </q-btn>
               </div>
@@ -204,7 +239,7 @@
                   style="border-radius: 8px"
                   :style="{
                     background:
-                      activeBtn == 7
+                      activeBtn == 7 || hoveredBtn == 7
                         ? $q.dark.isActive
                           ? '#1e1f1f'
                           : '#e0e2e5'
@@ -212,11 +247,16 @@
                   }"
                   :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
                   @click="activeBtn = 7"
+                  @mouseover="hoveredBtn = 7"
+                  @mouseleave="hoveredBtn = null"
                 >
                   <template #default>
                     <div class="row justify-between items-center gap-10">
                       <Headset size="20" />
                     </div>
+                    <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
+                    Support
+                  </q-tooltip>
                   </template>
                 </q-btn>
               </div>
@@ -227,7 +267,7 @@
                   style="border-radius: 8px"
                   :style="{
                     background:
-                      activeBtn == 8
+                      activeBtn == 8 || hoveredBtn == 8
                         ? $q.dark.isActive
                           ? '#1e1f1f'
                           : '#e0e2e5'
@@ -235,11 +275,16 @@
                   }"
                   :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
                   @click="activeBtn = 8"
+                  @mouseover="hoveredBtn = 8"
+                  @mouseleave="hoveredBtn = null"
                 >
                   <template #default>
                     <div class="row justify-between items-center gap-10">
                       <Cog size="20" />
                     </div>
+                    <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
+                    Settings
+                  </q-tooltip>
                   </template>
                 </q-btn>
               </div>
@@ -250,7 +295,7 @@
                   style="border-radius: 8px"
                   :style="{
                     background:
-                      activeBtn == 9
+                      activeBtn == 9 || hoveredBtn == 9
                         ? $q.dark.isActive
                           ? '#1e1f1f'
                           : '#e0e2e5'
@@ -258,11 +303,16 @@
                   }"
                   :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
                   @click="activeBtn = 9"
+                  @mouseover="hoveredBtn = 9"
+                  @mouseleave="hoveredBtn = null"
                 >
                   <template #default>
                     <div class="row justify-between items-center gap-10">
                       <CircleUser size="20" />
                     </div>
+                    <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
+                    Profile
+                  </q-tooltip>
                   </template>
                 </q-btn>
               </div>
@@ -281,6 +331,9 @@
                     <div class="row justify-between items-center gap-10">
                       <LogOut size="20" />
                     </div>
+                    <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
+                    Logout
+                  </q-tooltip>
                   </template>
                 </q-btn>
               </div>
@@ -335,7 +388,7 @@
               <strong
                 class="caption"
                 :class="[$q.screen.lt.sm ? 'caption' : 'text-h6']"
-                >{{ routeName }}</strong
+                >{{ routeName === 'admin.my-profile' ? 'User Details' :  routeName}}</strong
               >
             </div>
 
@@ -407,10 +460,10 @@
                         />
                       </q-item-section>
                     </q-item>
-                    <q-item v-ripple clickable>
+                    <q-item v-ripple clickable  :to="`/admin-profile/${authUser.uid}`">
                       <q-item-section>My Profile</q-item-section>
                       <q-item-section side>
-                        <q-icon name="las la-user" class="text-accent" />
+                        <CircleUser size="24" />
                       </q-item-section>
                     </q-item>
                     <q-item
@@ -420,10 +473,7 @@
                     >
                       <q-item-section>Logout</q-item-section>
                       <q-item-section side>
-                        <q-icon
-                          name="las la-sign-out-alt"
-                          class="text-accent"
-                        />
+                        <LogOut size="24" />
                       </q-item-section>
                     </q-item>
                   </q-list>
@@ -598,6 +648,7 @@ export default {
     const isDark = ref(false)
     const mainStore = useMainStore()
     const activeBtn = ref(0)
+    const hoveredBtn = ref(null)
 
     if (Capacitor.isNativePlatform()) {
       StatusBar.setBackgroundColor({ color: '#f0f0f0' })
@@ -606,6 +657,7 @@ export default {
 
     return {
       activeBtn,
+      hoveredBtn,
       confirm: ref(false),
       confirmMsg: '',
       confirmCallbackFn: '',

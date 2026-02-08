@@ -38,9 +38,10 @@
                 :thickness="0.05"
                 color="red"
                 track-color="grey-3"
+                readonly
               >
                 <!-- <q-icon name="volume_up" class="q-mr-xs" /> -->
-                {{ box1 }}%
+                {{ box1 }}
               </q-knob>
             </div>
           </div>
@@ -56,8 +57,8 @@
         <q-card-section>
           <div class="column">
             <div class="">
-              <div class="text-weight-bold text-amber">Planned Works</div>
-              <div>To be done</div>
+              <div class="text-weight-bold text-amber">Scheduled Work</div>
+              <div>Remaining</div>
             </div>
             <div class="row justify-end">
               <q-knob
@@ -69,8 +70,9 @@
                 :thickness="0.05"
                 color="amber"
                 track-color="grey-3"
+                readonly
               >
-                {{ box2 }}%
+                {{ box2 }}
               </q-knob>
             </div>
           </div>
@@ -89,8 +91,8 @@
         <q-card-section>
           <div class="column">
             <div class="">
-              <div class="text-weight-bold text-blue">Actual Work</div>
-              <div>Timely Done</div>
+              <div class="text-weight-bold text-blue">Target Work</div>
+              <div>Total Scope</div>
             </div>
             <div class="row justify-end">
               <q-knob
@@ -102,8 +104,9 @@
                 :thickness="0.05"
                 color="blue"
                 track-color="grey-3"
+                readonly
               >
-                {{ box3 }}%
+                {{ box3 }}
               </q-knob>
             </div>
           </div>
@@ -132,8 +135,9 @@
                 :thickness="0.05"
                 color="green"
                 track-color="grey-3"
+                readonly
               >
-                {{ box4 }}°
+                {{ box4 }}
               </q-knob>
             </div>
           </div>
@@ -144,9 +148,19 @@
 
   <div :style="[$q.screen.lt.sm ? 'padding-bottom: 90px;' : '']">
     <div>
+        <div class="q-ma-md">
+            <q-select
+                v-model="selectedProject"
+                :options="projectListMapped"
+                option-label="title"
+                label="Select Project"
+                filled
+                dense
+            />
+        </div>
+
       <div
-        v-for="item of projectListMapped.filter(e => e.groupedData)"
-        :key="item"
+        v-if="selectedProject && selectedProject.groupedData"
         class="row"
       >
         <div class="full-width">
@@ -155,21 +169,21 @@
             :class="$q.dark.isActive ? 'bg-grey-10' : ''"
             :flat="$q.dark.isActive"
           >
-            <q-card-section>{{ item.title }}</q-card-section>
+            <q-card-section>{{ selectedProject.title }}</q-card-section>
             <q-card-section class="p-0">
               <apexchart
-                :key="`${item.title}-${getProjectsLoader}`"
+                :key="`${selectedProject.title}-${getProjectsLoader}`"
                 type="line"
                 height="350"
-                :options="item.projectTaskCompleted"
-                :series="item.projectTaskCompletedValue"
+                :options="selectedProject.projectTaskCompleted"
+                :series="selectedProject.projectTaskCompletedValue"
               ></apexchart>
             </q-card-section>
           </q-card>
         </div>
       </div>
     </div>
-
+    
     <div v-if="false" class="row">
       <div class="full-width">
         <q-card :flat="$q.dark.isActive" class="m-10">
@@ -745,10 +759,18 @@ export default {
         },
         labels: ['Percent']
       },
-      box1: ref(81),
-      box2: ref(21),
-      box3: ref(50),
-      box4: ref(32),
+      box1: ref(0),
+      box2: ref(0),
+      box3: ref(0),
+      box4: ref(0),
+      // New Mobile Stats
+      selectedProject: ref(null),
+      completionRate: ref(0),
+      overdueWorksCount: ref(0),
+      plannedWorksCount: ref(0),
+      actualWorksCount: ref(0), // Total Tasks
+      completedWorksCount: ref(0),
+
       visible,
       visible2,
       initFunction() {
@@ -763,7 +785,17 @@ export default {
   computed: {
     test: function () {
       return "I'm computed hook"
-    }
+    },
+    mappedProject: function () {
+      return this.projectListMapped.map(item => {
+        return {
+          id: item.id,
+          value: item.id,
+          label: item.title,
+          title: item.title
+        }
+      })
+    },
   },
   beforeCreate() {
     // console.log('beforeCreate')
@@ -780,6 +812,7 @@ export default {
     await this.getProjectByUser()
     // await this.getTodoList()
     await this.getProjects()
+    await this.getMobileStats()
   },
   beforeUpdate() {
     // console.log('beforeUpdate')
@@ -795,10 +828,13 @@ export default {
   },
   methods: {
     async getProjectByUser() {
-      console.log('getProjectByUser..')
-      const userDetails = LocalStorage.getItem('currentUser')
+      // console.log('getProjectByUser..')
+      const userDetails = LocalStorage.getItem('currentUser') || {} // Handle potential null
       const { email } = userDetails
-      console.log({ email })
+
+      if (!email) return // Safety check
+
+      // console.log({ email })
       const invites = this.$fbref(this.$fbdb, 'invites')
       this.$fbonValue(invites, snapshot => {
         const data = snapshot.val()
@@ -806,11 +842,11 @@ export default {
           return
         }
         const data_ = Object.values(data)
-        console.log('data_ from invites', data_)
+        // console.log('data_ from invites', data_)
         this.projectIds = data_
           .filter(e => e.invitee === email)
           .map(e => e.projectId)
-        console.log('this.projectIds', this.projectIds)
+        // console.log('this.projectIds', this.projectIds)
       })
     },
     showTextLoading() {
@@ -820,6 +856,86 @@ export default {
       setTimeout(() => {
         this.visible = false
       }, ms)
+    },
+    async getMobileStats() {
+      const userDetails = LocalStorage.getItem('currentUser') || {}
+      const { role } = userDetails
+      const isAdmin = role === 'admin' // Or check specific admin role string if different
+
+      // If needed, check 'adminUser' from LocalStorage if logic differs
+      // The Admin dashboard uses 'adminUser'. Mobile uses 'currentUser'.
+      // Assumption: Role is sufficient.
+
+      // Fetch ALL tasks first, then filter in memory
+      const allTasksRef = this.$fbref(this.$fbdb, 'task')
+      this.$fbonValue(allTasksRef, snapshot => {
+        const data = snapshot.val()
+        if (this.$isFalsyString(data)) {
+           return
+        }
+
+        let totalTasks = 0
+        let completedTasks = 0
+        let overdueCount = 0
+        let plannedCount = 0
+        
+        const today = moment().startOf('day')
+
+        // Iterate projects
+        Object.keys(data).forEach(projectId => {
+            // Filter Logic:
+            // If Admin: Include all projects
+            // If Non-Admin: Include only if projectId is in this.projectIds OR 
+            // check against projectListMapped which is already filtered by getProjects
+            
+            // Optimization: projectListMapped contains the projects visible to the user.
+            // Check if this projectId exists in projectListMapped.
+            const isVisible = this.projectListMapped.some(p => p.id === projectId)
+            
+            // However, getProjects is async and might not have populated yet if we run parallel?
+            // Actually getProjects is awaited in mounted. So projectListMapped should be ready.
+            // But wait, getProjects fetches 'projects' node. 'task' node keys are projectIds.
+            
+            if (!isAdmin && !isVisible) {
+                return // Skip projects not assigned to user
+            }
+
+            const projectTasks = data[projectId]
+            if (!projectTasks) return
+
+            Object.values(projectTasks).forEach(task => {
+                if (task.isArchived) return
+
+                totalTasks++
+
+                if (task.isCompleted) {
+                    completedTasks++
+                } else {
+                    const dueDate = moment(task.timeline?.to, 'YYYY/MM/DD')
+                    if (dueDate.isValid()) {
+                        if (dueDate.isBefore(today)) {
+                            overdueCount++
+                        } else {
+                            plannedCount++
+                        }
+                    } else {
+                        plannedCount++
+                    }
+                }
+            })
+        })
+
+        this.overdueWorksCount = overdueCount
+        this.plannedWorksCount = plannedCount
+        this.actualWorksCount = totalTasks
+        this.completedWorksCount = completedTasks
+        
+        this.box1 = this.overdueWorksCount
+        this.box2 = this.plannedWorksCount
+        this.box3 = this.actualWorksCount
+        this.box4 = this.completedWorksCount
+
+      })
     },
     async getProjects() {
       const projects = this.$fbref(this.$fbdb, 'projects')
@@ -833,25 +949,23 @@ export default {
         this.projectList = data_
 
         // map projects by user role
-        const userDetails = LocalStorage.getItem('currentUser')
+        const userDetails = LocalStorage.getItem('currentUser') || {}
         const { role, email } = userDetails
-        console.log({
-          role
-        })
+        // console.log({ role })
 
         if (role === 'client') {
           data_ = data_.filter(e => e.client?.map(f => f.email).includes(email))
-          console.log('filtered data_', data_)
+          // console.log('filtered data_', data_)
         }
 
         if (role === 'agent') {
           data_ = data_.filter(e => e.agent?.map(f => f.email).includes(email))
-          console.log('filtered data_', data_)
+          // console.log('filtered data_', data_)
         }
 
         if (role === 'constructor') {
           data_ = data_.filter(project => this.projectIds.includes(project.id))
-          console.log('filtered data_', data_)
+          // console.log('filtered data_', data_)
         }
 
         this.projectListMapped = data_
@@ -861,6 +975,10 @@ export default {
             isActivated: e.isActivated
           }))
           .filter(e => e.isActivated)
+        
+        // Select the first project by default
+        this.selectedProject = this.projectListMapped[0] || null
+
         this.projectListMapped.forEach(async project => {
           if (!project) {
             return false
@@ -951,7 +1069,7 @@ export default {
           if (nameA > nameB) {
             return 1
           }
-
+ 
           // names must be equal
           return 0
         })
@@ -964,6 +1082,7 @@ export default {
     }
   }
 }
+
 </script>
 
 <style lang="scss" scoped>

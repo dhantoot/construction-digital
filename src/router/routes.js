@@ -189,6 +189,11 @@ const routes = [
         path: '/manage-reports',
         name: 'Reports',
         component: () => import('src/components/Admin/ReportsView.vue')
+      },
+      {
+        path: '/admin-profile/:uid',
+        name: 'admin.my-profile',
+        component: () => import('components/User/MyProfile.vue')
       }
     ]
   },

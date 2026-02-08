@@ -247,7 +247,6 @@
                     class="text-capitalize text-secondary round-btn shadow"
                     text-color="primary"
                     color="warning"
-                    label="Resend invite"
                     :dense="true"
                     :loading="resendInviteLoader[props.rowIndex]"
                     :disable="resendInviteLoader[props.rowIndex]"
@@ -257,6 +256,8 @@
                       <q-spinner-ios class="on-left" />
                       <small>Sending..</small>
                     </template>
+
+                    <span class="text-subtitle2 ml-5">Resend invite</span>
                   </q-btn>
                 </q-td>
               </q-tr>
@@ -327,7 +328,6 @@
                     class="text-capitalize text-secondary round-btn shadow"
                     text-color="primary"
                     color="warning"
-                    label="Resend invite"
                     :dense="true"
                     :loading="resendInviteLoader[props.rowIndex]"
                     :disable="resendInviteLoader[props.rowIndex]"
@@ -337,6 +337,8 @@
                       <q-spinner-ios class="on-left" />
                       <small>Sending..</small>
                     </template>
+
+                    <span class="text-caption">Resend invite</span>
                   </q-btn>
                 </q-card-actions>
               </q-card>

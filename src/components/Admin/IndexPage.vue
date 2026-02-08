@@ -24,7 +24,7 @@
                       '#292727': $q.dark.isActive
                     }"
                     border-radius="8px"
-                    border-color="cancel"
+                    :border-color="getBorderColor(item?.eventType)"
                     border="0.1px solid"
                     height="54px"
                   >
@@ -56,66 +56,6 @@
 
           <!-- Today's Task -->
           <div class="col-12 col-sm-6 col-lg-4">
-            <!--            <HofsteeCard class="full-height" bordered flat>-->
-            <!--              <template #header>Overall Projects</template>-->
-            <!--              <template #body>-->
-            <!--                <div class="column gap-10 justify-evenly height-90 pb-10">-->
-            <!--                  <div class="row full-width gap-10">-->
-            <!--                    <div class="col">-->
-            <!--                      <q-card-->
-            <!--                          flat-->
-            <!--                          :style="-->
-            <!--                          $q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'-->
-            <!--                        "-->
-            <!--                      >-->
-            <!--                        Active-->
-            <!--                      </q-card>-->
-            <!--                    </div>-->
-            <!--                    <div class="col">-->
-            <!--                      <q-card-->
-            <!--                          flat-->
-            <!--                          :style="-->
-            <!--                          $q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'-->
-            <!--                        "-->
-            <!--                      >-->
-            <!--                        On-hold-->
-            <!--                      </q-card>-->
-            <!--                    </div>-->
-            <!--                  </div>-->
-            <!--                  <div class="row full-width gap-10">-->
-            <!--                    <div class="col">-->
-            <!--                      <q-card-->
-            <!--                          flat-->
-            <!--                          :style="-->
-            <!--                          $q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'-->
-            <!--                        "-->
-            <!--                      >-->
-            <!--                        Completed-->
-            <!--                      </q-card>-->
-            <!--                    </div>-->
-            <!--                    <div class="col">-->
-            <!--                      <q-card-->
-            <!--                          flat-->
-            <!--                          :style="-->
-            <!--                          $q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'-->
-            <!--                        "-->
-            <!--                      >-->
-            <!--                        Archived-->
-            <!--                      </q-card>-->
-            <!--                    </div>-->
-            <!--                  </div>-->
-            <!--                </div>-->
-            <!--              </template>-->
-            <!--              <template #body-loader>-->
-            <!--                <q-inner-loading :showing="loading2">-->
-            <!--                  <q-spinner-ios-->
-            <!--                      size="50px"-->
-            <!--                      :color="$q.dark.isActive ? 'accent' : 'primary'"-->
-            <!--                  />-->
-            <!--                </q-inner-loading>-->
-            <!--              </template>-->
-            <!--            </HofsteeCard>-->
-
             <HofsteeCard class="full-height" bordered flat>
               <template #header>Today's Task</template>
               <template #body>
@@ -130,7 +70,7 @@
                       '#292727': $q.dark.isActive
                     }"
                     border-radius="8px"
-                    border-color="cancel"
+                    :border-color="getBorderColor(item?.eventType)"
                     border="0.1px solid"
                     height="54px"
                   >
@@ -165,7 +105,7 @@
             <HofsteeCard class="full-height" bordered flat>
               <template #header>
                 <div class="row items-center full-width gap-10">
-                  Event Reminders
+                  Reminders
                   <div>
                     <CircleQuestionMark
                       size="15"
@@ -198,7 +138,7 @@
                       '#292727': $q.dark.isActive
                     }"
                     border-radius="8px"
-                    border-color="cancel"
+                    :border-color="getBorderColor(item?.eventType)"
                     border="0.1px solid"
                     height="54px"
                   >
@@ -224,7 +164,12 @@
                         />
                       </div>
                     </template>
-                    <template #header>{{ item?.title }}</template>
+                    <template #header>
+                      <div class="row full-width justify-between">
+                        <span>{{ item?.title }}</span>
+                        <span class="text-caption">{{ item?.day }}</span>
+                      </div>
+                    </template>
                     <template #body>{{ item?.description }}</template>
                   </HofsteeAlert>
                 </div>
@@ -339,12 +284,11 @@
             <HofsteeCard bordered flat class="full-width">
               <template #header>Statistics</template>
               <template #body>
-                <div class="row full-width gap-10 items-center">
-                  <div class="text-h4 text-primary">85%</div>
-                  <div class="text-caption text-grey-6">Completion Rate</div>
+                <div class="row full-width gap-10 items-end">
+                  <div class="text-h4">{{ completionRate }}%</div>
+                  <div class="text-body1">Completion Rate</div>
                   <q-linear-progress
-                    :value="0.85"
-                    color="primary"
+                    :value="completionRate / 100"
                     size="8px"
                     class="q-mt-sm"
                   />
@@ -354,18 +298,20 @@
                       '#3E3E47': $q.dark.isActive
                     }"
                     border-radius="8px"
-                    border-color="primary"
+                    border-color="positive"
                     border="0.1px solid"
                     height="54px"
                   >
                     <template #icon>
-                      <q-icon
-                        name="las la-play-circle"
-                        color="primary"
-                        size="lg"
-                      />
+                      <div class="">
+                        <CircleCheck class="" size="30" color="#05807c" />
+                      </div>
                     </template>
-                    <template #header>12 Active</template>
+                    <template #header
+                      ><span
+                        >{{ activeProjectsCount }} Active Projects</span
+                      ></template
+                    >
                     <template #body>Lorem ipsum dolor set emit</template>
                   </HofsteeAlert>
 
@@ -374,18 +320,20 @@
                       '#3E3E47': $q.dark.isActive
                     }"
                     border-radius="8px"
-                    border-color="primary"
+                    border-color="info"
                     border="0.1px solid"
                     height="54px"
                   >
                     <template #icon>
-                      <q-icon
-                        name="las la-play-circle"
-                        color="primary"
-                        size="lg"
-                      />
+                      <div class="">
+                        <Hourglass class="" size="30" color="#1f3957" />
+                      </div>
                     </template>
-                    <template #header>12 Pending</template>
+                    <template #header
+                      ><span
+                        >{{ inactiveProjectsCount }} Projects Inactive</span
+                      ></template
+                    >
                     <template #body>Lorem ipsum dolor set emit</template>
                   </HofsteeAlert>
                 </div>
@@ -403,7 +351,7 @@
           </div>
 
           <!-- Middle right card -->
-          <div class="row full-width pl-10">
+          <div v-if="false" class="row full-width pl-10">
             <HofsteeCard class="full-height full-width" bordered flat>
               <template #header>Overall Projects</template>
               <template #body>
@@ -412,8 +360,11 @@
                     <div class="col">
                       <q-card
                         flat
+                        :class="$q.dark.isActive ? 'text-accent' : ''"
                         :style="
-                          $q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'
+                          $q.dark.isActive
+                            ? 'bg-dark text-accent'
+                            : 'background: #f0f8ff'
                         "
                       >
                         Active
@@ -422,6 +373,7 @@
                     <div class="col">
                       <q-card
                         flat
+                        :class="$q.dark.isActive ? 'text-accent' : ''"
                         :style="
                           $q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'
                         "
@@ -434,6 +386,7 @@
                     <div class="col">
                       <q-card
                         flat
+                        :class="$q.dark.isActive ? 'text-accent' : ''"
                         :style="
                           $q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'
                         "
@@ -444,6 +397,7 @@
                     <div class="col">
                       <q-card
                         flat
+                        :class="$q.dark.isActive ? 'text-accent' : ''"
                         :style="
                           $q.dark.isActive ? 'bg-dark' : 'background: #f0f8ff'
                         "
@@ -465,8 +419,124 @@
             </HofsteeCard>
           </div>
 
+          <!-- Middle right card -->
+          <!-- Work Due & Planned Works -->
+          <div class="row justify-between full-width gap-10 pl-10">
+            <!-- Work Due -->
+            <div class="col">
+              <HofsteeCard bordered flat class="full-width" height="156px">
+                <template #header
+                  ><span class="text-red">Work Due</span></template
+                >
+                <template #subHeader>Behind schedule</template>
+                <template #body>
+                  <div class="row justify-end">
+                    <q-knob
+                      v-model="box1"
+                      show-value
+                      font-size="16px"
+                      class="text-red q-ma-md"
+                      size="50px"
+                      :thickness="0.05"
+                      color="red"
+                      track-color="grey-3"
+                      readonly
+                    >
+                      {{ box1 }}
+                    </q-knob>
+                  </div>
+                </template>
+              </HofsteeCard>
+            </div>
+
+            <!-- Planned Works -->
+            <div class="col">
+              <HofsteeCard bordered flat class="full-width" height="156px">
+                <template #header
+                  ><span class="text-amber">Scheduled Work</span></template
+                >
+                <template #subHeader>Remaining</template>
+                <template #body>
+                  <div class="row justify-end">
+                    <q-knob
+                      v-model="box2"
+                      show-value
+                      font-size="16px"
+                      class="text-amber q-ma-md"
+                      size="50px"
+                      :thickness="0.05"
+                      color="amber"
+                      track-color="grey-3"
+                      readonly
+                    >
+                      {{ box2 }}
+                    </q-knob>
+                  </div>
+                </template>
+              </HofsteeCard>
+            </div>
+          </div>
+
+          <!-- Middle right card -->
+          <!-- Actual Work & Work Done -->
+          <div class="row justify-between full-width gap-10 pl-10">
+            <!-- Actual work -->
+            <div class="col">
+              <HofsteeCard bordered flat class="full-width" height="156px">
+                <template #header
+                  ><span class="text-blue">Target Work</span></template
+                >
+                <template #subHeader>Total Scope</template>
+                <template #body>
+                  <div class="row justify-end">
+                    <q-knob
+                      v-model="box3"
+                      show-value
+                      font-size="16px"
+                      class="text-blue q-ma-md"
+                      size="50px"
+                      :thickness="0.05"
+                      color="blue"
+                      track-color="grey-3"
+                      readonly
+                    >
+                      {{ box3 }}
+                    </q-knob>
+                  </div>
+                </template>
+              </HofsteeCard>
+            </div>
+
+            <!-- Work Done -->
+            <div class="col">
+              <HofsteeCard bordered flat class="full-width" height="156px">
+                <template #header
+                  ><span class="text-green">Work Done</span></template
+                >
+                <template #subHeader>Ahead of time</template>
+                <template #body>
+                  <div class="row justify-end">
+                    <q-knob
+                      v-model="box4"
+                      show-value
+                      font-size="16px"
+                      class="text-green q-ma-md"
+                      size="50px"
+                      :thickness="0.05"
+                      color="green"
+                      track-color="grey-3"
+                      readonly
+                    >
+                      {{ box4 }}
+                    </q-knob>
+                  </div>
+                </template>
+              </HofsteeCard>
+            </div>
+          </div>
+
           <!-- Bottom right card -->
-          <div class="row full-width pl-10">
+          <div v-if="false" class="row full-width pl-10">
             <q-card
               flat
               bordered
@@ -735,7 +805,19 @@ export default {
       reminders: ref([]),
       todaysTask: ref([]),
       todaysMeeting: ref([]),
-      selectedProject: ref(null)
+      selectedProject: ref(null),
+      box1: ref(81),
+      box2: ref(21),
+      box3: ref(0),
+      box4: ref(0),
+      // New Statistics Variables
+      completionRate: ref(0),
+      activeProjectsCount: ref(0),
+      inactiveProjectsCount: ref(0),
+      overdueWorksCount: ref(0),
+      plannedWorksCount: ref(0),
+      actualWorksCount: ref(0),
+      completedWorksCount: ref(0)
     }
   },
   computed: {
@@ -783,6 +865,7 @@ export default {
     this.$emit('emitFromChild')
     this.getProjectsLoader = true
     await this.getProjects()
+    await this.getGlobalStats() // Fetch global stats
     this.apexChart1Width = '100%'
 
     await this.getEvents()
@@ -867,6 +950,172 @@ export default {
     getEventClass() {
       return ['my-custom-event']
     },
+    async getGlobalStats() {
+      // Fetch all tasks
+      const allTasksRef = this.$fbref(this.$fbdb, 'task')
+      this.$fbonValue(allTasksRef, snapshot => {
+        const data = snapshot.val()
+        if (this.$isFalsyString(data)) {
+          return
+        }
+
+        let totalTasks = 0
+        let completedTasks = 0
+        let overdueCount = 0
+        let plannedCount = 0
+        // let actualCount = 0 // Assuming 'Actual Work' means 'Timely done' or just Completed? Instruction says: "Number of Actual Work". Implementation Plan: Count of isCompleted.
+        // Wait, "Actual Work" in the UI says "Timely done". "Work Done" says "Ahead of time".
+        // The user instruction is simply:
+        // - Completion rate percentage
+        // - Number of Active Projects
+        // - Number of Inactive Projects
+        // - Number of Overdue Works
+        // - Number of Planned Works
+        // - Number of Actual Work
+        // - Number of Completed Works
+
+        // I will adhere to:
+        // Completed Works = Count of isCompleted == true
+        // Actual Work = Count of isCompleted == true (Maybe same? Or 'Actual' implies work that happened?)
+        // Let's look at the UI labels again.
+        // Box 1: Work Due (Behind schedule)
+        // Box 2: Planned Works (To be done)
+        // Box 3: Actual Work (Timely done)
+        // Box 4: Work Done (Ahead of time)
+
+        // Interpretation:
+        // Overdue Works -> Work Due
+        // Planned Works -> Planned Works
+        // Actual Work -> Actual Work
+        // Completed Works -> Work Done
+
+        // Logic:
+        // Overdue: !isCompleted && timeline.to < today
+        // Planned: !isCompleted && timeline.to >= today
+        // Completed: isCompleted == true
+
+        // Note: The UI has 4 boxes. The user asked for 4 stats for "the next widget".
+        // 1. Overdue Works -> Box 1
+        // 2. Planned Works -> Box 2
+        // 3. Actual Work -> Box 3
+        // 4. Completed Works -> Box 4
+
+        // Defining "Actual Work" vs "Completed Works":
+        // Maybe "Actual Work" is "Started but not finished"? Or "In Progress"?
+        // Or maybe:
+        // Completed Works = Total Completed.
+        // Actual Work = Completed within timeline?
+        // Let's stick to simple interpretations unless defined.
+        // "Actual Work" might be "Total Works that have valid timeline and are not archived".
+        // Or maybe "Actual Work" is "In Progress" (Started).
+
+        // The user said: "Number of Actual Work".
+        // I will map:
+        // Overdue Works -> overdueCount (!completed && due date passed)
+        // Planned Works -> plannedCount (!completed && due date future)
+        // Actual Work -> completedCount (Total completed) - Wait, then what is "Completed Works"?
+
+        // Let's check the Schema for status.
+        // Task has `isCompleted`, `isArchived`, `timeline.from`, `timeline.to`.
+
+        // Alternative interpretation:
+        // Actual Work = Current running (Active) works?
+        // Let's try:
+        // Actual Work = Tasks that are NOT completed and NOT overdue? (i.e. currently in progress).
+        // Then "Planned Works" = Tasks that haven't started yet? (timeline.from > today)
+
+        // Let's refine based on "Planned" vs "Due".
+        // Work Due (Behind schedule) = Overdue.
+        // Planned Works (To be done) = Future/Current.
+
+        // Let's look at Box 3 and 4 again.
+        // Box 3: Actual Work (Timely done)
+        // Box 4: Work Done (Ahead of time)
+
+        // This implies performance metrics.
+        // "Timely done" = Completed <= timeline.to
+        // "Ahead of time" = Completed < timeline.to (significantly?)
+
+        // However, the user task might just want the RAW COUNTS for simpler categories.
+        // User asked for:
+        // 1. Overdue Works
+        // 2. Planned Works
+        // 3. Actual Work
+        // 4. Completed Works
+
+        // Let's assume:
+        // Overdue = !completed && due < today
+        // Planned = !completed && due >= today
+        // Completed = isCompleted == true
+        // Actual Work = Total Tasks? Or maybe "Active Work"?
+        // Let's set Actual Work = Total Tasks for now (Projected + Completed).
+        // Or maybe "Actual Work" = "Work Done" count, and "Completed Works" is something else?
+
+        // Wait, "Number of Completed Works" is item 4.
+        // "Number of Actual Work" is item 3.
+
+        // Let's count:
+        // 1. Overdue
+        // 2. Planned (Pending)
+        // 3. Actual (Total Valid Tasks? or In Progress?)
+        // 4. Completed
+
+        // I'll calculate:
+        // Overdue = !isCompleted && moment(to).isBefore(today)
+        // Planned = !isCompleted && moment(to).isSameOrAfter(today)
+        // Completed = isCompleted
+        // Actual = Total number of tasks (excluding archived?)
+
+        // Let's check "Completion rate percentage".
+        // Rate = Completed / Total * 100.
+
+        const today = moment().startOf('day')
+
+        Object.values(data).forEach(projectTasks => {
+          if (!projectTasks) return
+          Object.values(projectTasks).forEach(task => {
+            if (task.isArchived) return
+
+            totalTasks++
+
+            if (task.isCompleted) {
+              completedTasks++
+            } else {
+              // Not completed
+              const dueDate = moment(task.timeline?.to, 'YYYY/MM/DD')
+              if (dueDate.isValid()) {
+                if (dueDate.isBefore(today)) {
+                  overdueCount++
+                } else {
+                  plannedCount++
+                }
+              } else {
+                // No due date, count as planned/pending
+                plannedCount++
+              }
+            }
+          })
+        })
+
+        this.completionRate =
+          totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0
+        this.overdueWorksCount = overdueCount
+        this.plannedWorksCount = plannedCount
+        this.completedWorksCount = completedTasks
+
+        // For "Actual Work", let's use Total Tasks for now, or maybe it's "Active" tasks (Overdue + Planned)?
+        // Use "Active" (Overdue + Planned) as Actual Work?
+        // Or maybe "Actual Work" is "Total Work" -> sum of all.
+        // I'll set Actual Work = Total Tasks.
+        this.actualWorksCount = totalTasks
+
+        // Update Boxes
+        this.box1 = this.overdueWorksCount
+        this.box2 = this.plannedWorksCount
+        this.box3 = this.actualWorksCount // "Actual Work"
+        this.box4 = this.completedWorksCount // "Completed Works" (Work Done)
+      })
+    },
     async getTodoList(project) {
       if (!project) {
         return
@@ -930,7 +1179,7 @@ export default {
             name: 'Completed',
             data: []
           }
-          console.log('sortedGroupedData', sortedGroupedData)
+          // console.log('sortedGroupedData', sortedGroupedData)
           for (const item of sortedGroupedData) {
             obj.data.push(item.value.length || 0)
             completed.data.push(item.value.filter(e => e[2] === true).length) // TODO
@@ -970,13 +1219,27 @@ export default {
       this.$fbonValue(projects, async snapshot => {
         try {
           const data = snapshot.val()
-          console.log('data', data)
+          // console.log('data', data)
           if (this.$isFalsyString(data)) {
             this.projectList = []
             return
           }
           let data_ = Object.values(data)
           this.projectList = data_
+
+          // Calculate Active/Inactive Projects globally (before filtering by user role if we want global stats visible to admin)
+          // As this is Admin dashboard, we likely want all projects?
+          // The code 'const isAdmin = adminUser.role === 'admin'' in login suggests differentiation.
+          // But here in getProjects it filters by role.
+          // If the user is Admin, they see everything?
+          // Looking at logic:
+          // if (role === 'client') ...
+          // if (role === 'agent') ...
+          // if (role === 'constructor') ...
+          // It seems Admin (default) sees all.
+
+          this.activeProjectsCount = data_.filter(p => p.isActivated).length
+          this.inactiveProjectsCount = data_.filter(p => !p.isActivated).length
 
           // map projects by user role
           const userDetails = LocalStorage.getItem('authUser')
@@ -1000,7 +1263,7 @@ export default {
             )
           }
 
-          console.log('data_', data_)
+          // console.log('data_', data_)
           this.projectListMapped = data_
             .map(e => ({
               id: e.id,
@@ -1039,10 +1302,8 @@ export default {
       const nextWeekEnd = moment().add(1, 'weeks').endOf('isoWeek') // Sunday
       const tomorrow = moment().add(0, 'days') // tomorrow
 
-      const events = this.$fbref(
-        this.$fbdb,
-        `events/${'5c42d201-49e0-4424-aa8a-4c889ae1b3db'}`
-      )
+      // Fetch all events from all projects
+      const events = this.$fbref(this.$fbdb, 'events')
       this.$fbonValue(events, snapshot => {
         const data = snapshot.val()
         if (this.$isFalsyString(data)) {
@@ -1050,12 +1311,21 @@ export default {
           this.fetchingEvents = false
           return
         }
-        const data_ = Object.values(data)
-        console.log('data_', data_)
-        this.calendarOptions.events = data_
+
+        // data is { projectId: { eventId: eventObj, ... }, ... }
+        // We need to flatten this to [ eventObj, ... ]
+        let allEvents = []
+        Object.values(data).forEach(projectEvents => {
+          if (projectEvents) {
+            allEvents = allEvents.concat(Object.values(projectEvents))
+          }
+        })
+
+        // console.log('allEvents', allEvents)
+        this.calendarOptions.events = allEvents
 
         // 2. Filter the array
-        const nextWeekEvents = data_
+        const nextWeekEvents = allEvents
           .filter(event => {
             // Check if the date is "isBetween" the range [inclusive]
             return moment(event.start).isBetween(
@@ -1065,19 +1335,24 @@ export default {
               '[]'
             )
           })
+          .map(item => {
+            item.day = moment(item?.start, 'YYYY-MM-DD').format('dddd')
+
+            return item
+          })
           .sort((a, b) => {
             // 2. Sort by recency (Soonest date first)
             // Subtracting timestamps: smaller (sooner) comes first
             return moment(a.start).valueOf() - moment(b.start).valueOf()
           })
 
-        console.log('nextWeekEvents', nextWeekEvents)
+        // console.log('nextWeekEvents', nextWeekEvents)
         this.reminders = nextWeekEvents
 
         const today = moment().startOf('day')
 
         // 2. Filter for the exact match
-        const todaysEvents = data_
+        const todaysEvents = allEvents
           .filter(event => {
             // We specify 'day' as the second argument to ignore time differences
             return moment(event.start).isSame(today, 'day')
@@ -1088,20 +1363,33 @@ export default {
             return moment(a.start).valueOf() - moment(b.start).valueOf()
           })
 
-        console.log('Todays Event', todaysEvents)
+        // console.log('Todays Event', todaysEvents)
 
         this.todaysTask = todaysEvents.filter(event => {
           return event.eventType === 'Task'
         })
-        console.log('this.todaysTask', this.todaysTask)
+        // console.log('this.todaysTask', this.todaysTask)
 
         this.todaysMeeting = todaysEvents.filter(event => {
           return event.eventType === 'Meeting'
         })
-        console.log('this.todaysMeeting', this.todaysMeeting)
+        // console.log('this.todaysMeeting', this.todaysMeeting)
 
         this.fetchingEvents = false
       })
+    },
+    getBorderColor(eventType) {
+      if (eventType == 'Reminder') {
+        return 'cancel'
+      }
+
+      if (eventType == 'Task') {
+        return 'green'
+      }
+
+      if (eventType == 'Meeting') {
+        return 'red'
+      }
     }
   }
 }
