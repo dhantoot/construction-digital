@@ -123,13 +123,15 @@
     </div> -->
 
   <q-footer
-    class="shadow-4 q-pa-sm"
+    class="q-pa-sm glass-panel"
     reveal
-    elevated
-    :class="{
-      'bg-white text-primary': !$q.dark.isActive,
-      'bg-primary text-accent': $q.dark.isActive
-    }"
+    style="
+      bottom: 10px;
+      left: 10px;
+      right: 10px;
+      width: calc(100% - 20px);
+      border-radius: 16px;
+    "
   >
     <div class="full-width row items-center justify-between no-wrap">
       <q-input
@@ -407,33 +409,3 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
-.q-input .q-field__underline {
-  display: none;
-}
-
-.messenger-input {
-  display: flex;
-  align-items: center;
-  border-radius: 16px;
-  max-height: 60px;
-}
-
-.input-field {
-  flex: 1;
-  // padding-left: 8px;
-}
-
-.send-btn {
-  margin-left: 8px;
-}
-
-.messenger-input {
-  backdrop-filter: blur(6px);
-  border-radius: 16px;
-}
-
-:deep(.q-field__control:after) {
-  display: none !important;
-}
-</style>

@@ -1,7 +1,6 @@
 <template>
   <div class="row full-width justify-center">
-
-    <div class="row  max-width-px-500 q-px-lg q-py-lg">
+    <div class="row max-width-px-500 q-px-lg q-py-lg">
       <div
         class="row full-width text-h6 q-pb-md justify-center"
         :class="[$q.dark.isActive ? 'accent' : 'primary']"
@@ -99,13 +98,12 @@
       </div>
 
       <div class="row full-width q-py-sm justify-between">
-
         <!-- New implem -->
         <q-tabs
-            v-model="tab"
-            class="bg-white-4 full-width"
-            :dense="true"
-            align="justify-between"
+          v-model="tab"
+          class="bg-white-4 full-width"
+          :dense="true"
+          align="justify-between"
         >
           <q-tab class="text-orange text-capitalize" name="upload">
             <template #default>
@@ -124,20 +122,18 @@
         </q-tabs>
         <div v-if="tab === 'upload'" class="full-width q-pt-xs">
           <q-file
-              v-model="obj.file"
-              :dense="true"
-              label-color="primary"
-              filled
-              accept=".jpg, image/*"
-              class="shadow-2 no-border no-box-shadow"
-              :disable="loadingSubmit"
-              :input-class="[$q.dark.isActive ? 'accent' : 'primary']"
+            v-model="obj.file"
+            :dense="true"
+            label-color="primary"
+            filled
+            accept=".jpg, image/*"
+            class="shadow-2 no-border no-box-shadow"
+            :disable="loadingSubmit"
+            :input-class="[$q.dark.isActive ? 'accent' : 'primary']"
           >
             <template #append>
               <div class="row full-width">
-                <label class="text-caption text-grey-7"
-                >Choose File..</label
-                >
+                <label class="text-caption text-grey-7">Choose File..</label>
               </div>
             </template>
             <template #prepend>
@@ -149,15 +145,17 @@
         </div>
         <div v-if="tab === 'capture'" class="full-width q-pt-xs">
           <q-btn
-              dense
-              flat
-              align="left"
-              class="text-capitalize full-width no-border no-box-shadow no-shadow"
-              :style="$q.dark.isActive ? 'background:#121212' : 'background:#e4e4e4'"
-              text-color="primary"
-              :disable="deviceIsReady"
-              style="height: 40px"
-              @click="captureImage"
+            dense
+            flat
+            align="left"
+            class="text-capitalize full-width no-border no-box-shadow no-shadow"
+            :style="
+              $q.dark.isActive ? 'background:#121212' : 'background:#e4e4e4'
+            "
+            text-color="primary"
+            :disable="deviceIsReady"
+            style="height: 40px"
+            @click="captureImage"
           >
             <template #default>
               <div class="row full-width justify-between items-center px-8">
@@ -169,12 +167,15 @@
         </div>
       </div>
 
-      <div v-if="routeName == 'admin.my-profile'" class="row full-width q-py-sm justify-end">
+      <div
+        v-if="routeName == 'admin.my-profile'"
+        class="row full-width q-py-sm justify-end"
+      >
         <q-btn
-            v-if="false"
-            padding="sm xl"
-            class="round-btn text-capitalize"
-            color="negative"
+          v-if="false"
+          padding="sm xl"
+          class="round-btn text-capitalize"
+          color="negative"
         >
           <template #default>
             <XIcon class="q-mr-sm" />
@@ -183,12 +184,12 @@
         </q-btn>
 
         <q-btn
-            padding="sm xl"
-            class="round-btn text-capitalize"
-            color="info"
-            :loading="loadingSubmit"
-            :disable="loadingSubmit"
-            @click="uploadFile()"
+          padding="sm xl"
+          class="round-btn text-capitalize"
+          color="info"
+          :loading="loadingSubmit"
+          :disable="loadingSubmit"
+          @click="uploadFile()"
         >
           <template #loading>
             <q-spinner-ios class="on-left" />
@@ -200,39 +201,38 @@
             <span class="text-capitalize">Update</span>
           </template>
         </q-btn>
-
       </div>
-
     </div>
 
-
-
     <div v-if="routeName == 'mobile.my-profile'" class="bottom-nav-container">
-      <div
-        class="modern-bottom-nav shadow-4"
-        active-color="white"
-        glossy
-        :class="{
-          'bg-light': !$q.dark.isActive,
-          'bg-primary text-accent': $q.dark.isActive
-        }"
-      >
-        <div class="row full-width justify-between">
-          <q-btn flat @click="$router.push(`/projects`)">
+      <div class="modern-bottom-nav glass-panel q-px-md">
+        <div class="row full-width justify-between items-center">
+          <q-btn
+            flat
+            no-caps
+            class="text-grey-5"
+            @click="$router.push(`/projects`)"
+          >
             <template #default>
-              <ArrowLeftIcon size="18" class="q-mr-sm" />
-              <span class="text-bold text-capitalize">Back</span>
+              <div class="row items-center gap-5">
+                <ArrowLeftIcon size="18" />
+                <span class="text-bold">Back</span>
+              </div>
             </template>
           </q-btn>
           <q-btn
             flat
+            no-caps
+            class="neon-text-blue"
             :loading="loadingSubmit"
             :disable="loadingSubmit"
             @click="uploadFile()"
           >
             <template #default>
-              <SquarePenIcon size="18" class="q-mr-sm" />
-              <span class="text-bold text-capitalize">Update</span>
+              <div class="row items-center gap-5">
+                <SquarePenIcon size="18" />
+                <span class="text-bold">Update</span>
+              </div>
             </template>
           </q-btn>
         </div>

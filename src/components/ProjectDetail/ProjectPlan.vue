@@ -57,13 +57,7 @@
     persistent
     :class="[$q.screen.lt.sm ? 'row full-width' : '']"
   >
-    <q-card
-      class="row full-width no-shadow"
-      :class="[
-        $q.dark.isActive ? 'dark' : '',
-        $q.screen.lt.sm ? 'row full-width' : ''
-      ]"
-    >
+    <q-card class="row full-width glass-panel" style="border-radius: 20px">
       <div v-if="false" class="">
         <pre>{{
           {
@@ -93,17 +87,17 @@
 
         <q-select
           v-model="eventType"
-          class="full-width"
+          class="full-width glass-panel"
           dense
           filled
           :options="eventOptions"
           placeholder="Event Type"
           behavior="menu"
-          :popup-content-class="[
-            $q.dark.isActive
-              ? 'popupSelectContent bg-contrast no-shadow'
-              : 'popupSelectContent'
-          ]"
+          popup-content-class="glass-panel"
+          label-color="white"
+          color="accent"
+          input-class="text-white"
+          dropdown-icon="las la-angle-down"
         />
         <div class="row full-width justify-end">
           <q-toggle

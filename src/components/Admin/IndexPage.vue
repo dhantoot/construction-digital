@@ -1,7 +1,10 @@
 <template>
   <div
     class="row hide-scrollbar q-pa-sm"
-    :style="{ height: $q.screen.lt.sm ? 'auto' : '94.5vh;' }"
+    :style="{
+      height: $q.screen.lt.sm ? 'auto' : '94.5vh;',
+      paddingBottom: $q.screen.lt.sm ? '120px' : '0'
+    }"
   >
     <div class="row q-col-gutter-y-md full-width">
       <!-- Left Section: 4 cards (3 top, 1 bottom) -->
@@ -20,9 +23,8 @@
                   <HofsteeAlert
                     v-for="item of todaysMeeting"
                     :key="item.id"
-                    :background-color="{
-                      '#292727': $q.dark.isActive
-                    }"
+                    class="glass-panel"
+                    style="background: rgba(255, 255, 255, 0.05) !important"
                     border-radius="8px"
                     :border-color="getBorderColor(item?.eventType)"
                     border="0.1px solid"
@@ -66,9 +68,8 @@
                   <HofsteeAlert
                     v-for="item of todaysTask"
                     :key="item.id"
-                    :background-color="{
-                      '#292727': $q.dark.isActive
-                    }"
+                    class="glass-panel"
+                    style="background: rgba(255, 255, 255, 0.05) !important"
                     border-radius="8px"
                     :border-color="getBorderColor(item?.eventType)"
                     border="0.1px solid"
@@ -134,9 +135,8 @@
                   <HofsteeAlert
                     v-for="item of reminders"
                     :key="item.id"
-                    :background-color="{
-                      '#292727': $q.dark.isActive
-                    }"
+                    class="glass-panel"
+                    style="background: rgba(255, 255, 255, 0.05) !important"
                     border-radius="8px"
                     :border-color="getBorderColor(item?.eventType)"
                     border="0.1px solid"
@@ -193,8 +193,8 @@
             <q-card
               flat
               bordered
-              class="row full-width"
-              style="border-radius: 8px"
+              class="row full-width glass-panel shadow-4"
+              style="border-radius: 20px"
             >
               <q-card-section class="full-width">
                 <div class="row q-mb-md justify-between full-width">
@@ -203,11 +203,8 @@
                     v-model="selectedProject"
                     behavior="menu"
                     :style="$q.screen.gt.sm ? 'width:250px' : 'width: 100%'"
-                    :popup-content-class="[
-                      $q.dark.isActive
-                        ? 'popupSelectContent bg-contrast no-shadow'
-                        : 'popupSelectContent'
-                    ]"
+                    popup-content-class="glass-panel"
+                    class="glass-panel"
                     filled
                     input-debounce="0"
                     :label="'Select'"
@@ -216,6 +213,7 @@
                     option-value="id"
                     :options="mappedProject"
                     :loading="false"
+                    dropdown-icon="las la-angle-down"
                   >
                     <template #loading>
                       <div class="row justify-center">
@@ -235,14 +233,8 @@
                     style="width: 100%"
                   >
                     <q-card
-                      class="no-shadow full-width"
-                      :class="[$q.dark.isActive ? 'bg-grey-10 text-white' : '']"
-                      :flat="$q.dark.isActive"
-                      :style="
-                        $q.dark.isActive
-                          ? 'bg-dark'
-                          : 'background: rgb(240 240 240)'
-                      "
+                      class="no-shadow full-width glass-panel"
+                      :flat="true"
                     >
                       <q-card-section>
                         <div class="text-subtitle1">{{ item.title }}</div>
@@ -294,13 +286,9 @@
                   />
 
                   <HofsteeAlert
-                    :background-color="{
-                      '#3E3E47': $q.dark.isActive
-                    }"
+                    class="glass-panel"
+                    style="background: rgba(255, 255, 255, 0.05) !important"
                     border-radius="8px"
-                    border-color="positive"
-                    border="0.1px solid"
-                    height="54px"
                   >
                     <template #icon>
                       <div class="">
@@ -316,13 +304,9 @@
                   </HofsteeAlert>
 
                   <HofsteeAlert
-                    :background-color="{
-                      '#3E3E47': $q.dark.isActive
-                    }"
+                    class="glass-panel"
+                    style="background: rgba(255, 255, 255, 0.05) !important"
                     border-radius="8px"
-                    border-color="info"
-                    border="0.1px solid"
-                    height="54px"
                   >
                     <template #icon>
                       <div class="">
@@ -426,7 +410,7 @@
             <div class="col">
               <HofsteeCard bordered flat class="full-width" height="156px">
                 <template #header
-                  ><span class="text-red">Work Due</span></template
+                  ><span class="neon-text-pink">Work Due</span></template
                 >
                 <template #subHeader>Behind schedule</template>
                 <template #body>
@@ -435,10 +419,10 @@
                       v-model="box1"
                       show-value
                       font-size="16px"
-                      class="text-red q-ma-md"
+                      class="neon-text-pink q-ma-md"
                       size="50px"
                       :thickness="0.05"
-                      color="red"
+                      color="neon-text-pink"
                       track-color="grey-3"
                       readonly
                     >
@@ -453,7 +437,7 @@
             <div class="col">
               <HofsteeCard bordered flat class="full-width" height="156px">
                 <template #header
-                  ><span class="text-amber">Scheduled Work</span></template
+                  ><span class="neon-text-amber">Scheduled Work</span></template
                 >
                 <template #subHeader>Remaining</template>
                 <template #body>
@@ -462,10 +446,10 @@
                       v-model="box2"
                       show-value
                       font-size="16px"
-                      class="text-amber q-ma-md"
+                      class="neon-text-amber q-ma-md"
                       size="50px"
                       :thickness="0.05"
-                      color="amber"
+                      color="neon-text-amber"
                       track-color="grey-3"
                       readonly
                     >
@@ -484,7 +468,7 @@
             <div class="col">
               <HofsteeCard bordered flat class="full-width" height="156px">
                 <template #header
-                  ><span class="text-blue">Target Work</span></template
+                  ><span class="neon-text-blue">Target Work</span></template
                 >
                 <template #subHeader>Total Scope</template>
                 <template #body>
@@ -493,10 +477,10 @@
                       v-model="box3"
                       show-value
                       font-size="16px"
-                      class="text-blue q-ma-md"
+                      class="neon-text-blue q-ma-md"
                       size="50px"
                       :thickness="0.05"
-                      color="blue"
+                      color="neon-text-blue"
                       track-color="grey-3"
                       readonly
                     >
@@ -511,7 +495,7 @@
             <div class="col">
               <HofsteeCard bordered flat class="full-width" height="156px">
                 <template #header
-                  ><span class="text-green">Work Done</span></template
+                  ><span class="neon-text-green">Work Done</span></template
                 >
                 <template #subHeader>Ahead of time</template>
                 <template #body>
@@ -520,10 +504,10 @@
                       v-model="box4"
                       show-value
                       font-size="16px"
-                      class="text-green q-ma-md"
+                      class="neon-text-green q-ma-md"
                       size="50px"
                       :thickness="0.05"
-                      color="green"
+                      color="neon-text-green"
                       track-color="grey-3"
                       readonly
                     >

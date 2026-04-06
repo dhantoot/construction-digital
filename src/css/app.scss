@@ -104,8 +104,314 @@
 
 body {
   font-family: 'metrophobic';
-  background: #f0f0f0;
+  background: #050510; // Base background (will be covered by animated particles)
+  color: #e0e0e0;
   --q-safe-area-bottom: 0px;
+}
+
+// Glassmorphism System
+.glass-panel,
+.glass-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.15);
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, backdrop-filter 0.3s ease, transform 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.95); // Permanent light text for dark/neon aesthetic
+
+  .q-item__label {
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .q-item__label--caption {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  // Ensure table text is legible on glass
+  .q-table {
+    color: rgba(255, 255, 255, 0.9) !important;
+
+    thead tr th {
+      color: rgba(255, 255, 255, 1) !important;
+      font-weight: 600;
+
+      &:first-child {
+        border-top-left-radius: 20px !important;
+      }
+
+      &:last-child {
+        border-top-right-radius: 20px !important;
+      }
+    }
+
+    tbody tr td {
+      color: rgba(255, 255, 255, 0.85) !important;
+    }
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1; // Lifted to be above the base background
+    background: radial-gradient(800px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
+        rgba(0, 210, 255, 0.15),
+        rgba(157, 80, 187, 0.05),
+        transparent 80%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
+
+    &::before {
+      opacity: 1;
+    }
+  }
+
+  &.q-menu {
+    border-radius: 20px !important;
+
+    // Standard: Flat Top, Rounded Bottom (Default for most of the portal)
+    &:not(.keep-radius) {
+      border-top-left-radius: 0 !important;
+      border-top-right-radius: 0 !important;
+    }
+  }
+
+  &.q-dialog__inner>div {
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+    border-bottom-left-radius: 20px !important;
+    border-bottom-right-radius: 20px !important;
+  }
+
+  &.q-field {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+    backdrop-filter: none !important;
+
+    .q-field__control {
+      min-height: 48px !important;
+      display: flex;
+      align-items: center;
+      padding: 0 16px !important;
+      transition: all 0.3s ease;
+
+      &:before,
+      &:after {
+        display: none !important;
+      }
+    }
+
+    .q-field__native,
+    .q-field__input {
+      min-height: unset !important;
+      height: 100% !important;
+      padding: 0 !important;
+      color: #fff !important;
+      display: flex;
+      align-items: center;
+      margin-top: 0 !important;
+
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.5) !important;
+        opacity: 1 !important;
+      }
+
+      &.text-right {
+        justify-content: flex-end;
+        text-align: right;
+      }
+    }
+
+    .q-field__placeholder {
+      color: rgba(255, 255, 255, 0.5) !important;
+    }
+
+    .q-field__label {
+      top: 14px !important;
+      color: rgba(255, 255, 255, 0.7) !important;
+    }
+
+    &.q-field--focused,
+    &.q-field--float {
+      .q-field__label {
+        transform: translateY(-80%) scale(0.75) !important;
+      }
+    }
+
+    .q-field__marginal {
+      height: 100% !important;
+      display: flex;
+      align-items: center;
+    }
+
+    .q-field__bottom {
+      padding: 6px 16px 0 !important;
+    }
+  }
+}
+
+// Global Entry Input Styling (Standardized across Admin, Login, Register)
+.glass-card .q-field {
+  .q-field__control {
+    background: rgba(255, 255, 255, 0.03) !important;
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 12px !important;
+    transition: all 0.3s ease;
+
+    &:before,
+    &:after {
+      display: none !important;
+    }
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.05) !important;
+      border-color: rgba(255, 255, 255, 0.2) !important;
+    }
+  }
+
+  &.q-field--focused .q-field__control {
+    background: rgba(255, 255, 255, 0.06) !important;
+    border-color: rgba(0, 210, 255, 0.4) !important;
+    box-shadow: 0 0 15px rgba(0, 210, 255, 0.2) !important;
+  }
+
+  .q-field__native,
+  .q-field__input,
+  .q-field__label,
+  .q-field__marginal {
+    color: #fff !important;
+  }
+
+  .q-field__bottom {
+    color: #ff007f !important; // Neon pink for errors outside the glass
+    font-weight: 500;
+  }
+}
+
+.glass-card {
+  @extend .glass-panel;
+  transition: box-shadow 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
+  }
+}
+
+.glass-btn {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: #fff;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg,
+        transparent,
+        rgba(255, 255, 255, 0.05),
+        transparent);
+    transition: all 0.5s;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.02);
+    box-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
+    border-color: rgba(0, 210, 255, 0.3);
+
+    &::before {
+      left: 100%;
+    }
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.glass-btn-circle {
+  @extend .glass-btn;
+  border-radius: 50% !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+.neon-text-blue {
+  color: $neon-blue;
+  text-shadow: 0 0 8px rgba(0, 210, 255, 0.4);
+}
+
+.neon-text-violet {
+  color: $neon-violet;
+  text-shadow: 0 0 8px rgba(157, 80, 187, 0.4);
+}
+
+.neon-text-pink {
+  color: $neon-pink;
+  text-shadow: 0 0 8px rgba(255, 0, 127, 0.4);
+}
+
+.neon-text-cyan {
+  color: $neon-cyan;
+  text-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
+}
+
+.neon-text-amber {
+  color: $neon-amber;
+  text-shadow: 0 0 8px rgba(255, 170, 0, 0.4);
+}
+
+.neon-text-green {
+  color: $neon-green;
+  text-shadow: 0 0 8px rgba(0, 255, 68, 0.4);
+}
+
+.active-item-glass {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-left: 4px solid $accent;
+  font-weight: 700;
+}
+
+// Grain Texture Overlay
+.noise-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.02;
+  z-index: 9999;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3%3Ffilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/feTurbulence%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
 .cv12-text {
@@ -132,7 +438,18 @@ body {
 }
 
 .q-card {
-  border-radius: 12px !important;
+  border-radius: 20px !important;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.no-glass {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .q-toggle__track {
@@ -206,16 +523,13 @@ body {
   border-right: 0.1px solid #000000 !important;
 }
 
-.q-list--dark.q-list--separator > .q-item-type + .q-item-type,
-.q-list--dark.q-list--separator
-  > .q-virtual-scroll__content
-  > .q-item-type
-  + .q-item-type {
+.q-list--dark.q-list--separator>.q-item-type+.q-item-type,
+.q-list--dark.q-list--separator>.q-virtual-scroll__content>.q-item-type+.q-item-type {
   border-top-color: rgb(255 255 255 / 8%);
 }
 
-.q-list--separator > .q-item-type + .q-item-type,
-.q-list--separator > .q-virtual-scroll__content > .q-item-type + .q-item-type {
+.q-list--separator>.q-item-type+.q-item-type,
+.q-list--separator>.q-virtual-scroll__content>.q-item-type+.q-item-type {
   border-top: 1px solid rgb(0 0 0 / 5%);
 }
 
@@ -263,6 +577,7 @@ body {
 .clickable {
   cursor: pointer;
 }
+
 // .fc-theme-standard td, .fc-theme-standard th {
 //   border: .1px solid rgba(255, 255, 255, 0.14)!important;
 // }
@@ -334,6 +649,7 @@ body {
 }
 
 $weights: 100, 200, 300, 400, 500, 600, 700, 800, 900;
+
 @each $i in $weights {
   .f-w-#{$i} {
     font-weight: #{$i};
@@ -439,6 +755,7 @@ $weights: 100, 200, 300, 400, 500, 600, 700, 800, 900;
   border-radius: 5px;
   background: #171c2a;
 }
+
 .eventContentOverride {
   white-space: normal !important;
   overflow-wrap: break-word;
@@ -447,10 +764,12 @@ $weights: 100, 200, 300, 400, 500, 600, 700, 800, 900;
   background: rgb(242 244 247);
   color: #424242;
 }
+
 :deep(.fc-theme-standard td),
 :deep(.fc-theme-standard th) {
   border: 0.1px solid rgb(198 198 198 / 50%);
 }
+
 :deep(.fc .fc-scrollgrid) {
   border-bottom-width: 0px;
   border-collapse: separate;
@@ -458,10 +777,12 @@ $weights: 100, 200, 300, 400, 500, 600, 700, 800, 900;
   border-left-width: 0px;
   border-top-width: 0px;
 }
+
 :deep(.fc .fc-toolbar-title) {
   font-size: 18px;
   margin: 0px;
 }
+
 :deep(.q-separator--horizontal) {
   display: block;
   height: 0.1px;
@@ -476,6 +797,99 @@ $weights: 100, 200, 300, 400, 500, 600, 700, 800, 900;
   z-index: 10;
 }
 
+// Global Table Glassmorphism
+.q-table__container {
+  background: transparent !important;
+  @extend .glass-panel;
+  overflow: hidden !important;
+  border-radius: 20px !important;
+}
+
+.q-table {
+  background: transparent !important;
+  color: #fff !important;
+
+  thead tr {
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(10px);
+
+    th:first-child {
+      border-top-left-radius: 20px;
+    }
+
+    th:last-child {
+      border-top-right-radius: 20px;
+    }
+  }
+
+  thead tr th {
+    color: #fff !important;
+    font-weight: 700 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+  }
+
+  tbody tr td {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    color: rgba(255, 255, 255, 0.8) !important;
+  }
+
+  tbody tr:hover {
+    background: rgba(255, 255, 255, 0.02) !important;
+  }
+
+  &__bottom {
+    background: transparent !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+  }
+
+  &__card {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border-radius: 20px !important;
+    overflow: hidden !important;
+  }
+}
+
+// Drawer and Layout Fixes
+.q-drawer {
+  background: transparent !important;
+
+  &-container {
+    background: transparent !important;
+  }
+
+  &--mini {
+    .q-item__section--main {
+      display: none;
+    }
+  }
+
+  .q-list,
+  .q-item,
+  .q-scrollarea__content,
+  .q-drawer__content {
+    background: transparent !important;
+  }
+}
+
+.q-layout__shadow {
+  display: none !important;
+}
+
+// Table Row Fixes
+.q-table tbody tr,
+.q-table tbody td {
+  background: transparent !important;
+  transition: background 0.3s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.02) !important;
+  }
+}
+
 .modern-bottom-nav {
   border-radius: 20px;
   height: 50px;
@@ -488,7 +902,8 @@ $weights: 100, 200, 300, 400, 500, 600, 700, 800, 900;
 
 .center-btn {
   position: absolute;
-  top: -16px; /* was -30px before — now gentler */
+  top: -16px;
+  /* was -30px before — now gentler */
   transform: translateX(-50%);
   left: 50%;
   // border: 3px solid #1c1c1e;
@@ -496,7 +911,8 @@ $weights: 100, 200, 300, 400, 500, 600, 700, 800, 900;
 
 .center-label {
   position: absolute;
-  top: -36px; /* matches new offset */
+  top: -36px;
+  /* matches new offset */
   left: 50%;
   transform: translateX(-50%);
   font-weight: 600;
@@ -505,6 +921,12 @@ $weights: 100, 200, 300, 400, 500, 600, 700, 800, 900;
 
 :deep(.q-field__control:after) {
   display: none !important;
+}
+
+.q-field__bottom {
+  color: #ff007f !important; // Neon Pink for errors
+  font-weight: 500;
+  padding: 8px 12px 0;
 }
 
 .bg-light {
@@ -516,8 +938,8 @@ $weights: 100, 200, 300, 400, 500, 600, 700, 800, 900;
 }
 
 :deep(.fc-direction-ltr .fc-toolbar > * > :not(:first-child)) {
-    margin-left: 0.75em;
-    display: none;
+  margin-left: 0.75em;
+  display: none;
 }
 
 :deep(.fc .fc-scroller-liquid-absolute) {
@@ -549,4 +971,25 @@ $weights: 100, 200, 300, 400, 500, 600, 700, 800, 900;
   font-size: 16px;
   -webkit-user-select: none;
   user-select: none;
+}
+
+// Custom Glass Scrollbar
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(4px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.25);
+  }
 }

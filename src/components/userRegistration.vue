@@ -177,7 +177,7 @@
   >
     <q-card
       flat
-      class="q-ma-sm no-shadow"
+      class="q-ma-sm glass-card px-20"
       :class="[
         $q.screen.gt.xs ? 'width-px-500' : 'width-px-400 bg-transparent'
       ]"
@@ -199,12 +199,7 @@
       </q-card-section>
 
       <q-card-section class="column gap-2">
-        <p
-          class="q-mt-xs"
-          :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
-        >
-          Choose role to register
-        </p>
+        <p class="q-mt-xs text-white">Choose role to register</p>
         <div class="row justify-start">
           <div class="column justify-center items-start q-px-md">
             <q-radio
@@ -213,7 +208,7 @@
               unchecked-icon="panorama_fish_eye"
               val="constructor"
               label="Constructor"
-              :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
+              class="text-white"
               color="primary"
               keep-color
             />
@@ -223,7 +218,7 @@
               unchecked-icon="panorama_fish_eye"
               val="client"
               label="Home Owner"
-              :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
+              class="text-white"
               color="primary"
               keep-color
             />
@@ -235,7 +230,7 @@
               unchecked-icon="panorama_fish_eye"
               val="agent"
               label="Agent"
-              :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
+              class="text-white"
               color="primary"
               keep-color
             />
@@ -246,7 +241,7 @@
               unchecked-icon="panorama_fish_eye"
               val="admin"
               label="Admin"
-              :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
+              class="text-white"
               color="primary"
               keep-color
             />
@@ -261,10 +256,10 @@
           :dense="true"
           filled
           class="col-12"
-          outline
+          outlined
           placeholder="Email"
           :rules="regemailRules"
-          :input-class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
+          input-class="text-white"
         >
           <template #prepend>
             <MailIcon size="16" />
@@ -277,10 +272,10 @@
           :type="isPwd1 ? 'password' : 'text'"
           :dense="true"
           filled
-          outline
+          outlined
           placeholder="Password"
           :rules="regpasswordRules"
-          :input-class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
+          input-class="text-white"
         >
           <template #prepend>
             <LockIcon size="16" />
@@ -297,10 +292,10 @@
           :type="isPwd2 ? 'password' : 'text'"
           :dense="true"
           filled
-          outline
+          outlined
           placeholder="Confirm Password"
           :rules="regverifiedpassRules"
-          :input-class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
+          input-class="text-white"
           @keyup.enter="register"
         >
           <template #prepend>

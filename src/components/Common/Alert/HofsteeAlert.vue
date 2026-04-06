@@ -1,5 +1,5 @@
 <template>
-  <div class="p-5" :style="style">
+  <div class="p-5 glass-panel" :style="alertStyle">
     <div class="row items-center full-width no-wrap">
       <!-- Icon -->
       <div class="column col-auto justify-center">
@@ -8,11 +8,11 @@
 
       <!-- Text content -->
       <div class="column col q-pl-sm">
-        <div class="text-bold" :class="$q.dark.isActive ? 'text-accent' : ''">
+        <div class="text-bold">
           <slot name="header" />
         </div>
-        <div :class="$q.dark.isActive ? 'text-accent' : ''">
-          <slot name="body"/>
+        <div>
+          <slot name="body" />
         </div>
       </div>
     </div>
@@ -32,16 +32,14 @@ const theme = {
   warning: '#e0b269',
   positive: '#05807c',
   green: '#008000',
-  red: '#ff0000',
+  red: '#ff0000'
 }
-
-
 
 export default {
   props: {
     backgroundColor: {
       type: String,
-      default: '',
+      default: 'rgba(255, 255, 255, 0.05)',
       required: false
     },
     borderRadius: {
@@ -56,7 +54,7 @@ export default {
     },
     border: {
       type: String,
-      default: '',
+      default: '0.1px solid',
       required: false
     },
     height: {
@@ -72,16 +70,16 @@ export default {
   },
   setup(props) {
     const opacityAlphaChannel = 80 // = 0.5
-    const style = ref({
+    const alertStyle = ref({
       'background-color': props.backgroundColor,
       'border-radius': props.borderRadius,
       border: `${props.border} ${Object.keys(theme).includes(props.borderColor) ? theme[props.borderColor] : props.borderColor}${opacityAlphaChannel}`,
-      height: props.height || '250px',
+      height: props.height || 'auto',
       width: props?.width || '100%'
     })
 
     return {
-      style
+      alertStyle
     }
   },
   mounted() {}

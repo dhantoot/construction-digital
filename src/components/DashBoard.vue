@@ -16,15 +16,11 @@
 
   <div v-if="true" class="row justify-between">
     <div class="col">
-      <q-card
-        :flat="$q.dark.isActive"
-        class="m-10"
-        :class="$q.dark.isActive ? 'bg-grey-10' : ''"
-      >
+      <q-card class="m-10 glass-card">
         <q-card-section>
           <div class="column">
             <div class="">
-              <div class="text-weight-bold text-red">Work Due</div>
+              <div class="text-weight-bold neon-text-pink">Work Due</div>
               <div>Behind Schedule</div>
             </div>
             <div class="row justify-end">
@@ -33,10 +29,10 @@
                 v-model="box1"
                 show-value
                 font-size="16px"
-                class="text-red q-ma-md"
+                class="neon-text-pink q-ma-md"
                 size="50px"
                 :thickness="0.05"
-                color="red"
+                color="neon-text-pink"
                 track-color="grey-3"
                 readonly
               >
@@ -49,15 +45,11 @@
       </q-card>
     </div>
     <div class="col">
-      <q-card
-        :flat="$q.dark.isActive"
-        class="m-10"
-        :class="$q.dark.isActive ? 'bg-grey-10' : ''"
-      >
+      <q-card class="m-10 glass-card">
         <q-card-section>
           <div class="column">
             <div class="">
-              <div class="text-weight-bold text-amber">Scheduled Work</div>
+              <div class="text-weight-bold neon-text-amber">Scheduled Work</div>
               <div>Remaining</div>
             </div>
             <div class="row justify-end">
@@ -65,10 +57,10 @@
                 v-model="box2"
                 show-value
                 font-size="16px"
-                class="text-amber q-ma-md"
+                class="neon-text-amber q-ma-md"
                 size="50px"
                 :thickness="0.05"
-                color="amber"
+                color="neon-text-amber"
                 track-color="grey-3"
                 readonly
               >
@@ -83,15 +75,11 @@
 
   <div v-if="true" class="row justify-between">
     <div class="col">
-      <q-card
-        :flat="$q.dark.isActive"
-        class="m-10"
-        :class="$q.dark.isActive ? 'bg-grey-10' : ''"
-      >
+      <q-card class="m-10 glass-card">
         <q-card-section>
           <div class="column">
             <div class="">
-              <div class="text-weight-bold text-blue">Target Work</div>
+              <div class="text-weight-bold neon-text-blue">Target Work</div>
               <div>Total Scope</div>
             </div>
             <div class="row justify-end">
@@ -99,10 +87,10 @@
                 v-model="box3"
                 show-value
                 font-size="16px"
-                class="text-blue q-ma-md"
+                class="neon-text-blue q-ma-md"
                 size="50px"
                 :thickness="0.05"
-                color="blue"
+                color="neon-text-blue"
                 track-color="grey-3"
                 readonly
               >
@@ -114,15 +102,11 @@
       </q-card>
     </div>
     <div class="col">
-      <q-card
-        :flat="$q.dark.isActive"
-        class="m-10"
-        :class="$q.dark.isActive ? 'bg-grey-10' : ''"
-      >
+      <q-card class="m-10 glass-card">
         <q-card-section>
           <div class="column">
             <div class="">
-              <div class="text-weight-bold text-green">Work Done</div>
+              <div class="text-weight-bold neon-text-green">Work Done</div>
               <div>Ahead of time</div>
             </div>
             <div class="row justify-end">
@@ -130,10 +114,10 @@
                 v-model="box4"
                 show-value
                 font-size="16px"
-                class="text-green q-ma-md"
+                class="neon-text-green q-ma-md"
                 size="50px"
                 :thickness="0.05"
-                color="green"
+                color="neon-text-green"
                 track-color="grey-3"
                 readonly
               >
@@ -146,29 +130,28 @@
     </div>
   </div>
 
-  <div :style="[$q.screen.lt.sm ? 'padding-bottom: 90px;' : '']">
+  <div :style="[$q.screen.lt.sm ? 'padding-bottom: 120px;' : '']">
     <div>
-        <div class="q-ma-md">
-            <q-select
-                v-model="selectedProject"
-                :options="projectListMapped"
-                option-label="title"
-                label="Select Project"
-                filled
-                dense
-            />
-        </div>
+      <div class="q-ma-md">
+        <q-select
+          v-model="selectedProject"
+          :options="projectListMapped"
+          option-label="title"
+          label="Select Project"
+          dense
+          filled
+          class="glass-panel"
+          popup-content-class="glass-panel"
+          label-color="white"
+          color="accent"
+          input-class="text-white"
+          dropdown-icon="las la-angle-down"
+        />
+      </div>
 
-      <div
-        v-if="selectedProject && selectedProject.groupedData"
-        class="row"
-      >
+      <div v-if="selectedProject && selectedProject.groupedData" class="row">
         <div class="full-width">
-          <q-card
-            class="m-10"
-            :class="$q.dark.isActive ? 'bg-grey-10' : ''"
-            :flat="$q.dark.isActive"
-          >
+          <q-card class="m-10 glass-card">
             <q-card-section>{{ selectedProject.title }}</q-card-section>
             <q-card-section class="p-0">
               <apexchart
@@ -183,7 +166,7 @@
         </div>
       </div>
     </div>
-    
+
     <div v-if="false" class="row">
       <div class="full-width">
         <q-card :flat="$q.dark.isActive" class="m-10">
@@ -795,7 +778,7 @@ export default {
           title: item.title
         }
       })
-    },
+    }
   },
   beforeCreate() {
     // console.log('beforeCreate')
@@ -871,70 +854,69 @@ export default {
       this.$fbonValue(allTasksRef, snapshot => {
         const data = snapshot.val()
         if (this.$isFalsyString(data)) {
-           return
+          return
         }
 
         let totalTasks = 0
         let completedTasks = 0
         let overdueCount = 0
         let plannedCount = 0
-        
+
         const today = moment().startOf('day')
 
         // Iterate projects
         Object.keys(data).forEach(projectId => {
-            // Filter Logic:
-            // If Admin: Include all projects
-            // If Non-Admin: Include only if projectId is in this.projectIds OR 
-            // check against projectListMapped which is already filtered by getProjects
-            
-            // Optimization: projectListMapped contains the projects visible to the user.
-            // Check if this projectId exists in projectListMapped.
-            const isVisible = this.projectListMapped.some(p => p.id === projectId)
-            
-            // However, getProjects is async and might not have populated yet if we run parallel?
-            // Actually getProjects is awaited in mounted. So projectListMapped should be ready.
-            // But wait, getProjects fetches 'projects' node. 'task' node keys are projectIds.
-            
-            if (!isAdmin && !isVisible) {
-                return // Skip projects not assigned to user
-            }
+          // Filter Logic:
+          // If Admin: Include all projects
+          // If Non-Admin: Include only if projectId is in this.projectIds OR
+          // check against projectListMapped which is already filtered by getProjects
 
-            const projectTasks = data[projectId]
-            if (!projectTasks) return
+          // Optimization: projectListMapped contains the projects visible to the user.
+          // Check if this projectId exists in projectListMapped.
+          const isVisible = this.projectListMapped.some(p => p.id === projectId)
 
-            Object.values(projectTasks).forEach(task => {
-                if (task.isArchived) return
+          // However, getProjects is async and might not have populated yet if we run parallel?
+          // Actually getProjects is awaited in mounted. So projectListMapped should be ready.
+          // But wait, getProjects fetches 'projects' node. 'task' node keys are projectIds.
 
-                totalTasks++
+          if (!isAdmin && !isVisible) {
+            return // Skip projects not assigned to user
+          }
 
-                if (task.isCompleted) {
-                    completedTasks++
+          const projectTasks = data[projectId]
+          if (!projectTasks) return
+
+          Object.values(projectTasks).forEach(task => {
+            if (task.isArchived) return
+
+            totalTasks++
+
+            if (task.isCompleted) {
+              completedTasks++
+            } else {
+              const dueDate = moment(task.timeline?.to, 'YYYY/MM/DD')
+              if (dueDate.isValid()) {
+                if (dueDate.isBefore(today)) {
+                  overdueCount++
                 } else {
-                    const dueDate = moment(task.timeline?.to, 'YYYY/MM/DD')
-                    if (dueDate.isValid()) {
-                        if (dueDate.isBefore(today)) {
-                            overdueCount++
-                        } else {
-                            plannedCount++
-                        }
-                    } else {
-                        plannedCount++
-                    }
+                  plannedCount++
                 }
-            })
+              } else {
+                plannedCount++
+              }
+            }
+          })
         })
 
         this.overdueWorksCount = overdueCount
         this.plannedWorksCount = plannedCount
         this.actualWorksCount = totalTasks
         this.completedWorksCount = completedTasks
-        
+
         this.box1 = this.overdueWorksCount
         this.box2 = this.plannedWorksCount
         this.box3 = this.actualWorksCount
         this.box4 = this.completedWorksCount
-
       })
     },
     async getProjects() {
@@ -975,7 +957,7 @@ export default {
             isActivated: e.isActivated
           }))
           .filter(e => e.isActivated)
-        
+
         // Select the first project by default
         this.selectedProject = this.projectListMapped[0] || null
 
@@ -1069,7 +1051,7 @@ export default {
           if (nameA > nameB) {
             return 1
           }
- 
+
           // names must be equal
           return 0
         })
@@ -1082,15 +1064,10 @@ export default {
     }
   }
 }
-
 </script>
 
 <style lang="scss" scoped>
 .panel-wrapper {
   opacity: 0.5; /* 50% opacity */
-}
-
-.panel {
-  /* your panel styles here */
 }
 </style>

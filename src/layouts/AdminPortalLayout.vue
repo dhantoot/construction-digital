@@ -2,416 +2,298 @@
   <q-layout
     view="lHh lpR lFf"
     class="no-scroll"
-    :style="{
-      background: $q.dark.isActive ? 'black' : ''
-    }"
+    style="background: transparent"
   >
     <q-drawer
       v-if="routeName !== 'Admin Login'"
       v-model="drawer"
       show-if-above
-      class="hide-scrollbar"
-      :mini="drawer"
-      :style="{
-        'border-right': $q.dark.isActive
-          ? '.1px solid #3a3a3a'
-          : '.1px solid rgb(198 198 198 / 50%)',
-        background: $q.dark.isActive ? 'black' : '#F0F0F0'
-      }"
+      :width="310"
+      class="hide-scrollbar bg-transparent"
+      :mini="miniState"
       @click.capture="drawerClick"
     >
-      <template #mini>
-        <div class="column justify-between full-height full-width">
-          <div>
-            <div class="row items-center justify-center pt-4">
-              <div class="py-5">
-                <q-btn
-                  to="/admin-portal"
-                  flat
-                  class="q-px-sm text-red"
-                  style="border-radius: 8px"
-                  :style="{
-                    background:
-                      activeBtn == 0 || hoveredBtn == 0
-                        ? $q.dark.isActive
-                          ? '#1e1f1f'
-                          : '#e0e2e5'
-                        : ''
-                  }"
-                  @click="activeBtn = 0"
-                  @mouseover="hoveredBtn = 0"
-                  @mouseleave="hoveredBtn = null"
+      <div
+        class="column justify-between glass-panel"
+        style="
+          margin: 7px;
+          height: calc(100vh - 14px);
+          border-radius: 20px;
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        "
+      >
+        <div class="column justify-between full-height mb-15">
+          <q-scroll-area class="col hide-scrollbar">
+            <q-list padding class="text-white">
+              <q-item
+                v-ripple
+                clickable
+                to="/admin-portal"
+                :class="{ 'active-item-glass': activeBtn === 0 }"
+                @click="activeBtn = 0"
+              >
+                <q-item-section side>
+                  <Play
+                    :class="{ 'neon-text-blue': activeBtn === 0 }"
+                    size="20"
+                  />
+                </q-item-section>
+                <q-item-section
+                  v-if="!miniState"
+                  :class="{ 'neon-text-blue': activeBtn === 0 }"
+                  >Dashboard</q-item-section
                 >
-                  <template #default>
-                    <div class="row justify-between items-center gap-10">
-                      <Play size="20" />
-                    </div>
-                    <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
-                    Dashboard
-                  </q-tooltip>
-                  </template>
-                </q-btn>
-              </div>
-              <div class="py-5 mt-10">
-                <q-btn
-                  to="/manage-sow"
-                  flat
-                  class="q-px-sm"
-                  style="border-radius: 8px"
-                  :style="{
-                    background:
-                      activeBtn == 1 || hoveredBtn == 1
-                        ? $q.dark.isActive
-                          ? '#1e1f1f'
-                          : '#e0e2e5'
-                        : ''
-                  }"
-                  :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
-                  @click="activeBtn = 1"
-                  @mouseover="hoveredBtn = 1"
-                  @mouseleave="hoveredBtn = null"
-                >
-                  <template #default>
-                    <div class="row justify-between items-center gap-10">
-                      <PencilRuler size="20" />
-                    </div>
-                    <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
-                    Manage SOW
-                  </q-tooltip>
-                  </template>
-                </q-btn>
-              </div>
-              <div class="py-5">
-                <q-btn
-                  to="/manage-projects"
-                  flat
-                  class="q-px-sm"
-                  style="border-radius: 8px"
-                  :style="{
-                    background:
-                      activeBtn == 2 || hoveredBtn == 2
-                        ? $q.dark.isActive
-                          ? '#1e1f1f'
-                          : '#e0e2e5'
-                        : ''
-                  }"
-                  :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
-                  @click="activeBtn = 2"
-                  @mouseover="hoveredBtn = 2"
-                  @mouseleave="hoveredBtn = null"
-                >
-                  <template #default>
-                    <div class="row justify-between items-center gap-10">
-                      <FolderKanbanIcon size="20" />
-                    </div>
-                    <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
-                    Manage Projects
-                  </q-tooltip>
-                  </template>
-                </q-btn>
-              </div>
-              <div class="py-5">
-                <q-btn
-                  to="/manage-invites"
-                  flat
-                  class="q-px-sm"
-                  style="border-radius: 8px"
-                  :style="{
-                    background:
-                      activeBtn == 3 || hoveredBtn == 3
-                        ? $q.dark.isActive
-                          ? '#1e1f1f'
-                          : '#e0e2e5'
-                        : ''
-                  }"
-                  :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
-                  @click="activeBtn = 3"
-                  @mouseover="hoveredBtn = 3"
-                  @mouseleave="hoveredBtn = null"
-                >
-                  <template #default>
-                    <div class="row justify-between items-center gap-10">
-                      <Send size="20" />
-                    </div>
-                    <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
-                    Manage Invites
-                  </q-tooltip>
-                  </template>
-                </q-btn>
-              </div>
-              <div class="py-5 full-width q-px-md">
-                <q-separator style="border-bottom: 0.1px solid #3a3a3a" />
-              </div>
-              <div class="py-5">
-                <q-btn
-                  to="/manage-accounts"
-                  flat
-                  class="q-px-sm"
-                  style="border-radius: 8px"
-                  :style="{
-                    background:
-                      activeBtn == 4 || hoveredBtn == 4
-                        ? $q.dark.isActive
-                          ? '#1e1f1f'
-                          : '#e0e2e5'
-                        : ''
-                  }"
-                  :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
-                  @click="activeBtn = 4"
-                  @mouseover="hoveredBtn = 4"
-                  @mouseleave="hoveredBtn = null"
-                >
-                  <template #default>
-                    <div class="row justify-between items-center gap-10">
-                      <Users size="20" />
-                    </div>
-                     <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
-                    Manage Accounts
-                  </q-tooltip>
-                  </template>
-                </q-btn>
-              </div>
-              <div class="py-5">
-                <q-btn
-                  to="/whats-new"
-                  flat
-                  class="q-px-sm"
-                  style="border-radius: 8px"
-                  :style="{
-                    background:
-                      activeBtn == 5 || hoveredBtn == 5
-                        ? $q.dark.isActive
-                          ? '#1e1f1f'
-                          : '#e0e2e5'
-                        : ''
-                  }"
-                  :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
-                  @click="activeBtn = 5"
-                  @mouseover="hoveredBtn = 5"
-                  @mouseleave="hoveredBtn = null"
-                >
-                  <template #default>
-                    <div class="row justify-between items-center gap-10">
-                      <BellRing size="20" />
-                    </div>
-                     <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
-                    What's New
-                  </q-tooltip>
-                  </template>
-                </q-btn>
-              </div>
-              <div class="py-5">
-                <q-btn
-                  flat
-                  class="q-px-sm"
-                  style="border-radius: 8px"
-                  :style="{
-                    background:
-                      activeBtn == 6 || hoveredBtn == 6
-                        ? $q.dark.isActive
-                          ? '#1e1f1f'
-                          : '#e0e2e5'
-                        : ''
-                  }"
-                  :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
-                  @click="activeBtn = 6"
-                  @mouseover="hoveredBtn = 6"
-                  @mouseleave="hoveredBtn = null"
-                >
-                  <template #default>
-                    <div class="row justify-between items-center gap-10">
-                      <MessageCircleMore size="20" />
-                    </div>
-                    <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
-                    Messages
-                  </q-tooltip>
-                  </template>
-                </q-btn>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div class="row items-center justify-center">
-              <div class="py-5">
-                <q-btn
-                  flat
-                  class="q-px-sm"
-                  style="border-radius: 8px"
-                  :style="{
-                    background:
-                      activeBtn == 7 || hoveredBtn == 7
-                        ? $q.dark.isActive
-                          ? '#1e1f1f'
-                          : '#e0e2e5'
-                        : ''
-                  }"
-                  :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
-                  @click="activeBtn = 7"
-                  @mouseover="hoveredBtn = 7"
-                  @mouseleave="hoveredBtn = null"
-                >
-                  <template #default>
-                    <div class="row justify-between items-center gap-10">
-                      <Headset size="20" />
-                    </div>
-                    <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
-                    Support
-                  </q-tooltip>
-                  </template>
-                </q-btn>
-              </div>
-              <div class="py-5">
-                <q-btn
-                  flat
-                  class="q-px-sm"
-                  style="border-radius: 8px"
-                  :style="{
-                    background:
-                      activeBtn == 8 || hoveredBtn == 8
-                        ? $q.dark.isActive
-                          ? '#1e1f1f'
-                          : '#e0e2e5'
-                        : ''
-                  }"
-                  :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
-                  @click="activeBtn = 8"
-                  @mouseover="hoveredBtn = 8"
-                  @mouseleave="hoveredBtn = null"
-                >
-                  <template #default>
-                    <div class="row justify-between items-center gap-10">
-                      <Cog size="20" />
-                    </div>
-                    <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
-                    Settings
-                  </q-tooltip>
-                  </template>
-                </q-btn>
-              </div>
-              <div class="py-5">
-                <q-btn
-                  flat
-                  class="q-px-sm"
-                  style="border-radius: 8px"
-                  :style="{
-                    background:
-                      activeBtn == 9 || hoveredBtn == 9
-                        ? $q.dark.isActive
-                          ? '#1e1f1f'
-                          : '#e0e2e5'
-                        : ''
-                  }"
-                  :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
-                  @click="activeBtn = 9"
-                  @mouseover="hoveredBtn = 9"
-                  @mouseleave="hoveredBtn = null"
-                >
-                  <template #default>
-                    <div class="row justify-between items-center gap-10">
-                      <CircleUser size="20" />
-                    </div>
-                    <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
-                    Profile
-                  </q-tooltip>
-                  </template>
-                </q-btn>
-              </div>
-              <div class="py-5 full-width q-px-md">
-                <q-separator style="border-bottom: 0.1px solid #3a3a3a" />
-              </div>
-              <div class="py-10">
-                <q-btn
-                  square
-                  class="q-px-sm"
-                  style="border-radius: 8px"
-                  :class="[$q.dark.isActive ? 'text-accent' : 'text-primary']"
-                  @click="openConfirmDialog('Confirm Logout', 'logout')"
-                >
-                  <template #default>
-                    <div class="row justify-between items-center gap-10">
-                      <LogOut size="20" />
-                    </div>
-                    <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
-                    Logout
-                  </q-tooltip>
-                  </template>
-                </q-btn>
-              </div>
-            </div>
-          </div>
-        </div>
-      </template>
+              </q-item>
 
-      <!--
-          in this case, we use a button (can be anything)
-          so that user can switch back
-          to mini-mode
-        -->
-      <div class="q-mini-drawer-hide absolute" style="top: 15px; right: -17px">
-        <q-btn
-          dense
-          round
-          unelevated
-          color="accent"
-          icon="chevron_left"
-          @click="miniState = true"
-        />
+              <q-item
+                v-ripple
+                clickable
+                to="/manage-sow"
+                class="mt-10"
+                :class="{ 'active-item-glass': activeBtn === 1 }"
+                @click="activeBtn = 1"
+              >
+                <q-item-section side>
+                  <PencilRuler
+                    :class="{ 'neon-text-violet': activeBtn === 1 }"
+                    size="20"
+                  />
+                </q-item-section>
+                <q-item-section
+                  v-if="!miniState"
+                  :class="{ 'neon-text-violet': activeBtn === 1 }"
+                  >Manage SOW</q-item-section
+                >
+              </q-item>
+
+              <q-item
+                v-ripple
+                clickable
+                to="/manage-projects"
+                :class="{ 'active-item-glass': activeBtn === 2 }"
+                @click="activeBtn = 2"
+              >
+                <q-item-section side>
+                  <FolderKanbanIcon
+                    :class="{ 'neon-text-pink': activeBtn === 2 }"
+                    size="20"
+                  />
+                </q-item-section>
+                <q-item-section
+                  v-if="!miniState"
+                  :class="{ 'neon-text-pink': activeBtn === 2 }"
+                  >Manage Projects</q-item-section
+                >
+              </q-item>
+
+              <q-item
+                v-ripple
+                clickable
+                to="/manage-invites"
+                :class="{ 'active-item-glass': activeBtn === 3 }"
+                @click="activeBtn = 3"
+              >
+                <q-item-section side>
+                  <Send
+                    :class="{ 'neon-text-blue': activeBtn === 3 }"
+                    size="20"
+                  />
+                </q-item-section>
+                <q-item-section
+                  v-if="!miniState"
+                  :class="{ 'neon-text-blue': activeBtn === 3 }"
+                  >Manage Invites</q-item-section
+                >
+              </q-item>
+
+              <q-item
+                v-ripple
+                clickable
+                to="/manage-accounts"
+                :class="{ 'active-item-glass': activeBtn === 4 }"
+                @click="activeBtn = 4"
+              >
+                <q-item-section side>
+                  <Users
+                    :class="{ 'neon-text-violet': activeBtn === 4 }"
+                    size="20"
+                  />
+                </q-item-section>
+                <q-item-section
+                  v-if="!miniState"
+                  :class="{ 'neon-text-violet': activeBtn === 4 }"
+                  >Manage Accounts</q-item-section
+                >
+              </q-item>
+
+              <q-item
+                v-ripple
+                clickable
+                to="/chats"
+                :class="{ 'active-item-glass': activeBtn === 5 }"
+                @click="activeBtn = 5"
+              >
+                <q-item-section side>
+                  <MessageCircleMore
+                    :class="{ 'neon-text-pink': activeBtn === 5 }"
+                    size="20"
+                  />
+                </q-item-section>
+                <q-item-section
+                  v-if="!miniState"
+                  :class="{ 'neon-text-pink': activeBtn === 5 }"
+                  >Messages</q-item-section
+                >
+              </q-item>
+
+              <q-item
+                v-ripple
+                clickable
+                to="/whats-new"
+                :class="{ 'neon-text-cyan': activeBtn === 6 }"
+                @click="activeBtn = 6"
+              >
+                <q-item-section side>
+                  <TrendingUp
+                    :class="{ 'neon-text-cyan': activeBtn === 6 }"
+                    size="20"
+                  />
+                </q-item-section>
+                <q-item-section
+                  v-if="!miniState"
+                  :class="{ 'neon-text-cyan': activeBtn === 6 }"
+                  >Trends</q-item-section
+                >
+              </q-item>
+
+              <q-item
+                v-ripple
+                clickable
+                to="/manage-reports"
+                :class="{ 'neon-text-blue': activeBtn === 7 }"
+                @click="activeBtn = 7"
+              >
+                <q-item-section side>
+                  <BarChart3
+                    :class="{ 'neon-text-blue': activeBtn === 7 }"
+                    size="20"
+                  />
+                </q-item-section>
+                <q-item-section
+                  v-if="!miniState"
+                  :class="{ 'neon-text-blue': activeBtn === 7 }"
+                  >Reports</q-item-section
+                >
+              </q-item>
+            </q-list>
+          </q-scroll-area>
+
+          <q-spacer />
+
+          <q-list padding class="text-white q-mb-md">
+            <q-item
+              v-ripple
+              clickable
+              to="/support"
+              :class="{ 'neon-text-violet': activeBtn === 8 }"
+              @click="activeBtn = 8"
+            >
+              <q-item-section side>
+                <LifeBuoy
+                  :class="{ 'neon-text-violet': activeBtn === 8 }"
+                  size="20"
+                />
+              </q-item-section>
+              <q-item-section
+                v-if="!miniState"
+                :class="{ 'neon-text-violet': activeBtn === 8 }"
+                >Support</q-item-section
+              >
+            </q-item>
+
+            <q-item
+              v-ripple
+              clickable
+              to="/settings"
+              :class="{ 'neon-text-pink': activeBtn === 9 }"
+              @click="activeBtn = 9"
+            >
+              <q-item-section side>
+                <Settings
+                  :class="{ 'neon-text-pink': activeBtn === 9 }"
+                  size="20"
+                />
+              </q-item-section>
+              <q-item-section
+                v-if="!miniState"
+                :class="{ 'neon-text-pink': activeBtn === 9 }"
+                >Settings</q-item-section
+              >
+            </q-item>
+
+            <q-item
+              v-ripple
+              clickable
+              class="text-negative"
+              @click="openConfirmDialog('Confirm Logout', 'logout')"
+            >
+              <q-item-section side>
+                <LogOut color="red" size="20" />
+              </q-item-section>
+              <q-item-section v-if="!miniState">Logout</q-item-section>
+            </q-item>
+          </q-list>
+        </div>
       </div>
     </q-drawer>
 
-    <q-page-container
-      class="page-container"
-      :style="{
-        'background: black': $q.dark.isActive,
-        'background: #f2f4f7': !$q.dark.isActive,
-        'height: 100vh': $q.screen.gt.sm
-      }"
-    >
+    <q-page-container class="page-container" style="background: transparent">
       <div
-        class="row full-width items-center"
+        class="row full-width items-center q-px-sm"
         :class="$isCapacitorMode ? 'mt-45' : ''"
       >
         <div
           v-if="$route.name !== 'Admin Login'"
-          :style="{
-            background: $q.dark.isActive ? 'black' : ''
-          }"
-          :class="[
-            $q.dark.isActive ? 'text-accent bg-black' : 'text-primary bg-light'
-          ]"
-          class="full-width"
+          class="full-width glass-panel no-border-radius-top"
+          style="border-radius: 0 0 20px 20px; border-top: none"
         >
           <!-- Replaces q-toolbar: uses 'row' and 'items-center' for alignment -->
-          <div class="row justify-between full-width items-center">
-            <!-- Replaces q-toolbar-title, uses 'col' or margins for spacing -->
-            <div class="column items-center justify-center mx-8">
-              <strong
-                class="caption"
-                :class="[$q.screen.lt.sm ? 'caption' : 'text-h6']"
-                >{{ routeName === 'admin.my-profile' ? 'User Details' :  routeName}}</strong
-              >
+          <div class="row justify-between full-width items-center px-4 py-2">
+            <div class="row items-center no-wrap">
+              <q-btn
+                v-if="$route.name !== 'Admin Login'"
+                flat
+                dense
+                round
+                icon="menu"
+                class="q-mr-sm neon-text-blue"
+                @click="toggleSidebar"
+              />
+              <div class="column items-center justify-center mx-8">
+                <strong
+                  class="caption neon-text-blue"
+                  :class="[$q.screen.lt.sm ? 'caption' : 'text-h6']"
+                >
+                  {{
+                    routeName === 'admin.my-profile'
+                      ? 'User Details'
+                      : routeName
+                  }}
+                </strong>
+              </div>
             </div>
 
-            <div class="row gap-10">
-              <q-toggle
-                v-model="isDark"
-                dense
-                checked-icon="las la-moon"
-                color="accent"
-                unchecked-icon="las la-sun"
-                label=""
-                @update:model-value="toggleMode"
-              />
+            <div class="row gap-10 items-center">
               <q-btn
                 v-if="
                   mainStore?.adminUser &&
                   authUser &&
                   $route.name !== 'Admin Login'
                 "
-                size="12px"
                 flat
                 round
-                color="accent"
+                class="neon-text-violet"
                 icon="las la-bell"
               />
               <div
@@ -420,9 +302,12 @@
                   authUser &&
                   $route.name !== 'Admin Login'
                 "
-                class="clickable mr-5"
+                class="clickable mr-5 relative-position"
               >
-                <q-avatar>
+                <q-avatar
+                  size="35px"
+                  style="border: 2px solid rgba(0, 210, 255, 0.3)"
+                >
                   <HofsteeAvatar
                     :src="
                       obj?.avatar?.length > 0
@@ -433,37 +318,23 @@
                   />
                 </q-avatar>
                 <q-menu
-                  style="border-radius: 10px"
-                  :class="[
-                    $q.dark.isActive
-                      ? 'bg-contrast text-accent no-shadow'
-                      : 'bg-light text-primary'
-                  ]"
-                  :offset="[5, 15]"
+                  class="glass-panel"
+                  :offset="[0, 10]"
+                  anchor="bottom end"
+                  self="top end"
+                  transition-show="fade"
+                  transition-hide="fade"
                 >
-                  <!-- ... q-list items remain the same ... -->
-                  <template #activator="{ on }">
-                    <q-btn flat dense icon="more_vert" v-on="on" />
-                  </template>
-                  <q-list style="min-width: 200px">
-                    <q-item>
-                      <q-item-section>Dark Mode</q-item-section>
-                      <q-item-section side>
-                        <q-toggle
-                          v-model="isDark"
-                          dense
-                          checked-icon="las la-moon"
-                          color="text-accent"
-                          unchecked-icon="las la-sun"
-                          label=""
-                          @update:model-value="toggleMode"
-                        />
-                      </q-item-section>
-                    </q-item>
-                    <q-item v-ripple clickable  :to="`/admin-profile/${authUser.uid}`">
+                  <q-list style="min-width: 200px" class="text-white">
+                    <!-- ... q-list items ... -->
+                    <q-item
+                      v-ripple
+                      clickable
+                      :to="`/admin-profile/${authUser.uid}`"
+                    >
                       <q-item-section>My Profile</q-item-section>
                       <q-item-section side>
-                        <CircleUser size="24" />
+                        <CircleUser size="18" color="white" />
                       </q-item-section>
                     </q-item>
                     <q-item
@@ -471,9 +342,11 @@
                       clickable
                       @click="openConfirmDialog('Confirm Logout', 'logout')"
                     >
-                      <q-item-section>Logout</q-item-section>
+                      <q-item-section class="text-negative"
+                        >Logout</q-item-section
+                      >
                       <q-item-section side>
-                        <LogOut size="24" />
+                        <LogOut size="18" color="red" />
                       </q-item-section>
                     </q-item>
                   </q-list>
@@ -492,13 +365,8 @@
       class="bottom-nav-container"
     >
       <div
-        class="modern-bottom-nav shadow-4"
-        active-color="white"
-        glossy
-        :class="{
-          'bg-light': !$q.dark.isActive,
-          'bg-primary text-accent': $q.dark.isActive
-        }"
+        class="modern-bottom-nav glass-panel"
+        style="height: 65px; border-radius: 32px; padding: 0 10px"
       >
         <q-btn
           round
@@ -575,6 +443,21 @@
             <Users size="24" />
           </div>
         </q-btn>
+        <q-btn
+          round
+          flat
+          :class="{ 'text-purple': activeTab === 'messages' }"
+          @click="
+            () => {
+              $router.push(`/chats`)
+              activeTab = 'messages'
+            }
+          "
+        >
+          <div class="column justify-start items-center">
+            <MessageCircleMore size="24" />
+          </div>
+        </q-btn>
       </div>
     </div>
   </q-layout>
@@ -634,7 +517,7 @@
 import { ref, nextTick } from 'vue'
 import { useMainStore } from 'stores/main'
 import { LocalStorage } from 'quasar'
-import { Capacitor } from '@capacitor/core'
+// import { Capacitor } from '@capacitor/core'
 import { StatusBar, Style } from '@capacitor/status-bar'
 import { NavigationBar } from '@hugotomazi/capacitor-navigation-bar'
 import HofsteeAvatar from 'src/components/Common/Badge/HofsteeAvatar.vue'
@@ -645,15 +528,9 @@ export default {
   },
   setup() {
     const miniState = ref(false)
-    const isDark = ref(false)
     const mainStore = useMainStore()
     const activeBtn = ref(0)
     const hoveredBtn = ref(null)
-
-    if (Capacitor.isNativePlatform()) {
-      StatusBar.setBackgroundColor({ color: '#f0f0f0' })
-      StatusBar.setStyle({ style: Style.Light })
-    }
 
     return {
       activeBtn,
@@ -663,13 +540,13 @@ export default {
       confirmCallbackFn: '',
       actionAccountLoader: ref(false),
       authUser: ref(null),
-      drawer: ref(false),
+      drawer: ref(true),
       mainStore,
       miniState,
-      isDark,
       drawerClick() {},
       obj: ref({}),
-      activeTab: ref(false)
+      activeTab: ref(false),
+      showTooltips: ref(true)
     }
   },
   computed: {
@@ -685,8 +562,31 @@ export default {
     // }
 
     this.authUser = LocalStorage.getItem('authUser')
+
+    // Initialize tooltip setting
+    this.$q.dark.set(true)
+    StatusBar.setBackgroundColor({ color: '#000000' })
+    StatusBar.setStyle({ style: Style.Dark })
+    NavigationBar.setColor({
+      color: '#00000000',
+      darkButtons: false
+    })
+
+    // Listen for settings change
+    window.addEventListener('settings-changed', event => {
+      if (event.detail && typeof event.detail.showTooltips !== 'undefined') {
+        this.showTooltips = event.detail.showTooltips
+      }
+    })
   },
   methods: {
+    toggleSidebar() {
+      if (this.$q.screen.gt.sm) {
+        this.miniState = !this.miniState
+      } else {
+        this.drawer = !this.drawer
+      }
+    },
     async emitFromChild() {
       await nextTick()
       await this.fetchUserProfile()
@@ -702,25 +602,6 @@ export default {
         const data = snapshot.val()
         this.obj = data
       })
-    },
-    toggleMode(val) {
-      this.$q.dark.isActive = val
-      if (val) {
-        // this.$q.addressbarColor.set('#000000')
-        StatusBar.setBackgroundColor({ color: '#000000' })
-        StatusBar.setStyle({ style: Style.Dark })
-        NavigationBar.setColor({
-          color: '#00000000',
-          darkButtons: false
-        })
-      } else {
-        // this.$q.addressbarColor.set('#f0f0f0')
-        StatusBar.setBackgroundColor({ color: '#f0f0f0' })
-        StatusBar.setStyle({ style: Style.Light })
-        NavigationBar.setTransparency({
-          isTransparent: true
-        })
-      }
     },
     openConfirmDialog(confirmMsg, confirmCallbackFn) {
       this.confirmMsg = confirmMsg

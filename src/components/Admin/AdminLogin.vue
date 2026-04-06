@@ -5,108 +5,77 @@
     :style="`height: 100vh;`"
   >
     <q-card
-      flat
-      class="q-ma-sm no-shadow"
+      class="q-ma-sm glass-card px-20"
       :class="[
         $q.screen.gt.xs ? 'width-px-500' : 'width-px-400 bg-transparent'
       ]"
     >
-      <q-card-section class="">
-        <div class="text-h6">Admin Login</div>
-        <div class="text-subtitle2 row justify-between">
-          <div>Login required to use the portal</div>
+      <q-card-section class="column items-center">
+        <div class="text-h4 neon-text-blue text-weight-bold">Hofstee</div>
+        <div class="text-h6 text-white mt-5">Admin Portal</div>
+        <div class="text-subtitle2 text-grey-5">
+          Login required to use the portal
         </div>
       </q-card-section>
 
-      <q-card-section class="column gap-10">
+      <q-card-section class="column gap-15 px-10">
         <q-input
           v-model="username"
-          outline
-          :dense="true"
+          outlined
           placeholder="Email / Username"
           :rules="usernameRules"
-          color="positive"
-          input-class="text-primary"
-          filled
-          class="full-width"
+          color="accent"
+          dark
+          input-class="text-white"
           @keydown.enter.prevent="login"
         >
           <template #prepend>
-            <ShieldUser size="16" />
+            <ShieldUser size="18" class="neon-text-blue" />
           </template>
         </q-input>
 
         <q-input
           v-model="password"
           :type="isPwd ? 'password' : 'text'"
-          :dense="true"
-          outline
+          outlined
           placeholder="Password"
           :rules="passwordRules"
-          color="positive"
-          input-class="text-primary"
-          filled
-          class="full-width"
+          color="accent"
+          dark
+          input-class="text-white"
           @keyup.enter="login"
         >
           <template #prepend>
-            <LockIcon size="16" />
+            <LockIcon size="18" class="neon-text-blue" />
           </template>
           <template #append>
-            <EyeIcon v-if="!isPwd" size="16" @click="isPwd = !isPwd" />
-            <EyeClosed v-if="isPwd" size="16" @click="isPwd = !isPwd" />
+            <q-btn
+              flat
+              round
+              dense
+              :icon="isPwd ? 'visibility_off' : 'visibility'"
+              class="text-grey-5"
+              @click="isPwd = !isPwd"
+            />
           </template>
         </q-input>
       </q-card-section>
 
-      <q-card-section class="">
-        <div class="text-subtitle2 row justify-between items-center">
+      <q-card-section>
+        <div class="row justify-between items-center">
           <q-btn
-            dense
-            padding="xs lg"
-            :label="$q.screen.lt.sm ? '' : 'Clear'"
             flat
             no-caps
-            class="pull-right round-btn text-grey-9 text-caption ghost"
-          >
-            <template v-if="$q.screen.lt.sm" #default>
-              <div class="row justify-between items-center gap-10">
-                <X size="16" />
-              </div>
-            </template>
-          </q-btn>
-
-          <q-btn
-            dense
-            padding="xs lg"
-            flat
-            no-caps
-            class="pull-right round-btn text-grey-9 text-caption ghost"
+            label="Switch to Mobile"
+            class="neon-text-violet text-weight-bold"
             @click="$router.push('/login')"
-          >
-            <template #default>
-              <div class="row justify-between items-center gap-10">
-                <Smartphone size="16" />
-                Switch to Mobile
-              </div>
-            </template>
-          </q-btn>
-
+          />
           <q-btn
-            dense
-            padding="xs lg"
-            :label="$q.screen.lt.sm ? '' : 'Register'"
             flat
             no-caps
-            class="pull-right round-btn text-grey-9 text-caption ghost"
-            @click="register"
-          >
-            <template v-if="$q.screen.lt.sm" #default>
-              <div class="row justify-between items-center gap-10">
-                <PencilLine size="16" />
-              </div>
-            </template>
-          </q-btn>
+            label="Forgot Password?"
+            class="text-grey-5 text-caption"
+          />
         </div>
       </q-card-section>
 
@@ -118,15 +87,13 @@
           :loading="loadingSubmit"
           :disable="loadingSubmit || !username || !password"
           :style="{
-            width: '96%'
+            width: '100%'
           }"
           @click="login"
         >
           <template #default>
-            <div class="px-5 full-width row justify-between items-center">
-              <ShieldUser size="20" />
-              <span class="text-capitalize text-h6">Sign In</span>
-              <LogIn size="20" />
+            <div class="row items-center gap-10">
+              <span class="text-h6 text-weight-bold">Sign In</span>
             </div>
           </template>
           <template #loading>
@@ -287,8 +254,3 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
-:deep(.q-field__control:after) {
-  display: none !important;
-}
-</style>

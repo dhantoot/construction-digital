@@ -109,6 +109,28 @@
         </q-item-label>
         <q-item v-ripple tag="label" class="">
           <q-item-section side top>
+            <q-checkbox
+              v-model="showTooltips"
+              dense
+              keep-color
+              color="positive"
+            />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Show Tooltips</q-item-label>
+            <q-item-label
+              :class="{
+                'text-primary': !$q.dark.isActive,
+                'text-accent': $q.dark.isActive
+              }"
+              caption
+            >
+              Show labels when hovering over sidebar icons
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item v-ripple tag="label" class="">
+          <q-item-section side top>
             <q-checkbox v-model="check1" dense keep-color color="positive" />
           </q-item-section>
           <q-item-section>
@@ -266,8 +288,9 @@
   </div>
 </template>
 <script>
-import { ref } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { useMainStore } from 'stores/main'
+import { LocalStorage } from 'quasar'
 
 // Don't forget to specify which animations
 // you are using in quasar.config file > animations.
@@ -288,6 +311,19 @@ export default {
     const visible = ref(false)
     const question = ref('')
     const mainStore = useMainStore()
+    const showTooltips = ref(true)
+
+    onMounted(() => {
+      const storedTooltip = LocalStorage.getItem('showTooltips')
+      showTooltips.value = storedTooltip !== null ? storedTooltip : true
+    })
+
+    watch(showTooltips, val => {
+      LocalStorage.set('showTooltips', val)
+      window.dispatchEvent(
+        new CustomEvent('settings-changed', { detail: { showTooltips: val } })
+      )
+    })
 
     return {
       mainStore,
@@ -297,6 +333,7 @@ export default {
         // access setup variables here w/o using 'this'
         // console.log('initFunction called', visible.value)
       },
+      showTooltips,
       check1: ref(true),
       check2: ref(false),
       check3: ref(false),

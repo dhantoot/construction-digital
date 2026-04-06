@@ -1,8 +1,8 @@
 <template>
   <q-card
     dense
-    :style="style"
-    class="no-shadow p-10"
+    :style="cardStyle"
+    class="no-shadow p-10 glass-card"
     :bordered="bordered"
     :flat="flat"
     :class="{
@@ -28,7 +28,8 @@ export default {
   props: {
     backgroundColor: {
       type: String,
-      required: true
+      required: false,
+      default: 'rgba(255, 255, 255, 0.03)'
     },
     borderRadius: {
       type: String,
@@ -37,8 +38,8 @@ export default {
     },
     border: {
       type: String,
-      required: true,
-      default: '.1px solid rgb(198 198 198, 0.2)'
+      required: false,
+      default: 'none'
     },
     height: {
       type: String,
@@ -59,7 +60,7 @@ export default {
     }
   },
   setup(props) {
-    const style = ref({
+    const cardStyle = ref({
       'background-color': props.backgroundColor,
       'border-radius': props.borderRadius,
       border: props.border,
@@ -67,7 +68,7 @@ export default {
     })
 
     return {
-      style
+      cardStyle
     }
   },
   mounted() {}

@@ -22,12 +22,11 @@
     <div class="row">
       <q-input
         v-model="text"
-        standout="bg-transparent"
+        borderless
+        class="glass-panel q-px-sm full-width"
         :input-class="$q.dark.isActive ? 'text-accent' : 'text-primary'"
         :dense="dense"
-        :style="{
-          width: '100%'
-        }"
+        placeholder="Search files..."
       >
         <template #prepend>
           <!-- <q-icon color="accent" name="las la-arrow-left" @click="this.$router.push(`/detail/${mainStore?.mobileSelectedProject?.id}`)"/> -->

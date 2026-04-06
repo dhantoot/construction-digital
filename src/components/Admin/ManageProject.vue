@@ -1,13 +1,9 @@
 <template>
   <div
-    class="row hide-scrollbar full-height"
+    class="row full-width full-height justify-center"
+    :class="$isCapacitorMode || $q.screen.lt.sm ? 'scroll q-pa-sm pb-100' : 'p-10'"
     :style="{ height: $q.screen.lt.sm ? 'auto' : '' }"
   >
-    <div
-      class="row full-width full-height"
-      :style="[$q.screen.lt.sm ? 'padding-bottom: 90px;' : '']"
-      :class="$isCapacitorMode || $q.screen.lt.sm ? '' : 'p-10'"
-    >
       <div
         v-if="$q.screen.gt.sm"
         class="col-3 pr-10"
@@ -15,12 +11,13 @@
           'col-12': $q.screen.lt.md
         }"
       >
-        <q-card class="round-panel full-height no-shadow">
-          <q-card-section>
-            <div class="text-h6">
+        <q-card class="round-panel full-height glass-panel">
+
+          <q-card-header dense>
+            <div class="pt-7 px-15 text-h6">
               {{ selected.length ? 'Update' : 'New Project' }}
             </div>
-            <div class="text-subtitle2 row justify-between">
+            <div class="px-15 text-subtitle2 row justify-between">
               <div>
                 {{
                   selected.length
@@ -32,22 +29,19 @@
                 [ Update Mode ]
               </div>
             </div>
-          </q-card-section>
+          </q-card-header>
+
           <q-card-section class="q-gutter-sm">
             <q-select
               v-model="searchKey"
               behavior="menu"
-              :popup-content-class="[
-                $q.dark.isActive
-                  ? 'popupSelectContent bg-contrast no-shadow'
-                  : 'popupSelectContent'
-              ]"
+              popup-content-class="glass-panel"
               filled
               clearable
               use-input
               input-debounce="0"
               label="Location. (trigger search after 10 charaters)"
-              class="q-mt-md"
+              class="q-mt-md glass-panel"
               :dense="true"
               :options="options"
               :loading="searchingPlaceLoader"
@@ -59,13 +53,20 @@
                 </q-item>
               </template>
             </q-select>
-            <q-input v-model="text" :dense="true" filled label="Name" />
+            <q-input
+              v-model="text"
+              :dense="true"
+              filled
+              label="Name"
+              class="glass-panel"
+            />
             <q-input
               v-model="desc"
               :dense="true"
               placeholder="Description..."
               filled
               type="textarea"
+              class="glass-panel"
             />
             <q-tabs
               v-model="tab"
@@ -96,7 +97,7 @@
                 filled
                 multiple
                 accept=".jpg, image/*"
-                class="q-ml-sm shadow-2 no-border no-box-shadow"
+                class="q-ml-sm shadow-2 no-border no-box-shadow glass-panel"
               >
                 <template #append>
                   <div class="row full-width">
@@ -117,12 +118,11 @@
                 dense
                 flat
                 align="left"
-                class="text-capitalize full-width no-border no-box-shadow no-shadow"
+                class="text-capitalize full-width no-border no-box-shadow no-shadow glass-panel"
                 text-color="primary"
                 :disable="deviceIsReady"
                 style="height: 40px"
                 @click="captureImage"
-                :style="$q.dark.isActive ? 'background:rgb(33 33 33)' : 'background:#e4e4e4'"
               >
                 <template #default>
                   <div class="row full-width justify-between items-center px-8">
@@ -150,32 +150,76 @@
               label="Budget"
               placeholder="0.00"
               input-class="text-right"
+              class="glass-panel"
             />
             <q-input
               v-model="dateFrom"
               :dense="true"
               filled
-              type="date"
+              stack-label
               label="Date from"
-            />
+              class="glass-panel"
+              input-class="text-right"
+            >
+              <template #append>
+                <q-icon name="las la-calendar" class="cursor-pointer">
+                  <q-popup-proxy
+                    cover
+                    transition-show="scale"
+                    transition-hide="scale"
+                  >
+                    <q-date v-model="dateFrom" mask="YYYY-MM-DD">
+                      <div class="row items-center justify-end">
+                        <q-btn
+                          v-close-popup
+                          label="Close"
+                          color="primary"
+                          flat
+                        />
+                      </div>
+                    </q-date>
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+            </q-input>
             <q-input
               v-model="dateTo"
               :dense="true"
               filled
-              type="date"
+              stack-label
               label="Date to"
-            />
+              class="glass-panel"
+              input-class="text-right"
+            >
+              <template #append>
+                <q-icon name="las la-calendar" class="cursor-pointer">
+                  <q-popup-proxy
+                    cover
+                    transition-show="scale"
+                    transition-hide="scale"
+                  >
+                    <q-date v-model="dateTo" mask="YYYY-MM-DD">
+                      <div class="row items-center justify-end">
+                        <q-btn
+                          v-close-popup
+                          label="Close"
+                          color="primary"
+                          flat
+                        />
+                      </div>
+                    </q-date>
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+            </q-input>
             <q-select
               v-model="agent"
               behavior="menu"
-              :popup-content-class="[
-                $q.dark.isActive
-                  ? 'popupSelectContent bg-contrast no-shadow'
-                  : 'popupSelectContent'
-              ]"
+              popup-content-class="glass-panel keep-radius"
               :placeholder="agent.length ? '' : 'Agent'"
               :dense="true"
               filled
+              class="glass-panel"
               use-input
               use-chips
               multiple
@@ -189,14 +233,11 @@
             <q-select
               v-model="client"
               behavior="menu"
-              :popup-content-class="[
-                $q.dark.isActive
-                  ? 'popupSelectContent bg-contrast no-shadow'
-                  : 'popupSelectContent'
-              ]"
+              popup-content-class="glass-panel keep-radius"
               :placeholder="client.length ? '' : 'Client'"
               :dense="true"
               filled
+              class="glass-panel"
               use-input
               use-chips
               multiple
@@ -210,15 +251,14 @@
             <q-select
               v-model="templateId"
               behavior="menu"
-              :popup-content-class="[
-                $q.dark.isActive
-                  ? 'popupSelectContent bg-contrast no-shadow'
-                  : 'popupSelectContent'
-              ]"
-              :label="'SOW Template'"
+              popup-content-class="glass-panel keep-radius"
+              placeholder="SOW Template"
+              :display-value="templateId ? undefined : 'SOW Template'"
               :dense="true"
               filled
+              class="glass-panel"
               input-debounce="0"
+              dropdown-icon="las la-angle-down"
               :options="sowTemplates"
               :loading="sowTemplateLoader || loadingTodoSubmit"
             >
@@ -229,6 +269,7 @@
               </template>
             </q-select>
           </q-card-section>
+
           <q-card-actions>
             <div class="row justify-between full-width q-px-sm">
               <q-btn
@@ -274,9 +315,11 @@
               </q-btn>
             </div>
           </q-card-actions>
+
           <q-inner-loading :showing="visible">
             <q-spinner-ios size="50px" color="secondary" />
           </q-inner-loading>
+
         </q-card>
       </div>
 
@@ -286,11 +329,18 @@
           'col-12': $q.screen.lt.md
         }"
       >
-        <q-card
-          class="round-panel full-height no-shadow px-10 pt-10"
-          :class="[$q.screen.gt.sm ? 'pt-15 mb-10' : 'pt-0 bg-transparent']"
+        <div
+          class="full-height no-shadow"
+          :class="[
+            $q.screen.lt.sm
+              ? 'no-glass bg-transparent'
+              : 'round-panel glass-panel px-10 pt-15 mb-10'
+          ]"
         >
-          <div class="row justify-between full-width items-center">
+          <div
+            class="row justify-between full-width items-center"
+            :class="[$q.screen.lt.sm ? 'q-py-md q-px-sm' : 'mb-15']"
+          >
             <div class="text-subtitle2">
               <q-chip
                 size="sm"
@@ -326,12 +376,15 @@
             </div>
           </div>
 
-          <div class="row full-width scroll">
+          <div
+            class="row full-width scroll"
+          >
             <q-table
               v-model:selected="selected"
               flat
               no-data-label="I didn't find anything for you"
-              class="q-mb-sm full-width"
+              class="q-mb-sm full-width no-shadow"
+              :class="[$q.screen.lt.sm ? 'no-glass bg-transparent' : '']"
               row-key="title"
               selection="single"
               wrap-cells
@@ -401,104 +454,88 @@
               </template>
 
               <template #item="props">
-                <q-card class="q-ma-sm full-width no-shadow" :style="style">
-                  <q-item>
-                    <q-item-section avatar>
-                      <q-avatar rounded>
-                        <img :src="props.row.avatarFullPath" />
-                      </q-avatar>
-                    </q-item-section>
+                  <q-card
+                    class="q-ma-sm full-width no-shadow glass-panel round-panel"
+                  >
+                    <q-item>
+                      <q-item-section avatar>
+                        <q-avatar rounded>
+                          <img :src="props.row.avatarFullPath" />
+                        </q-avatar>
+                      </q-item-section>
 
-                    <q-item-section>
-                      <q-item-label
-                        class="text-h6"
-                        :class="{
-                          'text-subtitle1': $q.screen.lt.sm
-                        }"
-                      >
-                        {{ props.row.title }}
-                      </q-item-label>
-                      <q-item-label caption>
-                        {{
-                          props.row.description.length > maxLength
-                            ? props.row.descriptionShortened
-                            : props.row.description
-                        }}
-                      </q-item-label>
-                    </q-item-section>
+                      <q-item-section>
+                        <q-item-label
+                          class="text-h6"
+                          :class="{
+                            'text-subtitle1': $q.screen.lt.sm
+                          }"
+                        >
+                          {{ props.row.title }}
+                        </q-item-label>
+                        <q-item-label caption>
+                          {{
+                            props.row.description.length > maxLength
+                              ? props.row.descriptionShortened
+                              : props.row.description
+                          }}
+                        </q-item-label>
+                      </q-item-section>
 
-                    <q-item-section side>
-                      <q-checkbox
-                        v-model="props.selected"
+                      <q-item-section side>
+                        <q-checkbox
+                          v-model="props.selected"
+                          dense
+                          @update:model-value="setSelected"
+                        />
+                      </q-item-section>
+                    </q-item>
+
+                    <q-separator />
+
+                    <q-card-section>
+                      <div class="row full-width justify-between gap-10">
+                        <div class="column col-grow">
+                          <div class="row justify-between text-caption">
+                            <span class="text-grey-5">Budget:</span>
+                            <span class="text-white">{{ props.row.budget }}</span>
+                          </div>
+
+                          <div class="row justify-between text-caption">
+                            <span class="text-grey-5">Created:</span>
+                            <span class="text-white" v-formatdate v-html="props.row.dateCreated"></span>
+                          </div>
+                        </div>
+
+                        <q-separator vertical dark inset />
+
+                        <div class="column col-grow">
+                          <div class="row justify-between text-caption">
+                            <span class="text-grey-5">From:</span>
+                            <span class="text-white" v-formatdate v-html="props.row.dateFrom"></span>
+                          </div>
+                          <div class="row justify-between text-caption">
+                            <span class="text-grey-5">To:</span>
+                            <span class="text-white" v-formatdate v-html="props.row.dateTo"></span>
+                          </div>
+                        </div>
+                      </div>
+                    </q-card-section>
+
+                    <q-card-actions align="right">
+                      <q-toggle
+                        v-model="activatedList[props.row.id]"
+                        class="mr-5"
                         dense
-                        @update:model-value="setSelected"
+                        name="djan"
+                        checked-icon="check"
+                        unchecked-icon="clear"
+                        color="positive"
+                        unchecked-color="negative"
+                        @update:model-value="updateStatus(props.row)"
                       />
-                    </q-item-section>
-                  </q-item>
-
-                  <q-separator />
-
-                  <q-card-section>
-                    <div class="full-width row justify-between">
-                      <div>
-                        <div
-                          class="text-subtitle2"
-                          :class="{
-                            'text-caption': $q.screen.lt.sm
-                          }"
-                        >
-                          <b>Budget: </b>
-                          {{ props.row.budget }}
-                        </div>
-
-                        <div
-                          :class="{
-                            'text-caption': $q.screen.lt.sm
-                          }"
-                        >
-                          <b>Created: </b>
-                          <span
-                            v-formatdate
-                            v-html="props.row.dateCreated"
-                          ></span>
-                        </div>
-                      </div>
-
-                      <div>
-                        <div
-                          :class="{
-                            'text-caption': $q.screen.lt.sm
-                          }"
-                        >
-                          <b>From: </b>
-                          <span v-formatdate v-html="props.row.dateFrom"></span>
-                        </div>
-                        <div
-                          :class="{
-                            'text-caption': $q.screen.lt.sm
-                          }"
-                        >
-                          <b>To: </b>
-                          <span v-formatdate v-html="props.row.dateTo"></span>
-                        </div>
-                      </div>
-                    </div>
-                  </q-card-section>
-
-                  <q-card-actions align="right">
-                    <q-toggle
-                      v-model="activatedList[props.row.id]"
-                      class="mr-5"
-                      dense
-                      name="djan"
-                      checked-icon="check"
-                      unchecked-icon="clear"
-                      color="positive"
-                      unchecked-color="negative"
-                      @update:model-value="updateStatus(props.row)"
-                    />
-                  </q-card-actions>
-                </q-card>
+                    </q-card-actions>
+                    </q-card>
               </template>
             </q-table>
           </div>
@@ -506,12 +543,11 @@
           <q-inner-loading :showing="rowLoading">
             <q-spinner-ios size="50px" color="secondary" />
           </q-inner-loading>
-        </q-card>
+        </div>
       </div>
-    </div>
   </div>
   <q-dialog v-model="updateProjectDialog" persistent>
-    <q-card class="no-shadow">
+    <q-card class="no-shadow glass-panel" style="border-radius: 20px">
       <q-card-section class="row items-center">
         <q-avatar
           size="sm"
@@ -532,17 +568,13 @@
           <q-select
             v-model="searchKey"
             behavior="menu"
-            :popup-content-class="[
-              $q.dark.isActive
-                ? 'popupSelectContent bg-contrast no-shadow'
-                : 'popupSelectContent'
-            ]"
+            popup-content-class="glass-panel"
             filled
             clearable
             use-input
             input-debounce="0"
             label="Location. (trigger search after 10 charaters)"
-            class="full-width"
+            class="full-width glass-panel"
             :dense="true"
             :options="options"
             :loading="searchingPlaceLoader"
@@ -556,74 +588,74 @@
           </q-select>
           <q-input
             v-model="text"
-            class="full-width"
+            class="full-width glass-panel"
             :dense="true"
             filled
             label="Name"
           />
           <q-input
             v-model="desc"
-            class="full-width"
+            class="full-width glass-panel"
             :dense="true"
             placeholder="Description..."
             filled
             type="textarea"
           />
-<!--          <q-tabs-->
-<!--            v-model="tab"-->
-<!--            class="bg-white-4 full-width"-->
-<!--            :dense="true"-->
-<!--            align="justify"-->
-<!--          >-->
-<!--            <q-tab-->
-<!--              class="text-orange text-capitalize"-->
-<!--              name="upload"-->
-<!--              icon="las la-upload"-->
-<!--              label="Upload"-->
-<!--            />-->
-<!--            <q-tab-->
-<!--              class="text-negative text-capitalize"-->
-<!--              name="capture"-->
-<!--              icon="las la-camera"-->
-<!--              label="Capture"-->
-<!--            />-->
-<!--          </q-tabs>-->
-<!--          <div v-if="tab === 'upload'" class="full-width q-pt-xs">-->
-<!--            <q-file-->
-<!--              v-model="file"-->
-<!--              :dense="true"-->
-<!--              label-color="primary"-->
-<!--              filled-->
-<!--              label="Choose File"-->
-<!--              multiple-->
-<!--              accept=".jpg, image/*"-->
-<!--              class="shadow-2"-->
-<!--            >-->
-<!--              <template #prepend>-->
-<!--                <q-icon name="cloud_upload" color="primary" />-->
-<!--              </template>-->
-<!--            </q-file>-->
-<!--          </div>-->
-<!--          <div v-if="tab === 'capture'" class="full-width q-pl-sm q-pt-xs">-->
-<!--            <q-btn-->
-<!--              dense-->
-<!--              align="left"-->
-<!--              class="text-capitalize full-width no-shadow round-btn"-->
-<!--              text-color="primary"-->
-<!--              color="grey-2"-->
-<!--              icon="las la-camera"-->
-<!--              label="Open camera"-->
-<!--              :disable="deviceIsReady"-->
-<!--              style="height: 40px"-->
-<!--              @click="captureImage"-->
-<!--            />-->
-<!--          </div>-->
+          <!--          <q-tabs-->
+          <!--            v-model="tab"-->
+          <!--            class="bg-white-4 full-width"-->
+          <!--            :dense="true"-->
+          <!--            align="justify"-->
+          <!--          >-->
+          <!--            <q-tab-->
+          <!--              class="text-orange text-capitalize"-->
+          <!--              name="upload"-->
+          <!--              icon="las la-upload"-->
+          <!--              label="Upload"-->
+          <!--            />-->
+          <!--            <q-tab-->
+          <!--              class="text-negative text-capitalize"-->
+          <!--              name="capture"-->
+          <!--              icon="las la-camera"-->
+          <!--              label="Capture"-->
+          <!--            />-->
+          <!--          </q-tabs>-->
+          <!--          <div v-if="tab === 'upload'" class="full-width q-pt-xs">-->
+          <!--            <q-file-->
+          <!--              v-model="file"-->
+          <!--              :dense="true"-->
+          <!--              label-color="primary"-->
+          <!--              filled-->
+          <!--              label="Choose File"-->
+          <!--              multiple-->
+          <!--              accept=".jpg, image/*"-->
+          <!--              class="shadow-2"-->
+          <!--            >-->
+          <!--              <template #prepend>-->
+          <!--                <q-icon name="cloud_upload" color="primary" />-->
+          <!--              </template>-->
+          <!--            </q-file>-->
+          <!--          </div>-->
+          <!--          <div v-if="tab === 'capture'" class="full-width q-pl-sm q-pt-xs">-->
+          <!--            <q-btn-->
+          <!--              dense-->
+          <!--              align="left"-->
+          <!--              class="text-capitalize full-width no-shadow round-btn"-->
+          <!--              text-color="primary"-->
+          <!--              color="grey-2"-->
+          <!--              icon="las la-camera"-->
+          <!--              label="Open camera"-->
+          <!--              :disable="deviceIsReady"-->
+          <!--              style="height: 40px"-->
+          <!--              @click="captureImage"-->
+          <!--            />-->
+          <!--          </div>-->
 
           <q-tabs
-              v-model="tab"
-              class="bg-white-4 full-width"
-              :dense="true"
-              align="justify"
+            v-model="tab"
+            class="bg-white-4 full-width"
+            :dense="true"
+            align="justify"
           >
             <q-tab class="text-orange text-capitalize" name="upload">
               <template #default>
@@ -642,19 +674,17 @@
           </q-tabs>
           <div v-if="tab === 'upload'" class="full-width q-pt-xs">
             <q-file
-                v-model="file"
-                :dense="true"
-                label-color="primary"
-                filled
-                multiple
-                accept=".jpg, image/*"
-                class="shadow-2 no-border no-box-shadow"
+              v-model="file"
+              :dense="true"
+              label-color="primary"
+              filled
+              multiple
+              accept=".jpg, image/*"
+              class="shadow-2 no-border no-box-shadow glass-panel"
             >
               <template #append>
                 <div class="row full-width">
-                  <label class="text-caption text-grey-7"
-                  >Choose File..</label
-                  >
+                  <label class="text-caption text-grey-7">Choose File..</label>
                 </div>
               </template>
               <template #prepend>
@@ -666,15 +696,14 @@
           </div>
           <div v-if="tab === 'capture'" class="full-width q-pt-xs">
             <q-btn
-                dense
-                flat
-                align="left"
-                class="text-capitalize full-width no-border no-box-shadow no-shadow"
-                text-color="primary"
-                :disable="deviceIsReady"
-                style="height: 40px"
-                @click="captureImage"
-                :style="$q.dark.isActive ? 'background:rgb(33 33 33)' : 'background:#e4e4e4'"
+              dense
+              flat
+              align="left"
+              class="text-capitalize full-width no-border no-box-shadow no-shadow glass-panel"
+              text-color="primary"
+              :disable="deviceIsReady"
+              style="height: 40px"
+              @click="captureImage"
             >
               <template #default>
                 <div class="row full-width justify-between items-center px-8">
@@ -684,7 +713,6 @@
               </template>
             </q-btn>
           </div>
-
 
           <div class="q-py-sm full-width">
             <q-toggle
@@ -698,7 +726,7 @@
           </div>
           <q-input
             v-model="budget"
-            class="full-width"
+            class="full-width glass-panel"
             :dense="true"
             prefix="$"
             filled
@@ -708,29 +736,59 @@
           />
           <q-input
             v-model="dateFrom"
-            class="full-width"
+            class="full-width glass-panel"
             :dense="true"
             filled
-            type="date"
+            stack-label
             label="Date from"
-          />
+            input-class="text-right"
+          >
+            <template #append>
+              <q-icon name="las la-calendar" class="cursor-pointer">
+                <q-popup-proxy
+                  cover
+                  transition-show="scale"
+                  transition-hide="scale"
+                >
+                  <q-date v-model="dateFrom" mask="YYYY-MM-DD">
+                    <div class="row items-center justify-end">
+                      <q-btn v-close-popup label="Close" color="primary" flat />
+                    </div>
+                  </q-date>
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
           <q-input
             v-model="dateTo"
-            class="full-width"
+            class="full-width glass-panel"
             :dense="true"
             filled
-            type="date"
+            stack-label
             label="Date to"
-          />
+            input-class="text-right"
+          >
+            <template #append>
+              <q-icon name="las la-calendar" class="cursor-pointer">
+                <q-popup-proxy
+                  cover
+                  transition-show="scale"
+                  transition-hide="scale"
+                >
+                  <q-date v-model="dateTo" mask="YYYY-MM-DD">
+                    <div class="row items-center justify-end">
+                      <q-btn v-close-popup label="Close" color="primary" flat />
+                    </div>
+                  </q-date>
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
           <q-select
             v-model="agent"
-            class="full-width"
+            class="full-width glass-panel"
             behavior="menu"
-            :popup-content-class="[
-              $q.dark.isActive
-                ? 'popupSelectContent bg-contrast no-shadow'
-                : 'popupSelectContent'
-            ]"
+            popup-content-class="glass-panel"
             option-value="email"
             option-label="email"
             filled
@@ -746,13 +804,9 @@
           />
           <q-select
             v-model="client"
-            class="full-width"
+            class="full-width glass-panel"
             behavior="menu"
-            :popup-content-class="[
-              $q.dark.isActive
-                ? 'popupSelectContent bg-contrast no-shadow'
-                : 'popupSelectContent'
-            ]"
+            popup-content-class="glass-panel"
             filled
             use-input
             use-chips
@@ -768,16 +822,14 @@
           />
           <q-select
             v-model="templateId"
-            class="full-width"
+            class="full-width glass-panel"
             behavior="menu"
-            :popup-content-class="[
-              $q.dark.isActive
-                ? 'popupSelectContent bg-contrast no-shadow'
-                : 'popupSelectContent'
-            ]"
+            popup-content-class="glass-panel"
             filled
             input-debounce="0"
-            :label="'SOW Template'"
+            placeholder="SOW Template"
+            :display-value="templateId ? undefined : 'SOW Template'"
+            dropdown-icon="las la-angle-down"
             :dense="true"
             :options="sowTemplates"
             :loading="sowTemplateLoader || loadingTodoSubmit"

@@ -2,15 +2,12 @@
   <q-layout
     view="lHh lpR lFf"
     class="no-scroll"
-    :style="{
-      background: $q.dark.isActive ? 'black' : ''
-    }"
+    style="background: transparent"
   >
     <q-page-container
       class="page-container"
       :style="{
-        'background: black': $q.dark.isActive,
-        'background: #f2f4f7': !$q.dark.isActive,
+        'background: transparent': true,
         'height: 100vh': $q.screen.gt.sm
       }"
     >
@@ -22,50 +19,57 @@
           v-if="
             !['mobile.userlogin', 'mobile.login-register'].includes($route.name)
           "
-          :style="{
-            background: $q.dark.isActive ? 'black' : ''
-          }"
-          :class="[
-            $q.dark.isActive ? 'text-accent bg-black' : 'text-primary bg-light'
-          ]"
-          class="full-width"
+          class="full-width glass-panel no-border-radius-top"
+          style="border-radius: 0 0 20px 20px; border-top: none"
         >
           <!-- Replaces q-toolbar: uses flex classes for alignment -->
-          <div class="row justify-between full-width items-center px-5">
-            <q-btn title="x" flat round dense icon="menu" />
+          <div class="row justify-between full-width items-center px-5 py-3">
+            <q-btn
+              title="x"
+              flat
+              round
+              dense
+              icon="menu"
+              class="neon-text-blue"
+            />
 
             <div class="column items-center justify-center">
-              <strong class="caption text-h6">{{ 'Hofstee' }}</strong>
+              <strong class="caption text-h6 neon-text-blue">{{
+                'Hofstee'
+              }}</strong>
             </div>
 
-            <div class="" style="min-width: 20px">
+            <div class="" style="min-width: 32px">
               <div
                 v-if="mainStore.showNav || routeName === 'mobile.my-profile'"
-                class=""
+                class="row items-center no-wrap relative-position"
               >
-                <q-avatar>
-                  <HofsteeAvatar
-                    :src="
-                      obj?.avatar?.length > 0
-                        ? `${obj.avatar}`
-                        : `default-user.jpeg`
-                    "
-                    size="35px"
-                  />
-                </q-avatar>
+                <HofsteeAvatar
+                  :src="
+                    obj?.avatar?.length > 0
+                      ? `${obj.avatar}`
+                      : `default-user.jpeg`
+                  "
+                  size="38px"
+                />
                 <q-menu
-                  style="border-radius: 10px"
-                  :class="[
-                    $q.dark.isActive
-                      ? 'bg-contrast text-accent no-shadow'
-                      : 'bg-light text-primary'
-                  ]"
-                  :offset="[13, 16]"
+                  class="glass-panel"
+                  :offset="[0, 10]"
+                  anchor="bottom end"
+                  self="top end"
+                  transition-show="fade"
+                  transition-hide="fade"
                 >
                   <template #activator="{ on }">
-                    <q-btn flat dense icon="more_vert" v-on="on" />
+                    <q-btn
+                      flat
+                      dense
+                      icon="more_vert"
+                      class="neon-text-blue"
+                      v-on="on"
+                    />
                   </template>
-                  <q-list style="min-width: 200px">
+                  <q-list style="min-width: 200px" class="text-white">
                     <q-item>
                       <q-item-section>Dark Mode</q-item-section>
                       <q-item-section side>
@@ -73,10 +77,7 @@
                           v-if="mainStore.showNav || routeName === 'MyProfile'"
                           v-model="isDark"
                           dense
-                          checked-icon="las la-moon"
-                          color="grey"
-                          unchecked-icon="las la-sun"
-                          label=""
+                          color="accent"
                           @update:model-value="toggleMode"
                         />
                       </q-item-section>
@@ -84,13 +85,15 @@
                     <q-item v-ripple clickable :to="`/profile/${authUser.uid}`">
                       <q-item-section>My Profile</q-item-section>
                       <q-item-section side>
-                        <UserIcon size="20" />
+                        <UserIcon size="20" color="white" />
                       </q-item-section>
                     </q-item>
                     <q-item v-ripple clickable @click="signOut">
-                      <q-item-section>Logout</q-item-section>
+                      <q-item-section class="text-negative"
+                        >Logout</q-item-section
+                      >
                       <q-item-section side>
-                        <Log-outIcon size="18" />
+                        <Log-outIcon size="18" color="red" />
                       </q-item-section>
                     </q-item>
                   </q-list>
@@ -114,76 +117,89 @@
       class="bottom-nav-container"
     >
       <div
-        class="modern-bottom-nav shadow-4"
-        active-color="white"
-        glossy
-        :class="{
-          'bg-light': !$q.dark.isActive,
-          'bg-primary text-accent': $q.dark.isActive
-        }"
+        class="modern-bottom-nav glass-panel"
+        style="height: 65px; border-radius: 32px; padding: 0 10px"
       >
+        <!-- Dashboard -->
         <q-btn
           aria-label="Go to Dashboard"
           round
           flat
-          :class="{ 'text-purple': activeTab === 'dashboard' }"
+          :class="{
+            'neon-text-blue': activeTab === 'dashboard',
+            'text-grey-5': activeTab !== 'dashboard'
+          }"
           @click="activatePage('dashboard')"
         >
           <div class="column justify-start items-center">
             <HomeIcon size="24" />
           </div>
         </q-btn>
+
+        <!-- Projects -->
         <q-btn
           aria-label="Go to Projects"
           round
           flat
-          :class="{ 'text-purple': activeTab === 'projects' }"
+          :class="{
+            'neon-text-violet': activeTab === 'projects',
+            'text-grey-5': activeTab !== 'projects'
+          }"
           @click="activatePage('projects')"
         >
           <div class="column justify-start items-center">
             <FolderKanbanIcon size="24" />
           </div>
         </q-btn>
+
+        <!-- Search -->
         <q-btn
           aria-label="Go to Search"
           round
           flat
-          :class="{ 'text-purple': activeTab === 'search' }"
+          :class="{
+            'neon-text-blue': activeTab === 'search',
+            'text-grey-5': activeTab !== 'search'
+          }"
           @click="activatePage('search')"
         >
           <div class="column justify-start items-center">
-            <!-- <SearchIcon size="24" />-->
-            <HexagonIcon size="30" />
+            <HexagonIcon size="32" />
           </div>
         </q-btn>
+
+        <!-- Plans -->
         <q-btn
           aria-label="Go to Plans"
           round
           flat
-          :class="{ 'text-purple': activeTab === 'plans' }"
+          :class="{
+            'neon-text-pink': activeTab === 'plans',
+            'text-grey-5': activeTab !== 'plans'
+          }"
           @click="activatePage('plans')"
         >
           <div class="column justify-start items-center">
             <CalendarIcon size="24" />
           </div>
         </q-btn>
+
+        <!-- Settings -->
         <q-btn
-          aria-label="Go to Profile"
+          aria-label="Go to Settings"
           round
           flat
-          :class="{ 'text-purple': activeTab === 'profile' }"
-          @click="activatePage('profile')"
+          :class="{
+            'neon-text-blue': activeTab === 'more',
+            'text-grey-5': activeTab !== 'more'
+          }"
+          @click="activatePage('more')"
         >
           <div class="column justify-start items-center">
-            <UserIcon size="24" />
+            <Cog size="24" />
           </div>
         </q-btn>
       </div>
-
-      <!-- Center Label -->
-      <!-- <div v-if="tab === 'analytics'" class="center-label text-white">
-        Analytics
-      </div> -->
     </div>
   </q-layout>
 </template>

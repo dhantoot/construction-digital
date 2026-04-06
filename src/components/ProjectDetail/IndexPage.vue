@@ -7,19 +7,11 @@
   </div>
 
   <div v-if="bottomNavPaths.includes(routeName)" class="bottom-nav-container">
-    <div
-      class="modern-bottom-nav shadow-4"
-      active-color="white"
-      glossy
-      :class="{
-        'bg-light': !$q.dark.isActive,
-        'bg-primary text-accent': $q.dark.isActive
-      }"
-    >
+    <div class="modern-bottom-nav glass-panel">
       <q-btn
         round
         flat
-        :class="{ 'text-purple': activeTab === 'todo' }"
+        :class="activeTab === 'todo' ? 'neon-text-blue' : 'text-grey-5'"
         @click="navigateTo('todo')"
       >
         <CheckSquareIcon size="24" />
@@ -27,7 +19,7 @@
       <q-btn
         round
         flat
-        :class="{ 'text-purple': activeTab === 'files' }"
+        :class="activeTab === 'files' ? 'neon-text-blue' : 'text-grey-5'"
         @click="navigateTo('files')"
       >
         <Images size="24" />
@@ -35,7 +27,7 @@
       <q-btn
         round
         flat
-        :class="{ 'text-purple': activeTab === 'chat' }"
+        :class="activeTab === 'chat' ? 'neon-text-blue' : 'text-grey-5'"
         @click="navigateTo('chat')"
       >
         <MessageCircleIcon size="24" />
@@ -43,7 +35,7 @@
       <q-btn
         round
         flat
-        :class="{ 'text-purple': activeTab === 'planning' }"
+        :class="activeTab === 'planning' ? 'neon-text-blue' : 'text-grey-5'"
         @click="navigateTo('planning')"
       >
         <ClipboardListIcon size="24" />
@@ -51,7 +43,7 @@
       <q-btn
         round
         flat
-        :class="{ 'text-purple': activeTab === 'more' }"
+        :class="activeTab === 'more' ? 'neon-text-blue' : 'text-grey-5'"
         @click="navigateTo('more')"
       >
         <SettingsIcon size="24" />

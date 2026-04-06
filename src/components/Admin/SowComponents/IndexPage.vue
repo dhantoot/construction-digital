@@ -1,13 +1,8 @@
 <template>
-  <div
-    class="row hide-scrollbar full-height"
-    :style="{
-      height: $q.screen.lt.sm ? 'auto' : ''
-    }"
-  >
+  <div class="row hide-scrollbar full-height">
     <div
       class="row full-width full-height"
-      :class="$isCapacitorMode || $q.screen.lt.sm ? '' : 'p-10'"
+      :class="$isCapacitorMode || $q.screen.lt.sm ? '' : 'q-pa-md'"
     >
       <router-view />
     </div>

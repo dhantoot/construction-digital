@@ -26,18 +26,20 @@ export default {
 
 <style scoped>
 .online {
-  border: 1px solid #4caf50;
+  border: 2px solid rgba(0, 210, 255, 0.4);
   position: relative;
+  box-shadow: 0 0 10px rgba(0, 210, 255, 0.2);
 }
 
 .online-badge {
   position: absolute;
-  bottom: -1px;
-  right: -1px;
-  width: 12px;
-  height: 12px;
+  bottom: 0px;
+  right: 0px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  background-color: #4caf50;
-  border: 0.5px solid #fff;
+  background-color: #00ffaa;
+  border: 1.5px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 8px rgba(0, 255, 170, 0.6);
 }
 </style>

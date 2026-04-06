@@ -1,12 +1,12 @@
 <template>
-  <div class="row full-width full-height" :class="[$q.screen.lt.sm ? '' : '']">
+  <div class="row full-width full-height justify-center" :class="[$q.screen.lt.sm ? 'scroll q-pa-sm pb-100' : '']">
     <q-card
-      class="row no-shadow round-panel full-width"
-      :class="[$q.screen.lt.sm ? 'bg-transparent px-10' : 'p-10']"
+      class="row no-shadow glass-panel full-width"
+      :class="[$q.screen.lt.sm ? 'no-glass' : 'p-10']"
     >
       <div class="row">
         <div class="row full-width justify-between">
-          <span class="text-h6">Create a New Template</span>
+          <span class="text-h6 neon-text-blue">Create a New Template</span>
           <span></span>
         </div>
 
@@ -16,49 +16,49 @@
             filled
             :dense="true"
             placeholder="Template Name"
-            :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
+            class="glass-panel"
           />
           <q-input
             v-model="section"
             filled
             :dense="true"
             placeholder="Section"
-            :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
+            class="glass-panel"
           />
           <q-input
             v-model="sowCategory"
             filled
             :dense="true"
             placeholder="Category"
-            :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
+            class="glass-panel"
           />
           <q-input
             v-model="sowDescription"
             filled
             :dense="true"
             placeholder="Description"
-            :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
+            class="glass-panel"
           />
           <q-input
             v-model="contractPrice"
             filled
             :dense="true"
             placeholder="Contract Price"
-            :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
+            class="glass-panel"
           />
           <q-input
             v-model="weight"
             filled
             :dense="true"
-            placeholder="Weigth"
-            :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
+            placeholder="Weight"
+            class="glass-panel"
           />
           <q-input
             v-model="duration"
             filled
             :dense="true"
             placeholder="Duration in Days"
-            :style="$q.focus ? 'border-bottom: none; box-shadow: none' : ''"
+            class="glass-panel"
           />
         </div>
       </div>
@@ -113,7 +113,7 @@
   </div>
 
   <q-dialog v-model="confirm" persistent>
-    <q-card class="no-shadow">
+    <q-card class="no-shadow glass-panel" style="border-radius: 20px">
       <q-card-section class="row items-center">
         <q-avatar size="sm">
           <template #default>

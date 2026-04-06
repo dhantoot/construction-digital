@@ -109,6 +109,11 @@ const routes = [
         component: () => import('components/SendInvite.vue')
       },
       {
+        path: '/more',
+        name: 'mobile.more',
+        component: () => import('components/ProjectDetail/ProjectMore.vue')
+      },
+      {
         path: '/login-register',
         name: 'mobile.login-register',
         component: () => import('src/components/userRegistration.vue')
@@ -184,6 +189,21 @@ const routes = [
         path: '/whats-new',
         name: 'Trends',
         component: () => import('src/components/Admin/WhatsNew.vue')
+      },
+      {
+        path: '/settings',
+        name: 'Settings',
+        component: () => import('src/components/Admin/SettingsConf.vue')
+      },
+      {
+        path: '/support',
+        name: 'Support',
+        component: () => import('src/components/Admin/ClientSupport.vue')
+      },
+      {
+        path: '/chats',
+        name: 'Messages',
+        component: () => import('src/components/Admin/ChatBox.vue')
       },
       {
         path: '/manage-reports',

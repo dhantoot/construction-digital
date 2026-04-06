@@ -1,16 +1,18 @@
 <template>
   <div
-    class="full-height row hide-scrollbar"
+    class="column hide-scrollbar full-width full-height"
+    :class="[
+      $q.screen.lt.sm ? 'scroll q-pa-sm pb-100' : 'p-10'
+    ]"
     :style="{ height: $q.screen.lt.sm ? 'auto' : '' }"
   >
-    <div
-      class="column full-width full-height gap-10"
-      :style="[$q.screen.lt.sm ? 'padding-bottom: 90px;' : '']"
-      :class="$isCapacitorMode || $q.screen.lt.sm ? '' : 'p-10'"
-    >
-      <q-card
-        class="full-height round-panel full-width no-shadow px-10"
-        :class="[$q.screen.lt.sm ? 'bg-transparent' : '']"
+      <div
+        class="full-width full-height no-shadow"
+        :class="[
+          $q.screen.lt.sm
+            ? 'no-glass bg-transparent'
+            : 'round-panel glass-panel px-10'
+        ]"
       >
         <!-- For Desktop view -->
         <div v-if="$q.screen.gt.sm" class="row justify-start gap-20 q-py-md">
@@ -22,17 +24,14 @@
             <div class="input-container">
               <q-select
                 v-model="selectedProject"
-                class="custom-rounded-input"
+                class="glass-panel"
                 behavior="menu"
-                :popup-content-class="[
-                  $q.dark.isActive
-                    ? 'popupSelectContent bg-contrast no-shadow'
-                    : 'popupSelectContent'
-                ]"
+                popup-content-class="glass-panel"
                 use-input
                 use-chips
                 dense
                 filled
+                dropdown-icon="las la-angle-down"
                 :options="filterOptions2"
                 @filter="filterProject"
                 @update:model-value="onUpdateSelectedProject"
@@ -101,11 +100,7 @@
               <q-select
                 v-model="model"
                 behavior="menu"
-                :popup-content-class="[
-                  $q.dark.isActive
-                    ? 'popupSelectContent bg-contrast no-shadow'
-                    : 'popupSelectContent'
-                ]"
+                popup-content-class="glass-panel"
                 dense
                 filled
                 use-input
@@ -115,9 +110,9 @@
                 :options="filterOptions"
                 option-value="email"
                 option-label="email"
-                :class="{
-                  'q-pb-sm full-width': $q.screen.width < 433
-                }"
+                class="glass-panel"
+                :class="[$q.screen.width < 433 ? 'q-pb-sm full-width' : '']"
+                dropdown-icon="las la-angle-down"
                 @new-value="createValue"
                 @filter="filterFn"
               >
@@ -167,7 +162,7 @@
         <!-- For mobile view -->
         <div
           v-if="!$q.screen.gt.sm"
-          class="row justify-end full-width items-center pt-10"
+          class="row justify-end full-width items-center q-py-md q-px-sm mb-10"
         >
           <q-btn
             rounded
@@ -180,10 +175,13 @@
           />
         </div>
 
-        <div class="row full-width">
+        <div
+          class="row full-width scroll"
+        >
           <q-table
             no-data-label="I didn't find anything for you"
             class="q-mb-sm full-width no-shadow"
+            :class="[$q.screen.lt.sm ? 'no-glass bg-transparent' : '']"
             row-key="projectName"
             wrap-cells
             :grid="$q.screen.lt.sm"
@@ -219,10 +217,11 @@
                   <q-chip
                     square
                     class="q-pl-sm full-width"
-                    :class="{
-                      'full-width q-px-md': q.screen.lt.md,
-                      'bg-contrast': $q.dark.isActive
-                    }"
+                    :class="[
+                      $q.screen.lt.md ? 'full-width q-px-md' : '',
+                      $q.dark.isActive ? 'bg-contrast' : '',
+                      props.row.status === 'Confirmed' ? 'neon-text-green' : 'neon-text-amber'
+                    ]"
                   >
                     <q-avatar
                       :icon="getStatusIcon(props.row.status)"
@@ -257,7 +256,7 @@
                       <small>Sending..</small>
                     </template>
 
-                    <span class="text-subtitle2 ml-5">Resend invite</span>
+                    <span class="text-subtitle2 ml-5 text-no-wrap no-wrap">Resend invite</span>
                   </q-btn>
                 </q-td>
               </q-tr>
@@ -265,92 +264,85 @@
 
             <!-- Mobile item slot -->
             <template #item="props">
-              <q-card class="q-ma-sm full-width no-shadow" :style="style">
-                <q-card-section>
-                  <div
-                    class="text-h6"
-                    :class="{
-                      'text-subtitle1': $q.screen.lt.sm
-                    }"
-                  >
-                    {{ props.row.projectName }}
-                  </div>
-                  <div class="text-caption row justify-between items-center">
-                    {{ props.row.invitee }}
-                    <q-chip
+                <q-card class="q-ma-sm full-width no-shadow glass-panel round-panel">
+                  <q-card-section>
+                    <div
+                      class="text-h6"
+                      :class="{
+                        'text-subtitle1': $q.screen.lt.sm
+                      }"
+                    >
+                      {{ props.row.projectName }}
+                    </div>
+                    <div class="text-caption row justify-between items-center">
+                      {{ props.row.invitee }}
+                      <q-chip
+                        size="sm"
+                        :icon="getStatusIcon(props.row.status)"
+                        :color="getStatusColor(props.row.status)"
+                        :text-color="props.row.status === 'Confirmed' ? undefined : 'white'"
+                        :class="props.row.status === 'Confirmed' ? 'neon-text-green' : 'neon-text-amber'"
+                        outline
+                      >
+                        {{ props.row.status }}
+                      </q-chip>
+                    </div>
+                  </q-card-section>
+
+                  <q-separator />
+
+                  <q-card-section class="q-pt-sm row justify-between gap-10">
+                    <div class="column col-grow text-caption">
+                      <div class="row justify-between">
+                         <span class="text-grey-5">Sent:</span>
+                         <span class="text-white">{{ props.row.dateSent }}</span>
+                      </div>
+                      <div class="row justify-between">
+                         <span class="text-grey-5">Responded:</span>
+                         <span class="text-white">{{ props.row.dateResponded }}</span>
+                      </div>
+                    </div>
+                    
+                    <q-separator vertical dark inset />
+
+                    <div class="column col-grow text-caption">
+                      <div class="row justify-between">
+                         <span class="text-grey-5">Title:</span>
+                         <span class="text-white">{{ props.row.userTitle }}</span>
+                      </div>
+                    </div>
+                  </q-card-section>
+
+                  <q-card-actions align="right">
+                    <q-btn
+                      v-if="props.row.status === 'Pending'"
                       size="sm"
-                      :icon="getStatusIcon(props.row.status)"
-                      :color="getStatusColor(props.row.status)"
-                      text-color="white"
-                      outline
+                      padding="xs md"
+                      class="text-capitalize text-secondary round-btn shadow"
+                      text-color="primary"
+                      color="warning"
+                      :dense="true"
+                      :loading="resendInviteLoader[props.rowIndex]"
+                      :disable="resendInviteLoader[props.rowIndex]"
+                      @click="resendInvite(props.row, props.rowIndex)"
                     >
-                      {{ props.row.status }}
-                    </q-chip>
-                  </div>
-                </q-card-section>
+                      <template #loading>
+                        <q-spinner-ios class="on-left" />
+                        <small>Sending..</small>
+                      </template>
 
-                <q-separator />
-
-                <q-card-section class="q-pt-sm row justify-between">
-                  <div>
-                    <div
-                      :class="{
-                        'text-caption': $q.screen.lt.sm
-                      }"
-                    >
-                      <strong>Sent:</strong>
-                      {{ props.row.dateSent }}
-                    </div>
-                    <div
-                      :class="{
-                        'text-caption': $q.screen.lt.sm
-                      }"
-                    >
-                      <strong>Responded:</strong>
-                      {{ props.row.dateResponded }}
-                    </div>
-                  </div>
-                  <div
-                    :class="{
-                      'text-caption': $q.screen.lt.sm
-                    }"
-                  >
-                    <strong>Title:</strong>
-                    {{ props.row.userTitle }}
-                  </div>
-                </q-card-section>
-
-                <q-card-actions align="right">
-                  <q-btn
-                    v-if="props.row.status === 'Pending'"
-                    size="sm"
-                    padding="xs md"
-                    class="text-capitalize text-secondary round-btn shadow"
-                    text-color="primary"
-                    color="warning"
-                    :dense="true"
-                    :loading="resendInviteLoader[props.rowIndex]"
-                    :disable="resendInviteLoader[props.rowIndex]"
-                    @click="resendInvite(props.row, props.rowIndex)"
-                  >
-                    <template #loading>
-                      <q-spinner-ios class="on-left" />
-                      <small>Sending..</small>
-                    </template>
-
-                    <span class="text-caption">Resend invite</span>
-                  </q-btn>
-                </q-card-actions>
-              </q-card>
+                      <span class="text-caption text-no-wrap">Resend invite</span>
+                    </q-btn>
+                  </q-card-actions>
+                </q-card>
             </template>
           </q-table>
         </div>
-      </q-card>
-    </div>
+      </div>
   </div>
 
   <q-dialog v-model="sendInviteDialog" persistent>
-    <q-card class="no-shadow">
+    <q-card class="no-shadow glass-panel" style="border-radius: 20px">
       <q-card-section class="row items-center">
         <q-avatar
           size="sm"
@@ -370,17 +362,14 @@
             <div class="caption text-bold">Select Project</div>
             <q-select
               v-model="selectedProject"
-              class=""
+              class="glass-panel"
               behavior="menu"
-              :popup-content-class="[
-                $q.dark.isActive
-                  ? 'popupSelectContent bg-contrast no-shadow'
-                  : 'popupSelectContent'
-              ]"
+              popup-content-class="glass-panel"
               use-input
               use-chips
               dense
               filled
+              dropdown-icon="las la-angle-down"
               :options="filterOptions2"
               @filter="filterProject"
               @update:model-value="onUpdateSelectedProject"
@@ -448,11 +437,7 @@
               <q-select
                 v-model="model"
                 behavior="menu"
-                :popup-content-class="[
-                  $q.dark.isActive
-                    ? 'popupSelectContent bg-contrast no-shadow'
-                    : 'popupSelectContent'
-                ]"
+                popup-content-class="glass-panel"
                 dense
                 filled
                 use-input
@@ -462,9 +447,9 @@
                 :options="filterOptions"
                 option-value="email"
                 option-label="email"
-                :class="{
-                  'q-pb-sm full-width': $q.screen.width < 433
-                }"
+                class="glass-panel"
+                :class="[$q.screen.width < 433 ? 'q-pb-sm full-width' : '']"
+                dropdown-icon="las la-angle-down"
                 @new-value="createValue"
                 @filter="filterFn"
               >
@@ -816,7 +801,7 @@ export default {
     },
     getStatusColor(rowVal) {
       if (rowVal === 'Pending') return 'warning'
-      if (rowVal === 'Confirmed') return 'info'
+      if (rowVal === 'Confirmed') return 'positive'
       if (rowVal === 'Rejected') return 'negative'
     },
     getStatusIcon(rowVal) {
@@ -1007,20 +992,9 @@ export default {
 }
 
 /* Make input/select corners fully visible */
-.custom-rounded-input .q-field__control {
+.input-container .q-field__control {
   border-radius: 12px;
   overflow: hidden; /* Ensures underline doesn't bleed outside */
-}
-
-/* Adjust or hide the default underline */
-.custom-rounded-input .q-field__control:after {
-  bottom: 0 !important;
-  height: 0px !important; /* or reduce to 1px if you want it thinner */
-}
-
-.custom-rounded-input .q-field__control:before {
-  bottom: 0 !important;
-  height: 0px !important;
 }
 
 :deep(.q-field__control:after) {

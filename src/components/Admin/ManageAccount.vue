@@ -1,21 +1,25 @@
 <template>
   <div
-    class="full-height row hide-scrollbar"
+    class="full-height row hide-scrollbar full-width"
+    :class="[
+      $q.screen.lt.sm ? 'scroll q-pa-sm pb-100' : 'p-10'
+    ]"
     :style="{ height: $q.screen.lt.sm ? 'auto' : '' }"
   >
-    <div
-      class="full-height row full-width full-height"
-      :style="[$q.screen.lt.sm ? 'padding-bottom: 90px;' : '']"
-      :class="$isCapacitorMode || $q.screen.lt.sm ? '' : 'p-10'"
-    >
-      <q-card
-        class="full-height no-shadow round-panel full-width px-10 pt-10"
-        :class="[$q.screen.lt.sm ? 'bg-transparent' : '']"
+      <div
+        class="full-width full-height no-shadow"
+        :class="[
+          $q.screen.lt.sm
+            ? 'no-glass bg-transparent'
+            : 'round-panel glass-panel px-10 pt-10'
+        ]"
       >
         <div
           class="row full-width"
           :class="[
-            $q.screen.lt.sm ? 'justify-between' : 'justify-left gap-10 mb-10'
+            $q.screen.lt.sm
+              ? 'justify-between q-pa-md'
+              : 'justify-left gap-10 mb-10'
           ]"
         >
           <div class="row gap-10">
@@ -72,153 +76,134 @@
           </q-btn>
         </div>
 
-        <q-table
-          v-model:selected="selected"
-          dense
-          no-data-label="I didn't find anything for you"
-          class="q-mb-sm"
-          row-key="uid"
-          selection="single"
-          wrap-cells
-          :grid="$q.screen.lt.sm"
-          :selection-options="selectionOptions"
-          :rows="rows"
-          :columns="columns"
-          :loading="rowLoading"
-          :visible-columns="visibleColumns"
-          :rows-per-page-options="[10]"
+        <div
+          class="row full-width scroll"
         >
-          <template #body="props">
-            <q-tr :props="props" :selected="props.selected">
-              <q-td key="uid" :props="props">
-                {{ props.row.uid }}
-              </q-td>
-              <q-td auto-width>
-                <q-checkbox
-                  v-model="props.selected"
-                  @update:model-value="setSelected"
-                />
-              </q-td>
-              <q-td key="avatar" :props="props">
-                <q-avatar rounded>
-                  <img :src="`${props.row.avatar}`" />
-                </q-avatar>
-              </q-td>
-              <q-td key="email" :props="props">
-                {{ props.row.email }}
-              </q-td>
-              <q-td key="firstName" :props="props">
-                {{ props.row.firstName }}
-              </q-td>
-              <q-td key="lastName" :props="props">
-                {{ props.row.lastName }}
-              </q-td>
-              <q-td key="isActive" :props="props">
-                <q-chip
-                  square
-                  class="q-pl-sm full-width"
-                  :class="{
-                    'full-width q-px-md': $q.screen.lt.md,
-                    'bg-contrast': $q.dark.isActive
-                  }"
-                >
-                  <q-avatar
-                    :icon="getStatusIcon(props.row.isActive)"
-                    :color="getStatusColor(props.row.isActive)"
-                    text-color="white"
+          <q-table
+            v-model:selected="selected"
+            flat
+            no-data-label="I didn't find anything for you"
+            class="q-mb-sm full-width no-shadow"
+            :class="[$q.screen.lt.sm ? 'no-glass bg-transparent' : '']"
+            row-key="uid"
+            selection="single"
+            wrap-cells
+            :grid="$q.screen.lt.sm"
+            :selection-options="selectionOptions"
+            :rows="rows"
+            :columns="columns"
+            :loading="rowLoading"
+            :visible-columns="visibleColumns"
+            :rows-per-page-options="[10]"
+          >
+            <template #body="props">
+              <q-tr :props="props" :selected="props.selected">
+                <q-td auto-width>
+                  <q-checkbox
+                    v-model="props.selected"
+                    @update:model-value="setSelected"
                   />
-                  {{ props.row.isActive ? 'Active' : 'Inactive' }}
-                </q-chip>
-              </q-td>
-              <q-td key="role" :props="props">
-                {{ props.row.role }}
-              </q-td>
-              <q-td key="position" :props="props">
-                {{ props.row.position }}
-              </q-td>
-              <q-td key="phone_number" :props="props">
-                {{ props.row.phone_number }}
-              </q-td>
-            </q-tr>
-          </template>
-
-          <!-- Mobile item slot -->
-          <template #item="props">
-            <q-card class="q-ma-sm full-width no-shadow" :style="style">
-              <q-card-section class="row items-center q-gutter-sm">
-                <q-avatar rounded size="56px">
-                  <img :src="props.row.avatar" />
-                </q-avatar>
-                <div class="col">
-                  <div class="text-subtitle1">
-                    {{ props.row.firstName }} {{ props.row.lastName }}
-                  </div>
-                  <div class="text-caption text-grey">
-                    {{ props.row.email }}
-                  </div>
-                </div>
-                <q-checkbox
-                  v-model="props.selected"
-                  @update:model-value="setSelected"
-                />
-              </q-card-section>
-
-              <q-separator />
-
-              <q-card-section class="q-pt-sm">
-                <div class="row full-width justify-between items-start">
-                  <div>
-                    <div
-                      :class="{
-                        'text-caption': $q.screen.lt.sm
-                      }"
-                    >
-                      <strong>Role:</strong>
-                      {{ props.row.role }}
-                    </div>
-                    <div
-                      :class="{
-                        'text-caption': $q.screen.lt.sm
-                      }"
-                    >
-                      <strong>Position:</strong>
-                      {{ props.row.position }}
-                    </div>
-                    <div
-                      :class="{
-                        'text-caption': $q.screen.lt.sm
-                      }"
-                    >
-                      <strong>Phone:</strong>
-                      {{ props.row.phone_number }}
-                    </div>
-                  </div>
-
-                  <div>
-                    <q-chip
-                      size="sm"
+                </q-td>
+                <q-td key="avatar" :props="props">
+                  <q-avatar rounded>
+                    <img :src="`${props.row.avatar}`" />
+                  </q-avatar>
+                </q-td>
+                <q-td key="email" :props="props">
+                  {{ props.row.email }}
+                </q-td>
+                <q-td key="firstName" :props="props">
+                  {{ props.row.firstName }}
+                </q-td>
+                <q-td key="lastName" :props="props">
+                  {{ props.row.lastName }}
+                </q-td>
+                <q-td key="isActive" :props="props">
+                  <q-chip
+                    square
+                    class="q-pl-sm"
+                    :class="{
+                      'bg-contrast': $q.dark.isActive
+                    }"
+                  >
+                    <q-avatar
                       :icon="getStatusIcon(props.row.isActive)"
                       :color="getStatusColor(props.row.isActive)"
                       text-color="white"
-                      outline
-                    >
-                      {{ props.row.isActive ? 'Active' : 'Inactive' }}
-                    </q-chip>
-                  </div>
-                </div>
-              </q-card-section>
-            </q-card>
-          </template>
-        </q-table>
+                    />
+                    {{ props.row.isActive ? 'Active' : 'Inactive' }}
+                  </q-chip>
+                </q-td>
+                <q-td key="role" :props="props">
+                  {{ props.row.role }}
+                </q-td>
+                <q-td key="position" :props="props">
+                  {{ props.row.position }}
+                </q-td>
+                <q-td key="phone_number" :props="props">
+                  {{ props.row.phone_number }}
+                </q-td>
+              </q-tr>
+            </template>
+
+            <!-- Mobile item slot -->
+            <template #item="props">
+                <q-card class="q-ma-sm full-width no-shadow glass-panel round-panel">
+                  <q-card-section class="row items-center q-gutter-sm">
+                    <q-avatar rounded size="56px">
+                      <img :src="props.row.avatar" />
+                    </q-avatar>
+                    <div class="col">
+                      <div class="text-subtitle1">
+                        {{ props.row.firstName }} {{ props.row.lastName }}
+                      </div>
+                      <div class="text-caption text-grey">
+                        {{ props.row.email }}
+                      </div>
+                    </div>
+                    <q-checkbox
+                      v-model="props.selected"
+                      @update:model-value="setSelected"
+                    />
+                  </q-card-section>
+
+                  <q-separator />
+
+                  <q-card-section class="q-pt-sm">
+                    <div class="row full-width justify-between gap-10">
+                      <div class="column col-grow text-caption">
+                        <div class="row justify-between">
+                          <span class="text-grey-5">Role:</span>
+                          <span class="text-white">{{ props.row.role }}</span>
+                        </div>
+                        <div class="row justify-between">
+                          <span class="text-grey-5">Position:</span>
+                          <span class="text-white">{{ props.row.position }}</span>
+                        </div>
+                      </div>
+
+                      <q-separator vertical dark inset />
+
+                      <div class="column col-grow text-caption">
+                        <div class="row justify-between">
+                          <span class="text-grey-5">Phone:</span>
+                          <span class="text-white">{{ props.row.phone_number }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </q-card-section>
+                </q-card>
+            </template>
+          </q-table>
+        </div>
         <q-inner-loading :showing="rowLoading">
           <q-spinner-ios size="50px" color="secondary" />
         </q-inner-loading>
-      </q-card>
-    </div>
+      </div>
   </div>
 
   <q-dialog v-model="confirm" persistent>
-    <q-card class="no-shadow">
+    <q-card class="no-shadow glass-panel" style="border-radius: 20px">
       <q-card-section class="row items-center">
         <q-avatar size="sm">
           <template #default>
@@ -363,13 +348,6 @@ export default {
     const $q = useQuasar()
 
     return {
-      style: ref({
-        'background-color': computed(() =>
-          $q.dark.isActive ? 'rgba(255, 255, 255, 0.1)' : '#ffffff'
-        ),
-        'border-radius': '8px',
-        border: '.1px solid rgb(198 198 198, 0.5)'
-      }),
       // -- Confirm Dialog Start --
       confirm: ref(false),
       confirmMsg: '',
@@ -389,6 +367,13 @@ export default {
         highlight: true
       },
       searchKey: ref(''),
+      style: ref({
+        'background-color': computed(() =>
+          $q.dark.isActive ? 'rgba(255, 255, 255, 0.1)' : '#ffffff'
+        ),
+        'border-radius': '8px',
+        border: '.1px solid rgb(198 198 198, 0.5)'
+      }),
       visible,
       question,
       initFunction() {
@@ -558,5 +543,13 @@ export default {
 :deep(.q-separator--horizontal) {
   display: block;
   height: 0.1px;
+}
+:deep(.q-table th) {
+  padding: 16px 12px !important;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.7;
 }
 </style>

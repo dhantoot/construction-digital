@@ -9,13 +9,15 @@
       <q-select
         v-model="role"
         behavior="menu"
-        popup-content-class="popupSelectContent"
+        popup-content-class="glass-panel"
         :dense="true"
         filled
+        class="glass-panel"
         label="Role"
         :options="options"
         input-debounce="0"
         clearable
+        dropdown-icon="las la-angle-down"
         @filter="filterFn"
       >
         <template #no-option>

@@ -29,7 +29,11 @@
     </q-inner-loading>
   </div>
   <q-dialog v-model="eventDialog" persistent>
-    <q-card class="no-shadow" :class="[$q.dark.isActive ? 'dark' : '']">
+    <q-card
+      class="no-shadow glass-panel"
+      style="border-radius: 20px"
+      :class="[$q.dark.isActive ? 'dark' : '']"
+    >
       <div v-if="false" class="">
         <pre>{{
           {

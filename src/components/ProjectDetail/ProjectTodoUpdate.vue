@@ -195,29 +195,27 @@
     v-if="routeName == 'project.details.todo.update'"
     class="bottom-nav-container"
   >
-    <div
-      class="modern-bottom-nav shadow-4"
-      active-color="white"
-      glossy
-      :class="{
-        'bg-light': !$q.dark.isActive,
-        'bg-dark text-white': $q.dark.isActive
-      }"
-    >
-      <div class="row full-width justify-between">
+    <div class="modern-bottom-nav glass-panel q-px-md">
+      <div class="row full-width justify-between items-center">
         <q-btn
           flat
+          no-caps
+          class="text-grey-5"
           @click="
             $router.push(`/detail/${mainStore?.mobileSelectedProject?.id}/todo`)
           "
         >
           <template #default>
-            <ArrowLeftIcon size="18" class="q-mr-sm" />
-            <span class="text-bold text-capitalize">Back</span>
+            <div class="row items-center gap-5">
+              <ArrowLeftIcon size="18" />
+              <span class="text-bold">Back</span>
+            </div>
           </template>
         </q-btn>
         <q-btn
           flat
+          no-caps
+          class="neon-text-blue"
           :disable="
             !todoTitle ||
             !todoDesc ||
@@ -228,8 +226,10 @@
           @click="openConfirmDialog('Save changes?', 'updateTodo')"
         >
           <template #default>
-            <SquarePenIcon size="18" class="q-mr-sm" />
-            <span class="text-bold text-capitalize">Update</span>
+            <div class="row items-center gap-5">
+              <SquarePenIcon size="18" />
+              <span class="text-bold">Update</span>
+            </div>
           </template>
         </q-btn>
       </div>

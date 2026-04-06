@@ -1,12 +1,20 @@
 <template>
-  <q-card
-    class="round-panel full-height full-width no-shadow px-10 pt-10"
-    :class="[$q.screen.lt.sm ? 'transparent' : '']"
+  <div
+    class="row full-width full-height justify-center"
+    :class="[$q.screen.lt.sm ? 'scroll q-pa-sm pb-100' : '']"
+  >
+  <div
+    class="full-height full-width no-shadow"
+    :class="[
+      $q.screen.lt.sm ? 'no-glass bg-transparent' : 'round-panel glass-panel px-10 pt-10'
+    ]"
   >
     <div
       class="row full-width"
       :class="[
-        $q.screen.lt.sm ? 'justify-between' : 'justify-left gap-10 mb-10'
+        $q.screen.lt.sm
+          ? 'justify-between q-pa-md'
+          : 'justify-left gap-10 mb-10'
       ]"
     >
       <div class="row gap-10">
@@ -51,87 +59,97 @@
         </template>
       </q-btn>
     </div>
-    <q-table
-      v-model:selected="selected"
-      no-data-label="I didn't find anything for you"
-      class="q-mb-sm"
-      row-key="id"
-      selection="single"
-      wrap-cells
-      :grid="$q.screen.lt.sm"
-      :selection-options="selectionOptions"
-      :rows="rows"
-      :columns="columns"
-      :loading="rowLoading"
-      :visible-columns="visibleColumns"
-      :rows-per-page-options="[10]"
-      :hide-pagination="$q.screen.lt.sm"
+
+    <div
+      class="row full-width scroll"
     >
-      <template #body="props">
-        <q-tr :props="props" :selected="props.selected" class="text-subtitle1">
-          <q-td auto-width>
-            <q-checkbox
-              v-model="props.selected"
-              @update:model-value="setSelected"
-            />
-          </q-td>
-          <q-td key="name" :props="props">
-            {{ props.row.name }}
-          </q-td>
-          <q-td key="description" :props="props">
-            {{ props.row.description }}
-          </q-td>
-          <q-td key="dateCreated" v-formatdate :props="props">
-            {{ props.row.dateCreated }}
-          </q-td>
-        </q-tr>
-      </template>
+      <q-table
+        v-model:selected="selected"
+        flat
+        no-data-label="I didn't find anything for you"
+        class="q-mb-sm full-width no-shadow"
+        :class="[$q.screen.lt.sm ? 'no-glass bg-transparent' : '']"
+        row-key="id"
+        selection="single"
+        wrap-cells
+        :grid="$q.screen.lt.sm"
+        :selection-options="selectionOptions"
+        :rows="rows"
+        :columns="columns"
+        :loading="rowLoading"
+        :visible-columns="visibleColumns"
+        :rows-per-page-options="[10]"
+        :hide-pagination="$q.screen.lt.sm"
+      >
+        <template #body="props">
+          <q-tr
+            :props="props"
+            :selected="props.selected"
+            class="text-subtitle1"
+          >
+            <q-td auto-width>
+              <q-checkbox
+                v-model="props.selected"
+                @update:model-value="setSelected"
+              />
+            </q-td>
+            <q-td key="name" :props="props">
+              {{ props.row.name }}
+            </q-td>
+            <q-td key="description" :props="props">
+              {{ props.row.description }}
+            </q-td>
+            <q-td key="dateCreated" v-formatdate :props="props">
+              {{ props.row.dateCreated }}
+            </q-td>
+          </q-tr>
+        </template>
 
-      <template #item="props">
-        <div class="column full-width my-5">
-          <HofsteeCard class="full-width full-height">
-            <template #body>
-              <q-item
-                class="row items-start"
-                :class="$q.dark.isActive ? 'text-white' : 'text-primary'"
-              >
-                <q-item-section side>
-                  <q-checkbox
-                    v-model="props.selected"
-                    dense
-                    @update:model-value="setSelected"
-                  />
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label>
-                    <strong>{{ props.row.name }}</strong>
-                  </q-item-label>
-                  <q-item-label caption>
-                    {{ props.row.description }}
-                  </q-item-label>
-                  <q-item-label caption>
-                    <span class="text-grey">Created:</span>
-                    {{ props.row.dateCreated }}
-                  </q-item-label>
-                </q-item-section>
-              </q-item>
-            </template>
+        <template #item="props">
+            <q-card
+              class="q-ma-sm full-width no-shadow glass-panel round-panel"
+            >
+              <q-card-section>
+                <q-item
+                  class="row items-start"
+                  :class="$q.dark.isActive ? 'text-white' : 'text-primary'"
+                >
+                  <q-item-section side>
+                    <q-checkbox
+                      v-model="props.selected"
+                      dense
+                      @update:model-value="setSelected"
+                    />
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label>
+                      <strong class="text-subtitle1">{{ props.row.name }}</strong>
+                    </q-item-label>
+                    <q-item-label caption class="text-caption">
+                      {{ props.row.description }}
+                    </q-item-label>
+                    <q-item-label caption>
+                      <span class="text-grey">Created:</span>
+                      {{ props.row.dateCreated }}
+                    </q-item-label>
+                  </q-item-section>
+                </q-item>
+              </q-card-section>
 
-            <template #body-loader>
               <q-inner-loading :showing="loading1">
                 <q-spinner-ios size="50px" color="primary" />
               </q-inner-loading>
-            </template>
-          </HofsteeCard>
-        </div>
-      </template>
-    </q-table>
+            </q-card>
+        </template>
+      </q-table>
+    </div>
     <q-inner-loading :showing="rowLoading">
       <q-spinner-ios size="50px" color="secondary" />
     </q-inner-loading>
-  </q-card>
+  </div>
+  </div>
   <q-dialog v-model="confirm" persistent>
-    <q-card class="no-shadow">
+    <q-card class="no-shadow glass-panel" style="border-radius: 20px">
       <q-card-section class="row items-center">
         <q-avatar size="sm">
           <template #default>
@@ -184,16 +202,12 @@ import { LocalStorage, uid, date } from 'quasar'
 
 import ellipsis from 'src/directives/ellipsis'
 import formatdate from 'src/directives/formatdate'
-import HofsteeCard from '../../Common/Card/HofsteeCard.vue'
 
 // Don't forget to specify which animations
 // you are using in quasar.config file > animations.
 // Alternatively, if using UMD, load animate.css from CDN.
 export default {
   title: 'SowTemplate',
-  components: {
-    HofsteeCard
-  },
   directives: { ellipsis, formatdate },
   props: {
     title: {

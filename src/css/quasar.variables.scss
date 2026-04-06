@@ -13,21 +13,27 @@
 // Tip: Use the "Theme Builder" on Quasar's documentation website.
 
 // $primary   : #25252b; // old primary: 13272e
-$primary: #3e3e47;
-$secondary: #284239;
-$accent: #c0c1c3; // old accent: f7d793
+$primary: #0a0b1e; // Deep Navy Base
+$secondary: #1a1b3a;
+$accent: #00d2ff; // Neon Electric Blue
 
-// $dark      : #1d1d1d;
-$dark: #101010;
-$dark-page: #121212;
+$dark: #050510;
+$dark-page: #020205;
 
-$positive: #05807c;
-$negative: #ce6025;
-$info: #1f3957;
-$warning: #e0b269;
+$positive: #00ffaa;
+$negative: #ff007f; // Neon Pink
+$info: #9d50bb; // Neon Violet
+$warning: #ffcc00;
 
-$contrast: #353535; // not working
-$light: #f0f0f0; // not working
+$neon-blue: #00d2ff;
+$neon-violet: #9d50bb;
+$neon-pink: #ff007f;
+$neon-cyan: #00ffff;
+$neon-amber: #ffaa00;
+$neon-green: #00ff44;
+
+$contrast: #1e1e2e;
+$light: #ffffff;
 
 $colors: (
   'primary': $primary,
@@ -39,5 +45,11 @@ $colors: (
   'info': $info,
   'warning': $warning,
   'contrast': $contrast,
-  'light': $light
+  'light': $light,
+  'neon-blue': $neon-blue,
+  'neon-violet': $neon-violet,
+  'neon-pink': $neon-pink,
+  'neon-cyan': $neon-cyan,
+  'neon-amber': $neon-amber,
+  'neon-green': $neon-green
 );

@@ -11,7 +11,7 @@
               <q-icon name="las la-info-circle" color="primary" size="xs" />
             </template>
             <template #header>
-              <b>Comming soon...</b>
+              <b>Support...</b>
             </template>
             <template #body>
               The roadmap includes all features related to payment/payroll.
@@ -43,7 +43,7 @@ import HofsteeAlert from '../Common/Alert/HofsteeAlert.vue'
 // you are using in quasar.config file > animations.
 // Alternatively, if using UMD, load animate.css from CDN.
 export default {
-  title: 'WhatsNew',
+  title: 'Support',
   components: {
     HofsteeAlert
   },

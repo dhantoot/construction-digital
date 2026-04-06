@@ -6,15 +6,17 @@
     <q-select
       v-model="searchKey"
       behavior="menu"
-      popup-content-class="popupSelectContent"
+      popup-content-class="glass-panel"
       :dense="true"
       filled
+      class="glass-panel"
       use-input
       input-debounce="0"
       :options="options"
       clearable
       :placeholder="!searchKey ? 'Address' : ''"
       :loading="searchingPlaceLoader"
+      dropdown-icon="las la-angle-down"
       @filter="filterFn"
     ></q-select>
     <q-input
